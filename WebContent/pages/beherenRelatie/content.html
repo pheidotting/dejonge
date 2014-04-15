@@ -323,10 +323,10 @@
 	</ul>
 	<div>
 		<div id="relatieGegevens">
-			<input type="hidden" id="id" name="id" data-bind="value: id" />
-			<div class="inputField">
+			<input class="form-control" type="hidden" id="id" name="id" data-bind="value: id" />
+			<div class="form-group">
 				<label for="zakelijkeklant">Zakelijke klant</label>
-				<input type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="value: zakelijkeklant" /><br />
+				<input class="form-control" type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="value: zakelijkeklant" /><br />
 				<script>
 					$('#zakelijkeklant').change(function(){
 						if($('#zakelijkeklant').is(':checked')){
@@ -337,41 +337,41 @@
 					});
 				</script>
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<h3>Persoonsgegevens</h3>
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="voornaam">Voornaam</label>
-				<input type="text" id="voornaam" name="voornaam" data-bind="value: voornaam" /><br />
+				<input class="form-control" type="text" id="voornaam" name="voornaam" data-bind="value: voornaam" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="tussenvoegsel">Tussenvoegsel</label>
-				<input type="text" id="tussenvoegsel" name="tussenvoegsel" data-bind="value: tussenvoegsel" /><br />
+				<input class="form-control" type="text" id="tussenvoegsel" name="tussenvoegsel" data-bind="value: tussenvoegsel" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="achternaam">Achternaam</label>
-				<input type="text" id="achternaam" name="achternaam"data-bind="value: achternaam"  /><br />
+				<input class="form-control" type="text" id="achternaam" name="achternaam"data-bind="value: achternaam"  /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="bsn">Bsn</label>
-				<input type="text" id="bsn" name="bsn" data-bind="value: bsn" /><br />
+				<input class="form-control" type="text" id="bsn" name="bsn" data-bind="value: bsn" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="geboorteDatum">Geboortedatum</label>
-				<input type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatumString" /><br />
+				<input class="form-control" type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatumString" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="overlijdensdatum">Overlijdensdatum</label>
-				<input type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatumString" /><br />
+				<input class="form-control" type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatumString" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="geslacht">Geslacht</label>
 				<select id="burgerlijkeStaat" id="geslacht" name="geslacht" data-bind="value: geslacht">
 					<option value="Man">Man</option>
 					<option value="Vrouw">Vrouw</option>
 				</select>
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="burgerlijkeStaat">Burgerlijke staat</label>
 				<select id="burgerlijkeStaat" name="burgerlijkeStaat" data-bind="value: burgerlijkeStaat">
 					<option value="Ongehuwd">Ongehuwd</option>
@@ -380,14 +380,14 @@
 			</div>
 			<a onclick="$('#dlg').puidialog('show');"><img src="images/add.png" alt="Toevoegen relatie" /></a>
 			<div id="relaties" data-bind="foreach: onderlingeRelaties, visible: onderlingeRelaties().length > 0">
-				<input type="hidden" id="telefoonid" data-bind="value: id" />
+				<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
 				<!--a onclick="document.location.hash='#beherenRelatie/'"-->
 				<span class="user-box-name" data-bind="text: metWie, click: $root.userClick" style="cursor:pointer;"></span>
 				<span data-bind="text: soort"></span>
 				<br />
 			</div>
 			<div id="dlg" title="Zoek een relatie">  
-			    <input type="text" id="zoekRelatie" /><br />
+			    <input class="form-control" type="text" id="zoekRelatie" /><br />
 			    <select id="soortRelatie" >
 					<option value="">Selecteer een optie...</option>
 					<option value="O">Ouder</option>
@@ -398,31 +398,31 @@
 			    <div id="lijstRelaties"></div>
 			</div> 
 			
-			<div class="inputField">
+			<div class="form-group">
 				<h3>Adresgegevens</h3>
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="straat">Straat</label>
-				<input type="text" id="straat" name="straat" data-bind="value: straat" /><br />
+				<input class="form-control" type="text" id="straat" name="straat" data-bind="value: straat" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="huisnummer">Huisnummer</label>
-				<input type="number" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" /><br />
+				<input class="form-control" type="number" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="toevoeging">Toevoeging</label>
-				<input type="text" id="toevoeging" name="toevoeging" data-bind="value: toevoeging" /><br />
+				<input class="form-control" type="text" id="toevoeging" name="toevoeging" data-bind="value: toevoeging" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="postcode">Postcode</label>
-				<input type="text" id="postcode" name="postcode" data-bind="value: postcode" /><br />
+				<input class="form-control" type="text" id="postcode" name="postcode" data-bind="value: postcode" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="plaats">Plaats</label>
-				<input type="text" id="plaats" name="plaats" data-bind="value: plaats" /><br />
+				<input class="form-control" type="text" id="plaats" name="plaats" data-bind="value: plaats" /><br />
 			</div>
 			
-			<div class="inputField">
+			<div class="form-group">
 				<h3>Rekeninggegevens</h3>
 				<a id="toevoegenRekening" data-bind="click: voegRekeningToe" href="#">
 					<img src="images/add.png" alt="Toevoegen rekeningnummer" />
@@ -430,22 +430,22 @@
 			</div>
 			<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
 				<div id="rekeningnummer">
-					<input type="hidden" id="rekeningid" data-bind="value: id" />
-					<div class="inputField">
+					<input class="form-control" type="hidden" id="rekeningid" data-bind="value: id" />
+					<div class="form-group">
 						<label for="nummer">Rekeningnummer</label>
-						<input type="text" id="nummer" name="nummer" data-bind="value: rekeningnummer" /><br />
+						<input class="form-control" type="text" id="nummer" name="nummer" data-bind="value: rekeningnummer" /><br />
 						<a id="verwijderenRekening" data-bind="click: $parent.verwijderRekening">
 							<img src="images/delete.png" alt="Verwijderen rekeningnummer" />
 						</a>
 					</div>
-					<div class="inputField">
+					<div class="form-group">
 						<label for="bic">Bic</label>
-						<input type="text" id="bic" name="bic" data-bind="value: bic" /><br />
+						<input class="form-control" type="text" id="bic" name="bic" data-bind="value: bic" /><br />
 					</div>
 				</div>
 			</div>
 			
-			<div class="inputField">
+			<div class="form-group">
 				<h3>Contactgegevens</h3>
 				<a id="toevoegenTelefoonnummer" data-bind="click: voegTelefoonNummerToe" href="#">
 					<img src="images/add.png" alt="Toevoegen telefoonnummer" />
@@ -453,15 +453,15 @@
 			</div>
 			<div id="telefoonnummers" data-bind="foreach: telefoonNummers, visible: telefoonNummers().length > 0">
 				<div id="telefoonnummer">
-					<input type="hidden" id="telefoonid" data-bind="value: id" />
-					<div class="inputField">
+					<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
+					<div class="form-group">
 						<label for="telnummer">Telefoonnummer</label>
-						<input type="text" id="telnummer" name="telnummer" data-bind="value: telefoonnummer" /><br />
+						<input class="form-control" type="text" id="telnummer" name="telnummer" data-bind="value: telefoonnummer" /><br />
 						<a id="verwijderenTelefoonnummer" data-bind="click: $parent.verwijderTelefoonNummer">
 							<img src="images/delete.png" alt="Verwijderen telefoonnummer" />
 						</a>
 					</div>
-					<div class="inputField">
+					<div class="form-group">
 						<label for="soort">Soort</label>
 						<select id="soort" name="soort" data-bind="value: soort">
 							<option value="Mobiel">Mobiel</option>
@@ -471,11 +471,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="emailadres">E-mailadres</label>
-				<input type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" /><br />
+				<input class="form-control" type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" /><br />
 			</div>
-			<div class="inputField">
+			<div class="form-group">
 				<label for="opslaanrelatie">&nbsp;</label>
 				<button id="opslaanrelatie" name="opslaanrelatie" data-bind="click: opslaan">Opslaan</button>
 				<script type="text/javascript">
@@ -514,7 +514,7 @@
 				<a id="link_id">
 					<img src="images/add.png" alt="Toevoegen bijlage" />
 				</a>
-				<input type="hidden" id="polisid" data-bind="value: id" />
+				<input class="form-control" type="hidden" id="polisid" data-bind="value: id" />
 				<span data-bind="text: omschrijving"><!--, click: $root.showBijlages" style="cursor:pointer;"--></span><br />
 				<div data-bind="if: kenteken">
 					<span data-bind="text: kenteken"></span><br />
@@ -586,11 +586,11 @@
 				<option>Woonhuis</option>
 				<option>Zorg</option>
 			</select><br />
-			<input type="text" id="polisNummer" placeholder="Polisnummer..."  /><br />
-			<input type="text" id="premie" placeholder="Premie..."  /><br />
-			<input type="text" id="ingangsDatumString" placeholder="Ingangs datum..." /><br />
+			<input class="form-control" type="text" id="polisNummer" placeholder="Polisnummer..."  /><br />
+			<input class="form-control" type="text" id="premie" placeholder="Premie..."  /><br />
+			<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." /><br />
 			<div id="div_kenteken" style="display:none;">
-				<input type="text" id="kenteken" placeholder="Kenteken..."  /><br />
+				<input class="form-control" type="text" id="kenteken" placeholder="Kenteken..."  /><br />
 			</div>
 			<div id="div_soortAutoVerzekering" style="display:none;">
 				<select id="soortAutoVerzekering">
