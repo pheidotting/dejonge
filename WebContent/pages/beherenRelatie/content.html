@@ -1,0 +1,629 @@
+<script type="text/javascript">
+	$("#geboorteDatum").mask("99-99-9999");
+	$("#overlijdensdatum").mask("99-99-9999");
+	$('#tabs').puitabview();
+	$('#tabs').puitabview('disable' , 1);
+	$('#dlg').puidialog({
+	    showEffect: 'fade',
+	    hideEffect: 'fade',
+	    maximizable: true,
+	/*         modal: true,
+	*/        width: 850
+	});
+	
+	$('#bijlagesDialog').puidialog({
+	    showEffect: 'fade',
+	    hideEffect: 'fade',
+	    maximizable: true,
+	/*         modal: true,
+	*/        width: 950
+	});
+
+	function Relatie(data) {
+		
+	    var self = this;
+		
+		this.id = ko.observable(data.id);
+		this.voornaam = ko.observable(data.voornaam);
+		this.achternaam = ko.observable(data.achternaam);
+		this.tussenvoegsel = ko.observable(data.tussenvoegsel);
+		this.straat = ko.observable(data.straat);
+		this.huisnummer = ko.observable(data.huisnummer);
+		this.toevoeging = ko.observable(data.toevoeging);
+		this.postcode = ko.observable(data.postcode);
+		this.plaats = ko.observable(data.plaats);
+		this.bsn = ko.observable(data.bsn);
+		this.identificatie = ko.observable(data.identificatie);
+		this.rekeningnummers = ko.observableArray();
+		$.each(data.rekeningnummers, function(i, item) {
+			self.rekeningnummers.push(new RekeningNummer(item));
+			});
+		this.telefoonNummers = ko.observableArray();
+		$.each(data.telefoonNummers, function(i, item) {
+			self.telefoonNummers.push(new TelefoonNummer(item));
+			});
+		this.bedrijven = ko.observableArray();
+		$.each(data.bedrijven, function(i, item) {
+			self.bedrijven.push(new Bedrijf(item));
+			});
+		this.geboorteDatumString = ko.observable(data.geboorteDatumString);
+		this.overlijdensdatumString = ko.observable(data.overlijdensdatumString);
+		this.geslacht = ko.observable(data.geslacht);
+		this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
+	
+		this.onderlingeRelaties = ko.observableArray();
+		if(data.onderlingeRelaties != null){
+			$.each(data.onderlingeRelaties, function(i, item) {
+				self.onderlingeRelaties.push(new OnderlingeRelatie(item));
+	 		});
+		}
+		
+		this.polissen = ko.observableArray();
+		if(data.polissen != null){
+						$.each(data.polissen, function(i, item){
+				self.polissen.push(new Polis(item));
+			})
+					}
+	
+		this.voegRekeningToe = function() {
+	        self.rekeningnummers.push(new RekeningNummer(""));
+	    };
+	    
+	    this.verwijderRekening = function(nummer){
+	    	self.rekeningnummers.destroy(nummer);
+	    }
+	    
+	    this.voegTelefoonNummerToe = function() {
+	    	self.telefoonNummers.push(new TelefoonNummer(""));
+	    }
+	    
+	    this.verwijderTelefoonNummer = function(telefoon) {
+	    	self.telefoonNummers.destroy(telefoon);
+	    }
+	    
+	    this.voegPolisToe = function(){
+	    	self.polissen = new Polis("");
+	    }
+	    
+	    this.verwijderPolis = function(polis){
+	    	self.polissen.destroy(polis);
+	    }
+	    
+	    
+	    self.userClick = function (obj) {
+	        document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(obj.idNaar);
+	    }
+	    
+	    self.showBijlages = function(obj) {
+	        $.ajax({  
+	            type: "GET",  
+	            url: './BijlagenBijPolis',
+				data: {
+					polisId : ko.utils.unwrapObservable(obj.id),
+					relatieId : $('#id').val()
+	
+				},
+	            dataType: "json",  
+	            success: function(data) {
+	            	$.each(obj, function(data) {
+	            		console.log(obj);
+						})
+	        	}
+	    	})
+	    }
+	    
+	    this.opslaan = function(){
+	    	$.ajax({
+				type: "GET",
+				url: './OpslaanRelatie',
+				dataType:'json',
+	            data: {
+					relatie : ko.toJSON(this),
+	            },
+	            success: function(data) {
+		 			if($.type(data) == "string"){
+						addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
+					}else{
+			           	ko.applyBindings(new Relatie(data));
+					}
+				}
+	        });
+	    }
+	}
+	
+	function OnderlingeRelatie(data){
+		this.id = ko.observable(data.id);
+		this.idNaar = ko.observable(data.idNaar);
+		this.metWie = ko.observable(data.metWie);
+		this.soort = ko.observable(data.soort);
+	}
+	
+	function RekeningNummer(data){
+		this.id = ko.observable(data.id);
+		this.rekeningnummer = ko.observable(data.rekeningnummer);
+		this.bic = ko.observable(data.bic);
+	}
+	
+	function TelefoonNummer(data){
+		this.id = ko.observable(data.id);
+		this.telefoonnummer = ko.observable(data.telefoonnummer);
+		this.soort = ko.observable(data.soort);
+	}
+	
+	function Bedrijf(data){
+		
+/* 		this.id = ko.observable(data.id);
+ *//* 		private Set<Polis> polissen;
+ */
+		this.naam = ko.observable(data.naam);
+ /* 		this.kvk = ko.observable(data.kvk);
+ */
+/* 		private Adres adres;
+ */		
+	}
+	
+	function Polis(data){
+		var self = this;
+	
+		self.id = ko.observable(data.id);
+		self.omschrijving = ko.observable(data.omschrijving);
+		self.polisNummer = ko.observable(data.polisNummer);
+		self.ingangsDatumString = ko.observable(data.ingangsDatumString);
+		self.maatschappij = ko.observable(data.maatschappij.naam);
+		self.bijlages = ko.observableArray();
+		/*		$.each(data.bijlages, function(i, item){
+			self.bijlages.push(new Bijlage(item));
+		})
+*/		self.kenteken = ko.observable(data.kenteken);
+		self.soortAutoVerzekering = ko.observable(data.soortAutoVerzekering);
+	}
+	
+	function Bijlage(data){
+		var self = this;
+	
+		self.id = ko.observable(data.id);
+		self.bestandsNaam = ko.observable();
+		self.bestandsNaamThumb = ko.observable();
+		self.bestandsNaamPdf = ko.observable();
+/*		self.bestandsNaam = ko.computed(function() {
+	        return "./Download?id=" + this.id();
+	    }, this);
+		self.bestandsNaamThumb = ko.computed(function() {
+	        return "./Download?id=" + this.id() + "&thumb=true";
+	    }, this);
+		self.bestandsNaamPdf = ko.computed(function() {
+	        return "./DIAS/Download?id=" + this.id() + "&pdf=true";
+	    }, this);*/
+	}
+	
+	
+	function start(){
+		$.ajax({
+			type: "GET",
+			url: './rest/gebruiker/isIngelogd',
+			dataType:'json',
+			success: function (data) {
+				if(new String(data) == "false"){
+					document.location.hash='#inloggen';
+				}else{
+					$.ajax({
+						type: "GET",
+						url: './rest/overig/lijstVerzekeringsMaatschappijen',
+						dataType: "json",
+						context: this,
+						success: function(data) {
+							$('#verzekeringsMaatschappijen').puidropdown({
+								source:data,
+								content: function(option) {
+									return '<img src="images/maatschappijen/' + option + '.jpg" alt="" /><span style="float:right;font-size:14px">' + option + '</span>';
+								},
+								change: function(e) {}
+							});
+						},
+						error:function(data, x) {}
+					});
+				}
+			}
+		});
+ 
+		$('#bijlages').puilightbox(); 
+	
+		$.ajax({
+			type: "GET",
+			url: './rest/gebruiker/lees',
+			dataType:'json',
+			data: {
+				id : $('#id').val()
+			},
+	 		success: function (data) {
+	 			if($.type(data) == "string"){
+					document.location.hash='#inloggen';
+					addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
+				}else{
+		           	ko.applyBindings(new Relatie(data));
+				}
+	        }
+	    });
+		
+		$('#soortVerzekering').change(function() {
+ 			$('#div_kenteken').hide();
+			$('#div_soortAutoVerzekering').hide();
+			$('#div_oldtimer').hide();
+
+			if($('#soortVerzekering').val() == "Auto"){
+				$('#div_kenteken').show();
+				$('#div_soortAutoVerzekering').show();
+			}
+
+			if($('#soortVerzekering').val() == "Motor"){
+				$('#div_kenteken').show();
+				$('#div_oldtimer').show();
+			}
+
+		});
+		
+		$("#lijstRelaties").puidatatable({
+	        caption: "Lijst Relaties" + $('#zoekCriteriaLijstRelaties').val(),  
+	        columns: [
+	            {field:"achternaam", headerText: "Achternaam", sortable:true},
+	            {field:"tussenvoegsel", headerText: "Tussenvoegsel", sortable:true},
+	            {field:"voornaam", headerText: "Voornaam", sortable:true},
+	            {field:"geboortedatum", headerText: "Geboortedatum", sortable:true},
+	            {field:"adresOpgemaakt", headerText: "Straat", sortable:true},
+	            {field:"bsn", headerText: "Bsn", sortable:true}
+	        ],  
+	        datasource: function(callback) {
+	            $.ajax({  
+	                type: "GET",  
+	                url: './rest/gebruiker/lijstRelaties',
+					data: {
+						weglaten : $('#id').val(),
+	   					criteria : $('#zoekCriteriaLijstRelaties').val()
+					},
+	                dataType: "json",  
+	                context: this,  
+	                success: function(response) {  
+	                    callback.call(this, response);  
+	                }  
+	            });  
+	        }, 
+	        selectionMode: "single",
+	        rowSelect: function(event, data) {
+	            $.ajax({  
+	                type: "GET",  
+	                url: './rest/gebruiker/toevoegenRelatieRelatie',
+					data: {
+						idToeTeVoegen : data.id,
+	   					idAanToevoegen : $('#id').val(),
+	   					soortRelatie : $('#soortRelatie').val()
+					},
+	                dataType: "json",  
+	                context: this,  
+	                success: function(data) {
+	    	 			if($.type(data) == "string"){
+								addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: response}]);  
+	                	}else{
+	                    	$('#dlg').puidialog('hide');
+	    		           	ko.applyBindings(new Relatie(data));
+	                	}
+	                }  
+	        })
+	        }
+	    });
+	}
+
+/* 	ko.applyBindings(new Relatie());
+*/</script>
+<div id="tabs">
+	<ul>
+		<li><a href="#relatieGegevens">Relatie Gegevens</a></li>
+		<li><a href="#zakelijkeGegevens">Zakelijke Gegevens</a></li>
+		<li><a href="#polissen">Polissen</a></li>
+		<li><a href="#toevoegenPolis">Toevoegen Polis</a></li>
+	</ul>
+	<div>
+		<div id="relatieGegevens">
+			<input type="hidden" id="id" name="id" data-bind="value: id" />
+			<div class="inputField">
+				<label for="zakelijkeklant">Zakelijke klant</label>
+				<input type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="value: zakelijkeklant" /><br />
+				<script>
+					$('#zakelijkeklant').change(function(){
+						if($('#zakelijkeklant').is(':checked')){
+							$('#tabs').puitabview('enable' , 1);
+						}else{
+							$('#tabs').puitabview('disable' , 1);
+						}
+					});
+				</script>
+			</div>
+			<div class="inputField">
+				<h3>Persoonsgegevens</h3>
+			</div>
+			<div class="inputField">
+				<label for="voornaam">Voornaam</label>
+				<input type="text" id="voornaam" name="voornaam" data-bind="value: voornaam" /><br />
+			</div>
+			<div class="inputField">
+				<label for="tussenvoegsel">Tussenvoegsel</label>
+				<input type="text" id="tussenvoegsel" name="tussenvoegsel" data-bind="value: tussenvoegsel" /><br />
+			</div>
+			<div class="inputField">
+				<label for="achternaam">Achternaam</label>
+				<input type="text" id="achternaam" name="achternaam"data-bind="value: achternaam"  /><br />
+			</div>
+			<div class="inputField">
+				<label for="bsn">Bsn</label>
+				<input type="text" id="bsn" name="bsn" data-bind="value: bsn" /><br />
+			</div>
+			<div class="inputField">
+				<label for="geboorteDatum">Geboortedatum</label>
+				<input type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatumString" /><br />
+			</div>
+			<div class="inputField">
+				<label for="overlijdensdatum">Overlijdensdatum</label>
+				<input type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatumString" /><br />
+			</div>
+			<div class="inputField">
+				<label for="geslacht">Geslacht</label>
+				<select id="burgerlijkeStaat" id="geslacht" name="geslacht" data-bind="value: geslacht">
+					<option value="Man">Man</option>
+					<option value="Vrouw">Vrouw</option>
+				</select>
+			</div>
+			<div class="inputField">
+				<label for="burgerlijkeStaat">Burgerlijke staat</label>
+				<select id="burgerlijkeStaat" name="burgerlijkeStaat" data-bind="value: burgerlijkeStaat">
+					<option value="Ongehuwd">Ongehuwd</option>
+					<option value="Gehuwd">Gehuwd</option>
+				</select>
+			</div>
+			<a onclick="$('#dlg').puidialog('show');"><img src="images/add.png" alt="Toevoegen relatie" /></a>
+			<div id="relaties" data-bind="foreach: onderlingeRelaties, visible: onderlingeRelaties().length > 0">
+				<input type="hidden" id="telefoonid" data-bind="value: id" />
+				<!--a onclick="document.location.hash='#beherenRelatie/'"-->
+				<span class="user-box-name" data-bind="text: metWie, click: $root.userClick" style="cursor:pointer;"></span>
+				<span data-bind="text: soort"></span>
+				<br />
+			</div>
+			<div id="dlg" title="Zoek een relatie">  
+			    <input type="text" id="zoekRelatie" /><br />
+			    <select id="soortRelatie" >
+					<option value="">Selecteer een optie...</option>
+					<option value="O">Ouder</option>
+					<option value="K">Kind</option>
+					<option value="W">Werknemer</option>
+					<option value="WG">Werkgever</option>
+			    </select>
+			    <div id="lijstRelaties"></div>
+			</div> 
+			
+			<div class="inputField">
+				<h3>Adresgegevens</h3>
+			</div>
+			<div class="inputField">
+				<label for="straat">Straat</label>
+				<input type="text" id="straat" name="straat" data-bind="value: straat" /><br />
+			</div>
+			<div class="inputField">
+				<label for="huisnummer">Huisnummer</label>
+				<input type="number" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" /><br />
+			</div>
+			<div class="inputField">
+				<label for="toevoeging">Toevoeging</label>
+				<input type="text" id="toevoeging" name="toevoeging" data-bind="value: toevoeging" /><br />
+			</div>
+			<div class="inputField">
+				<label for="postcode">Postcode</label>
+				<input type="text" id="postcode" name="postcode" data-bind="value: postcode" /><br />
+			</div>
+			<div class="inputField">
+				<label for="plaats">Plaats</label>
+				<input type="text" id="plaats" name="plaats" data-bind="value: plaats" /><br />
+			</div>
+			
+			<div class="inputField">
+				<h3>Rekeninggegevens</h3>
+				<a id="toevoegenRekening" data-bind="click: voegRekeningToe" href="#">
+					<img src="images/add.png" alt="Toevoegen rekeningnummer" />
+				</a>
+			</div>
+			<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
+				<div id="rekeningnummer">
+					<input type="hidden" id="rekeningid" data-bind="value: id" />
+					<div class="inputField">
+						<label for="nummer">Rekeningnummer</label>
+						<input type="text" id="nummer" name="nummer" data-bind="value: rekeningnummer" /><br />
+						<a id="verwijderenRekening" data-bind="click: $parent.verwijderRekening">
+							<img src="images/delete.png" alt="Verwijderen rekeningnummer" />
+						</a>
+					</div>
+					<div class="inputField">
+						<label for="bic">Bic</label>
+						<input type="text" id="bic" name="bic" data-bind="value: bic" /><br />
+					</div>
+				</div>
+			</div>
+			
+			<div class="inputField">
+				<h3>Contactgegevens</h3>
+				<a id="toevoegenTelefoonnummer" data-bind="click: voegTelefoonNummerToe" href="#">
+					<img src="images/add.png" alt="Toevoegen telefoonnummer" />
+				</a>
+			</div>
+			<div id="telefoonnummers" data-bind="foreach: telefoonNummers, visible: telefoonNummers().length > 0">
+				<div id="telefoonnummer">
+					<input type="hidden" id="telefoonid" data-bind="value: id" />
+					<div class="inputField">
+						<label for="telnummer">Telefoonnummer</label>
+						<input type="text" id="telnummer" name="telnummer" data-bind="value: telefoonnummer" /><br />
+						<a id="verwijderenTelefoonnummer" data-bind="click: $parent.verwijderTelefoonNummer">
+							<img src="images/delete.png" alt="Verwijderen telefoonnummer" />
+						</a>
+					</div>
+					<div class="inputField">
+						<label for="soort">Soort</label>
+						<select id="soort" name="soort" data-bind="value: soort">
+							<option value="Mobiel">Mobiel</option>
+							<option value="Vast">Vast</option>
+							<option value="Werk">Werk</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="inputField">
+				<label for="emailadres">E-mailadres</label>
+				<input type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" /><br />
+			</div>
+			<div class="inputField">
+				<label for="opslaanrelatie">&nbsp;</label>
+				<button id="opslaanrelatie" name="opslaanrelatie" data-bind="click: opslaan">Opslaan</button>
+				<script type="text/javascript">
+					function verwijderenRelatie() {
+			  				$.ajax({
+			  					type: "GET",
+			  					url: './VerwijderenRelatie',
+			  					dataType:'json',
+			  					data: {
+			  						id : $('#id').val()
+			  					}
+			  				});
+					}
+				</script>
+				<a href="#" onclick="verwijderenRelatie()">Verwijderen</a>
+			</div>
+		</div>
+		<div id="zakelijkeGegevens">
+			Gegevens van de bedrijven...?
+			<div id="bedrijven" data-bind="foreach: bedrijven visible: bedrijven > 0">
+				<span data-bind="text: naam"></span><br />
+			</div>
+		</div>
+		<div id="polissen">
+			<a id="link_id">
+				<img src="images/add.png" alt="Toevoegen polis" />
+			</a>
+			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
+				<script>
+						$('#link_id').click(function(){
+							console.log("SAdfsafsdfsdfsdf");
+						  window.open('url', 'window name', 'window settings');
+						  return false;
+						});
+				</script>
+				<a id="link_id">
+					<img src="images/add.png" alt="Toevoegen bijlage" />
+				</a>
+				<input type="hidden" id="polisid" data-bind="value: id" />
+				<span data-bind="text: omschrijving"><!--, click: $root.showBijlages" style="cursor:pointer;"--></span><br />
+				<div data-bind="if: kenteken">
+					<span data-bind="text: kenteken"></span><br />
+				</div>
+				<div data-bind="if: soortAutoVerzekering">
+					<span data-bind="text: soortAutoVerzekering"></span><br />
+				</div>
+				<div data-bind="if: polisNummer">
+					<span data-bind="text: polisNummer"></span><br />
+				</div>
+				<div data-bind="if: ingangsDatumString">
+					<span data-bind="text: ingangsDatumString"></span><br />
+				</div>
+				<div data-bind="if: maatschappij">
+					<span data-bind="text: maatschappij"></span><br />
+				</div>
+				<!--a onclick="
+					$('#bijlagesDialog').puidialog('show');">Bijlages</a-->
+					
+				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+					 <a data-bind="attr:{href: bestandsNaam}">
+					 
+						<img data-bind="attr:{src: bestandsNaamThumb}" alt="Bijlage" />
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="toevoegenPolis">
+			<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen"></select><br />
+			<select id="soortVerzekering" name="soortVerzekering">
+				<option value="">Kies een soort verzekering...</option>
+				<option>Aansprakelijkheid</option>
+				<option>Auto</option>
+				<option>Brom-/Snorfiets</option>
+				<option>Camper</option>
+				<option>Doorlopende Annulering</option>
+				<option>Doorlopende Reis</option>
+				<option>Fiets</option>
+				<option>Inboedel</option>
+				<option>Leven</option>
+				<option>Mobiele apparatuur</option>
+				<option>Motor</option>
+				<option>Ongevallen</option>
+				<option>Pleziervaartuigen</option>
+				<option>Recreatie</option>
+				<option>Rechtsbijstand</option>
+				<option>Reis</option>
+				<option>Woonhuis</option>
+				<option>Zorg</option>
+			</select>
+			<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;">
+				<option value="">Kies een soort verzekering...</option>
+				<option>Aansprakelijkheid</option>
+				<option>Auto</option>
+				<option>Brom-/Snorfiets</option>
+				<option>Camper</option>
+				<option>Doorlopende Annulering</option>
+				<option>Doorlopende Reis</option>
+				<option>Fiets</option>
+				<option>Inboedel</option>
+				<option>Leven</option>
+				<option>Mobiele apparatuur</option>
+				<option>Motor</option>
+				<option>Ongevallen</option>
+				<option>Pleziervaartuigen</option>
+				<option>Recreatie</option>
+				<option>Rechtsbijstand</option>
+				<option>Reis</option>
+				<option>Woonhuis</option>
+				<option>Zorg</option>
+			</select><br />
+			<input type="text" id="polisNummer" placeholder="Polisnummer..."  /><br />
+			<input type="text" id="premie" placeholder="Premie..."  /><br />
+			<input type="text" id="ingangsDatumString" placeholder="Ingangs datum..." /><br />
+			<div id="div_kenteken" style="display:none;">
+				<input type="text" id="kenteken" placeholder="Kenteken..."  /><br />
+			</div>
+			<div id="div_soortAutoVerzekering" style="display:none;">
+				<select id="soortAutoVerzekering">
+					<option value="">Kies een soort autoverzekering...</option>
+					<option>Auto</option>
+					<option>Vrachtauto</option>
+					<option>Oldtimer</option>
+				</select><br />
+			</div>
+			<div id="div_oldtimer" style="display:none;">
+				Oldtimer <input type="checkbox" id="oldtimer" /><br />
+			</div>
+			<button id="opslaanPolis">Opslaan</button>
+			<script>
+				$('#opslaanPolis').click(function(){
+					$.ajax({
+						type: "GET",
+						url: './rest/polis/opslaan',
+						dataType:'json',
+			            data: {
+			            	relatie : $('#id').val(),
+			            	premie : $('#premie').val(),
+							maatschappij : $('#verzekeringsMaatschappijen').val(),
+							soort : $('#soortVerzekering').val(),
+							polisNummer : $('#polisNummer').val(),
+							ingangsDatumString : $('#ingangsDatumString').val(),
+							kenteken : $('#kenteken').val(),
+							soortAutoVerzekering : $('#soortAutoVerzekering').val(),
+							oldtimer : $('#soortAutoVerzekering').val()
+			            }
+			    	});
+				});
+			</script>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+<script type="text/javascript">
+	function start(){
+		$.ajax({
+			type: "GET",
+			url: './rest/overig/extraInfo',
+			async: false,
+			success: function (data) {
+				document.title = data;
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url: './rest/gebruiker/isIngelogd',
+			dataType:'json',
+			success: function (data) {
+				if(new String(data) == "true"){
+					document.location.hash='#lijstRelaties';
+				}else{
+					$('#inlogButton').puibutton({
+						click: function(event) {
+							$.ajax({
+								type: "GET",
+								url: './rest/gebruiker/inloggen',
+								dataType:'json',
+								data: {
+									emailadres : $('#identificatie').val(),
+									wachtwoord : $('#wachtwoord').val(),
+									onthouden : $('#onthouden').is(':checked')
+								},
+								success: function (data) {
+									if(data != "ok"){
+										addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);
+									}else{
+										document.location.hash='#lijstRelaties';
+									}
+								}
+							});
+						}
+					});
+				}
+			}
+		});
+	}
+</script>
+<input type="text" id="identificatie" placeholder="E-mailadres..." /><br />
+<input type="password" id="wachtwoord" placeholder="Wachtwoord..." /><br />
+<input type="checkbox" id="onthouden">Ingelogd blijven?</input><br />
+<button id="inlogButton">Inloggen</button>
