@@ -196,7 +196,7 @@
 	
 	
 	function start(){
-		$.ajax({
+/* 		$.ajax({
 			type: "GET",
 			url: './rest/gebruiker/isIngelogd',
 			dataType:'json',
@@ -204,7 +204,7 @@
 				if(new String(data) == "false"){
 					document.location.hash='#inloggen';
 				}else{
-					$.ajax({
+ */					$.ajax({
 						type: "GET",
 						url: './rest/overig/lijstVerzekeringsMaatschappijen',
 						dataType: "json",
@@ -220,10 +220,10 @@
 						},
 						error:function(data, x) {}
 					});
-				}
+/* 				}
 			}
 		});
- 
+ */ 
 /* 		$('#bijlages').puilightbox(); 
  */	
 		$.ajax({
@@ -236,8 +236,8 @@
 	 		success: function (data) {
 	 			if($.type(data) == "string"){
 					document.location.hash='#inloggen';
-					addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
-				}else{
+/* 					addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
+ */				}else{
 		           	ko.applyBindings(new Relatie(data));
 				}
 	        }
@@ -322,7 +322,7 @@
 	<div>
 		<div id="relatieGegevens">
 			<input class="form-control" type="hidden" id="id" name="id" data-bind="value: id" />
-			<div class="form-group">
+			<!--div class="form-group">
 				<label for="zakelijkeklant">Zakelijke klant</label>
 				<input class="form-control" type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="value: zakelijkeklant" />
 				<script>
@@ -334,7 +334,7 @@
 						}
 					});
 				</script>
-			</div>
+			</div-->
 			<div class="form-group">
 				<h3>Persoonsgegevens</h3>
 			</div>
