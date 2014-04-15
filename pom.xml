@@ -159,6 +159,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>DIAS</finalName>
+		<finalName>dejonge</finalName>
 	</build>
 </project>
