@@ -32,6 +32,15 @@
 				});
 			});
 
+			diasRoute.route('GET', '', function(context) {
+ 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
+					if (status == "success") {
+						$('#id').val('0');
+						start();
+					}
+				});
+			});
+
 			diasRoute.run();
 		});
 
