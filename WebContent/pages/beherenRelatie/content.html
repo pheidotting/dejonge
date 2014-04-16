@@ -210,15 +210,18 @@
 						dataType: "json",
 						context: this,
 						success: function(data) {
-							$('#verzekeringsMaatschappijen').puidropdown({
+							var $select = $('#verzekeringsMaatschappijen');
+							$.each(data, function(key, value) {              
+							    $('<option>').val(key).text(value).appendTo($select);
+							});
+/* 							$('#verzekeringsMaatschappijen').puidropdown({
 								source:data,
 								content: function(option) {
-									return '<img src="images/maatschappijen/' + option + '.jpg" alt="" /><span style="float:right;font-size:14px">' + option + '</span>';
-								},
-								change: function(e) {}
+									console.log(option);
+									return '<img src="images/maatschappijen/' + option + '.jpg" alt="' + option + '" /><span style="float:right;font-size:14px">' + option + '</span>';
+								}
 							});
-						},
-						error:function(data, x) {}
+ */						}
 					});
 /* 				}
 			}

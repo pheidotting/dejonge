@@ -1,5 +1,6 @@
 package nl.dias.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -24,19 +25,19 @@ public class JsonController {
     @GET
     @Path("/lijstVerzekeringsMaatschappijen")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<VerzekeringsMaatschappij> lijstVerzekeringsMaatschappijen() {
+    public List<String> lijstVerzekeringsMaatschappijen() {
 
         logger.debug("ophalen lijst met VerzekeringsMaatschappijen");
 
         List<VerzekeringsMaatschappij> lijst = maatschappijService.alles();
-        // List<String> ret = new ArrayList<>();
-        // ret.add("Kies een maatschappij...");
+        List<String> ret = new ArrayList<>();
+        ret.add("Kies een maatschappij...");
 
-        // for (VerzekeringsMaatschappij vm : lijst) {
-        // ret.add(vm.getNaam());
-        // }
+        for (VerzekeringsMaatschappij vm : lijst) {
+            ret.add(vm.getNaam());
+        }
 
-        return lijst;
+        return ret;
     }
 
     @GET
