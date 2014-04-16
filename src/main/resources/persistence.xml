@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="dias" transaction-type="JTA">
+<!--   		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+ -->
+  		<jta-data-source>jdbcDias</jta-data-source>
+		<class>nl.dias.domein.Adres</class>
+		<class>nl.dias.domein.Bedrijf</class>
+		<class>nl.dias.domein.Beheerder</class>
+		<class>nl.dias.domein.Bijlage</class>
+		<class>nl.dias.domein.Gebruiker</class>
+		<class>nl.dias.domein.Kantoor</class>
+		<class>nl.dias.domein.Medewerker</class>
+		<class>nl.dias.domein.OnderlingeRelatie</class>
+		<class>nl.dias.domein.Opmerking</class>
+		<class>nl.dias.domein.polis.Polis</class>
+		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
+		<class>nl.dias.domein.polis.AutoVerzekering</class>
+		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
+		<class>nl.dias.domein.polis.BromSnorfietsVerzekering</class>
+		<class>nl.dias.domein.polis.CamperVerzekering</class>
+		<class>nl.dias.domein.polis.FietsVerzekering</class>
+		<class>nl.dias.domein.polis.InboedelVerzekering</class>
+		<class>nl.dias.domein.polis.LevensVerzekering</class>
+		<class>nl.dias.domein.polis.MobieleApparatuurVerzekering</class>
+		<class>nl.dias.domein.polis.MotorVerzekering</class>
+		<class>nl.dias.domein.polis.OngevallenVerzekering</class>
+		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
+		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
+		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
+		<class>nl.dias.domein.polis.ZorgVerzekering</class>
+		<class>nl.dias.domein.RekeningNummer</class>
+		<class>nl.dias.domein.Relatie</class>
+		<class>nl.dias.domein.Sessie</class>
+		<class>nl.dias.domein.Telefoonnummer</class>
+		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
+		<class>nl.dias.service.envers.RevEntity</class>
+		<properties>
+			<property name="hibernate.ejb.event.post-insert"
+				value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-update"
+				value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-delete"
+				value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.pre-collection-update"
+				value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.pre-collection-remove"
+				value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-collection-recreate"
+				value="org.hibernate.envers.event.AuditEventListener" />
+		<!-- 
+			<property name="org.hibernate.envers.versionsTableSuffix"
+				value="_V" />
+			<property name="org.hibernate.envers.revisionFieldName" value="ver_rev" />
+		 -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+
+			<property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.SunONETransactionManagerLookup"/>
+		    <property name="hibernate.show_sql" value="true"/>
+		    <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+		    <property name="hibernate.generate_statistics" value="true"/>
+		    <property name="hibernate.archive.autodetection" value="class,hbm"/>
+		    <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory"/>
+<!-- 
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://192.168.2.20/unittest" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="herman" />
+ -->
+			
+			
+
+<!-- 
+			<property name="eclipselink.debug" value="ALL" />
+			<property name="eclipselink.weaving" value="static" />
+			<property name="eclipselink.logging.level" value="FINEST" />
+			<property name="eclipselink.logging.level.sql" value="FINEST" />
+			<property name="eclipselink.logging.level.cache" value="FINEST" />
+ -->
+ 		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>nl.dias.domein.Adres</class>
+		<class>nl.dias.domein.Bedrijf</class>
+		<class>nl.dias.domein.Beheerder</class>
+		<class>nl.dias.domein.Bijlage</class>
+		<class>nl.dias.domein.Gebruiker</class>
+		<class>nl.dias.domein.Kantoor</class>
+		<class>nl.dias.domein.Medewerker</class>
+		<class>nl.dias.domein.OnderlingeRelatie</class>
+		<class>nl.dias.domein.Opmerking</class>
+		<class>nl.dias.domein.polis.Polis</class>
+		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
+		<class>nl.dias.domein.polis.AutoVerzekering</class>
+		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
+		<class>nl.dias.domein.polis.BromSnorfietsVerzekering</class>
+		<class>nl.dias.domein.polis.CamperVerzekering</class>
+		<class>nl.dias.domein.polis.FietsVerzekering</class>
+		<class>nl.dias.domein.polis.InboedelVerzekering</class>
+		<class>nl.dias.domein.polis.LevensVerzekering</class>
+		<class>nl.dias.domein.polis.MobieleApparatuurVerzekering</class>
+		<class>nl.dias.domein.polis.MotorVerzekering</class>
+		<class>nl.dias.domein.polis.OngevallenVerzekering</class>
+		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
+		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
+		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
+		<class>nl.dias.domein.polis.ZorgVerzekering</class>
+		<class>nl.dias.domein.RekeningNummer</class>
+		<class>nl.dias.domein.Relatie</class>
+		<class>nl.dias.domein.Sessie</class>
+		<class>nl.dias.domein.Telefoonnummer</class>
+		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
+		<class>nl.dias.service.envers.RevEntity</class>
+		<properties>
+
+<!--
+			<property name="hibernate.connection.url" value="jdbc:mysql://89.18.180.239:3306/patrick_unittest"/> 
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/> 
+			<property name="hibernate.connection.username" value="patrick_unittest"/> 
+			<property name="hibernate.connection.password" value="7jAASQFX"/> 
+
+-->
+	        <property name="hibernate.connection.url" value="jdbc:derby:memory:unit-testing-jpa;create=true"/>
+	        <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+	        <property name="hibernate.connection.username" value=""/>
+	        <property name="hibernate.connection.password" value=""/>
+	        <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
+
+	        <property name="hibernate.hbm2ddl.auto" value="create"/>
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
