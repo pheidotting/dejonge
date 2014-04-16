@@ -45,7 +45,7 @@ public class SeleniumController {
     }
 
     private boolean isSeleniumOmgeving() {
-        return System.getProperty("omgeving").equalsIgnoreCase("fat");
+        return "fat".equalsIgnoreCase(System.getProperty("omgeving"));
     }
 
     public static void setWachtwoord(String wachtwoord) {
