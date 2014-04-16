@@ -17,7 +17,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Path("/overig")
 public class JsonController {
-    private Logger logger = Logger.getLogger(this.getClass());
+    private static final Logger LOGGER = Logger.getLogger(JsonController.class);
 
     @InjectParam
     private VerzekeringsMaatschappijService maatschappijService;
@@ -27,7 +27,7 @@ public class JsonController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> lijstVerzekeringsMaatschappijen() {
 
-        logger.debug("ophalen lijst met VerzekeringsMaatschappijen");
+        LOGGER.debug("ophalen lijst met VerzekeringsMaatschappijen");
 
         List<VerzekeringsMaatschappij> lijst = maatschappijService.alles();
         List<String> ret = new ArrayList<>();
@@ -47,10 +47,10 @@ public class JsonController {
 
         String omgeving = System.getProperty("omgeving");
 
-        logger.debug("omgeving " + omgeving);
+        LOGGER.debug("omgeving " + omgeving);
         String ret = null;
 
-        if (omgeving.equals("PRD")) {
+        if ("PRD".equals(omgeving)) {
             ret = "DIAS";
         } else {
             ret = "DIAS " + omgeving;
