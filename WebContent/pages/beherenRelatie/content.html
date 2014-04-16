@@ -376,7 +376,7 @@
 					<option value="Gehuwd">Gehuwd</option>
 				</select>
 			</div>
-			<a onclick="$('#dlg').puidialog('show');"><img src="images/add.png" alt="Toevoegen relatie" /></a>
+			<span class="glyphicon glyphicon-plus" onclick="$('#dlg').puidialog('show');"></span>
 			<div id="relaties" data-bind="foreach: onderlingeRelaties, visible: onderlingeRelaties().length > 0">
 				<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
 				<!--a onclick="document.location.hash='#beherenRelatie/'"-->
