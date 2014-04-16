@@ -23,7 +23,7 @@ public class JsonController {
 
     @GET
     @Path("/lijstVerzekeringsMaatschappijen")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<VerzekeringsMaatschappij> lijstVerzekeringsMaatschappijen() {
 
         logger.debug("ophalen lijst met VerzekeringsMaatschappijen");
