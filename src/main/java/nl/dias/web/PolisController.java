@@ -70,59 +70,59 @@ public class PolisController {// extends AbstractController {
         } else {
             Polis polis = null;
 
-            if (soort.equals("Brom-/Snorfiets")) {
+            if ("Brom-/Snorfiets".equals(soort)) {
                 polis = new BromSnorfietsVerzekering();
             }
-            if (soort.equals("Camper")) {
+            if ("Camper".equals(soort)) {
                 polis = new CamperVerzekering();
             }
-            if (soort.equals("Doorlopende Annulering")) {
+            if ("Doorlopende Annulering".equals(soort)) {
                 polis = new AnnuleringsVerzekering();
             }
-            if (soort.equals("Leven")) {
+            if ("Leven".equals(soort)) {
                 polis = new LevensVerzekering();
             }
-            if (soort.equals("Mobiele apparatuur")) {
+            if ("Mobiele apparatuur".equals(soort)) {
                 polis = new MobieleApparatuurVerzekering();
             }
-            if (soort.equals("Ongevallen")) {
+            if ("Ongevallen".equals(soort)) {
                 polis = new OngevallenVerzekering();
             }
-            if (soort.equals("Pleziervaartuigen")) {
+            if ("Pleziervaartuigen".equals(soort)) {
                 polis = new PleziervaartuigVerzekering();
             }
-            if (soort.equals("Recreatie")) {
+            if ("Recreatie".equals(soort)) {
                 polis = new RecreatieVerzekering();
             }
-            if (soort.equals("Aansprakelijkheid")) {
+            if ("Aansprakelijkheid".equals(soort)) {
                 polis = new AansprakelijkheidVerzekering();
             }
-            if (soort.equals("Auto")) {
+            if ("Auto".equals(soort)) {
                 polis = new AutoVerzekering();
                 ((AutoVerzekering) polis).setKenteken(kenteken);
                 ((AutoVerzekering) polis).setSoortAutoVerzekering(SoortAutoVerzekering.zoek(soortAutoVerzekering));
             }
-            if (soort.equals("Woonhuis")) {
+            if ("Woonhuis".equals(soort)) {
                 polis = new WoonhuisVerzekering();
             }
-            if (soort.equals("Leven")) {
+            if ("Leven".equals(soort)) {
                 polis = new LevensVerzekering();
             }
-            if (soort.equals("Motor")) {
+            if ("Motor".equals(soort)) {
                 polis = new MotorVerzekering();
                 ((MotorVerzekering) polis).setOldtimer(oldtimer.equals("true"));
                 ((MotorVerzekering) polis).setKenteken(kenteken);
             }
-            if (soort.equals("Inboedel")) {
+            if ("Inboedel".equals(soort)) {
                 polis = new InboedelVerzekering();
             }
-            if (soort.equals("Rechtsbijstand")) {
+            if ("Rechtsbijstand".equals(soort)) {
                 polis = new RechtsbijstandVerzekering();
             }
-            if (soort.equals("Reis")) {
+            if ("Reis".equals(soort)) {
                 polis = new ReisVerzekering();
             }
-            if (soort.equals("Zorg")) {
+            if ("Zorg".equals(soort)) {
                 polis = new ZorgVerzekering();
             }
 
