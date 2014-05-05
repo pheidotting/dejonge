@@ -27,7 +27,7 @@ public final class Validatie {
     private static final BigInteger IBANNUMBERMAGICNUMBER = new BigInteger("97");
     private static final String EMAILPATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private static Logger logger = Logger.getLogger(Validatie.class);
+    private static Logger LOGGER = Logger.getLogger(Validatie.class);
 
     private Validatie() {
     }
@@ -83,7 +83,7 @@ public final class Validatie {
                     // dit is verwacht, want deeltwee moet alfanumeriek zijn
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.debug(e.getMessage());
                 throw new PostcodeNietGoedException(adres.getPostcode());
             }
         }
@@ -95,7 +95,7 @@ public final class Validatie {
         try {
             Double.parseDouble(bsn);
         } catch (Exception e) {
-            logger.debug(e.getMessage());
+            LOGGER.debug(e.getMessage());
             throw new BsnNietGoedException();
         }
 
