@@ -43,7 +43,7 @@ public class PolisServiceTest {
 		autoVerzekering.setIngangsDatum(new LocalDate());
 		autoVerzekering.setKenteken("46-NLV-5");
 		autoVerzekering.setPremie(new Bedrag(123.00));
-		autoVerzekering.setSoortAutoVerzekering(SoortAutoVerzekering.Auto);
+		autoVerzekering.setSoortAutoVerzekering(SoortAutoVerzekering.AUTO);
 		autoVerzekering.setPolisNummer("polisNummer");
 		ReisVerzekering reisVerzekering = new ReisVerzekering();
 		reisVerzekering.setMaatschappij(maatschappij);

@@ -1,7 +1,7 @@
 package nl.dias.domein.polis;
 
 public enum SoortAutoVerzekering {
-	Auto, Vrachtauto, Oldtimer;
+	AUTO, VRACHTAUTO, OLDTIMER;
 
 	public static SoortAutoVerzekering zoek(String soort) {
 		for (SoortAutoVerzekering sav : SoortAutoVerzekering.values()) {
