@@ -4,52 +4,54 @@ import java.io.Serializable;
 
 import nl.dias.domein.OnderlingeRelatie;
 
-public class OnderlingeRelatieJson implements Serializable {
-	private Long id;
-	private Long idNaar;
-	private String soort;
-	private String metWie;
+public final class OnderlingeRelatieJson implements Serializable {
+    private static final long serialVersionUID = -5853743296641464125L;
 
-	public OnderlingeRelatieJson(OnderlingeRelatie or) {
-		setId(or.getId());
-		setIdNaar(or.getRelatieMet().getId());
-		setSoort(or.getOnderlingeRelatieSoort().getOmschrijving());
-		if (or.getRelatieMet().getTussenvoegsel() == null) {
-			setMetWie(or.getRelatieMet().getVoornaam() + " " + or.getRelatieMet().getAchternaam());
-		} else {
-			setMetWie(or.getRelatieMet().getVoornaam() + " " + or.getRelatieMet().getTussenvoegsel() + " " + or.getRelatieMet().getAchternaam());
-		}
-	}
+    private Long id;
+    private Long idNaar;
+    private String soort;
+    private String metWie;
 
-	public Long getId() {
-		return id;
-	}
+    public OnderlingeRelatieJson(OnderlingeRelatie or) {
+        setId(or.getId());
+        setIdNaar(or.getRelatieMet().getId());
+        setSoort(or.getOnderlingeRelatieSoort().getOmschrijving());
+        if (or.getRelatieMet().getTussenvoegsel() == null) {
+            setMetWie(or.getRelatieMet().getVoornaam() + " " + or.getRelatieMet().getAchternaam());
+        } else {
+            setMetWie(or.getRelatieMet().getVoornaam() + " " + or.getRelatieMet().getTussenvoegsel() + " " + or.getRelatieMet().getAchternaam());
+        }
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getIdNaar() {
-		return idNaar;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setIdNaar(Long idNaar) {
-		this.idNaar = idNaar;
-	}
+    public Long getIdNaar() {
+        return idNaar;
+    }
 
-	public String getSoort() {
-		return soort;
-	}
+    public void setIdNaar(Long idNaar) {
+        this.idNaar = idNaar;
+    }
 
-	public void setSoort(String soort) {
-		this.soort = soort;
-	}
+    public String getSoort() {
+        return soort;
+    }
 
-	public String getMetWie() {
-		return metWie;
-	}
+    public void setSoort(String soort) {
+        this.soort = soort;
+    }
 
-	public void setMetWie(String metWie) {
-		this.metWie = metWie;
-	}
+    public String getMetWie() {
+        return metWie;
+    }
+
+    public void setMetWie(String metWie) {
+        this.metWie = metWie;
+    }
 }
