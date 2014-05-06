@@ -198,7 +198,7 @@
 	function start(){
 /* 		$.ajax({
 			type: "GET",
-			url: './rest/gebruiker/isIngelogd',
+			url: '../dias/rest/gebruiker/isIngelogd',
 			dataType:'json',
 			success: function (data) {
 				if(new String(data) == "false"){
@@ -206,7 +206,7 @@
 				}else{
  */					$.ajax({
 						type: "GET",
-						url: './rest/overig/lijstVerzekeringsMaatschappijen',
+						url: '../dias/rest/overig/lijstVerzekeringsMaatschappijen',
 						dataType: "json",
 						context: this,
 						success: function(data) {
@@ -231,7 +231,7 @@
  */	
 		$.ajax({
 			type: "GET",
-			url: './rest/gebruiker/lees',
+			url: '../dias/rest/gebruiker/lees',
 			dataType:'json',
 			data: {
 				id : $('#id').val()
@@ -276,7 +276,7 @@
 	        datasource: function(callback) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: './rest/gebruiker/lijstRelaties',
+	                url: '../dias/rest/gebruiker/lijstRelaties',
 					data: {
 						weglaten : $('#id').val(),
 	   					criteria : $('#zoekCriteriaLijstRelaties').val()
@@ -292,7 +292,7 @@
 	        rowSelect: function(event, data) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: './rest/gebruiker/toevoegenRelatieRelatie',
+	                url: '../dias/rest/gebruiker/toevoegenRelatieRelatie',
 					data: {
 						idToeTeVoegen : data.id,
 	   					idAanToevoegen : $('#id').val(),
@@ -585,26 +585,22 @@
 			<input class="form-control" type="text" id="polisNummer" placeholder="Polisnummer..."  />
 			<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
 			<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
-			<div id="div_kenteken" style="display:none;">
-				<input class="form-control" type="text" id="kenteken" placeholder="Kenteken..."  />
-			</div>
-			<div id="div_soortAutoVerzekering" style="display:none;">
-				<select id="soortAutoVerzekering">
-					<option value="">Kies een soort autoverzekering...</option>
-					<option>Auto</option>
-					<option>Vrachtauto</option>
-					<option>Oldtimer</option>
+			<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
+			<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." />
+			<div id="div_betaalfrequentie">
+				<select id="betaalfrequentie">
+					<option value="">Betaalfrequentie...</option>
+					<option>Jaar</option>
+					<option>Kwartaal</option>
+					<option>Jaar</option>
 				</select>
-			</div>
-			<div id="div_oldtimer" style="display:none;">
-				Oldtimer <input type="checkbox" id="oldtimer" />
 			</div>
 			<button id="opslaanPolis">Opslaan</button>
 			<script>
 				$('#opslaanPolis').click(function(){
 					$.ajax({
 						type: "GET",
-						url: './rest/polis/opslaan',
+						url: '../dias/rest/polis/opslaan',
 						dataType:'json',
 			            data: {
 			            	relatie : $('#id').val(),

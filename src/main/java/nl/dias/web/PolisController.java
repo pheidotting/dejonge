@@ -3,6 +3,7 @@ package nl.dias.web;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AansprakelijkheidVerzekering;
 import nl.dias.domein.polis.AnnuleringsVerzekering;
 import nl.dias.domein.polis.AutoVerzekering;
@@ -26,7 +28,6 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.RechtsbijstandVerzekering;
 import nl.dias.domein.polis.RecreatieVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
-import nl.dias.domein.polis.SoortAutoVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
 import nl.dias.domein.polis.ZorgVerzekering;
 import nl.dias.service.GebruikerService;
@@ -52,16 +53,22 @@ public class PolisController {// extends AbstractController {
 
     private Gson gson = new Gson();
 
-    @GET
+    @POST
     @Path("/opslaan")
     @Produces(MediaType.TEXT_PLAIN)
-    public String opslaan(@QueryParam("maatschappij") String strMaatschappij, @QueryParam("soort") String soort, @QueryParam("polisNummer") String polisNummer,
-            @QueryParam("soortAutoVerzekering") String soortAutoVerzekering, @QueryParam("kenteken") String kenteken, @QueryParam("oldtimer") String oldtimer,
-            @QueryParam("ingangsDatumString") String ingangsDatumString, @QueryParam("premie") String premie, @QueryParam("relatie") String relatieString) {
+    // public String opslaan(@QueryParam("maatschappij") String strMaatschappij,
+    // @QueryParam("soort") String soort, @QueryParam("polisNummer") String
+    // polisNummer,
+    // @QueryParam("soortAutoVerzekering") String soortAutoVerzekering,
+    // @QueryParam("kenteken") String kenteken, @QueryParam("oldtimer") String
+    // oldtimer,
+    // @QueryParam("ingangsDatumString") String ingangsDatumString,
+    // @QueryParam("premie") String premie, @QueryParam("relatie") String
+    // relatieString) {
+    public String opslaan(OpslaanPolis opslaanPolis) {
+        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.lees(opslaanPolis.getMaatschappij());
 
-        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(strMaatschappij);
-
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(relatieString));
+        Relatie relatie = (Relatie) gebruikerService.lees(opslaanPolis.getRelatie());
 
         String messages = null;
 
@@ -69,6 +76,7 @@ public class PolisController {// extends AbstractController {
             messages = "Kies een verzekeringsmaatschappij";
         } else {
             Polis polis = null;
+            String soort = opslaanPolis.getSoortVerzekering();
 
             if ("Brom-/Snorfiets".equals(soort)) {
                 polis = new BromSnorfietsVerzekering();
@@ -99,8 +107,9 @@ public class PolisController {// extends AbstractController {
             }
             if ("Auto".equals(soort)) {
                 polis = new AutoVerzekering();
-                ((AutoVerzekering) polis).setKenteken(kenteken);
-                ((AutoVerzekering) polis).setSoortAutoVerzekering(SoortAutoVerzekering.zoek(soortAutoVerzekering));
+                // ((AutoVerzekering) polis).setKenteken(kenteken);
+                // ((AutoVerzekering)
+                // polis).setSoortAutoVerzekering(SoortAutoVerzekering.zoek(soortAutoVerzekering));
             }
             if ("Woonhuis".equals(soort)) {
                 polis = new WoonhuisVerzekering();
@@ -110,8 +119,9 @@ public class PolisController {// extends AbstractController {
             }
             if ("Motor".equals(soort)) {
                 polis = new MotorVerzekering();
-                ((MotorVerzekering) polis).setOldtimer(oldtimer.equals("true"));
-                ((MotorVerzekering) polis).setKenteken(kenteken);
+                // ((MotorVerzekering)
+                // polis).setOldtimer(oldtimer.equals("true"));
+                // ((MotorVerzekering) polis).setKenteken(kenteken);
             }
             if ("Inboedel".equals(soort)) {
                 polis = new InboedelVerzekering();
@@ -129,14 +139,17 @@ public class PolisController {// extends AbstractController {
             if (polis == null) {
                 messages = "Kies een soort verzekering";
             } else {
-                polis.setPolisNummer(polisNummer);
-                polis.setIngangsDatum(stringNaarLocalDate(ingangsDatumString));
+                polis.setPolisNummer(opslaanPolis.getPolisNummer());
+                polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
+                polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
+                polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
+
                 polis.setMaatschappij(maatschappij);
 
                 relatie.getPolissen().add(polis);
                 polis.setRelatie(relatie);
                 try {
-                    polis.setPremie(new Bedrag(premie));
+                    polis.setPremie(new Bedrag(opslaanPolis.getPremie()));
                 } catch (NumberFormatException e) {
                     logger.debug(e.getMessage());
                 }
