@@ -21,8 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import nl.dias.domein.Bedrag;
@@ -53,8 +51,8 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @Column(name = "POLISNUMMER", length = 25)
     private String polisNummer;
 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     @Column(name = "INGANGSDATUM")
-    @Temporal(TemporalType.DATE)
     private LocalDate ingangsDatum;
 
     @AttributeOverride(name = "bedrag", column = @Column(name = "PREMIE"))
