@@ -190,7 +190,7 @@
 	        return "./Download?id=" + this.id() + "&thumb=true";
 	    }, this);
 		self.bestandsNaamPdf = ko.computed(function() {
-	        return "./DIAS/Download?id=" + this.id() + "&pdf=true";
+	        return "./dejonge/Download?id=" + this.id() + "&pdf=true";
 	    }, this);*/
 	}
 	
@@ -198,7 +198,7 @@
 	function start(){
 /* 		$.ajax({
 			type: "GET",
-			url: '../dias/rest/gebruiker/isIngelogd',
+			url: '../dejonge/rest/gebruiker/isIngelogd',
 			dataType:'json',
 			success: function (data) {
 				if(new String(data) == "false"){
@@ -206,7 +206,7 @@
 				}else{
  */					$.ajax({
 						type: "GET",
-						url: '../dias/rest/overig/lijstVerzekeringsMaatschappijen',
+						url: '../dejonge/rest/overig/lijstVerzekeringsMaatschappijen',
 						dataType: "json",
 						context: this,
 						success: function(data) {
@@ -231,7 +231,7 @@
  */	
 		$.ajax({
 			type: "GET",
-			url: '../dias/rest/gebruiker/lees',
+			url: '../dejonge/rest/gebruiker/lees',
 			dataType:'json',
 			data: {
 				id : $('#id').val()
@@ -276,7 +276,7 @@
 	        datasource: function(callback) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: '../dias/rest/gebruiker/lijstRelaties',
+	                url: '../dejonge/rest/gebruiker/lijstRelaties',
 					data: {
 						weglaten : $('#id').val(),
 	   					criteria : $('#zoekCriteriaLijstRelaties').val()
@@ -292,7 +292,7 @@
 	        rowSelect: function(event, data) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: '../dias/rest/gebruiker/toevoegenRelatieRelatie',
+	                url: '../dejonge/rest/gebruiker/toevoegenRelatieRelatie',
 					data: {
 						idToeTeVoegen : data.id,
 	   					idAanToevoegen : $('#id').val(),
@@ -598,21 +598,23 @@
 			<button id="opslaanPolis">Opslaan</button>
 			<script>
 				$('#opslaanPolis').click(function(){
+	            	var polis = {
+		            	relatie : $('#id').val(),
+		            	premie : $('#premie').val(),
+						maatschappij : $('#verzekeringsMaatschappijen').val(),
+						soortVerzekering : $('#soortVerzekering').val(),
+						polisNummer : $('#polisNummer').val(),
+						ingangsDatumString : $('#ingangsDatumString').val(),
+						wijzigingsdatumString : $('#wijzigingsdatumString').val(),
+						prolongatiedatumString : $('#prolongatiedatumString').val(),
+						betaalfrequentie : $('#betaalfrequentie').val()
+	            	}
+	            	var json = JSON.stringify(polis);
 					$.ajax({
-						type: "GET",
-						url: '../dias/rest/polis/opslaan',
-						dataType:'json',
-			            data: {
-			            	relatie : $('#id').val(),
-			            	premie : $('#premie').val(),
-							maatschappij : $('#verzekeringsMaatschappijen').val(),
-							soort : $('#soortVerzekering').val(),
-							polisNummer : $('#polisNummer').val(),
-							ingangsDatumString : $('#ingangsDatumString').val(),
-							kenteken : $('#kenteken').val(),
-							soortAutoVerzekering : $('#soortAutoVerzekering').val(),
-							oldtimer : $('#soortAutoVerzekering').val()
-			            }
+						type: "POST",
+						url: '../dejonge/rest/polis/opslaan',
+						contentType: "application/json",
+			            data: json
 			    	});
 				});
 			</script>

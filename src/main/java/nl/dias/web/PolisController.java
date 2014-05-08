@@ -2,6 +2,7 @@ package nl.dias.web;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -56,15 +57,7 @@ public class PolisController {// extends AbstractController {
     @POST
     @Path("/opslaan")
     @Produces(MediaType.TEXT_PLAIN)
-    // public String opslaan(@QueryParam("maatschappij") String strMaatschappij,
-    // @QueryParam("soort") String soort, @QueryParam("polisNummer") String
-    // polisNummer,
-    // @QueryParam("soortAutoVerzekering") String soortAutoVerzekering,
-    // @QueryParam("kenteken") String kenteken, @QueryParam("oldtimer") String
-    // oldtimer,
-    // @QueryParam("ingangsDatumString") String ingangsDatumString,
-    // @QueryParam("premie") String premie, @QueryParam("relatie") String
-    // relatieString) {
+    @Consumes(MediaType.APPLICATION_JSON)
     public String opslaan(OpslaanPolis opslaanPolis) {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.lees(opslaanPolis.getMaatschappij());
 
