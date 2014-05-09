@@ -211,8 +211,8 @@
 						context: this,
 						success: function(data) {
 							var $select = $('#verzekeringsMaatschappijen');
-							$.each(data, function(key, value) {              
-							    $('<option>').val(key).text(value).appendTo($select);
+							$.each(data, function(key, value) {
+							    $('<option>').text(value).appendTo($select);
 							});
 /* 							$('#verzekeringsMaatschappijen').puidropdown({
 								source:data,
@@ -600,7 +600,7 @@
 				$('#opslaanPolis').click(function(){
 	            	var polis = {
 		            	relatie : $('#id').val(),
-		            	premie : $('#premie').val(),
+		            	premie : $('#premie').val().replace(",", "."),
 						maatschappij : $('#verzekeringsMaatschappijen').val(),
 						soortVerzekering : $('#soortVerzekering').val(),
 						polisNummer : $('#polisNummer').val(),

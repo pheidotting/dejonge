@@ -2,6 +2,7 @@ package nl.dias.domein;
 
 import static org.junit.Assert.fail;
 import nl.dias.exception.TelefoonnummerNietGoedException;
+import nl.dias.utils.Validatie;
 
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class TelefoonnummerTest {
         telefoonnummer.setTelefoonnummer("11111111111");
 
         try {
-            telefoonnummer.validate();
+            Validatie.validate(telefoonnummer);
             fail("exception verwacht");
         } catch (TelefoonnummerNietGoedException e) {
             // correct
@@ -28,7 +29,7 @@ public class TelefoonnummerTest {
         telefoonnummer.setTelefoonnummer("111111111");
 
         try {
-            telefoonnummer.validate();
+            Validatie.validate(telefoonnummer);
             fail("exception verwacht");
         } catch (TelefoonnummerNietGoedException e) {
             // correct
@@ -42,7 +43,8 @@ public class TelefoonnummerTest {
         telefoonnummer.setTelefoonnummer("11111a1111");
 
         try {
-            telefoonnummer.validate();
+            Validatie.validate(telefoonnummer);
+
             fail("exception verwacht");
         } catch (TelefoonnummerNietGoedException e) {
             // correct
@@ -55,7 +57,8 @@ public class TelefoonnummerTest {
         telefoonnummer.setTelefoonnummer("1111111111");
 
         try {
-            telefoonnummer.validate();
+            Validatie.validate(telefoonnummer);
+
             fail("exception verwacht");
         } catch (TelefoonnummerNietGoedException e) {
         }
@@ -68,7 +71,8 @@ public class TelefoonnummerTest {
         telefoonnummer.setTelefoonnummer("1111111111");
 
         try {
-            telefoonnummer.validate();
+            Validatie.validate(telefoonnummer);
+
         } catch (TelefoonnummerNietGoedException e) {
             fail("geen exception verwacht");
         }

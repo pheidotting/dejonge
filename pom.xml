@@ -125,12 +125,6 @@
 			<version>LATEST</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.core</artifactId>
-			<version>LATEST</version>
-		</dependency>
-
-		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>LATEST</version>

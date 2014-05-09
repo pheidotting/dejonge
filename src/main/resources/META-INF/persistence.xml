@@ -2,8 +2,7 @@
 <persistence version="1.0"
 	xmlns="http://java.sun.com/xml/ns/persistence">
 	<persistence-unit name="dias" transaction-type="JTA">
-<!--   		<provider>org.hibernate.ejb.HibernatePersistence</provider>
- -->
+   		<!--provider>org.hibernate.ejb.HibernatePersistence</provider-->
   		<jta-data-source>jdbcDias</jta-data-source>
 		<class>nl.dias.domein.Adres</class>
 		<class>nl.dias.domein.Bedrijf</class>
@@ -37,34 +36,34 @@
 		<class>nl.dias.domein.Telefoonnummer</class>
 		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
 		<class>nl.dias.service.envers.RevEntity</class>
+		<!-- 
 		<properties>
 			<property name="hibernate.ejb.event.post-insert"
-				value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener" />
+				value="o r g . hibernate.ejb.event.EJB3PostInsertEventListener,o r g . hibernate.envers.event.Audit Event Listener" />
 			<property name="hibernate.ejb.event.post-update"
-				value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener" />
+				value="o r g . hibernate.ejb.event.EJB3PostUpdateEventListener,o r g . hibernate.envers.event.Audit Event Listener" />
 			<property name="hibernate.ejb.event.post-delete"
-				value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener" />
+				value="o r g . hibernate.ejb.event.EJB3PostDeleteEventListener,o r g . hibernate.envers.event.Audit Event Listener" />
 			<property name="hibernate.ejb.event.pre-collection-update"
-				value="org.hibernate.envers.event.AuditEventListener" />
+				value="o r g . hibernate.envers.event.Audit Event Listener" />
 			<property name="hibernate.ejb.event.pre-collection-remove"
-				value="org.hibernate.envers.event.AuditEventListener" />
+				value="o r g . hibernate.envers.event.Audit Event Listener" />
 			<property name="hibernate.ejb.event.post-collection-recreate"
-				value="org.hibernate.envers.event.AuditEventListener" />
-		<!-- 
-			<property name="org.hibernate.envers.versionsTableSuffix"
+				value="o r g . hibernate.envers.event.Audit Event Listener" />
+			<property name="o r g . hibernate.envers.versionsTableSuffix"
 				value="_V" />
-			<property name="org.hibernate.envers.revisionFieldName" value="ver_rev" />
-		 -->
+			<property name="o r g . hibernate.envers.revisionFieldName" value="ver_rev" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+		    <property name="hibernate.dialect" value="o r g . hibernate.dialect.MySQLDialect"/>
+		 -->
 
-			<property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.SunONETransactionManagerLookup"/>
+<!-- 
+			<property name="hibernate.transaction.manager_lookup_class" value="o r g . hibernate.transaction.SunONETransactionManagerLookup"/>
 		    <property name="hibernate.show_sql" value="true"/>
-		    <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 		    <property name="hibernate.generate_statistics" value="true"/>
 		    <property name="hibernate.archive.autodetection" value="class,hbm"/>
-		    <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory"/>
-<!-- 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+		    <property name="hibernate.transaction.factory_class" value="o r g . hibernate.transaction.JTATransactionFactory"/>
+			<property name="hibernate.dialect" value="o r g . hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://192.168.2.20/unittest" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.username" value="root" />
@@ -79,8 +78,8 @@
 			<property name="eclipselink.logging.level" value="FINEST" />
 			<property name="eclipselink.logging.level.sql" value="FINEST" />
 			<property name="eclipselink.logging.level.cache" value="FINEST" />
- -->
  		</properties>
+ -->
 	</persistence-unit>
 
 	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">

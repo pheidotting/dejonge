@@ -40,9 +40,26 @@ public final class Validatie {
             Validatie.checkIban(rekeningNummer.getRekeningnummer());
         }
         for (Telefoonnummer telefoonnummer : relatie.getTelefoonnummers()) {
-            telefoonnummer.validate();
+            validate(telefoonnummer);
         }
 
+    }
+
+    public static void validate(Telefoonnummer telefoonnummer) throws TelefoonnummerNietGoedException {
+        if (telefoonnummer.getSoort() == null) {
+            throw new TelefoonnummerNietGoedException();
+        }
+
+        if (telefoonnummer.getTelefoonnummer().length() != 10) {
+            throw new TelefoonnummerNietGoedException();
+        }
+
+        try {
+            Long.parseLong(telefoonnummer.getTelefoonnummer());
+        } catch (NumberFormatException e) {
+            LOGGER.debug(e.getMessage());
+            throw new TelefoonnummerNietGoedException();
+        }
     }
 
     public static void valideer(Kantoor kantoor) throws PostcodeNietGoedException, IbanNietGoedException {

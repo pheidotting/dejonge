@@ -3,7 +3,7 @@ package nl.dias.domein.json;
 public class OpslaanPolis {
     private Long relatie;
     private Double premie;
-    private Long maatschappij;
+    private String maatschappij;
     private String soortVerzekering;
     private String polisNummer;
     private String ingangsDatumString;
@@ -27,11 +27,11 @@ public class OpslaanPolis {
         this.premie = premie;
     }
 
-    public Long getMaatschappij() {
+    public String getMaatschappij() {
         return maatschappij;
     }
 
-    public void setMaatschappij(Long maatschappij) {
+    public void setMaatschappij(String maatschappij) {
         this.maatschappij = maatschappij;
     }
 

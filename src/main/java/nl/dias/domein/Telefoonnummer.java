@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import nl.dias.exception.TelefoonnummerNietGoedException;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.hibernate.envers.Audited;
@@ -69,23 +68,6 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
 
     public void setRelatie(Relatie relatie) {
         this.relatie = relatie;
-    }
-
-    public void validate() throws TelefoonnummerNietGoedException {
-        if (soort == null) {
-            throw new TelefoonnummerNietGoedException();
-        }
-
-        if (telefoonnummer.length() != 10) {
-            throw new TelefoonnummerNietGoedException();
-        }
-
-        try {
-            Long.parseLong(telefoonnummer);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            throw new TelefoonnummerNietGoedException();
-        }
     }
 
     @Override

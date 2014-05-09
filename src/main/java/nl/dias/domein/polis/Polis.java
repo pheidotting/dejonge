@@ -1,6 +1,7 @@
 package nl.dias.domein.polis;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import nl.dias.domein.Bedrag;
@@ -31,7 +34,6 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
@@ -51,19 +53,20 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @Column(name = "POLISNUMMER", length = 25)
     private String polisNummer;
 
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Temporal(TemporalType.DATE)
     @Column(name = "INGANGSDATUM")
-    private LocalDate ingangsDatum;
+    private Date ingangsDatum;
 
     @AttributeOverride(name = "bedrag", column = @Column(name = "PREMIE"))
     private Bedrag premie;
 
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Temporal(TemporalType.DATE)
     @Column(name = "WIJZIGINGSDATUM")
-    private LocalDate wijzigingsDatum;
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    private Date wijzigingsDatum;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "PROLONGATIEDATUM")
-    private LocalDate prolongatieDatum;
+    private Date prolongatieDatum;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 1, name = "BETAALFREQUENTIE")
@@ -109,15 +112,15 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public LocalDate getIngangsDatum() {
-        return ingangsDatum;
+        return new LocalDate(ingangsDatum);
     }
 
     public void setIngangsDatum(LocalDate ingangsDatum) {
-        this.ingangsDatum = ingangsDatum;
+        this.ingangsDatum = ingangsDatum.toDate();
     }
 
     public String getIngangsDatumString() {
-        return ingangsDatum.toString("dd-MM-yyyy");
+        return new LocalDate(ingangsDatum).toString("dd-MM-yyyy");
     }
 
     public void setIngangsDatumString(String ingangsDatum) {
@@ -171,19 +174,19 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public LocalDate getWijzigingsDatum() {
-        return wijzigingsDatum;
+        return new LocalDate(wijzigingsDatum);
     }
 
     public void setWijzigingsDatum(LocalDate wijzigingsDatum) {
-        this.wijzigingsDatum = wijzigingsDatum;
+        this.wijzigingsDatum = wijzigingsDatum.toDate();
     }
 
     public LocalDate getProlongatieDatum() {
-        return prolongatieDatum;
+        return new LocalDate(prolongatieDatum);
     }
 
     public void setProlongatieDatum(LocalDate prolongatieDatum) {
-        this.prolongatieDatum = prolongatieDatum;
+        this.prolongatieDatum = prolongatieDatum.toDate();
     }
 
     public Betaalfrequentie getBetaalfrequentie() {

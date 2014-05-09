@@ -59,9 +59,9 @@ public class PolisController {// extends AbstractController {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public String opslaan(OpslaanPolis opslaanPolis) {
-        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.lees(opslaanPolis.getMaatschappij());
+        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
 
-        Relatie relatie = (Relatie) gebruikerService.lees(opslaanPolis.getRelatie());
+        Relatie relatie = (Relatie) gebruikerService.lees(3L);// opslaanPolis.getRelatie());
 
         String messages = null;
 
