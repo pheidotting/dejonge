@@ -5,10 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Named;
+
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
 import nl.dias.domein.json.JsonTelefoonnummer;
 
+@Named
 public class TelefoonnummerMapper {
     public Telefoonnummer mapVanJson(JsonTelefoonnummer jsonTelefoonnummer) {
         Telefoonnummer telefoonnummer = new Telefoonnummer();
