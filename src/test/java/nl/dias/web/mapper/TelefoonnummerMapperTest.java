@@ -32,10 +32,7 @@ public class TelefoonnummerMapperTest {
         verwacht.add(maakTelefoonnummer());
 
         Set<Telefoonnummer> terug = mapper.mapAllVanJson(lijst);
-        assertEquals(1, terug.size());
-
-        Telefoonnummer telefoonnummer = terug.iterator().next();
-        assertEquals(maakTelefoonnummer(), telefoonnummer);
+        assertEquals(verwacht, terug);
     }
 
     @Test
@@ -47,10 +44,7 @@ public class TelefoonnummerMapperTest {
         verwacht.add(maakJsonTelefoonnummer());
 
         List<JsonTelefoonnummer> terug = mapper.mapAllNaarJson(lijst);
-        assertEquals(1, terug.size());
-
-        JsonTelefoonnummer jsonTelefoonnummer = terug.get(0);
-        assertEquals(maakJsonTelefoonnummer(), jsonTelefoonnummer);
+        assertEquals(verwacht, terug);
     }
 
     private Telefoonnummer maakTelefoonnummer() {
