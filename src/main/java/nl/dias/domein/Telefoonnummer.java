@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -68,6 +70,27 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
 
     public void setRelatie(Relatie relatie) {
         this.relatie = relatie;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).append(relatie).append(soort).append(telefoonnummer).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Telefoonnummer other = (Telefoonnummer) obj;
+
+        return new EqualsBuilder().append(id, other.id).append(relatie, other.relatie).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).isEquals();
     }
 
     @Override
