@@ -20,6 +20,7 @@ public class JsonRelatie implements Serializable {
     private String toevoeging;
     private String postcode;
     private String plaats;
+    private String adresOpgemaakt;
     private List<JsonTelefoonnummer> telefoonnummers;
     private String bsn;
     private List<JsonRekeningNummer> rekeningnummers;
@@ -110,6 +111,14 @@ public class JsonRelatie implements Serializable {
 
     public void setPlaats(String plaats) {
         this.plaats = plaats;
+    }
+
+    public String getAdresOpgemaakt() {
+        return adresOpgemaakt;
+    }
+
+    public void setAdresOpgemaakt(String adresOpgemaakt) {
+        this.adresOpgemaakt = adresOpgemaakt;
     }
 
     public List<JsonTelefoonnummer> getTelefoonnummers() {

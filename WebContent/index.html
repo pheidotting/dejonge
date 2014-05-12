@@ -37,6 +37,34 @@
  		$(window).load(function(){
 			var diasRoute = new Sammy('body');
 
+			diasRoute.route('GET', '#lijstRelaties', function(context) {
+ 				$('#content').load('pages/lijstRelaties/content.html', function(response, status, xhr) {
+					if (status == "success") {
+						maakDatatable();
+					}
+				});
+			});
+
+			diasRoute.route('GET', '#beherenRelatie/:id', function(context) {
+				id = this.params['id'];
+ 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
+					if (status == "success") {
+						$('#id').val(id);
+						start();
+ 					}
+				});
+			});
+
+			diasRoute.route('GET', '#beherenRelatie', function(context) {
+				resetDivs();
+ 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
+					if (status == "success") {
+						$('#id').val('0');
+						start();
+					}
+				});
+			});
+
 			diasRoute.route('GET', '#beherenRelatie', function(context) {
  				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
 					if (status == "success") {
@@ -47,10 +75,9 @@
 			});
 
 			diasRoute.route('GET', '', function(context) {
- 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
+ 				$('#content').load('pages/lijstRelaties/content.html', function(response, status, xhr) {
 					if (status == "success") {
-						$('#id').val('0');
-						start();
+						maakDatatable();
 					}
 				});
 			});

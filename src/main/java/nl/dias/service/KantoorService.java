@@ -50,6 +50,10 @@ public class KantoorService extends AbstractRepository<Kantoor> {
         getTx().commit();
     }
 
+    public Kantoor getIngelogdKantoor() {
+        return lees(1L);
+    }
+
     public void wisAlles() {
         for (Kantoor kantoor : super.alles()) {
             super.verwijder(kantoor);

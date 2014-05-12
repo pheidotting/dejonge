@@ -46,7 +46,7 @@ this.select(c)
 }},getLength:function(){return this.navContainer.children().length
 },getActiveIndex:function(){return this.options.selected
 },_markAsLoaded:function(a){a.data("loaded",true)
-},_isLoaded:function(a){return a.data("loaded")==true
+},_isLoaded:function(a){return a.data("loaded")===true
 },disable:function(a){this.navContainer.children().eq(a).addClass("ui-state-disabled")
 },enable:function(a){this.navContainer.children().eq(a).removeClass("ui-state-disabled")
 }})

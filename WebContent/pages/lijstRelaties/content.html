@@ -1,28 +1,4 @@
 <script type="text/javascript">
-/* 			function reset() {
-				$('#detailRelatie').show();
-				$('#lijstMetRelaties').hide();
-				$('#id').val('0');
-				$('#voornaam').val('');
-				$('#achternaam').val('');
-				$('#tussenvoegsel').val('');
-				$('#straat').val('');
-				$('#huisnummer').val('');
-				$('#toevoeging').val('');
-				$('#postcode').val('');
-				$('#plaats').val('');
-				$('#bsn').val('');
-				$('#rekeningid').val('');
-				$('#bic').val('');
-				$('#telnummer').val('');
-				$('#nummer').val('');
-				$('#emailadres').val('');
-				$('#aantaltelefoonnummers').val(1);
-				$('#telefoonnummer').attr('id', 'telefoon0');
-				$('#aantalrekeningen').val(1);
-				$('#rekeningnummer').attr('id', 'rekening0');
-			}
- */			
 	function maakDatatable(){
 		$.ajax({
 			type: "GET",
@@ -34,12 +10,8 @@
 				}else{
 	 				$("#lijstRelaties").val('');
 	 				$("#lijstRelaties").puidatatable({
-	 	                caption: "Lijst Relaties" + $('#zoekCriteriaLijstRelaties').val(),  
-	 	/*                 paginator: {  
-	 	                    rows: 5  
-	 	                },  
-	 	                
-	 	 */                columns: [
+						caption: "Lijst Relaties" + $('#zoekCriteriaLijstRelaties').val(),  
+		               columns: [
 	 	                    {field:"achternaam", headerText: "Achternaam", sortable:true},
 	 	                    {field:"tussenvoegsel", headerText: "Tussenvoegsel", sortable:true},
 	 	                    {field:"voornaam", headerText: "Voornaam", sortable:true},
@@ -51,16 +23,16 @@
 	 	                    $.ajax({  
 	 	                        type: "GET",  
 	 	                        url: './rest/gebruiker/lijstRelaties',
-	 	    					data: {
+/*	 	    					data: {
 	 	           					criteria : $('#zoekCriteriaLijstRelaties').val()
-	 	    					},
+	 	    					},*/
 	 	                        dataType: "json",  
 	 	                        context: this,  
 	 	                        success: function(response) {  
 	 	                            callback.call(this, response);  
 	 	                        }  
 	 	                    });  
-	 	                }, 
+	 	                },
 	 	                selectionMode: "single",
 	 	                rowSelect: function(event, data) {
 	 	                	document.location.hash='#beherenRelatie/' + data.id
@@ -73,5 +45,5 @@
 </script>
 	
 <a href="#" onclick="reset();"><img src="images/add.png" alt="Toevoegen Relatie" /></a>
-<input type="text" id="zoekCriteriaLijstRelaties" onkeyup="maakDatatable();" />
+<!--input type="text" id="zoekCriteriaLijstRelaties" onkeyup="maakDatatable();" /-->
 <div id="lijstRelaties"></div>

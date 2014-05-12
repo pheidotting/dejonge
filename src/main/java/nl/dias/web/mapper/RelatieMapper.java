@@ -54,6 +54,7 @@ public class RelatieMapper {
         jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
         jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
         jsonRelatie.setPlaats(relatie.getAdres().getPlaats());
+        jsonRelatie.setAdresOpgemaakt(jsonRelatie.getStraat() + " " + jsonRelatie.getHuisnummer() + " " + jsonRelatie.getToevoeging() + ", " + jsonRelatie.getPlaats());
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
@@ -61,8 +62,12 @@ public class RelatieMapper {
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
         jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum());
-        jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());
-        jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
+        if (relatie.getGeslacht() != null) {
+            jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());
+        }
+        if (relatie.getBurgerlijkeStaat() != null) {
+            jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
+        }
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(ol.getId());
         }
