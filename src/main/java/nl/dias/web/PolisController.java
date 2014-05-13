@@ -31,7 +31,7 @@ import nl.dias.domein.polis.RecreatieVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
 import nl.dias.domein.polis.ZorgVerzekering;
-import nl.dias.service.GebruikerService;
+import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 
@@ -48,7 +48,7 @@ public class PolisController {// extends AbstractController {
     @InjectParam
     private PolisService polisService;
     @InjectParam
-    private GebruikerService gebruikerService;
+    private GebruikerRepository gebruikerService;
     @InjectParam
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
 
@@ -196,7 +196,7 @@ public class PolisController {// extends AbstractController {
         this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
     }
 
-    public void setGebruikerService(GebruikerService gebruikerService) {
+    public void setGebruikerService(GebruikerRepository gebruikerService) {
         this.gebruikerService = gebruikerService;
     }
 }

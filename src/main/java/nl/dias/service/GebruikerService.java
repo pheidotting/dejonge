@@ -3,98 +3,39 @@ package nl.dias.service;
 import java.util.List;
 
 import javax.inject.Named;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import nl.dias.repository.GebruikerRepository;
 
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
+import com.sun.jersey.api.core.InjectParam;
 
 @Named
-public class GebruikerService extends AbstractRepository<Gebruiker> {
-    private Logger logger = Logger.getLogger(this.getClass());
+public class GebruikerService {
+    @InjectParam
+    private GebruikerRepository gebruikerRepository;
 
-    public GebruikerService() {
-        super(Gebruiker.class);
-        zetPersistenceContext("dias");
+    public Gebruiker lees(Long id) {
+        return gebruikerRepository.lees(id);
     }
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
-    }
-
-    @Transactional
-    public List<Relatie> alleRelaties() {
-        TypedQuery<Relatie> query = getEm().createQuery("select e from Relatie e", Relatie.class);
-        List<Relatie> ret = query.getResultList();
-
-        return ret;
-    }
-
-    @Transactional
     public List<Relatie> alleRelaties(Kantoor kantoor) {
-        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekAllesVoorKantoor", Relatie.class);
-        query.setParameter("kantoor", kantoor);
-
-        return query.getResultList();
+        return gebruikerRepository.alleRelaties(kantoor);
     }
 
-    @Transactional
-    public Gebruiker zoek(String emailadres) throws NietGevondenException {
-        Gebruiker gebruiker = null;
-
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpEmail", Gebruiker.class);
-        query.setParameter("emailadres", emailadres);
-        try {
-            gebruiker = query.getSingleResult();
-        } catch (NoResultException e) {
-            logger.info(e.getMessage());
-            throw new NietGevondenException(emailadres);
-        }
-
-        return gebruiker;
+    public void opslaan(Gebruiker gebruiker) {
+        gebruikerRepository.opslaan(gebruiker);
     }
 
-    public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
-        logger.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
-
-        Gebruiker gebruiker = null;
-
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpSessieEnIpAdres", Gebruiker.class);
-        query.setParameter("sessie", sessie);
-        query.setParameter("ipadres", ipadres);
-
-        List<Gebruiker> lijst = query.getResultList();
-
-        if (lijst != null && lijst.size() > 0) {
-            logger.debug("Aantal gevonden : " + lijst.size());
-            gebruiker = lijst.get(0);
-        } else if (lijst != null) {
-            logger.debug("Lege lijst");
-            throw new NietGevondenException(sessie);
-        } else {
-            logger.debug("null lijst");
-            throw new NietGevondenException(sessie);
-        }
-
-        return gebruiker;
+    public void verwijder(Long id) {
+        // Eerst ophalen
+        Gebruiker gebruiker = gebruikerRepository.lees(id);
+        // en dan verwijderen
+        gebruikerRepository.verwijder(gebruiker);
     }
 
-    public Gebruiker zoekOpCookieCode(String cookieCode) throws NietGevondenException {
-        Gebruiker gebruiker = null;
-
-        getTx().begin();
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpCookieCode", Gebruiker.class);
-        query.setParameter("cookieCode", cookieCode);
-        gebruiker = query.getSingleResult();
-        getTx().commit();
-
-        return gebruiker;
+    public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
+        this.gebruikerRepository = gebruikerRepository;
     }
 }

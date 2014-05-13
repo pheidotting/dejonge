@@ -1,14 +1,16 @@
 package nl.dias.web;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Medewerker;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.OnderlingeRelatieSoort;
 import nl.dias.domein.Relatie;
@@ -36,21 +38,6 @@ public class GebruikerController {// extends AbstractController {
     private KantoorService kantoorService;
     @InjectParam
     private RelatieMapper relatieMapper;
-
-    @GET
-    @Path("/verwijder")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String verwijder(@QueryParam("id") String id) {
-        logger.debug("Verwijder Medewerker met id " + id);
-
-        Medewerker medewerker = (Medewerker) gebruikerService.lees(Long.parseLong(id));
-
-        logger.debug("Medewerker gevonden");
-
-        gebruikerService.verwijder(medewerker);
-
-        return "";
-    }
 
     //
     // @GET
@@ -177,35 +164,30 @@ public class GebruikerController {// extends AbstractController {
         return lijst;
     }
 
-    @GET
+    @POST
     @Path("/opslaan")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String opslaan(@QueryParam("medewerker") String relatie) {
-        Gson gson = new Gson();
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response opslaan(JsonRelatie jsonRelatie) {
+        Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
 
-        Relatie r = gson.fromJson(relatie, Relatie.class);
+        logger.debug("Opslaan Relatie met id " + relatie.getId());
 
-        logger.debug("Opslaan Relatie met id " + r.getId());
+        gebruikerService.opslaan(relatie);
 
-        gebruikerService.opslaan(r);
+        logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
 
-        logger.debug("Relatie met id " + r.getId() + " opgeslagen");
-
-        return "";// gson.toJson(new RelatieJson(r));
+        return Response.status(200).entity(relatie.getId()).build();
     }
 
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
-    public String verwijderen(@QueryParam("medewerker") String relatie) {
-        logger.debug("Verwijderen Relatie met id " + relatie);
+    public Response verwijderen(Long id) {
+        logger.debug("Verwijderen Relatie met id " + id);
 
-        logger.debug("Eerst ophalen uit de database");
-        Relatie r = (Relatie) gebruikerService.lees(Long.parseLong(relatie));
+        gebruikerService.verwijder(id);
 
-        gebruikerService.verwijder(r);
-
-        return "";
+        return Response.status(200).build();
     }
 
     @GET
