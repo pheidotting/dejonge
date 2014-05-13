@@ -111,6 +111,18 @@
 				}
 	        });
 	    }
+	    
+	    this.verwijderenRelatie = function(obj){
+	    	console.log(ko.utils.unwrapObservable(obj.id));
+			$.ajax({
+				type: "GET",
+				url: '../dejonge/rest/gebruiker/verwijderen',
+				dataType:'json',
+				data: {
+					id : ko.utils.unwrapObservable(obj.id)
+				}
+			});
+	    }
 	}
 	
 	function OnderlingeRelatie(data){
@@ -458,19 +470,7 @@
 			<div class="form-group">
 				<label for="opslaanrelatie">&nbsp;</label>
 				<button id="opslaanrelatie" name="opslaanrelatie" data-bind="click: opslaan">Opslaan</button>
-				<script type="text/javascript">
-					function verwijderenRelatie() {
-			  				$.ajax({
-			  					type: "GET",
-			  					url: './VerwijderenRelatie',
-			  					dataType:'json',
-			  					data: {
-			  						id : $('#id').val()
-			  					}
-			  				});
-					}
-				</script>
-				<a href="#" onclick="verwijderenRelatie()">Verwijderen</a>
+				<span style="cursor:pointer;" data-bind="click: verwijderenRelatie">Verwijderen</span>
 			</div>
 		</div>
 		<!--div id="zakelijkeGegevens">
