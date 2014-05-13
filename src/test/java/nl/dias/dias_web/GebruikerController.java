@@ -1,6 +1,8 @@
 package nl.dias.dias_web;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -42,10 +44,11 @@ public class GebruikerController {// implements GebruikerControllerInterface {
         return null;
     }
 
-    @GET
+    @POST
     @Path("/opslaan")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String opslaan(@QueryParam("medewerker") String relatie) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response opslaan(JsonRelatie jsonRelatie) {
+        System.out.println(jsonRelatie);
         return null;
     }
 

@@ -20,9 +20,9 @@
 /*		$.each(data.rekeningnummers, function(i, item) {
 			self.rekeningnummers.push(new RekeningNummer(item));
 			});*/
-		this.telefoonNummers = ko.observableArray();
-/*		$.each(data.telefoonNummers, function(i, item) {
-			self.telefoonNummers.push(new TelefoonNummer(item));
+		this.telefoonnummers = ko.observableArray();
+/*		$.each(data.telefoonnummers, function(i, item) {
+			self.telefoonnummers.push(new TelefoonNummer(item));
 			});*/
 		this.bedrijven = ko.observableArray();
 /*		$.each(data.bedrijven, function(i, item) {
@@ -40,8 +40,8 @@
 	 		});
 		}
 		*/
-		this.polissen = ko.observableArray();
-/*		if(data.polissen != null){
+		/*		this.polissen = ko.observableArray();
+		if(data.polissen != null){
 						$.each(data.polissen, function(i, item){
 				self.polissen.push(new Polis(item));
 			})
@@ -56,11 +56,11 @@
 	    }
 	    
 	    this.voegTelefoonNummerToe = function() {
-	    	self.telefoonNummers.push(new TelefoonNummer(""));
+	    	self.telefoonnummers.push(new TelefoonNummer(""));
 	    }
 	    
 	    this.verwijderTelefoonNummer = function(telefoon) {
-	    	self.telefoonNummers.destroy(telefoon);
+	    	self.telefoonnummers.destroy(telefoon);
 	    }
 	    /*
 	    this.voegPolisToe = function(){
@@ -95,25 +95,30 @@
 	    }
 	    
 	    this.opslaan = function(){
+	    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
+	    		this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	    	}
 	    	$.ajax({
-				type: "GET",
-				url: './OpslaanRelatie',
-				dataType:'json',
-	            data: {
-					relatie : ko.toJSON(this),
-	            },
+				type: "POST",
+				url: '../dejonge/rest/gebruiker/opslaan',
+				contentType: "application/json",
+	            data:  ko.toJSON(this),
 	            success: function(data) {
-		 			if($.type(data) == "string"){
+/* 		 			if($.type(data) == "string"){
 						addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
 					}else{
 			           	ko.applyBindings(new Relatie(data));
 					}
-				}
+ */				}
 	        });
+	    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+	    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
+		    	this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+			}
 	    }
 	    
 	    this.verwijderenRelatie = function(obj){
-	    	console.log(ko.utils.unwrapObservable(obj.id));
 			$.ajax({
 				type: "GET",
 				url: '../dejonge/rest/gebruiker/verwijderen',
@@ -443,7 +448,7 @@
 					<img src="images/add.png" alt="Toevoegen telefoonnummer" />
 				</a>
 			</div>
-			<div id="telefoonnummers" data-bind="foreach: telefoonNummers, visible: telefoonNummers().length > 0">
+			<div id="telefoonnummers" data-bind="foreach: telefoonnummers, visible: telefoonnummers().length > 0">
 				<div id="telefoonnummer">
 					<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
 					<div class="form-group">
@@ -483,7 +488,7 @@
 			<a id="link_id">
 				<img src="images/add.png" alt="Toevoegen polis" />
 			</a>
-			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
+			<div id="polissenHerhaal"><!-- data-bind="foreach: polissen, visible: polissen().length > 0"-->
 				<script>
 						$('#link_id').click(function(){
 							console.log("SAdfsafsdfsdfsdf");
@@ -494,9 +499,9 @@
 				<a id="link_id">
 					<img src="images/add.png" alt="Toevoegen bijlage" />
 				</a>
-				<input class="form-control" type="hidden" id="polisid" data-bind="value: id" />
-				<span data-bind="text: omschrijving"><!--, click: $root.showBijlages" style="cursor:pointer;"--></span>
-				<div data-bind="if: kenteken">
+				<!--input class="form-control" type="hidden" id="polisid" data-bind="value: id" />
+				<span data-bind="text: omschrijving"--><!--, click: $root.showBijlages" style="cursor:pointer;"--></span>
+				<!--div data-bind="if: kenteken">
 					<span data-bind="text: kenteken"></span>
 				</div>
 				<div data-bind="if: soortAutoVerzekering">
@@ -510,16 +515,16 @@
 				</div>
 				<div data-bind="if: maatschappij">
 					<span data-bind="text: maatschappij"></span>
-				</div>
+				</div-->
 				<!--a onclick="
 					$('#bijlagesDialog').puidialog('show');">Bijlages</a-->
 					
-				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+				<!--div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
 					 <a data-bind="attr:{href: bestandsNaam}">
 					 
 						<img data-bind="attr:{src: bestandsNaamThumb}" alt="Bijlage" />
 					</a>
-				</div>
+				</div-->
 			</div>
 		</div>
 		<div id="toevoegenPolis">
