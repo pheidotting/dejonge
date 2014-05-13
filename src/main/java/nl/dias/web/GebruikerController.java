@@ -14,7 +14,6 @@ import nl.dias.domein.OnderlingeRelatieSoort;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.RelatieJson;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.KantoorService;
 import nl.dias.web.mapper.RelatieMapper;
@@ -192,7 +191,7 @@ public class GebruikerController {// extends AbstractController {
 
         logger.debug("Relatie met id " + r.getId() + " opgeslagen");
 
-        return gson.toJson(new RelatieJson(r));
+        return "";// gson.toJson(new RelatieJson(r));
     }
 
     @GET
@@ -249,11 +248,11 @@ public class GebruikerController {// extends AbstractController {
         String messages = null;
         if (melding.equals("")) {
             Relatie relatie = (Relatie) gebruikerService.lees(idAanToevoegen);
-            try {
-                messages = gson.toJson(new RelatieJson(relatie.clone()));
-            } catch (CloneNotSupportedException e) {
-                logger.error(e.getMessage());
-            }
+            // try {
+            // messages = gson.toJson(new RelatieJson(relatie.clone()));
+            // } catch (CloneNotSupportedException e) {
+            // logger.error(e.getMessage());
+            // }
         } else {
             messages = gson.toJson(melding);
         }
