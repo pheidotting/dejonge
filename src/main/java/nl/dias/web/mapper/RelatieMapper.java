@@ -54,14 +54,31 @@ public class RelatieMapper {
         jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
         jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
         jsonRelatie.setPlaats(relatie.getAdres().getPlaats());
-        jsonRelatie.setAdresOpgemaakt(jsonRelatie.getStraat() + " " + jsonRelatie.getHuisnummer() + " " + jsonRelatie.getToevoeging() + ", " + jsonRelatie.getPlaats());
+
+        StringBuilder sb = new StringBuilder();
+        if (jsonRelatie.getStraat() != null) {
+            sb.append(jsonRelatie.getStraat() + " ");
+        }
+        if (jsonRelatie.getHuisnummer() != null) {
+            sb.append(jsonRelatie.getHuisnummer() + " ");
+        }
+        if (jsonRelatie.getToevoeging() != null) {
+            sb.append(jsonRelatie.getToevoeging() + " ");
+        }
+        if (jsonRelatie.getPlaats() != null) {
+            sb.append(jsonRelatie.getPlaats() + " ");
+        }
+
+        jsonRelatie.setAdresOpgemaakt(sb.toString());
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
         jsonRelatie.setKantoor(relatie.getKantoor().getId());
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
+        jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
         jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum());
+        jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
         if (relatie.getGeslacht() != null) {
             jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());
         }

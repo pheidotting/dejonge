@@ -1,24 +1,8 @@
 <script type="text/javascript">
-/* 	$("#geboorteDatum").mask("99-99-9999");
-	$("#overlijdensdatum").mask("99-99-9999");
- */	$('#tabs').puitabview();
+	$('#tabs').puitabview();
 	$('#tabs').puitabview('disable' , 1);
-/* 	$('#dlg').puidialog({
-	    showEffect: 'fade',
-	    hideEffect: 'fade',
-	    maximizable: true,
-	width: 850
-	});
-	
-	$('#bijlagesDialog').puidialog({
-	    showEffect: 'fade',
-	    hideEffect: 'fade',
-	    maximizable: true,
-	width: 950
-	});
- */
+
 	function Relatie(data) {
-		
 	    var self = this;
 		
 		this.id = ko.observable(data.id);
@@ -33,36 +17,36 @@
 		this.bsn = ko.observable(data.bsn);
 		this.identificatie = ko.observable(data.identificatie);
 		this.rekeningnummers = ko.observableArray();
-		$.each(data.rekeningnummers, function(i, item) {
+/*		$.each(data.rekeningnummers, function(i, item) {
 			self.rekeningnummers.push(new RekeningNummer(item));
-			});
+			});*/
 		this.telefoonNummers = ko.observableArray();
-		$.each(data.telefoonNummers, function(i, item) {
+/*		$.each(data.telefoonNummers, function(i, item) {
 			self.telefoonNummers.push(new TelefoonNummer(item));
-			});
+			});*/
 		this.bedrijven = ko.observableArray();
-		$.each(data.bedrijven, function(i, item) {
+/*		$.each(data.bedrijven, function(i, item) {
 			self.bedrijven.push(new Bedrijf(item));
-			});
-		this.geboorteDatumString = ko.observable(data.geboorteDatumString);
-		this.overlijdensdatumString = ko.observable(data.overlijdensdatumString);
+			});*/
+		this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
+		this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 		this.geslacht = ko.observable(data.geslacht);
 		this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
 	
 		this.onderlingeRelaties = ko.observableArray();
-		if(data.onderlingeRelaties != null){
+		/*		if(data.onderlingeRelaties != null){
 			$.each(data.onderlingeRelaties, function(i, item) {
 				self.onderlingeRelaties.push(new OnderlingeRelatie(item));
 	 		});
 		}
-		
+		*/
 		this.polissen = ko.observableArray();
-		if(data.polissen != null){
+/*		if(data.polissen != null){
 						$.each(data.polissen, function(i, item){
 				self.polissen.push(new Polis(item));
 			})
 					}
-	
+	*/
 		this.voegRekeningToe = function() {
 	        self.rekeningnummers.push(new RekeningNummer(""));
 	    };
@@ -78,14 +62,14 @@
 	    this.verwijderTelefoonNummer = function(telefoon) {
 	    	self.telefoonNummers.destroy(telefoon);
 	    }
-	    
+	    /*
 	    this.voegPolisToe = function(){
 	    	self.polissen = new Polis("");
 	    }
 	    
 	    this.verwijderPolis = function(polis){
 	    	self.polissen.destroy(polis);
-	    }
+	    }*/
 	    
 	    
 	    self.userClick = function (obj) {
@@ -359,11 +343,11 @@
 			</div>
 			<div class="form-group">
 				<label for="geboorteDatum">Geboortedatum</label>
-				<input class="form-control" type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatumString" />
+				<input class="form-control" type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatum" />
 			</div>
 			<div class="form-group">
 				<label for="overlijdensdatum">Overlijdensdatum</label>
-				<input class="form-control" type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatumString" />
+				<input class="form-control" type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatum" />
 			</div>
 			<div class="form-group">
 				<label for="geslacht">Geslacht</label>
@@ -379,15 +363,15 @@
 					<option value="Gehuwd">Gehuwd</option>
 				</select>
 			</div>
-			<span class="glyphicon glyphicon-plus" onclick="$('#dlg').puidialog('show');"></span>
+			<!--span class="glyphicon glyphicon-plus" onclick="$('#dlg').puidialog('show');"></span-->
 			<div id="relaties" data-bind="foreach: onderlingeRelaties, visible: onderlingeRelaties().length > 0">
-				<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
+				<input type="hidden" id="telefoonid" data-bind="value: id" />
 				<!--a onclick="document.location.hash='#beherenRelatie/'"-->
 				<span class="user-box-name" data-bind="text: metWie, click: $root.userClick" style="cursor:pointer;"></span>
 				<span data-bind="text: soort"></span>
 				<br />
 			</div>
-			<div id="dlg" title="Zoek een relatie">  
+			<!--div id="dlg" title="Zoek een relatie">  
 			    <input class="form-control" type="text" id="zoekRelatie" />
 			    <select id="soortRelatie" >
 					<option value="">Selecteer een optie...</option>
@@ -397,7 +381,7 @@
 					<option value="WG">Werkgever</option>
 			    </select>
 			    <div id="lijstRelaties"></div>
-			</div> 
+			</div--> 
 			
 			<div class="form-group">
 				<h3>Adresgegevens</h3>
@@ -489,12 +473,12 @@
 				<a href="#" onclick="verwijderenRelatie()">Verwijderen</a>
 			</div>
 		</div>
-		<div id="zakelijkeGegevens">
+		<!--div id="zakelijkeGegevens">
 			Gegevens van de bedrijven...?
 			<div id="bedrijven" data-bind="foreach: bedrijven visible: bedrijven > 0">
 				<span data-bind="text: naam"></span>
 			</div>
-		</div>
+		</div-->
 		<div id="polissen">
 			<a id="link_id">
 				<img src="images/add.png" alt="Toevoegen polis" />

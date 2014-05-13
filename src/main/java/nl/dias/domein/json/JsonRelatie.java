@@ -27,7 +27,9 @@ public class JsonRelatie implements Serializable {
     private Long kantoor;
     private List<JsonOpmerking> opmerkingen;
     private LocalDate geboorteDatum;
+    private String geboorteDatumOpgemaakt;
     private LocalDate overlijdensdatum;
+    private String overlijdensdatumOpgemaakt;
     private String geslacht;
     private String burgerlijkeStaat;
     private List<Long> onderlingeRelaties;
@@ -169,12 +171,28 @@ public class JsonRelatie implements Serializable {
         this.geboorteDatum = geboorteDatum;
     }
 
+    public String getGeboorteDatumOpgemaakt() {
+        return geboorteDatumOpgemaakt;
+    }
+
+    public void setGeboorteDatumOpgemaakt(String geboorteDatumOpgemaakt) {
+        this.geboorteDatumOpgemaakt = geboorteDatumOpgemaakt;
+    }
+
     public LocalDate getOverlijdensdatum() {
         return overlijdensdatum;
     }
 
     public void setOverlijdensdatum(LocalDate overlijdensdatum) {
         this.overlijdensdatum = overlijdensdatum;
+    }
+
+    public String getOverlijdensdatumOpgemaakt() {
+        return overlijdensdatumOpgemaakt;
+    }
+
+    public void setOverlijdensdatumOpgemaakt(String overlijdensdatumOpgemaakt) {
+        this.overlijdensdatumOpgemaakt = overlijdensdatumOpgemaakt;
     }
 
     public String getGeslacht() {

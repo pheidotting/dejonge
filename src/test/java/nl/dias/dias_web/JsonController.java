@@ -15,7 +15,6 @@ public class JsonController {
     @Path("/lijstVerzekeringsMaatschappijen")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> lijstVerzekeringsMaatschappijen() {
-        System.out.println("ijijijijijijij");
 
         List<String> ret = new ArrayList<String>();
         ret.add("Kies een maatschappij...");

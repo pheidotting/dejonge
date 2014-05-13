@@ -8,42 +8,76 @@
 				if(new String(data) == "false"){
 					document.location.hash='#inloggen';
 				}else{
-	 				$("#lijstRelaties").val('');
-	 				$("#lijstRelaties").puidatatable({
-						caption: "Lijst Relaties" + $('#zoekCriteriaLijstRelaties').val(),  
-		               columns: [
-	 	                    {field:"achternaam", headerText: "Achternaam", sortable:true},
-	 	                    {field:"tussenvoegsel", headerText: "Tussenvoegsel", sortable:true},
-	 	                    {field:"voornaam", headerText: "Voornaam", sortable:true},
-	 	                    {field:"geboortedatum", headerText: "Geboortedatum", sortable:true},
-	 	                    {field:"adresOpgemaakt", headerText: "Straat", sortable:true},
-	 	                    {field:"bsn", headerText: "Bsn", sortable:true}
-	 	                ],  
-	 	                datasource: function(callback) {
-	 	                    $.ajax({  
-	 	                        type: "GET",  
-	 	                        url: './rest/gebruiker/lijstRelaties',
-/*	 	    					data: {
-	 	           					criteria : $('#zoekCriteriaLijstRelaties').val()
-	 	    					},*/
-	 	                        dataType: "json",  
-	 	                        context: this,  
-	 	                        success: function(response) {  
-	 	                            callback.call(this, response);  
-	 	                        }  
-	 	                    });  
-	 	                },
-	 	                selectionMode: "single",
-	 	                rowSelect: function(event, data) {
-	 	                	document.location.hash='#beherenRelatie/' + data.id
-	 	                },  
-	 	            });
-				}
+                  $.ajax({  
+                       type: "GET",  
+                       url: './rest/gebruiker/lijstRelaties',
+                       dataType: "json",  
+                       context: this,  
+                       success: function(response) {
+	               			ko.applyBindings(new LijstRelatie(response));
+                    	   console.log(response);
+                    	   $.each(response, function(i, item) {
+                    		   console.log(item);
+                    		   console.log(item.voornaam);
+                    		});
+                       }
+				});
 			}
+				}
 		});
 	 };
+	 
+	function LijstRelatie(data){
+		var self = this;
+		
+		self.lijst = ko.observableArray();
+		$.each(data.jsonRelaties, function(i, item) {
+			self.lijst.push(new Relatie(item));
+		});
+		
+		self.naarDetailScherm = function(relatie){
+			console.log("1");
+			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
+		}
+	}
+	 
+	function Relatie(data) {
+		var self = this;
+		
+		self.id = ko.observable(data.id);
+		self.voornaam = ko.observable(data.voornaam);
+		self.tussenvoegsel = ko.observable(data.tussenvoegsel);
+		self.achternaam = ko.observable(data.achternaam);
+		self.geboortedatum = ko.observable(data.geboorteDatumOpgemaakt);
+		self.adres = ko.observable(data.adresOpgemaakt);
+
+		self.naarDetailScherm = function(relatie){
+			console.log("2");
+			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
+		}
+	}
+
 </script>
 	
 <a href="#" onclick="reset();"><img src="images/add.png" alt="Toevoegen Relatie" /></a>
 <!--input type="text" id="zoekCriteriaLijstRelaties" onkeyup="maakDatatable();" /-->
-<div id="lijstRelaties"></div>
+
+<table class="table">
+	<tr>
+		<th>Voornaam</th>
+		<th>Tussenvoegsel</th>
+		<th>Achternaam</th>
+		<th>Geboortedatum</th>
+		<th>Adres</th>
+	</tr>
+	<tbody data-bind="foreach: lijst">
+		<tr>
+			<td data-bind="text : voornaam, click: naarDetailScherm"></td>
+			<td data-bind="text : tussenvoegsel, click: naarDetailScherm"></td>
+			<td data-bind="text : achternaam, click: naarDetailScherm"></td>
+			<td data-bind="text : geboortedatum, click: naarDetailScherm"></td>
+			<td data-bind="text : adres, click: naarDetailScherm"></td>
+		</tr>
+	</tbody>
+</table>
+	

@@ -1,8 +1,5 @@
 package nl.dias.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,6 +12,7 @@ import nl.dias.domein.Medewerker;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.OnderlingeRelatieSoort;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.RelatieJson;
 import nl.dias.service.GebruikerService;
@@ -159,7 +157,7 @@ public class GebruikerController {// extends AbstractController {
     @GET
     @Path("/lijstRelaties")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JsonRelatie> lijstRelaties(@QueryParam("weglaten") String weglaten) {
+    public JsonLijstRelaties lijstRelaties(@QueryParam("weglaten") String weglaten) {
         logger.debug("Ophalen lijst met alle Relaties");
 
         Long idWeglaten = null;
@@ -168,14 +166,14 @@ public class GebruikerController {// extends AbstractController {
             idWeglaten = Long.parseLong(weglaten);
         }
 
-        List<JsonRelatie> lijst = new ArrayList<>();
+        JsonLijstRelaties lijst = new JsonLijstRelaties();
 
         for (Gebruiker r : gebruikerService.alleRelaties(kantoorService.getIngelogdKantoor())) {
             if (idWeglaten == null || !idWeglaten.equals(r.getId())) {
-                lijst.add(relatieMapper.mapNaarJson((Relatie) r));
+                lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
             }
         }
-        logger.debug("Opgehaald, lijst met " + lijst.size() + " relaties");
+        logger.debug("Opgehaald, lijst met " + lijst.getJsonRelaties().size() + " relaties");
 
         return lijst;
     }

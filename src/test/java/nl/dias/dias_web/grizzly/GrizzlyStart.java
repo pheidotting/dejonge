@@ -99,7 +99,7 @@ public class GrizzlyStart {
 
     public String getJerseyPad() {
         if (jerseyPad == null) {
-            jerseyPad = "/dias/rest";
+            jerseyPad = "/dejonge/rest";
         }
         return jerseyPad;
     }
