@@ -1,5 +1,8 @@
 package nl.dias.web.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.Geslacht;
@@ -39,6 +42,24 @@ public class RelatieMapper {
         relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat()));
 
         return relatie;
+    }
+
+    public List<Relatie> mapAllVanJson(List<JsonRelatie> jsonRelaties) {
+        List<Relatie> relaties = new ArrayList<>();
+        for (JsonRelatie jsonRelatie : jsonRelaties) {
+            relaties.add(mapVanJson(jsonRelatie));
+        }
+
+        return relaties;
+    }
+
+    public List<JsonRelatie> mapAllNaarJson(List<Relatie> relaties) {
+        List<JsonRelatie> jsonRelaties = new ArrayList<>();
+        for (Relatie relatie : relaties) {
+            jsonRelaties.add(mapNaarJson(relatie));
+        }
+
+        return jsonRelaties;
     }
 
     public JsonRelatie mapNaarJson(Relatie relatie) {

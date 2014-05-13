@@ -268,6 +268,14 @@ public class GebruikerController {// extends AbstractController {
         return messages;
     }
 
+    public void setGebruikerService(GebruikerService gebruikerService) {
+        this.gebruikerService = gebruikerService;
+    }
+
+    public void setRelatieMapper(RelatieMapper relatieMapper) {
+        this.relatieMapper = relatieMapper;
+    }
+
     // @GET
     // @Path("/uitloggen")
     // @Produces(MediaType.TEXT_PLAIN)
@@ -320,4 +328,5 @@ public class GebruikerController {// extends AbstractController {
     // public void setCookie(Cookie cookie) {
     // this.cookie = cookie;
     // }
+
 }
