@@ -14,6 +14,7 @@ public class Hulp {
         if (waarde != null) {
             element.clear();
             element.sendKeys(waarde);
+            wachtFf();
         }
     }
 
