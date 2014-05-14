@@ -95,7 +95,9 @@
 	    }
 	    
 	    this.opslaan = function(){
-	    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
+	    		this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	    	}
 	    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
 	    		this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
 	    	}
@@ -112,7 +114,9 @@
 					}
  */				}
 	        });
-	    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+	    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
+		    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+	    	}
 	    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
 		    	this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 			}
@@ -443,10 +447,7 @@
 			</div>
 			
 			<div class="form-group">
-				<h3>Contactgegevens</h3>
-				<a id="toevoegenTelefoonnummer" data-bind="click: voegTelefoonNummerToe" href="#">
-					<img src="images/add.png" alt="Toevoegen telefoonnummer" />
-				</a>
+				<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" href="#"></span>
 			</div>
 			<div id="telefoonnummers" data-bind="foreach: telefoonnummers, visible: telefoonnummers().length > 0">
 				<div id="telefoonnummer">
@@ -454,9 +455,6 @@
 					<div class="form-group">
 						<label for="telnummer">Telefoonnummer</label>
 						<input class="form-control" type="text" id="telnummer" name="telnummer" data-bind="value: telefoonnummer" />
-						<a id="verwijderenTelefoonnummer" data-bind="click: $parent.verwijderTelefoonNummer">
-							<img src="images/delete.png" alt="Verwijderen telefoonnummer" />
-						</a>
 					</div>
 					<div class="form-group">
 						<label for="soort">Soort</label>
@@ -466,6 +464,7 @@
 							<option value="Werk">Werk</option>
 						</select>
 					</div>
+					<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening"></span>
 				</div>
 			</div>
 			<div class="form-group">

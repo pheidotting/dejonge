@@ -1,4 +1,8 @@
-body{
-	width:1200px;
-	margin:0 auto;
+label{
+    float: left;
+    margin-bottom: 0px;
+    width: 200px;
+}
+input{
+	width: 500px !important;
 }
