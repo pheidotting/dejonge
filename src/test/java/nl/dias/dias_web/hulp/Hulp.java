@@ -20,7 +20,7 @@ public class Hulp {
     }
 
     public static void klikEnWacht(WebElement element) {
-        Hulp.klikEnWacht(element, 500);
+        Hulp.klikEnWacht(element, 1500);
     }
 
     public static void klikEnWacht(WebElement element, int timeout) {
@@ -47,7 +47,7 @@ public class Hulp {
     }
 
     public static void wachtFf() {
-        wachtFf(500);
+        wachtFf(1500);
     }
 
     public static void wachtFf(int timeout) {
