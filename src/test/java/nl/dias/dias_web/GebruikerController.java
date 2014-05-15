@@ -9,7 +9,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
+
+import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
 
@@ -17,6 +20,7 @@ import com.google.gson.Gson;
 public class GebruikerController {// implements GebruikerControllerInterface {
     public static Long id;
     public static JsonRelatie jsonRelatie;
+    public static JsonLijstRelaties jsonLijstRelaties;
 
     // @GET
     // @Path("/inloggen")
@@ -42,9 +46,20 @@ public class GebruikerController {// implements GebruikerControllerInterface {
 
     @GET
     @Path("/lijstRelaties")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String lijstRelaties(@QueryParam("weglaten") String weglaten) {
-        return null;
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonLijstRelaties lijstRelaties(@QueryParam("weglaten") String weglaten) {
+        if (GebruikerController.jsonLijstRelaties == null) {
+            JsonRelatie jsonRelatie = new JsonRelatie();
+            jsonRelatie.setVoornaam("voornaam1");
+            jsonRelatie.setTussenvoegsel("tussenvoegsel1");
+            jsonRelatie.setAchternaam("achternaam1");
+            jsonRelatie.setGeboorteDatum(new LocalDate(2001, 1, 1));
+            jsonRelatie.setAdresOpgemaakt("adresOpgemaakt1");
+            GebruikerController.jsonLijstRelaties = new JsonLijstRelaties();
+            GebruikerController.jsonLijstRelaties.getJsonRelaties().add(jsonRelatie);
+        }
+        System.out.println(GebruikerController.jsonLijstRelaties);
+        return GebruikerController.jsonLijstRelaties;
     }
 
     @POST
@@ -72,12 +87,13 @@ public class GebruikerController {// implements GebruikerControllerInterface {
         return null;
     }
 
-    // @GET
-    // @Path("/isIngelogd")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String isIngelogd(@Context HttpServletRequest request) {
-    // return gson.toJson(true);
-    // }
+    @GET
+    @Path("/isIngelogd")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String isIngelogd() {
+        Gson gson = new Gson();
+        return gson.toJson(true);
+    }
     //
     // @GET
     // @Path("/uitloggen")

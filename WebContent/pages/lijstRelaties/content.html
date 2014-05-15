@@ -2,7 +2,7 @@
 	function maakDatatable(){
 		$.ajax({
 			type: "GET",
-			url: './rest/gebruiker/isIngelogd',
+			url: '../dejonge/rest/gebruiker/isIngelogd',
 			dataType:'json',
 			success: function (data) {
 				if(new String(data) == "false"){
@@ -10,7 +10,7 @@
 				}else{
                   $.ajax({  
                        type: "GET",  
-                       url: './rest/gebruiker/lijstRelaties',
+                       url: '../dejonge/rest/gebruiker/lijstRelaties',
                        dataType: "json",  
                        context: this,  
                        success: function(response) {
@@ -72,11 +72,11 @@
 	</tr>
 	<tbody data-bind="foreach: lijst">
 		<tr>
-			<td data-bind="text : voornaam, click: naarDetailScherm"></td>
-			<td data-bind="text : tussenvoegsel, click: naarDetailScherm"></td>
-			<td data-bind="text : achternaam, click: naarDetailScherm"></td>
-			<td data-bind="text : geboortedatum, click: naarDetailScherm"></td>
-			<td data-bind="text : adres, click: naarDetailScherm"></td>
+			<td data-bind="text : voornaam, click: naarDetailScherm" name="voornaam"></td>
+			<td data-bind="text : tussenvoegsel, click: naarDetailScherm" name="tussenvoegsel"></td>
+			<td data-bind="text : achternaam, click: naarDetailScherm" name="achternaam"></td>
+			<td data-bind="text : geboortedatum, click: naarDetailScherm" name="geboortedatum"></td>
+			<td data-bind="text : adres, click: naarDetailScherm" name="adres"></td>
 		</tr>
 	</tbody>
 </table>

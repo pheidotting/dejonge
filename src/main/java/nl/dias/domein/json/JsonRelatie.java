@@ -169,6 +169,7 @@ public class JsonRelatie implements Serializable {
 
     public void setGeboorteDatum(LocalDate geboorteDatum) {
         this.geboorteDatum = geboorteDatum;
+        setGeboorteDatumOpgemaakt(geboorteDatum.toString("dd-MM-yyyy"));
     }
 
     public String getGeboorteDatumOpgemaakt() {
@@ -185,6 +186,7 @@ public class JsonRelatie implements Serializable {
 
     public void setOverlijdensdatum(LocalDate overlijdensdatum) {
         this.overlijdensdatum = overlijdensdatum;
+        setOverlijdensdatumOpgemaakt(overlijdensdatum.toString("dd-MM-yyyy"));
     }
 
     public String getOverlijdensdatumOpgemaakt() {

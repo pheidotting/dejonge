@@ -16,4 +16,13 @@ public class JsonLijstRelaties {
     public void setJsonRelaties(List<JsonRelatie> jsonRelaties) {
         this.jsonRelaties = jsonRelaties;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("JsonLijstRelaties [jsonRelaties=");
+        builder.append(jsonRelaties.size());
+        builder.append("]");
+        return builder.toString();
+    }
 }
