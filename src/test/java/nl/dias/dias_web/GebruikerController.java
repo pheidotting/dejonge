@@ -51,6 +51,7 @@ public class GebruikerController {// implements GebruikerControllerInterface {
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonRelatie jsonRelatie) {
+        System.out.println(jsonRelatie);
         GebruikerController.jsonRelatie = jsonRelatie;
         return null;
     }

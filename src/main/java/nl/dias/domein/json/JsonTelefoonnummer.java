@@ -12,6 +12,16 @@ public class JsonTelefoonnummer implements Serializable {
     private String telefoonnummer;
     private String soort;
 
+    public JsonTelefoonnummer() {
+    }
+
+    public JsonTelefoonnummer(Long id, String telefoonnummer, String soort) {
+        super();
+        this.id = id;
+        this.telefoonnummer = telefoonnummer;
+        this.soort = soort;
+    }
+
     public Long getId() {
         return id;
     }

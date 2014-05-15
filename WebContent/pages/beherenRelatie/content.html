@@ -131,6 +131,7 @@
 					id : ko.utils.unwrapObservable(obj.id)
 				}
 			});
+			document.location.hash='#lijstRelaties';
 	    }
 	}
 	
@@ -413,7 +414,7 @@
 			</div>
 			<div class="form-group">
 				<label for="huisnummer">Huisnummer</label>
-				<input class="form-control" type="number" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" />
+				<input class="form-control" type="text" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" />
 			</div>
 			<div class="form-group">
 				<label for="toevoeging">Toevoeging</label>
@@ -429,42 +430,42 @@
 			</div>
 			
 			<div class="form-group">
-				<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" href="#"></span>
+				<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" href="#" id="voegRekeningToe"></span>
 				<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
 					<div id="rekeningnummer">
-						<input class="form-control" type="hidden" id="rekeningid" data-bind="value: id" />
+						<input class="form-control" type="hidden" id="rekeningid" name="rekeningid" data-bind="value: id" />
 						<div class="form-group">
-							<label for="nummer">Rekeningnummer</label>
-							<input class="form-control" type="text" id="nummer" name="nummer" data-bind="value: rekeningnummer" />
+							<label for="rekeningnummer">Rekeningnummer</label>
+							<input class="form-control" type="text" id="rekeningnummer" name="rekeningnummer" data-bind="value: rekeningnummer" />
 						</div>
 						<div class="form-group">
 							<label for="bic">Bic</label>
 							<input class="form-control" type="text" id="bic" name="bic" data-bind="value: bic" />
 						</div>
-						<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening"></span>
+						<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening" name="verwijderRekening"></span>
 					</div>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" href="#"></span>
+				<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" href="#" id="voegTelefoonNummerToe"></span>
 			</div>
 			<div id="telefoonnummers" data-bind="foreach: telefoonnummers, visible: telefoonnummers().length > 0">
 				<div id="telefoonnummer">
-					<input class="form-control" type="hidden" id="telefoonid" data-bind="value: id" />
+					<input class="form-control" type="hidden" name="telefoonid" id="telefoonid" data-bind="value: id" />
 					<div class="form-group">
 						<label for="telnummer">Telefoonnummer</label>
 						<input class="form-control" type="text" id="telnummer" name="telnummer" data-bind="value: telefoonnummer" />
 					</div>
 					<div class="form-group">
-						<label for="soort">Soort</label>
-						<select id="soort" name="soort" data-bind="value: soort">
+						<label for="soorttelnummer">Soort</label>
+						<select id="soorttelnummer" name="soorttelnummer" data-bind="value: soort">
 							<option value="Mobiel">Mobiel</option>
 							<option value="Vast">Vast</option>
 							<option value="Werk">Werk</option>
 						</select>
 					</div>
-					<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening"></span>
+					<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderTelefoonNummer" name="verwijderTelefoonNummer"></span>
 				</div>
 			</div>
 			<div class="form-group">
@@ -474,7 +475,7 @@
 			<div class="form-group">
 				<label for="opslaanrelatie">&nbsp;</label>
 				<button id="opslaanrelatie" name="opslaanrelatie" data-bind="click: opslaan">Opslaan</button>
-				<span style="cursor:pointer;" data-bind="click: verwijderenRelatie">Verwijderen</span>
+				<span style="cursor:pointer;" id="verwijderen" data-bind="click: verwijderenRelatie">Verwijderen</span>
 			</div>
 		</div>
 		<!--div id="zakelijkeGegevens">

@@ -1,5 +1,7 @@
 package nl.dias.web.pagina;
 
+import java.util.List;
+
 import nl.dias.dias_web.hulp.Hulp;
 
 import org.joda.time.LocalDate;
@@ -38,15 +40,44 @@ public class BeherenRelatie {
 
     @FindBy(id = "opslaanrelatie")
     private WebElement opslaan;
+    @FindBy(id = "verwijderen")
+    private WebElement verwijderen;
+
+    // Rekeningnummer
+    @FindBy(id = "voegRekeningToe")
+    private WebElement voegRekeningToe;
+    @FindBy(name = "rekeningid")
+    private List<WebElement> rekeningid;
+    @FindBy(name = "rekeningnummer")
+    private List<WebElement> rekeningnummer;
+    @FindBy(name = "bic")
+    private List<WebElement> bic;
+    @FindBy(name = "verwijderRekening")
+    private List<WebElement> verwijderRekening;
+
+    // Telefoonummer
+    @FindBy(id = "voegTelefoonNummerToe")
+    private WebElement voegTelefoonNummerToe;
+    @FindBy(name = "telefoonid")
+    private List<WebElement> telefoonid;
+    @FindBy(name = "telnummer")
+    private List<WebElement> telnummer;
+    @FindBy(name = "soorttelnummer")
+    private List<WebElement> soorttelnummer;
+    @FindBy(name = "verwijderTelefoonNummer")
+    private List<WebElement> verwijderTelefoonNummer;
 
     public void vulVeldenEnDrukOpOpslaan(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn,
-            String emailadres, LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat) {
-        vulVelden(voornaam, achternaam, tussenvoegsel, straat, huisnummer, toevoeging, postcode, plaats, bsn, emailadres, geboorteDatum, overlijdensdatum, geslacht, burgerlijkeStaat);
+            String emailadres, LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
+            List<BeherenRelatieTelefoonnummer> telefoonnummers) {
+        vulVelden(voornaam, achternaam, tussenvoegsel, straat, huisnummer, toevoeging, postcode, plaats, bsn, emailadres, geboorteDatum, overlijdensdatum, geslacht, burgerlijkeStaat, rekeningnummers,
+                telefoonnummers);
         drukOpOpslaan();
     }
 
     public void vulVelden(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn, String emailadres,
-            LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat) {
+            LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
+            List<BeherenRelatieTelefoonnummer> telefoonnummers) {
         Hulp.vulVeld(this.voornaam, voornaam);
         Hulp.vulVeld(this.achternaam, achternaam);
         Hulp.vulVeld(this.tussenvoegsel, tussenvoegsel);
@@ -69,10 +100,36 @@ public class BeherenRelatie {
         if (burgerlijkeStaat != null) {
             Hulp.selecteerUitSelectieBox(this.burgerlijkeStaat, burgerlijkeStaat);
         }
+        if (rekeningnummers != null) {
+            for (BeherenRelatieRekeningnummer rekeningnummer : rekeningnummers) {
+                Hulp.klikEnWacht(this.voegRekeningToe);
+                Hulp.vulVeld(this.rekeningnummer.get(this.rekeningnummer.size() - 1), rekeningnummer.getRekeninnummer());
+                Hulp.vulVeld(this.bic.get(this.bic.size() - 1), rekeningnummer.getBic());
+            }
+        }
+        if (telefoonnummers != null) {
+            for (BeherenRelatieTelefoonnummer telefoonnummer : telefoonnummers) {
+                Hulp.klikEnWacht(this.voegTelefoonNummerToe);
+                Hulp.vulVeld(this.telnummer.get(this.telnummer.size() - 1), telefoonnummer.getTelefoonnummer());
+                Hulp.selecteerUitSelectieBox(this.soorttelnummer.get(this.soorttelnummer.size() - 1), telefoonnummer.getSoortTelefoonnummer());
+            }
+        }
     }
 
     public void drukOpOpslaan() {
         Hulp.klikEnWacht(opslaan);
+    }
+
+    public void drukOpVerwijderen() {
+        Hulp.klikEnWacht(verwijderen);
+    }
+
+    public void verwijderRekeningnummer(int index) {
+        Hulp.klikEnWacht(verwijderRekening.get(index - 1));
+    }
+
+    public void verwijderTelefoonnummer(int index) {
+        Hulp.klikEnWacht(verwijderTelefoonNummer.get(index - 1));
     }
 
 }

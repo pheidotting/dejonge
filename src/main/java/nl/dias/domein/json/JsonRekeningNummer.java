@@ -12,6 +12,16 @@ public class JsonRekeningNummer implements Serializable {
     private String bic;
     private String rekeningnummer;
 
+    public JsonRekeningNummer() {
+    }
+
+    public JsonRekeningNummer(Long id, String bic, String rekeningnummer) {
+        super();
+        this.id = id;
+        this.bic = bic;
+        this.rekeningnummer = rekeningnummer;
+    }
+
     public Long getId() {
         return id;
     }
