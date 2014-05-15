@@ -3,6 +3,7 @@ package nl.dias.dias_web.hulp;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class Hulp {
     private static final Logger LOGGER = Logger.getLogger(Hulp.class);
@@ -58,5 +59,10 @@ public class Hulp {
 
     public static boolean waardeUitCheckbox(WebElement element) {
         return "true".equals(element.getAttribute("checked"));
+    }
+
+    public static void selecteerUitSelectieBox(WebElement element, String waarde) {
+        Select select = new Select(element);
+        select.selectByValue(waarde);
     }
 }

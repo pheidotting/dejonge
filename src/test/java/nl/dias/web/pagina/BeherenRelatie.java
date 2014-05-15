@@ -31,18 +31,22 @@ public class BeherenRelatie {
     private WebElement geboorteDatum;
     @FindBy(id = "overlijdensdatum")
     private WebElement overlijdensdatum;
+    @FindBy(id = "geslacht")
+    private WebElement geslacht;
+    @FindBy(id = "burgerlijkeStaat")
+    private WebElement burgerlijkeStaat;
 
     @FindBy(id = "opslaanrelatie")
     private WebElement opslaan;
 
     public void vulVeldenEnDrukOpOpslaan(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn,
-            String emailadres, LocalDate geboorteDatum, LocalDate overlijdensdatum) {
-        vulVelden(voornaam, achternaam, tussenvoegsel, straat, huisnummer, toevoeging, postcode, plaats, bsn, emailadres, geboorteDatum, overlijdensdatum);
+            String emailadres, LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat) {
+        vulVelden(voornaam, achternaam, tussenvoegsel, straat, huisnummer, toevoeging, postcode, plaats, bsn, emailadres, geboorteDatum, overlijdensdatum, geslacht, burgerlijkeStaat);
         drukOpOpslaan();
     }
 
     public void vulVelden(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn, String emailadres,
-            LocalDate geboorteDatum, LocalDate overlijdensdatum) {
+            LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat) {
         Hulp.vulVeld(this.voornaam, voornaam);
         Hulp.vulVeld(this.achternaam, achternaam);
         Hulp.vulVeld(this.tussenvoegsel, tussenvoegsel);
@@ -58,6 +62,12 @@ public class BeherenRelatie {
         }
         if (overlijdensdatum != null) {
             Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum.toString("dd-MM-yyyy"));
+        }
+        if (geslacht != null) {
+            Hulp.selecteerUitSelectieBox(this.geslacht, geslacht);
+        }
+        if (burgerlijkeStaat != null) {
+            Hulp.selecteerUitSelectieBox(this.burgerlijkeStaat, burgerlijkeStaat);
         }
     }
 

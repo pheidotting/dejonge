@@ -27,7 +27,8 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         JsonRelatie jsonRelatie = maakJsonRelatie();
         System.out.println(jsonRelatie);
         pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), null, jsonRelatie.getToevoeging(),
-                jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(), jsonRelatie.getOverlijdensdatum());
+                jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(), jsonRelatie.getOverlijdensdatum(),
+                jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat());
 
         assertEquals(jsonRelatie, GebruikerController.jsonRelatie);
 
@@ -36,8 +37,8 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
     private JsonRelatie maakJsonRelatie() {
         JsonRelatie jsonRelatie = new JsonRelatie();
 
-        jsonRelatie.setGeslacht("Man");
-        jsonRelatie.setBurgerlijkeStaat("Ongehuwd");
+        jsonRelatie.setGeslacht("Vrouw");
+        jsonRelatie.setBurgerlijkeStaat("Gehuwd");
 
         jsonRelatie.setStraat("Herderstraat");
         // jsonRelatie.setHuisnummer(65L);
