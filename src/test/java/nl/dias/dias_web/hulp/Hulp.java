@@ -64,5 +64,6 @@ public class Hulp {
     public static void selecteerUitSelectieBox(WebElement element, String waarde) {
         Select select = new Select(element);
         select.selectByValue(waarde);
+        wachtFf();
     }
 }
