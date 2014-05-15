@@ -118,6 +118,7 @@ public class BeherenRelatie {
 
     public void drukOpOpslaan() {
         Hulp.klikEnWacht(opslaan);
+        Hulp.wachtFf(2000);
     }
 
     public void drukOpVerwijderen() {
