@@ -32,7 +32,6 @@ public abstract class AbstractSeleniumTest {
             if (System.getenv("webtesten").equals("false")) {
                 doorgaan = false;
             }
-            doorgaan = true;
         }
 
         return doorgaan;
