@@ -1,9 +1,8 @@
 package nl.dias.dias_web.hulp;
 
-import static org.junit.Assert.fail;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +11,7 @@ public class Checks {
     public static void checkOfVeldNietVoorkomt(WebElement element) {
         try {
             element.sendKeys(" ");
-            fail("er had een exception moeten komen");
+            throw new StaleElementReferenceException("er had een exception moeten komen");
         } catch (StaleElementReferenceException e) {
         }
     }
@@ -38,7 +37,7 @@ public class Checks {
         }
 
         if (gevonden) {
-            fail("Het element " + naam + " komt voor op het scherm");
+            throw new StaleElementReferenceException("Het element " + naam + " komt voor op het scherm");
         }
     }
 
@@ -46,7 +45,7 @@ public class Checks {
         try {
             element.sendKeys(" ");
         } catch (StaleElementReferenceException e) {
-            fail("er had geen exception mogen komen");
+            throw new StaleElementReferenceException("er had geen exception mogen komen");
         }
     }
 }

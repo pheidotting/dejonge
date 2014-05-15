@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class Hulp {
-    private static final int timeout = 5000;
+    private static final int timeout = 1000;
 
     private Hulp() {
     }

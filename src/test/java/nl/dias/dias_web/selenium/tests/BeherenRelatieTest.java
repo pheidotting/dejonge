@@ -35,6 +35,11 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
                 jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
                 allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
+        System.out.println("####################");
+        System.out.println(jsonRelatie);
+        System.out.println(GebruikerController.jsonRelatie);
+        System.out.println("####################");
+
         assertEquals(jsonRelatie, GebruikerController.jsonRelatie);
 
         pagina.drukOpVerwijderen();
