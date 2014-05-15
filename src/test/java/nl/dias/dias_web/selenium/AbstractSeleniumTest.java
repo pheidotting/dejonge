@@ -26,13 +26,32 @@ public abstract class AbstractSeleniumTest {
 
     public abstract void voerTestUit();
 
+    private boolean doorgaan() {
+        boolean doorgaan = true;
+        if (System.getenv("webtesten") != null) {
+            if (System.getenv("webtesten").equals("false")) {
+                doorgaan = false;
+            }
+            doorgaan = true;
+        }
+
+        return doorgaan;
+    }
+
     @Test
     public void test() {
+        if (!doorgaan()) {
+            return;
+        }
+
         voerTestUit();
     }
 
     @Before
     public void init() throws Exception {
+        if (!doorgaan()) {
+            return;
+        }
         schermprints = new ArrayList<>();
 
         GrizzlyStart grizzlyStart = new GrizzlyStart();
@@ -56,6 +75,9 @@ public abstract class AbstractSeleniumTest {
 
     @After
     public void afsluiten() {
+        if (!doorgaan()) {
+            return;
+        }
         driver.close();
         AbstractSeleniumTest.seleniumServer.stop();
         gws.stop();
