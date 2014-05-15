@@ -1,12 +1,11 @@
 package nl.dias.dias_web.hulp;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class Hulp {
-    private static final Logger LOGGER = Logger.getLogger(Hulp.class);
+    private static final int timeout = 5000;
 
     private Hulp() {
     }
@@ -20,26 +19,18 @@ public class Hulp {
     }
 
     public static void klikEnWacht(WebElement element) {
-        Hulp.klikEnWacht(element, 1500);
+        Hulp.klikEnWacht(element, timeout);
     }
 
     public static void klikEnWacht(WebElement element, int timeout) {
         element.click();
-        try {
-            Thread.sleep(timeout);
-        } catch (InterruptedException e) {
-            LOGGER.debug(e.getMessage());
-        }
+        wachtFf(timeout);
     }
 
     public static void naarAdres(WebDriver driver, String adres) {
         driver.get(adres);
 
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            LOGGER.debug(e.getMessage());
-        }
+        wachtFf();
     }
 
     public static String getText(WebElement element) {
@@ -47,7 +38,7 @@ public class Hulp {
     }
 
     public static void wachtFf() {
-        wachtFf(1500);
+        wachtFf(timeout);
     }
 
     public static void wachtFf(int timeout) {
