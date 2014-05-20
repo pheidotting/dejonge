@@ -9,6 +9,7 @@ import nl.dias.domein.Geslacht;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -116,7 +117,11 @@ public class RelatieMapper {
         for (Bedrijf b : relatie.getBedrijven()) {
             jsonRelatie.getBedrijven().add(b.getId());
         }
-
+        System.out.println("#########");
+        for (Polis polis : relatie.getPolissen()) {
+            System.out.println(polis);
+        }
+        System.out.println("#########");
         jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
 
         return jsonRelatie;
