@@ -41,7 +41,9 @@ public class PolisMapper {
         jsonPolis.setPremie(polis.getPremie().toString());
         jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toDate());
         jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toDate());
-        jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
+        if (polis.getBetaalfrequentie() != null) {
+            jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
+        }
         for (Bijlage bijlage : polis.getBijlages()) {
             JsonBijlage jsonBijlage = new JsonBijlage();
             jsonBijlage.setBestandsNaam(bijlage.getBestandsNaam());

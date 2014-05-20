@@ -246,9 +246,6 @@
 /* 		$('#bijlages').puilightbox(); 
  */	
 		if($('#id').val() != '0'){
-			$.get( "../dejonge/rest/polis/allePolissen", {"relatie" : $('#id').val()}, function( data ) {
-			});
-
 			$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
 	           	ko.applyBindings(new Relatie(data));
 		    });
