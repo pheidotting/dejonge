@@ -8,6 +8,7 @@ import java.util.List;
 import nl.dias.dias_web.GebruikerController;
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
+import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
@@ -68,7 +69,7 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.setToevoeging("toevoeging");
         jsonRelatie.setPostcode("1234AA");
         jsonRelatie.setPlaats("plaats");
-        jsonRelatie.setBedrijven(new ArrayList<Long>());
+        jsonRelatie.setBedrijven(new ArrayList<JsonBedrijf>());
         jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic1", "rekeningnummer1"));
