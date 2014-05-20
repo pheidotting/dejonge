@@ -19,6 +19,8 @@ public class RelatieMapper {
     private RekeningnummerMapper rekeningnummerMapper;
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
+    @InjectParam
+    private PolisMapper polisMapper;
 
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
         Relatie relatie = new Relatie();
@@ -112,6 +114,8 @@ public class RelatieMapper {
         for (Bedrijf b : relatie.getBedrijven()) {
             jsonRelatie.getBedrijven().add(b.getId());
         }
+
+        jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
 
         return jsonRelatie;
     }

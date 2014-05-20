@@ -6,3 +6,7 @@ label{
 input{
 	width: 500px !important;
 }
+.polisLabel{
+	width:200px;
+	float:left;	
+}

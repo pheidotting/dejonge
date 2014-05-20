@@ -1,5 +1,11 @@
 <script type="text/javascript">
-	$('#tabs').puitabview();
+	$('#tabs').puitabview({
+		change: function(event, index) {
+			$.get( "../dejonge/rest/polis/allePolissen", {"relatie" : $('#id').val()}, function( data ) {
+	           	ko.applyBindings(new Polissen(data));
+			});
+		}
+	});
 	$('#tabs').puitabview('disable' , 1);
 
 	function Relatie(data) {
@@ -41,12 +47,13 @@
 		}
 		*/
 		this.polissen = ko.observableArray();
- 		if(data.polissen != null){
+/* 		if(dataPolissen != null){
 			$.each(data.polissen, function(i, item){
+				console.log(item);
 				self.polissen.push(new Polis(item));
 			})
 		}
-		this.voegRekeningToe = function() {
+ */		this.voegRekeningToe = function() {
 	        self.rekeningnummers.push(new RekeningNummer(""));
 	    };
 	    
@@ -171,16 +178,13 @@
 		self.id = ko.observable(data.id);
 		self.omschrijving = ko.observable(data.omschrijving);
 		self.polisNummer = ko.observable(data.polisNummer);
-
-		self.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY"));
-		self.prolongatieDatum = ko.observable(moment(data.prolongatieDatum).format("DD-MM-YYYY"));
-		self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
-		self.maatschappij = ko.observable(data.maatschappij.naam);
-		self.soort = ko.observable(data.soort);
+		self.ingangsDatumString = ko.observable(data.ingangsDatum);
+		/*		self.maatschappij = ko.observable(data.maatschappij.naam);
 		self.bijlages = ko.observableArray();
 		$.each(data.bijlages, function(i, item){
 			self.bijlages.push(new Bijlage(item));
-		})
+		})*/
+		
 	}
 	
 	function Polissen(data){
@@ -195,11 +199,11 @@
 	function Bijlage(data){
 		var self = this;
 	
-		self.bestandsNaam = ko.observable(data.bestandsNaam);
-		/*			self.id = ko.observable(data.id);
+		self.id = ko.observable(data.id);
+		self.bestandsNaam = ko.observable();
 		self.bestandsNaamThumb = ko.observable();
 		self.bestandsNaamPdf = ko.observable();
-	self.bestandsNaam = ko.computed(function() {
+/*		self.bestandsNaam = ko.computed(function() {
 	        return "./Download?id=" + this.id();
 	    }, this);
 		self.bestandsNaamThumb = ko.computed(function() {
@@ -332,7 +336,7 @@
 		<li><a href="#polissen">Polissen</a></li>
 		<li><a href="#toevoegenPolis">Toevoegen Polis</a></li>
 	</ul>
-		<div>
+	<div>
 		<div id="relatieGegevens">
 			<input class="form-control" type="hidden" id="id" name="id" data-bind="value: id" />
 			<!--div class="form-group">
@@ -433,7 +437,7 @@
 				<input class="form-control" type="text" id="plaats" name="plaats" data-bind="value: plaats" />
 			</div>
 			
-			<div class="form-group">
+			<!--div class="form-group">
 				<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" href="#" id="voegRekeningToe"></span>
 				<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
 					<div id="rekeningnummer">
@@ -480,48 +484,59 @@
 				<label for="opslaanrelatie">&nbsp;</label>
 				<button id="opslaanrelatie" name="opslaanrelatie" data-bind="click: opslaan">Opslaan</button>
 				<span style="cursor:pointer;" id="verwijderen" data-bind="click: verwijderenRelatie">Verwijderen</span>
-			</div>
-		</div>
-		<div id="zakelijkeGegevens">
-			Gegevens van de bedrijven...?
-			<!--div id="bedrijven" data-bind="foreach: bedrijven visible: bedrijven > 0">
-				<span data-bind="text: naam"></span>
 			</div-->
 		</div>
+		<!--div id="zakelijkeGegevens">
+			Gegevens van de bedrijven...?
+			<div id="bedrijven" data-bind="foreach: bedrijven visible: bedrijven > 0">
+				<span data-bind="text: naam"></span>
+			</div>
+		</div-->
 		<div id="polissen">
+		wjfoiejfiowaejfjweojfwjeofjwaoeijfuierhgiuheruhgiueh
 			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
-				<!--a id="link_id">
+				<div data-bind="if: polisNummer">
+					<span data-bind="text: polisNummer"></span>
+				</div>
+			</div>
+				<!--script>
+						$('#link_id').click(function(){
+							console.log("SAdfsafsdfsdfsdf");
+						  window.open('url', 'window name', 'window settings');
+						  return false;
+						});
+				</script>
+				<a id="link_id">
 					<img src="images/add.png" alt="Toevoegen bijlage" />
 				</a-->
 				<!--input class="form-control" type="hidden" id="polisid" data-bind="value: id" />
 				<span data-bind="text: omschrijving"--><!--, click: $root.showBijlages" style="cursor:pointer;"--></span>
-				<h1 data-bind="text: soort"></h1>
+				<!--div data-bind="if: kenteken">
+					<span data-bind="text: kenteken"></span>
+				</div>
+				<div data-bind="if: soortAutoVerzekering">
+					<span data-bind="text: soortAutoVerzekering"></span>
+				</div>
 				<div data-bind="if: polisNummer">
-					<span class="polisLabel">Polisnummer :</span>
 					<span data-bind="text: polisNummer"></span>
 				</div>
-				<div data-bind="if: ingangsDatum">
-					<span class="polisLabel">Ingangsdatum :</span>
-					<span data-bind="text: ingangsDatum"></span>
-				</div>
-				<div data-bind="if: wijzigingsDatum">
-					<span class="polisLabel">Wijzigingsdatum :</span>
-					<span data-bind="text: wijzigingsDatum"></span>
-				</div>
-				<div data-bind="if: prolongatieDatum">
-					<span class="polisLabel">Prolongatie :</span>
-					<span data-bind="text: prolongatieDatum"></span>
+				<div data-bind="if: ingangsDatumString">
+					<span data-bind="text: ingangsDatumString"></span>
 				</div>
 				<div data-bind="if: maatschappij">
-					<span class="polisLabel">Maatschappij :</span>
 					<span data-bind="text: maatschappij"></span>
-				</div>
+				</div-->
+				<!--a onclick="
+					$('#bijlagesDialog').puidialog('show');">Bijlages</a-->
 					
-				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
-					<iframe data-bind="attr:{src: bestandsNaam}" width="600px;" height="800px;"></iframe>
-				</div>
-			</div>
-		</div>
+				<!--div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+					 <a data-bind="attr:{href: bestandsNaam}">
+					 
+						<img data-bind="attr:{src: bestandsNaamThumb}" alt="Bijlage" />
+					</a>
+				</div-->
+			<!--/div>
+		</div-->
 		<div id="toevoegenPolis">
 			<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen"></select>
 			<select id="soortVerzekering" name="soortVerzekering">
@@ -603,5 +618,5 @@
 				});
 			</script>
 		</div>
-	</div></div>
+	</div>
 </div>

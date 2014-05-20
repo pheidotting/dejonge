@@ -16,8 +16,10 @@ import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 
 import org.joda.time.LocalDate;
+import org.junit.Ignore;
 import org.openqa.selenium.support.PageFactory;
 
+@Ignore
 public class BeherenRelatieTest extends AbstractSeleniumTest {
 
     @Override

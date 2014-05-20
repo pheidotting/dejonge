@@ -9,8 +9,10 @@ import nl.dias.domein.json.JsonRelatie;
 import nl.dias.web.pagina.LijstRelaties;
 
 import org.joda.time.LocalDate;
+import org.junit.Ignore;
 import org.openqa.selenium.support.PageFactory;
 
+@Ignore
 public class LijstRelatiesTest extends AbstractSeleniumTest {
 
     @Override
