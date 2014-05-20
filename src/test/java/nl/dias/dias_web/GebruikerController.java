@@ -11,10 +11,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonPolis;
+import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.json.JsonTelefoonnummer;
 
 import org.joda.time.LocalDate;
 
@@ -45,6 +48,28 @@ public class GebruikerController {// implements GebruikerControllerInterface {
             Gson gson = new Gson();
 
             JsonRelatie jsonRelatie = gson.fromJson(json, JsonRelatie.class);
+            jsonRelatie.setZakelijkeKlant(true);
+
+            JsonRekeningNummer jsonRekeningNummer = new JsonRekeningNummer();
+            jsonRekeningNummer.setBic("bic");
+            jsonRekeningNummer.setRekeningnummer("rekeningnummer");
+            jsonRelatie.getRekeningnummers().add(jsonRekeningNummer);
+
+            JsonRekeningNummer jsonRekeningNummer2 = new JsonRekeningNummer();
+            jsonRekeningNummer2.setBic("bic2");
+            jsonRekeningNummer2.setRekeningnummer("rekeningnummer2");
+            jsonRelatie.getRekeningnummers().add(jsonRekeningNummer2);
+
+            JsonTelefoonnummer jsonTelefoonnummer1 = new JsonTelefoonnummer();
+            jsonTelefoonnummer1.setSoort("Werk");
+            jsonTelefoonnummer1.setTelefoonnummer("telefoonnummer1");
+            jsonRelatie.getTelefoonnummers().add(jsonTelefoonnummer1);
+
+            JsonTelefoonnummer jsonTelefoonnummer2 = new JsonTelefoonnummer();
+            jsonTelefoonnummer2.setSoort("Vast");
+            jsonTelefoonnummer2.setTelefoonnummer("telefoonnummer2");
+            jsonRelatie.getTelefoonnummers().add(jsonTelefoonnummer2);
+
             JsonPolis jsonPolis1 = new JsonPolis();
             jsonPolis1.setId(1L);
             jsonPolis1.setBetaalfrequentie("Maandelijks");
@@ -74,6 +99,18 @@ public class GebruikerController {// implements GebruikerControllerInterface {
             jsonPolis2.getBijlages().add(jsonBijlage);
 
             jsonRelatie.getPolissen().add(jsonPolis2);
+
+            JsonBedrijf jsonBedrijf1 = new JsonBedrijf();
+            jsonBedrijf1.setId(1L);
+            jsonBedrijf1.setHuisnummer(33L);
+            jsonBedrijf1.setKvk("kvknummer");
+            jsonBedrijf1.setNaam("NaamBedrijf");
+            jsonBedrijf1.setPlaats("PlaatsBedrijf");
+            jsonBedrijf1.setPostcode("1234AA");
+            jsonBedrijf1.setStraat("StraatBedrijf");
+            jsonBedrijf1.setToevoeging("A");
+
+            jsonRelatie.getBedrijven().add(jsonBedrijf1);
 
             GebruikerController.jsonRelatie = jsonRelatie;
         }

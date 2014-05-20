@@ -1,6 +1,5 @@
 <script type="text/javascript">
 	$('#tabs').puitabview();
-	$('#tabs').puitabview('disable' , 1);
 
 	function Relatie(data) {
 	    var self = this;
@@ -17,17 +16,23 @@
 		this.bsn = ko.observable(data.bsn);
 		this.identificatie = ko.observable(data.identificatie);
 		this.rekeningnummers = ko.observableArray();
-/*		$.each(data.rekeningnummers, function(i, item) {
+		this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
+		if(data.zakelijkeKlant){
+			$('#tabs').puitabview('enable' , 1);
+		}else{
+			$('#tabs').puitabview('disable' , 1);
+		}
+		$.each(data.rekeningnummers, function(i, item) {
 			self.rekeningnummers.push(new RekeningNummer(item));
-			});*/
+		});
 		this.telefoonnummers = ko.observableArray();
-/*		$.each(data.telefoonnummers, function(i, item) {
+		$.each(data.telefoonnummers, function(i, item) {
 			self.telefoonnummers.push(new TelefoonNummer(item));
-			});*/
+		});
 		this.bedrijven = ko.observableArray();
-/*		$.each(data.bedrijven, function(i, item) {
+		$.each(data.bedrijven, function(i, item) {
 			self.bedrijven.push(new Bedrijf(item));
-			});*/
+		});
 		this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
 		this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 		this.geslacht = ko.observable(data.geslacht);
@@ -196,18 +201,6 @@
 		var self = this;
 	
 		self.bestandsNaam = ko.observable(data.bestandsNaam);
-		/*			self.id = ko.observable(data.id);
-		self.bestandsNaamThumb = ko.observable();
-		self.bestandsNaamPdf = ko.observable();
-	self.bestandsNaam = ko.computed(function() {
-	        return "./Download?id=" + this.id();
-	    }, this);
-		self.bestandsNaamThumb = ko.computed(function() {
-	        return "./Download?id=" + this.id() + "&thumb=true";
-	    }, this);
-		self.bestandsNaamPdf = ko.computed(function() {
-	        return "./dejonge/Download?id=" + this.id() + "&pdf=true";
-	    }, this);*/
 	}
 	
 	
@@ -243,8 +236,6 @@
 			}
 		});
  */ 
-/* 		$('#bijlages').puilightbox(); 
- */	
 		if($('#id').val() != '0'){
 			$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
 	           	ko.applyBindings(new Relatie(data));
@@ -332,9 +323,9 @@
 		<div>
 		<div id="relatieGegevens">
 			<input class="form-control" type="hidden" id="id" name="id" data-bind="value: id" />
-			<!--div class="form-group">
+			<div class="form-group">
 				<label for="zakelijkeklant">Zakelijke klant</label>
-				<input class="form-control" type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="value: zakelijkeklant" />
+				<input class="form-control" type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="checked: zakelijkeklant" />
 				<script>
 					$('#zakelijkeklant').change(function(){
 						if($('#zakelijkeklant').is(':checked')){
@@ -344,7 +335,7 @@
 						}
 					});
 				</script>
-			</div-->
+			</div>
 			<div class="form-group">
 				<h3>Persoonsgegevens</h3>
 			</div>
@@ -481,17 +472,12 @@
 		</div>
 		<div id="zakelijkeGegevens">
 			Gegevens van de bedrijven...?
-			<!--div id="bedrijven" data-bind="foreach: bedrijven visible: bedrijven > 0">
+			<div id="bedrijven" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
 				<span data-bind="text: naam"></span>
-			</div-->
+			</div>
 		</div>
 		<div id="polissen">
 			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
-				<!--a id="link_id">
-					<img src="images/add.png" alt="Toevoegen bijlage" />
-				</a-->
-				<!--input class="form-control" type="hidden" id="polisid" data-bind="value: id" />
-				<span data-bind="text: omschrijving"--><!--, click: $root.showBijlages" style="cursor:pointer;"--></span>
 				<h1 data-bind="text: soort"></h1>
 				<div data-bind="if: polisNummer">
 					<span class="polisLabel">Polisnummer :</span>

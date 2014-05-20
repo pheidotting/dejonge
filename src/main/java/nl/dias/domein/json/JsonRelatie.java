@@ -34,8 +34,9 @@ public class JsonRelatie implements Serializable {
     private String geslacht;
     private String burgerlijkeStaat;
     private List<Long> onderlingeRelaties;
-    private List<Long> bedrijven;
+    private List<JsonBedrijf> bedrijven;
     private List<JsonPolis> polissen;
+    private boolean zakelijkeKlant;
 
     public Long getId() {
         return id;
@@ -223,11 +224,14 @@ public class JsonRelatie implements Serializable {
         this.onderlingeRelaties = onderlingeRelaties;
     }
 
-    public List<Long> getBedrijven() {
+    public List<JsonBedrijf> getBedrijven() {
+        if (bedrijven == null) {
+            bedrijven = new ArrayList<>();
+        }
         return bedrijven;
     }
 
-    public void setBedrijven(List<Long> bedrijven) {
+    public void setBedrijven(List<JsonBedrijf> bedrijven) {
         this.bedrijven = bedrijven;
     }
 
@@ -242,11 +246,19 @@ public class JsonRelatie implements Serializable {
         this.polissen = polissen;
     }
 
+    public boolean isZakelijkeKlant() {
+        return zakelijkeKlant;
+    }
+
+    public void setZakelijkeKlant(boolean zakelijkeKlant) {
+        this.zakelijkeKlant = zakelijkeKlant;
+    }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(achternaam).append(bedrijven).append(bsn).append(burgerlijkeStaat).append(geboorteDatum).append(geslacht).append(huisnummer).append(id)
                 .append(identificatie).append(kantoor).append(onderlingeRelaties).append(opmerkingen).append(overlijdensdatum).append(plaats).append(postcode).append(rekeningnummers).append(straat)
-                .append(telefoonnummers).append(toevoeging).append(tussenvoegsel).append(voornaam).append(polissen).toHashCode();
+                .append(telefoonnummers).append(toevoeging).append(tussenvoegsel).append(voornaam).append(polissen).append(zakelijkeKlant).toHashCode();
     }
 
     @Override
@@ -267,7 +279,7 @@ public class JsonRelatie implements Serializable {
                 .append(kantoor, other.kantoor).append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(overlijdensdatum, other.overlijdensdatum)
                 .append(plaats, other.plaats).append(postcode, other.postcode).append(rekeningnummers, other.rekeningnummers).append(straat, other.straat)
                 .append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging).append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam)
-                .append(polissen, other.polissen).isEquals();
+                .append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
     }
 
     @Override
@@ -295,6 +307,7 @@ public class JsonRelatie implements Serializable {
         builder.append(", onderlingeRelaties=").append(onderlingeRelaties);
         builder.append(", bedrijven=").append(bedrijven);
         builder.append(", polissen=").append(polissen);
+        builder.append(", zakelijkeKlant=").append(zakelijkeKlant);
         builder.append("]");
         return builder.toString();
     }

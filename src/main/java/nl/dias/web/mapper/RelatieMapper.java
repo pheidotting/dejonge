@@ -3,13 +3,11 @@ package nl.dias.web.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.domein.Bedrijf;
 import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.Geslacht;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -22,6 +20,8 @@ public class RelatieMapper {
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
     private PolisMapper polisMapper;
+    @InjectParam
+    private BedrijfMapper bedrijfMapper;
 
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
         Relatie relatie = new Relatie();
@@ -114,14 +114,7 @@ public class RelatieMapper {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(ol.getId());
         }
-        for (Bedrijf b : relatie.getBedrijven()) {
-            jsonRelatie.getBedrijven().add(b.getId());
-        }
-        System.out.println("#########");
-        for (Polis polis : relatie.getPolissen()) {
-            System.out.println(polis);
-        }
-        System.out.println("#########");
+        jsonRelatie.setBedrijven(bedrijfMapper.mapAllNaarJson(relatie.getBedrijven()));
         jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
 
         return jsonRelatie;
