@@ -11,7 +11,8 @@ import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonOpmerking;
 
 @Named
-public class OpmerkingMapper {
+public class OpmerkingMapper implements Mapper<Opmerking, JsonOpmerking> {
+    @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
         Opmerking opmerking = new Opmerking();
 
@@ -22,6 +23,7 @@ public class OpmerkingMapper {
         return opmerking;
     }
 
+    @Override
     public Set<Opmerking> mapAllVanJson(List<JsonOpmerking> jsonOpmerkingen) {
         Set<Opmerking> ret = new HashSet<>();
         for (JsonOpmerking jsonOpmerking : jsonOpmerkingen) {
@@ -30,6 +32,7 @@ public class OpmerkingMapper {
         return ret;
     }
 
+    @Override
     public JsonOpmerking mapNaarJson(Opmerking opmerking) {
         JsonOpmerking jsonOpmerking = new JsonOpmerking();
 
@@ -40,6 +43,7 @@ public class OpmerkingMapper {
         return jsonOpmerking;
     }
 
+    @Override
     public List<JsonOpmerking> mapAllNaarJson(Set<Opmerking> opmerkingen) {
         List<JsonOpmerking> ret = new ArrayList<>();
         for (Opmerking opmerking : opmerkingen) {

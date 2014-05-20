@@ -11,7 +11,8 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.json.JsonRekeningNummer;
 
 @Named
-public class RekeningnummerMapper {
+public class RekeningnummerMapper implements Mapper<RekeningNummer, JsonRekeningNummer> {
+    @Override
     public RekeningNummer mapVanJson(JsonRekeningNummer jsonRekeningNummer) {
         RekeningNummer rekeningNummer = new RekeningNummer();
 
@@ -22,6 +23,7 @@ public class RekeningnummerMapper {
         return rekeningNummer;
     }
 
+    @Override
     public Set<RekeningNummer> mapAllVanJson(List<JsonRekeningNummer> jsonRekeningNummers) {
         Set<RekeningNummer> ret = new HashSet<>();
         for (JsonRekeningNummer json : jsonRekeningNummers) {
@@ -30,6 +32,7 @@ public class RekeningnummerMapper {
         return ret;
     }
 
+    @Override
     public JsonRekeningNummer mapNaarJson(RekeningNummer rekeningNummer) {
         JsonRekeningNummer jsonRekeningNummer = new JsonRekeningNummer();
 
@@ -40,6 +43,7 @@ public class RekeningnummerMapper {
         return jsonRekeningNummer;
     }
 
+    @Override
     public List<JsonRekeningNummer> mapAllNaarJson(Set<RekeningNummer> rekeningNummers) {
         List<JsonRekeningNummer> ret = new ArrayList<>();
         for (RekeningNummer rekeningNummer : rekeningNummers) {

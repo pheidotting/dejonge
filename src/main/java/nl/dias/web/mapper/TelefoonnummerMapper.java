@@ -12,7 +12,8 @@ import nl.dias.domein.TelefoonnummerSoort;
 import nl.dias.domein.json.JsonTelefoonnummer;
 
 @Named
-public class TelefoonnummerMapper {
+public class TelefoonnummerMapper implements Mapper<Telefoonnummer, JsonTelefoonnummer> {
+    @Override
     public Telefoonnummer mapVanJson(JsonTelefoonnummer jsonTelefoonnummer) {
         Telefoonnummer telefoonnummer = new Telefoonnummer();
 
@@ -23,6 +24,7 @@ public class TelefoonnummerMapper {
         return telefoonnummer;
     }
 
+    @Override
     public Set<Telefoonnummer> mapAllVanJson(List<JsonTelefoonnummer> jsons) {
         Set<Telefoonnummer> ret = new HashSet<>();
         for (JsonTelefoonnummer json : jsons) {
@@ -32,6 +34,7 @@ public class TelefoonnummerMapper {
         return ret;
     }
 
+    @Override
     public JsonTelefoonnummer mapNaarJson(Telefoonnummer telefoonnummer) {
         JsonTelefoonnummer jsonTelefoonnummer = new JsonTelefoonnummer();
 
@@ -42,6 +45,7 @@ public class TelefoonnummerMapper {
         return jsonTelefoonnummer;
     }
 
+    @Override
     public List<JsonTelefoonnummer> mapAllNaarJson(Set<Telefoonnummer> nummers) {
         List<JsonTelefoonnummer> ret = new ArrayList<>();
         for (Telefoonnummer nummer : nummers) {

@@ -1,7 +1,9 @@
 package nl.dias.web.mapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.Geslacht;
@@ -11,7 +13,7 @@ import nl.dias.domein.json.JsonRelatie;
 
 import com.sun.jersey.api.core.InjectParam;
 
-public class RelatieMapper {
+public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
     @InjectParam
     private TelefoonnummerMapper telefoonnummerMapper;
     @InjectParam
@@ -23,6 +25,7 @@ public class RelatieMapper {
     @InjectParam
     private BedrijfMapper bedrijfMapper;
 
+    @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
         Relatie relatie = new Relatie();
         relatie.setId(jsonRelatie.getId());
@@ -47,8 +50,9 @@ public class RelatieMapper {
         return relatie;
     }
 
-    public List<Relatie> mapAllVanJson(List<JsonRelatie> jsonRelaties) {
-        List<Relatie> relaties = new ArrayList<>();
+    @Override
+    public Set<Relatie> mapAllVanJson(List<JsonRelatie> jsonRelaties) {
+        Set<Relatie> relaties = new HashSet<>();
         for (JsonRelatie jsonRelatie : jsonRelaties) {
             relaties.add(mapVanJson(jsonRelatie));
         }
@@ -56,7 +60,8 @@ public class RelatieMapper {
         return relaties;
     }
 
-    public List<JsonRelatie> mapAllNaarJson(List<Relatie> relaties) {
+    @Override
+    public List<JsonRelatie> mapAllNaarJson(Set<Relatie> relaties) {
         List<JsonRelatie> jsonRelaties = new ArrayList<>();
         for (Relatie relatie : relaties) {
             jsonRelaties.add(mapNaarJson(relatie));
@@ -65,6 +70,7 @@ public class RelatieMapper {
         return jsonRelaties;
     }
 
+    @Override
     public JsonRelatie mapNaarJson(Relatie relatie) {
         JsonRelatie jsonRelatie = new JsonRelatie();
 

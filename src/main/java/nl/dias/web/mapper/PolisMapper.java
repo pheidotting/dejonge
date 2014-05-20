@@ -15,15 +15,17 @@ import nl.dias.domein.polis.Polis;
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
-public class PolisMapper {
+public class PolisMapper implements Mapper<Polis, JsonPolis> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
 
+    @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
 
         return null;
     }
 
+    @Override
     public Set<Polis> mapAllVanJson(List<JsonPolis> jsonPolissen) {
         Set<Polis> ret = new HashSet<>();
         for (JsonPolis jsonPolis : jsonPolissen) {
@@ -32,6 +34,7 @@ public class PolisMapper {
         return ret;
     }
 
+    @Override
     public JsonPolis mapNaarJson(Polis polis) {
         JsonPolis jsonPolis = new JsonPolis();
 
@@ -56,6 +59,7 @@ public class PolisMapper {
         return jsonPolis;
     }
 
+    @Override
     public List<JsonPolis> mapAllNaarJson(Set<Polis> polissen) {
         List<JsonPolis> ret = new ArrayList<>();
         for (Polis polis : polissen) {
