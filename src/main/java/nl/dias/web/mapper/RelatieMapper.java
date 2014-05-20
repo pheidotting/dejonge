@@ -96,7 +96,9 @@ public class RelatieMapper {
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
-        jsonRelatie.setKantoor(relatie.getKantoor().getId());
+        if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
+            jsonRelatie.setKantoor(relatie.getKantoor().getId());
+        }
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
         jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
