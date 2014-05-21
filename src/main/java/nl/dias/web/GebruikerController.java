@@ -10,6 +10,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.OnderlingeRelatieSoort;
@@ -17,6 +18,7 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.KantoorService;
 import nl.dias.web.mapper.BedrijfMapper;
@@ -38,6 +40,8 @@ public class GebruikerController {// extends AbstractController {
     private GebruikerService gebruikerService;
     @InjectParam
     private KantoorService kantoorService;
+    @InjectParam
+    private BedrijfService bedrijfService;
     @InjectParam
     private RelatieMapper relatieMapper;
     @InjectParam
@@ -189,7 +193,11 @@ public class GebruikerController {// extends AbstractController {
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
         Relatie relatie = (Relatie) gebruikerService.lees(jsonBedrijf.getRelatie());
 
-        relatie.getBedrijven().add(bedrijfMapper.mapVanJson(jsonBedrijf));
+        Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
+        bedrijf.setRelatie(relatie);
+        bedrijfService.opslaan(bedrijf);
+
+        relatie.getBedrijven().add(bedrijf);
 
         gebruikerService.opslaan(relatie);
         return null;

@@ -46,10 +46,12 @@ public class Bedrijf implements Serializable, PersistenceObject {
 
     private Adres adres;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -90,6 +92,9 @@ public class Bedrijf implements Serializable, PersistenceObject {
     }
 
     public Adres getAdres() {
+        if (adres == null) {
+            adres = new Adres();
+        }
         return adres;
     }
 
