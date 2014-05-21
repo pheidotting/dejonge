@@ -14,10 +14,12 @@ import nl.dias.domein.Gebruiker;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.OnderlingeRelatieSoort;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.KantoorService;
+import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
 
 import org.apache.log4j.Logger;
@@ -27,7 +29,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Path("/gebruiker")
 public class GebruikerController {// extends AbstractController {
-    private Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     // private InlogUtil inlogUtil = new InlogUtil();
     private String cookieCode;
@@ -38,6 +40,8 @@ public class GebruikerController {// extends AbstractController {
     private KantoorService kantoorService;
     @InjectParam
     private RelatieMapper relatieMapper;
+    @InjectParam
+    private BedrijfMapper bedrijfMapper;
 
     //
     // @GET
@@ -177,6 +181,18 @@ public class GebruikerController {// extends AbstractController {
         logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
 
         return Response.status(200).entity(relatie.getId()).build();
+    }
+
+    @POST
+    @Path("opslaanBedrijf")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
+        Relatie relatie = (Relatie) gebruikerService.lees(jsonBedrijf.getRelatie());
+
+        relatie.getBedrijven().add(bedrijfMapper.mapVanJson(jsonBedrijf));
+
+        gebruikerService.opslaan(relatie);
+        return null;
     }
 
     @GET

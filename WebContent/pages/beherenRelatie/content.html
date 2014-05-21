@@ -159,15 +159,20 @@
 	}
 	
 	function Bedrijf(data){
-		
-/* 		this.id = ko.observable(data.id);
- *//* 		private Set<Polis> polissen;
- */
-		this.naam = ko.observable(data.naam);
- /* 		this.kvk = ko.observable(data.kvk);
- */
-/* 		private Adres adres;
- */		
+	    this.id = ko.observable(data.id);
+	    this.polissen = ko.observableArray();
+ 		if(data.polissen != null){
+			$.each(data.polissen, function(i, item){
+				self.polissen.push(new Polis(item));
+			})
+ 		}
+	    this.naam = ko.observable(data.naam);
+	    this.kvk = ko.observable(data.kvk);
+	    this.straat = ko.observable(data.straat);
+	    this.huisnummer = ko.observable(data.huisnummer);
+	    this.toevoeging = ko.observable(data.toevoeging);
+	    this.postcode = ko.observable(data.postcode);
+	    this.plaats = ko.observable(data.plaats);
 	}
 	
 	function Polis(data){
@@ -471,10 +476,70 @@
 			</div>
 		</div>
 		<div id="zakelijkeGegevens">
-			Gegevens van de bedrijven...?
+			<h3>Gegevens van de bedrijven</h3>
 			<div id="bedrijven" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
-				<span data-bind="text: naam"></span>
+				<div data-bind="if: naam">
+					<span class="polisLabel">Naam :</span>
+					<span data-bind="text: naam"></span>
+				</div>
+   				<div data-bind="if: kvk">
+					<span class="polisLabel">Kvk :</span>
+   					<span data-bind="text: kvk"></span>
+   				</div>
+   				<div data-bind="if: straat">
+					<span class="polisLabel">Straat :</span>
+   					<span data-bind="text: straat"></span>
+   				</div>
+   				<div data-bind="if: huisnummer">
+					<span class="polisLabel">Huisnummer :</span>
+   					<span data-bind="text: huisnummer"></span>
+   				</div>
+   				<div data-bind="if: toevoeging">
+					<span class="polisLabel">Toevoeging :</span>
+   					<span data-bind="text: toevoeging"></span>
+   				</div>
+   				<div data-bind="if: postcode">
+					<span class="polisLabel">Postcode :</span>
+   					<span data-bind="text: postcode"></span>
+   				</div>
+   				<div data-bind="if: plaats">
+					<span class="polisLabel">Plaats :</span>
+	   				<span data-bind="text: plaats"></span>
+   				</div>
 			</div>
+			<h3>Bedrijf toevoegen</h3>
+			<input type="text" id="naamBedrijf" placeholder="Naam..." /><br />
+			<input type="text" id="kvkBedrijf" placeholder="Kvk..." /><br />
+			<input type="text" id="straatBedrijf" placeholder="Straat..." /><br />
+			<input type="text" id="huisnummerBedrijf" placeholder="Huisnummer..." /><br />
+			<input type="text" id="toevoegingBedrijf" placeholder="Toevoeging..." /><br />
+			<input type="text" id="postcodeBedrijf" placeholder="Postcode..." /><br />
+			<input type="text" id="plaatsBedrijf" placeholder="Plaats..." /><br />
+			<button id="opslaanBedrijf">Opslaan</button>
+			<script>
+				$('#opslaanBedrijf').click(function(){
+	            	var polis = {
+		            	relatie : $('#id').val(),
+		            	naam : $('#naamBedrijf').val(),
+		            	kvk : $('#kvkBedrijf').val(),
+		            	straat : $('#straatBedrijf').val(),
+		            	huisnummer : $('#huisnummerBedrijf').val(),
+		            	toevoeging : $('#toevoegingBedrijf').val(),
+		            	postcode : $('#postcodeBedrijf').val(),
+		            	plaats : $('#plaatsBedrijf').val()
+	            	}
+	            	var json = JSON.stringify(polis);
+					$.ajax({
+						type: "POST",
+						url: '../dejonge/rest/gebruiker/opslaanBedrijf',
+						contentType: "application/json",
+			            data: json
+			    	});
+					$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
+			           	ko.applyBindings(new Relatie(data));
+				    });
+				});
+			</script>
 		</div>
 		<div id="polissen">
 			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">

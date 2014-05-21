@@ -12,6 +12,7 @@ public class JsonBedrijf {
     private String toevoeging;
     private String postcode;
     private String plaats;
+    private Long relatie;
 
     public Long getId() {
         return id;
@@ -84,4 +85,40 @@ public class JsonBedrijf {
     public void setPlaats(String plaats) {
         this.plaats = plaats;
     }
+
+    public Long getRelatie() {
+        return relatie;
+    }
+
+    public void setRelatie(Long relatie) {
+        this.relatie = relatie;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("JsonBedrijf [id=");
+        builder.append(id);
+        builder.append(", polissen=");
+        builder.append(polissen);
+        builder.append(", naam=");
+        builder.append(naam);
+        builder.append(", kvk=");
+        builder.append(kvk);
+        builder.append(", straat=");
+        builder.append(straat);
+        builder.append(", huisnummer=");
+        builder.append(huisnummer);
+        builder.append(", toevoeging=");
+        builder.append(toevoeging);
+        builder.append(", postcode=");
+        builder.append(postcode);
+        builder.append(", plaats=");
+        builder.append(plaats);
+        builder.append(", relatie=");
+        builder.append(relatie);
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

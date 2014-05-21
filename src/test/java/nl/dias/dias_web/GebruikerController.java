@@ -145,6 +145,14 @@ public class GebruikerController {// implements GebruikerControllerInterface {
         return null;
     }
 
+    @POST
+    @Path("opslaanBedrijf")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
+        System.out.println(jsonBedrijf);
+        return null;
+    }
+
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
