@@ -146,7 +146,7 @@ public class GebruikerController {// implements GebruikerControllerInterface {
     }
 
     @POST
-    @Path("opslaanBedrijf")
+    @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
         System.out.println(jsonBedrijf);
