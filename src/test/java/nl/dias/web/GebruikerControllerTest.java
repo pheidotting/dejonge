@@ -3,7 +3,9 @@ package nl.dias.web;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonRelatie;
@@ -68,6 +70,7 @@ public class GebruikerControllerTest extends EasyMockSupport {
     public void lijst() throws CloneNotSupportedException {
         Relatie relatie = new Relatie();
         List<Relatie> lijst = new ArrayList<>();
+        Set<Relatie> lijst1 = new HashSet<>();
         lijst.add(relatie.clone());
 
         JsonRelatie jsonRelatie = new JsonRelatie();
@@ -75,7 +78,7 @@ public class GebruikerControllerTest extends EasyMockSupport {
         jsonRelaties.add(jsonRelatie);
 
         EasyMock.expect(gebruikerService.alleRelaties(null)).andReturn(lijst);
-        EasyMock.expect(mapper.mapAllNaarJson(lijst)).andReturn(jsonRelaties);
+        EasyMock.expect(mapper.mapAllNaarJson(lijst1)).andReturn(jsonRelaties);
 
         replayAll();
 
