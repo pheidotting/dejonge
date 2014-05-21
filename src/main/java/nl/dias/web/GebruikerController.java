@@ -191,6 +191,7 @@ public class GebruikerController {// extends AbstractController {
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
+        System.out.println(jsonBedrijf);
         Relatie relatie = (Relatie) gebruikerService.lees(jsonBedrijf.getRelatie());
 
         Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
