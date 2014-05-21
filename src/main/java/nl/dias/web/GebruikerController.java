@@ -192,7 +192,7 @@ public class GebruikerController {// extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
         System.out.println(jsonBedrijf);
-        Relatie relatie = (Relatie) gebruikerService.lees(jsonBedrijf.getRelatie());
+        Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(jsonBedrijf.getRelatie()));
 
         Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
         bedrijf.setRelatie(relatie);
@@ -201,7 +201,10 @@ public class GebruikerController {// extends AbstractController {
         relatie.getBedrijven().add(bedrijf);
 
         gebruikerService.opslaan(relatie);
-        return null;
+
+        System.out.println(bedrijf);
+
+        return Response.status(200).build();
     }
 
     @GET

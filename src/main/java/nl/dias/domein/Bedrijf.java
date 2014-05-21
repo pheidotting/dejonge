@@ -102,4 +102,18 @@ public class Bedrijf implements Serializable, PersistenceObject {
         this.adres = adres;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Bedrijf [id=");
+        builder.append(id);
+        builder.append(", naam=");
+        builder.append(naam);
+        builder.append(", kvk=");
+        builder.append(kvk);
+        builder.append(", adres=");
+        builder.append(adres);
+        builder.append("]");
+        return builder.toString();
+    }
 }

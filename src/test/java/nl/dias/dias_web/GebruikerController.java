@@ -101,8 +101,8 @@ public class GebruikerController {// implements GebruikerControllerInterface {
             jsonRelatie.getPolissen().add(jsonPolis2);
 
             JsonBedrijf jsonBedrijf1 = new JsonBedrijf();
-            jsonBedrijf1.setId(1L);
-            jsonBedrijf1.setHuisnummer(33L);
+            // jsonBedrijf1.setId(1L);
+            // jsonBedrijf1.setHuisnummer(33L);
             jsonBedrijf1.setKvk("kvknummer");
             jsonBedrijf1.setNaam("NaamBedrijf");
             jsonBedrijf1.setPlaats("PlaatsBedrijf");

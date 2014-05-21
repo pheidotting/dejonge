@@ -17,15 +17,19 @@ public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
     public Bedrijf mapVanJson(JsonBedrijf json) {
         Bedrijf bedrijf = new Bedrijf();
 
-        bedrijf.getAdres().setHuisnummer(json.getHuisnummer());
+        if (json.getHuisnummer() != null) {
+            bedrijf.getAdres().setHuisnummer(Long.parseLong(json.getHuisnummer()));
+        }
         bedrijf.getAdres().setPlaats(json.getPlaats());
         bedrijf.getAdres().setPostcode(json.getPostcode());
         bedrijf.getAdres().setStraat(json.getStraat());
         bedrijf.getAdres().setToevoeging(json.getToevoeging());
 
-        bedrijf.setId(json.getId());
+        if (json.getId() != null) {
+            bedrijf.setId(Long.parseLong(json.getId()));
+        }
         bedrijf.setKvk(json.getKvk());
-        bedrijf.setNaam(json.getKvk());
+        bedrijf.setNaam(json.getNaam());
 
         return bedrijf;
     }
@@ -45,13 +49,17 @@ public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
     public JsonBedrijf mapNaarJson(Bedrijf object) {
         JsonBedrijf json = new JsonBedrijf();
 
-        json.setHuisnummer(object.getAdres().getHuisnummer());
-        json.setId(object.getId());
+        if (object.getId() != null) {
+            json.setId(object.getId().toString());
+        }
         json.setKvk(object.getKvk());
         json.setNaam(object.getNaam());
+        if (object.getAdres().getHuisnummer() != null) {
+            json.setHuisnummer(object.getAdres().getHuisnummer().toString());
+        }
         json.setPlaats(object.getAdres().getPlaats());
         json.setPostcode(object.getAdres().getPostcode());
-        json.setRelatie(object.getRelatie().getId());
+        json.setRelatie(object.getRelatie().getId().toString());
         json.setStraat(object.getAdres().getStraat());
         json.setToevoeging(object.getAdres().getToevoeging());
 

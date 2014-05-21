@@ -17,7 +17,7 @@
 		this.identificatie = ko.observable(data.identificatie);
 		this.rekeningnummers = ko.observableArray();
 		this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
-		if(data.zakelijkeKlant){
+		if(this.zakelijkeKlant){
 			$('#tabs').puitabview('enable' , 1);
 		}else{
 			$('#tabs').puitabview('disable' , 1);
@@ -476,12 +476,9 @@
 			</div>
 		</div>
 		<div id="zakelijkeGegevens">
-			<h3>Gegevens van de bedrijven</h3>
+			<h2>Gegevens van de bedrijven</h2>
 			<div id="bedrijven" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
-				<div data-bind="if: naam">
-					<span class="polisLabel">Naam :</span>
-					<span data-bind="text: naam"></span>
-				</div>
+				<h3 data-bind="text: naam"></h3>
    				<div data-bind="if: kvk">
 					<span class="polisLabel">Kvk :</span>
    					<span data-bind="text: kvk"></span>
@@ -507,7 +504,7 @@
 	   				<span data-bind="text: plaats"></span>
    				</div>
 			</div>
-			<h3>Bedrijf toevoegen</h3>
+			<h2>Bedrijf toevoegen</h2>
 			<input type="text" id="naamBedrijf" placeholder="Naam..." /><br />
 			<input type="text" id="kvkBedrijf" placeholder="Kvk..." /><br />
 			<input type="text" id="straatBedrijf" placeholder="Straat..." /><br />
@@ -518,17 +515,17 @@
 			<button id="opslaanBedrijf">Opslaan</button>
 			<script>
 				$('#opslaanBedrijf').click(function(){
-	            	var polis = {
+	            	var bedrijf = {
 		            	relatie : $('#id').val(),
 		            	naam : $('#naamBedrijf').val(),
-		            	kvk : $('#kvkBedrijf').val(),
+ 		            	kvk : $('#kvkBedrijf').val(),
 		            	straat : $('#straatBedrijf').val(),
 		            	huisnummer : $('#huisnummerBedrijf').val(),
 		            	toevoeging : $('#toevoegingBedrijf').val(),
 		            	postcode : $('#postcodeBedrijf').val(),
 		            	plaats : $('#plaatsBedrijf').val()
 	            	}
-	            	var json = JSON.stringify(polis);
+	            	var json = JSON.stringify(bedrijf);
 					$.ajax({
 						type: "POST",
 						url: '../dejonge/rest/gebruiker/opslaanBedrijf',

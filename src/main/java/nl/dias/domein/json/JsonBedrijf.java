@@ -1,34 +1,32 @@
 package nl.dias.domein.json;
 
-import java.util.List;
-
 public class JsonBedrijf {
-    private Long id;
-    private List<JsonPolis> polissen;
+    private String id;
+    // private List<JsonPolis> polissen;
     private String naam;
     private String kvk;
     private String straat;
-    private Long huisnummer;
+    private String huisnummer;
     private String toevoeging;
     private String postcode;
     private String plaats;
-    private Long relatie;
+    private String relatie;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public List<JsonPolis> getPolissen() {
-        return polissen;
-    }
-
-    public void setPolissen(List<JsonPolis> polissen) {
-        this.polissen = polissen;
-    }
+    // public List<JsonPolis> getPolissen() {
+    // return polissen;
+    // }
+    //
+    // public void setPolissen(List<JsonPolis> polissen) {
+    // this.polissen = polissen;
+    // }
 
     public String getNaam() {
         return naam;
@@ -54,11 +52,11 @@ public class JsonBedrijf {
         this.straat = straat;
     }
 
-    public Long getHuisnummer() {
+    public String getHuisnummer() {
         return huisnummer;
     }
 
-    public void setHuisnummer(Long huisnummer) {
+    public void setHuisnummer(String huisnummer) {
         this.huisnummer = huisnummer;
     }
 
@@ -86,11 +84,11 @@ public class JsonBedrijf {
         this.plaats = plaats;
     }
 
-    public Long getRelatie() {
+    public String getRelatie() {
         return relatie;
     }
 
-    public void setRelatie(Long relatie) {
+    public void setRelatie(String relatie) {
         this.relatie = relatie;
     }
 
@@ -99,8 +97,8 @@ public class JsonBedrijf {
         StringBuilder builder = new StringBuilder();
         builder.append("JsonBedrijf [id=");
         builder.append(id);
-        builder.append(", polissen=");
-        builder.append(polissen);
+        // builder.append(", polissen=");
+        // builder.append(polissen);
         builder.append(", naam=");
         builder.append(naam);
         builder.append(", kvk=");
