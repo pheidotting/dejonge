@@ -15,7 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bijlage;
@@ -217,9 +216,11 @@ public class PolisController {// extends AbstractController {
 
         File file = new File("c://Uploads//" + bijlage.getBestandsNaam());
 
-        ResponseBuilder response = Response.ok(file);
-        response.header("Content-Disposition", "attachment; filename=" + bijlage.getBestandsNaam());
-        return response.build();
+        // ResponseBuilder response = Response.ok(file);
+        // response.header("Content-Disposition", "attachment; filename=" +
+        // bijlage.getBestandsNaam());
+        // return response.build();
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM).header("content-disposition", "attachment; filename = doc.rtf").build();
 
     }
 
