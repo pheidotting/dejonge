@@ -205,7 +205,10 @@
 	function Bijlage(data){
 		var self = this;
 	
-		self.bestandsNaam = ko.observable(data.bestandsNaam);
+		self.bestandsNaam = ko.computed(function() {
+		        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
+		    }, this);
+
 	}
 	
 	
