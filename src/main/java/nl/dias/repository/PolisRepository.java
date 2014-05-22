@@ -63,4 +63,11 @@ public class PolisRepository extends AbstractRepository<Polis> {
 
         return poli;
     }
+
+    @Transactional
+    public Polis zoekOpPolisNummer(String PolisNummer) {
+        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.zoekOpPolisNummer", Polis.class);
+        query.setParameter("polisNummer", PolisNummer);
+        return query.getSingleResult();
+    }
 }

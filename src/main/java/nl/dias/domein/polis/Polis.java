@@ -41,7 +41,8 @@ import org.joda.time.LocalDate;
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
 @Audited
-@NamedQueries({ @NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij") })
+@NamedQueries({ @NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"),
+        @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer") })
 public abstract class Polis implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 1011438129295546984L;
 
@@ -95,10 +96,12 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     public abstract SoortVerzekering getSoortVerzekering();
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

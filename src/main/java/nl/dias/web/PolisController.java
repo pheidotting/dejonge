@@ -1,5 +1,10 @@
 package nl.dias.web;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -9,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
@@ -40,10 +46,12 @@ import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
-    private Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     @InjectParam
     private PolisService polisService;
@@ -52,7 +60,7 @@ public class PolisController {// extends AbstractController {
     @InjectParam
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     @POST
     @Path("/opslaan")
@@ -157,6 +165,42 @@ public class PolisController {// extends AbstractController {
             messages = "ok";
         }
         return gson.toJson(messages);
+    }
+
+    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
+        Polis polis = polisService.zoekOpPolisNummer(polisNummer);
+
+        String uploadedFileLocation = "c://Uploads/" + polis.getId() + "-" + fileDetail.getFileName();
+
+        // save it
+        writeToFile(uploadedInputStream, uploadedFileLocation);
+
+        String output = "File uploaded to : " + uploadedFileLocation;
+
+        return Response.status(200).entity(output).build();
+
+    }
+
+    private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
+        try {
+            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            out = new FileOutputStream(new File(uploadedFileLocation));
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
     }
 
     /**

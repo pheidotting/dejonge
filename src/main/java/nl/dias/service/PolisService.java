@@ -22,4 +22,8 @@ public class PolisService {
     public void opslaan(Polis polis) {
         polisRepository.opslaan(polis);
     }
+
+    public Polis zoekOpPolisNummer(String PolisNummer) {
+        return polisRepository.zoekOpPolisNummer(PolisNummer);
+    }
 }

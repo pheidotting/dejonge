@@ -611,20 +611,24 @@
 				<option>Woonhuis</option>
 				<option>Zorg</option>
 			</select>
-			<input class="form-control" type="text" id="polisNummer" placeholder="Polisnummer..."  />
-			<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
-			<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
-			<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
-			<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." />
-			<div id="div_betaalfrequentie">
-				<select id="betaalfrequentie">
-					<option value="">Betaalfrequentie...</option>
-					<option>Jaar</option>
-					<option>Kwartaal</option>
-					<option>Jaar</option>
-				</select>
-			</div>
+			<form enctype="multipart/form-data">
+				<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..."  />
+				<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
+				<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
+				<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
+				<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." />
+				<div id="div_betaalfrequentie">
+					<select id="betaalfrequentie">
+						<option value="">Betaalfrequentie...</option>
+						<option>Jaar</option>
+						<option>Kwartaal</option>
+						<option>Jaar</option>
+					</select>
+				</div>
+				<input type="file" id="file" name="file" />
+			</form>
 			<button id="opslaanPolis">Opslaan</button>
+			<progress style="display:none;"></progress>
 			<script>
 				$('#opslaanPolis').click(function(){
 	            	var polis = {
@@ -639,11 +643,35 @@
 						betaalfrequentie : $('#betaalfrequentie').val()
 	            	}
 	            	var json = JSON.stringify(polis);
-					$.ajax({
+ 					$.ajax({
 						type: "POST",
 						url: '../dejonge/rest/polis/opslaan',
 						contentType: "application/json",
-			            data: json
+			            data: json,
+			            success: function(data) {
+			            	$('progress').show();
+							var formData = new FormData($('form')[0]);
+		            	    $.ajax({
+								url: '../dejonge/rest/polis/upload',
+		            	        type: 'POST',
+		            	        xhr: function() {  // Custom XMLHttpRequest
+		            	            var myXhr = $.ajaxSettings.xhr();
+		            	            if(myXhr.upload){ // Check if upload property exists
+		            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+		            	            }
+		            	            return myXhr;
+		            	        },
+		            	        data: formData,
+		            	        cache: false,
+		            	        contentType: false,
+		            	        processData: false
+		            	    });
+		            	    function progressHandlingFunction(e){
+		            	        if(e.lengthComputable){
+		            	            $('progress').attr({value:e.loaded,max:e.total});
+		            	        }
+		            	    }
+			        	}
 			    	});
 				});
 			</script>
