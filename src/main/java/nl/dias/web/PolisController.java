@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.OpslaanPolis;
@@ -210,12 +211,14 @@ public class PolisController {// extends AbstractController {
     @GET
     @Path("/download")
     @Produces("application/pdf")
-    public Response getFile() {
+    public Response getFile(@QueryParam("bijlageId") String bijlageId) {
 
-        File file = new File("c://Uploads//3-Jaaropgaaf 2013 Nationale Nederlanden 1.pdf");
+        Bijlage bijlage = polisService.leesBijlage(Long.parseLong(bijlageId));
+
+        File file = new File("c://Uploads//" + bijlage.getBestandsNaam());
 
         ResponseBuilder response = Response.ok(file);
-        response.header("Content-Disposition", "attachment; filename=new-excel-file.xls");
+        response.header("Content-Disposition", "attachment; filename=" + bijlage.getBestandsNaam());
         return response.build();
 
     }

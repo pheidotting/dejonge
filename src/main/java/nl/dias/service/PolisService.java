@@ -35,4 +35,8 @@ public class PolisService {
 
         polisRepository.opslaanBijlage(bijlage);
     }
+
+    public Bijlage leesBijlage(Long id) {
+        return polisRepository.leesBijlage(id);
+    }
 }

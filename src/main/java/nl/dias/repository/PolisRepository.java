@@ -76,4 +76,8 @@ public class PolisRepository extends AbstractRepository<Polis> {
     public void opslaanBijlage(Bijlage bijlage) {
         getEm().persist(bijlage);
     }
+
+    public Bijlage leesBijlage(Long id) {
+        return getEm().find(Bijlage.class, id);
+    }
 }
