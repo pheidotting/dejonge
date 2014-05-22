@@ -95,7 +95,7 @@ public class GebruikerController {// implements GebruikerControllerInterface {
             jsonPolis2.setWijzigingsDatum(new Date());
 
             JsonBijlage jsonBijlage = new JsonBijlage();
-            jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
+            // jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
             jsonPolis2.getBijlages().add(jsonBijlage);
 
             jsonRelatie.getPolissen().add(jsonPolis2);
