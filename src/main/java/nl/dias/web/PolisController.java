@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
@@ -200,6 +201,19 @@ public class PolisController {// extends AbstractController {
 
             e.printStackTrace();
         }
+
+    }
+
+    @GET
+    @Path("/download")
+    @Produces("application/pdf")
+    public Response getFile() {
+
+        File file = new File("c://Uploads//3-Jaaropgaaf 2013 Nationale Nederlanden 1.pdf");
+
+        ResponseBuilder response = Response.ok(file);
+        response.header("Content-Disposition", "attachment; filename=new-excel-file.xls");
+        return response.build();
 
     }
 
