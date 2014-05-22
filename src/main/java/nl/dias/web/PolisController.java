@@ -174,12 +174,15 @@ public class PolisController {// extends AbstractController {
     public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
-        String uploadedFileLocation = "c://Uploads/" + polis.getId() + "-" + fileDetail.getFileName();
+        String bestandsNaam = polis.getId() + "-" + fileDetail.getFileName();
+        String uploadedFileLocation = "c://Uploads/" + bestandsNaam;
 
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
 
         String output = "File uploaded to : " + uploadedFileLocation;
+
+        polisService.slaBijlageOp(bestandsNaam, polis.getId());
 
         return Response.status(200).entity(output).build();
 
