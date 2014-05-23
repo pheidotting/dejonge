@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.dias_web.GebruikerController;
+import nl.dias.dias_web.GebruikerControllerTest;
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
 import nl.dias.domein.json.JsonBedrijf;
@@ -25,7 +25,7 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
 
     @Override
     public void voerTestUit() {
-        GebruikerController.jsonRelatie = new JsonRelatie();
+        GebruikerControllerTest.jsonRelatie = new JsonRelatie();
 
         Hulp.naarAdres(driver, "http://localhost:9999/dias-web/index.html#beherenRelatie/3");
 
@@ -40,10 +40,10 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
 
         System.out.println("####################");
         System.out.println(jsonRelatie);
-        System.out.println(GebruikerController.jsonRelatie);
+        System.out.println(GebruikerControllerTest.jsonRelatie);
         System.out.println("####################");
 
-        assertEquals(jsonRelatie, GebruikerController.jsonRelatie);
+        assertEquals(jsonRelatie, GebruikerControllerTest.jsonRelatie);
 
         pagina.drukOpVerwijderen();
         assertEquals("http://localhost:9999/dias-web/index.html#lijstRelaties", driver.getCurrentUrl());
