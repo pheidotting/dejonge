@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+	<!-- APPENDERS LIST -->
+	<!-- show log entries on console -->
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="diasLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="c:\logs\dias.log" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%t] %-5p %C{6} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- LOGGER LIST -->
+	<!-- log all classes in org.developers package -->
+	<logger name="nl.dias">
+		<!-- level info logs -->
+		<level value="debug" />
+		<appender-ref ref="diasLog" />
+	</logger>
+
+	<root>
+		<priority value="error"></priority>
+		<appender-ref ref="diasLog" />
+	</root>
+</log4j:configuration>
