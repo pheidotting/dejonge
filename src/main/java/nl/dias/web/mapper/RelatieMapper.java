@@ -96,7 +96,7 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
             sb.append(jsonRelatie.getToevoeging() + " ");
         }
         if (jsonRelatie.getPlaats() != null) {
-            sb.append(jsonRelatie.getPlaats() + " ");
+            sb.append(", " + jsonRelatie.getPlaats());
         }
 
         jsonRelatie.setAdresOpgemaakt(sb.toString());
