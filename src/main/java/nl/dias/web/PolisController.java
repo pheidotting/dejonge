@@ -1,10 +1,13 @@
 package nl.dias.web;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -220,9 +223,18 @@ public class PolisController {// extends AbstractController {
         // response.header("Content-Disposition", "attachment; filename=" +
         // bijlage.getBestandsNaam());
         // return response.build();
-        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM).build();// .header("content-disposition",
-                                                                             // "attachment; filename = doc.rtf").build();
-
+        // return Response.ok(file,
+        // MediaType.APPLICATION_OCTET_STREAM).build();//
+        // .header("content-disposition",
+        // "attachment; filename = doc.rtf").build();
+        Date fileDate = new Date(file.lastModified());
+        try {
+            return Response.ok(new FileInputStream(file)).lastModified(fileDate).build();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
