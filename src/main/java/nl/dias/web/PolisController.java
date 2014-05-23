@@ -219,20 +219,11 @@ public class PolisController {// extends AbstractController {
 
         File file = new File("c://Uploads//" + bijlage.getBestandsNaam());
 
-        // ResponseBuilder response = Response.ok(file);
-        // response.header("Content-Disposition", "attachment; filename=" +
-        // bijlage.getBestandsNaam());
-        // return response.build();
-        // return Response.ok(file,
-        // MediaType.APPLICATION_OCTET_STREAM).build();//
-        // .header("content-disposition",
-        // "attachment; filename = doc.rtf").build();
         Date fileDate = new Date(file.lastModified());
         try {
             return Response.ok(new FileInputStream(file)).lastModified(fileDate).build();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error(e.getMessage());
             return null;
         }
     }
