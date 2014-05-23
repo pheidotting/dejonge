@@ -30,10 +30,9 @@ import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/gebruiker")
-public class GebruikerController {// extends AbstractController {
+public class GebruikerController implements InterfaceGebruikerController {
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    // private InlogUtil inlogUtil = new InlogUtil();
     private String cookieCode;
     private Cookie cookie;
     @InjectParam
@@ -135,6 +134,7 @@ public class GebruikerController {// extends AbstractController {
     // return messages;
     // }
 
+    @Override
     @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
@@ -152,6 +152,7 @@ public class GebruikerController {// extends AbstractController {
         return jsonRelatie;
     }
 
+    @Override
     @GET
     @Path("/lijstRelaties")
     @Produces(MediaType.APPLICATION_JSON)
@@ -176,6 +177,7 @@ public class GebruikerController {// extends AbstractController {
         return lijst;
     }
 
+    @Override
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -191,6 +193,7 @@ public class GebruikerController {// extends AbstractController {
         return Response.status(200).entity(relatie.getId()).build();
     }
 
+    @Override
     @POST
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -211,6 +214,7 @@ public class GebruikerController {// extends AbstractController {
         return Response.status(200).build();
     }
 
+    @Override
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
@@ -222,6 +226,7 @@ public class GebruikerController {// extends AbstractController {
         return Response.status(200).build();
     }
 
+    @Override
     @GET
     @Path("/toevoegenRelatieRelatie")
     @Produces(MediaType.TEXT_PLAIN)
@@ -274,6 +279,7 @@ public class GebruikerController {// extends AbstractController {
         return messages;
     }
 
+    @Override
     @GET
     @Path("/isIngelogd")
     @Produces(MediaType.TEXT_PLAIN)
