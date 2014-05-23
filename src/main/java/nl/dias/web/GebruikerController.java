@@ -141,11 +141,15 @@ public class GebruikerController {// extends AbstractController {
     public JsonRelatie lees(@QueryParam("id") String id) {
         logger.debug("Ophalen Relatie met id : " + id);
 
-        Gson gson = new Gson();
-
         Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
-        return relatieMapper.mapNaarJson(relatie);
+        logger.debug("Opgehaald : " + relatie);
+
+        JsonRelatie jsonRelatie = relatieMapper.mapNaarJson(relatie);
+
+        logger.debug("Naar de front-end : " + jsonRelatie);
+
+        return jsonRelatie;
     }
 
     @GET
