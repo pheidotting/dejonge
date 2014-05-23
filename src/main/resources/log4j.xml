@@ -10,7 +10,7 @@
 	</appender>
 
 	<appender name="diasLog" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="c:\logs\dias.log" />
+		<param name="file" value="c:/logs/dias.log" />
 		<param name="append" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%t] %-5p %C{6} (%F:%L) - %m%n" />
