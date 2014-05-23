@@ -220,7 +220,8 @@ public class PolisController {// extends AbstractController {
         // response.header("Content-Disposition", "attachment; filename=" +
         // bijlage.getBestandsNaam());
         // return response.build();
-        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM).header("content-disposition", "attachment; filename = doc.rtf").build();
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM).build();// .header("content-disposition",
+                                                                             // "attachment; filename = doc.rtf").build();
 
     }
 
