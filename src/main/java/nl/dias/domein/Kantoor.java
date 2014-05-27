@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
@@ -217,24 +218,23 @@ public class Kantoor implements Serializable, PersistenceObject {
 
     @Override
     public int hashCode() {
-        return 0;
-        // HashCodeBuilder builder = new HashCodeBuilder();
-        // builder.append(adres);
-        // builder.append(btwNummer);
-        // builder.append(datumOprichting);
-        // builder.append(emailadres);
-        // builder.append(factuurAdres);
-        // builder.append(id);
-        // builder.append(kvk);
-        // builder.append(medewerkers);
-        // builder.append(naam);
-        // builder.append(opmerkingen);
-        // builder.append(rechtsvorm);
-        // builder.append(rekeningnummers);
-        // builder.append(relaties);
-        // builder.append(soortKantoor);
-        //
-        // return builder.toHashCode();
+        HashCodeBuilder builder = new HashCodeBuilder();
+        builder.append(adres);
+        builder.append(btwNummer);
+        builder.append(datumOprichting);
+        builder.append(emailadres);
+        builder.append(factuurAdres);
+        builder.append(id);
+        builder.append(kvk);
+        builder.append(medewerkers);
+        builder.append(naam);
+        builder.append(opmerkingen);
+        builder.append(rechtsvorm);
+        builder.append(rekeningnummers);
+        builder.append(relaties);
+        builder.append(soortKantoor);
+
+        return builder.toHashCode();
     }
 
     @Override
@@ -248,10 +248,8 @@ public class Kantoor implements Serializable, PersistenceObject {
         Kantoor other = (Kantoor) obj;
         return new EqualsBuilder().append(adres, other.adres).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres)
                 .append(factuurAdres, other.factuurAdres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm)
-                .append(opmerkingen, other.opmerkingen).append(soortKantoor, other.soortKantoor).isEquals();
-        // .append(medewerkers, other.medewerkers)
-        // .append(rekeningnummers, other.rekeningnummers).append(relaties,
-        // other.relaties)
+                .append(opmerkingen, other.opmerkingen).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers)
+                .append(relaties, other.relaties).isEquals();
     }
 
     @Override
