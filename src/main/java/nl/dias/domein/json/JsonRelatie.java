@@ -178,15 +178,6 @@ public class JsonRelatie {
         this.opmerkingen = opmerkingen;
     }
 
-    // public LocalDate getGeboorteDatum() {
-    // return geboorteDatum;
-    // }
-    //
-    // public void setGeboorteDatum(LocalDate geboorteDatum) {
-    // this.geboorteDatum = geboorteDatum;
-    // setGeboorteDatumOpgemaakt(geboorteDatum.toString("dd-MM-yyyy"));
-    // }
-
     public String getGeboorteDatumOpgemaakt() {
         return geboorteDatumOpgemaakt;
     }
@@ -194,15 +185,6 @@ public class JsonRelatie {
     public void setGeboorteDatumOpgemaakt(String geboorteDatumOpgemaakt) {
         this.geboorteDatumOpgemaakt = geboorteDatumOpgemaakt;
     }
-
-    // public LocalDate getOverlijdensdatum() {
-    // return overlijdensdatum;
-    // }
-    //
-    // public void setOverlijdensdatum(LocalDate overlijdensdatum) {
-    // this.overlijdensdatum = overlijdensdatum;
-    // setOverlijdensdatumOpgemaakt(overlijdensdatum.toString("dd-MM-yyyy"));
-    // }
 
     public String getOverlijdensdatumOpgemaakt() {
         return overlijdensdatumOpgemaakt;
@@ -311,8 +293,8 @@ public class JsonRelatie {
         builder.append(", rekeningnummers=").append(rekeningnummers);
         builder.append(", kantoor=").append(kantoor);
         builder.append(", opmerkingen=").append(opmerkingen);
-        // builder.append(", geboorteDatum=").append(geboorteDatum);
-        // builder.append(", overlijdensdatum=").append(overlijdensdatum);
+        builder.append(", geboorteDatum=").append(geboorteDatum);
+        builder.append(", overlijdensdatum=").append(overlijdensdatum);
         builder.append(", geslacht=").append(geslacht);
         builder.append(", burgerlijkeStaat=").append(burgerlijkeStaat);
         builder.append(", onderlingeRelaties=").append(onderlingeRelaties);
