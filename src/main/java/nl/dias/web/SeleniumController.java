@@ -5,7 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import nl.dias.service.KantoorService;
+import nl.dias.repository.KantoorRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import com.sun.jersey.api.core.InjectParam;
 public class SeleniumController {
 
     @InjectParam
-    private KantoorService kantoorService;
+    private KantoorRepository kantoorService;
 
     private static String wachtwoord;
 
@@ -52,7 +52,7 @@ public class SeleniumController {
         SeleniumController.wachtwoord = wachtwoord;
     }
 
-    public void setKantoorService(KantoorService kantoorService) {
+    public void setKantoorService(KantoorRepository kantoorService) {
         this.kantoorService = kantoorService;
     }
 }

@@ -231,7 +231,6 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(opmerkingen);
         builder.append(rechtsvorm);
         builder.append(rekeningnummers);
-        builder.append(relaties);
         builder.append(soortKantoor);
 
         return builder.toHashCode();

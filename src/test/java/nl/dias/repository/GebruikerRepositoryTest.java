@@ -8,7 +8,6 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
-import nl.dias.service.KantoorService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.joda.time.LocalDate;
@@ -18,14 +17,14 @@ import org.junit.Test;
 
 public class GebruikerRepositoryTest {
     private GebruikerRepository gebruikerService;
-    private KantoorService kantoorService;
+    private KantoorRepository kantoorService;
 
     @Before
     public void setUp() throws Exception {
         gebruikerService = new GebruikerRepository();
         gebruikerService.zetPersistenceContext("unittest");
 
-        kantoorService = new KantoorService();
+        kantoorService = new KantoorRepository();
         kantoorService.zetPersistenceContext("unittest");
     }
 

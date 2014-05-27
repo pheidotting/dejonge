@@ -1,4 +1,4 @@
-package nl.dias.service;
+package nl.dias.repository;
 
 import javax.inject.Named;
 
@@ -16,8 +16,8 @@ import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
-public class KantoorService extends AbstractRepository<Kantoor> {
-    public KantoorService() {
+public class KantoorRepository extends AbstractRepository<Kantoor> {
+    public KantoorRepository() {
         super(Kantoor.class);
         zetPersistenceContext("dias");
     }

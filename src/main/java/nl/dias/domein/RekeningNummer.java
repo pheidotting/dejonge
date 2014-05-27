@@ -42,10 +42,12 @@ public class RekeningNummer implements Serializable, PersistenceObject {
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -88,9 +90,7 @@ public class RekeningNummer implements Serializable, PersistenceObject {
         int result = 1;
         result = prime * result + ((bic == null) ? 0 : bic.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((kantoor == null) ? 0 : kantoor.hashCode());
         result = prime * result + ((rekeningnummer == null) ? 0 : rekeningnummer.hashCode());
-        result = prime * result + ((relatie == null) ? 0 : relatie.hashCode());
         return result;
     }
 

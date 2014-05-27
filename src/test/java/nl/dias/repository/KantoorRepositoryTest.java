@@ -1,4 +1,4 @@
-package nl.dias.service;
+package nl.dias.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -11,19 +11,18 @@ import nl.dias.exception.BsnNietGoedException;
 import nl.dias.exception.IbanNietGoedException;
 import nl.dias.exception.PostcodeNietGoedException;
 import nl.dias.exception.TelefoonnummerNietGoedException;
+import nl.dias.repository.KantoorRepository;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
-public class KantoorServiceTest {
-    private KantoorService kantoorService;
+public class KantoorRepositoryTest {
+    private KantoorRepository kantoorService;
 
     @Before
     public void init() {
-        kantoorService = new KantoorService();
+        kantoorService = new KantoorRepository();
         kantoorService.zetPersistenceContext("unittest");
     }
 

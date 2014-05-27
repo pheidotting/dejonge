@@ -18,9 +18,9 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.repository.KantoorRepository;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
-import nl.dias.service.KantoorService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
 
@@ -38,7 +38,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @InjectParam
     private GebruikerService gebruikerService;
     @InjectParam
-    private KantoorService kantoorService;
+    private KantoorRepository kantoorService;
     @InjectParam
     private BedrijfService bedrijfService;
     @InjectParam
