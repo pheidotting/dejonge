@@ -99,8 +99,8 @@ public class JsonBedrijf {
         StringBuilder builder = new StringBuilder();
         builder.append("JsonBedrijf [id=");
         builder.append(id);
-        // builder.append(", polissen=");
-        // builder.append(polissen);
+        builder.append(", polissen=");
+        builder.append(polissen);
         builder.append(", naam=");
         builder.append(naam);
         builder.append(", kvk=");
