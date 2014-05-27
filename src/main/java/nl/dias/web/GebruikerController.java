@@ -12,8 +12,6 @@ import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
-import nl.dias.domein.OnderlingeRelatie;
-import nl.dias.domein.OnderlingeRelatieSoort;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonLijstRelaties;
@@ -38,7 +36,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @InjectParam
     private GebruikerService gebruikerService;
     @InjectParam
-    private KantoorRepository kantoorService;
+    private KantoorRepository kantoorRepository;
     @InjectParam
     private BedrijfService bedrijfService;
     @InjectParam
@@ -165,7 +163,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
 
         JsonLijstRelaties lijst = new JsonLijstRelaties();
 
-        for (Gebruiker r : gebruikerService.alleRelaties(kantoorService.getIngelogdKantoor())) {
+        for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
             if (idWeglaten == null || !idWeglaten.equals(r.getId())) {
                 lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
             }
@@ -193,7 +191,6 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
-        System.out.println(jsonBedrijf);
         Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(jsonBedrijf.getRelatie()));
 
         Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
@@ -203,8 +200,6 @@ public class GebruikerController {// implements InterfaceGebruikerController {
         relatie.getBedrijven().add(bedrijf);
 
         gebruikerService.opslaan(relatie);
-
-        System.out.println(bedrijf);
 
         return Response.status(200).build();
     }
@@ -220,57 +215,60 @@ public class GebruikerController {// implements InterfaceGebruikerController {
         return Response.status(200).build();
     }
 
-    @GET
-    @Path("/toevoegenRelatieRelatie")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String toevoegenRelatieRelatie(@QueryParam("idAanToevoegen") String sidAanToevoegen, @QueryParam("idToeTeVoegen") String sidToeTeVoegen, @QueryParam("soortRelatie") String soortRelatie) {
-        String melding = "";
-        Long idAanToevoegen = null;
-        Long idToeTeVoegen = null;
-        try {
-            idAanToevoegen = Long.parseLong(sidAanToevoegen);
-            idToeTeVoegen = Long.parseLong(sidToeTeVoegen);
-        } catch (NumberFormatException e) {
-            logger.info(e.getMessage());
-            melding = "Numeriek veld verwacht";
-        }
-
-        if (soortRelatie == null || soortRelatie.equals("")) {
-            melding = "De soort Relatie moet worden ingevuld.";
-        }
-
-        if (melding.equals("")) {
-            Relatie aanToevoegen = (Relatie) gebruikerService.lees(idAanToevoegen);
-            Relatie toeTeVoegen = (Relatie) gebruikerService.lees(idToeTeVoegen);
-
-            OnderlingeRelatieSoort soort = null;
-            for (OnderlingeRelatieSoort s : OnderlingeRelatieSoort.values()) {
-                if (soortRelatie.equals(s.toString())) {
-                    soort = s;
-                    break;
-                }
-            }
-
-            aanToevoegen.getOnderlingeRelaties().add(new OnderlingeRelatie(aanToevoegen, toeTeVoegen, soort));
-
-            gebruikerService.opslaan(aanToevoegen);
-        }
-
-        Gson gson = new Gson();
-        String messages = null;
-        if (melding.equals("")) {
-            Relatie relatie = (Relatie) gebruikerService.lees(idAanToevoegen);
-            // try {
-            // messages = gson.toJson(new RelatieJson(relatie.clone()));
-            // } catch (CloneNotSupportedException e) {
-            // logger.error(e.getMessage());
-            // }
-        } else {
-            messages = gson.toJson(melding);
-        }
-
-        return messages;
-    }
+    // @GET
+    // @Path("/toevoegenRelatieRelatie")
+    // @Produces(MediaType.TEXT_PLAIN)
+    // public String toevoegenRelatieRelatie(@QueryParam("idAanToevoegen")
+    // String sidAanToevoegen, @QueryParam("idToeTeVoegen") String
+    // sidToeTeVoegen, @QueryParam("soortRelatie") String soortRelatie) {
+    // String melding = "";
+    // Long idAanToevoegen = null;
+    // Long idToeTeVoegen = null;
+    // try {
+    // idAanToevoegen = Long.parseLong(sidAanToevoegen);
+    // idToeTeVoegen = Long.parseLong(sidToeTeVoegen);
+    // } catch (NumberFormatException e) {
+    // logger.info(e.getMessage());
+    // melding = "Numeriek veld verwacht";
+    // }
+    //
+    // if (soortRelatie == null || soortRelatie.equals("")) {
+    // melding = "De soort Relatie moet worden ingevuld.";
+    // }
+    //
+    // if (melding.equals("")) {
+    // Relatie aanToevoegen = (Relatie) gebruikerService.lees(idAanToevoegen);
+    // Relatie toeTeVoegen = (Relatie) gebruikerService.lees(idToeTeVoegen);
+    //
+    // OnderlingeRelatieSoort soort = null;
+    // for (OnderlingeRelatieSoort s : OnderlingeRelatieSoort.values()) {
+    // if (soortRelatie.equals(s.toString())) {
+    // soort = s;
+    // break;
+    // }
+    // }
+    //
+    // aanToevoegen.getOnderlingeRelaties().add(new
+    // OnderlingeRelatie(aanToevoegen, toeTeVoegen, soort));
+    //
+    // gebruikerService.opslaan(aanToevoegen);
+    // }
+    //
+    // Gson gson = new Gson();
+    // String messages = null;
+    // if (melding.equals("")) {
+    // Relatie relatie = (Relatie) gebruikerService.lees(idAanToevoegen);
+    // // try {
+    // // messages = gson.toJson(new RelatieJson(relatie.clone()));
+    // // } catch (CloneNotSupportedException e) {
+    // // logger.error(e.getMessage());
+    // // }
+    // } else {
+    // messages = gson.toJson(melding);
+    // }
+    //
+    // return messages;
+    // }
 
     @GET
     @Path("/isIngelogd")
@@ -304,6 +302,18 @@ public class GebruikerController {// implements InterfaceGebruikerController {
 
     public void setRelatieMapper(RelatieMapper relatieMapper) {
         this.relatieMapper = relatieMapper;
+    }
+
+    public void setBedrijfService(BedrijfService bedrijfService) {
+        this.bedrijfService = bedrijfService;
+    }
+
+    public void setBedrijfMapper(BedrijfMapper bedrijfMapper) {
+        this.bedrijfMapper = bedrijfMapper;
+    }
+
+    public void setKantoorRepository(KantoorRepository kantoorRepository) {
+        this.kantoorRepository = kantoorRepository;
     }
 
     // @GET

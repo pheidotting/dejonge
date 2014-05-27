@@ -278,7 +278,7 @@ public class JsonRelatie {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("JsonRelatie [id=").append(id);
+        builder.append("JsonRelatie [\nid=").append(id);
         builder.append(", identificatie=").append(identificatie);
         builder.append(", voornaam=").append(voornaam);
         builder.append(", tussenvoegsel=").append(tussenvoegsel);
