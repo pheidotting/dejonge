@@ -2,6 +2,7 @@ package nl.dias.domein;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import nl.dias.domein.polis.Polis;
@@ -28,7 +31,6 @@ import nl.dias.domein.polis.SoortVerzekering;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
@@ -63,12 +65,12 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     private Set<Opmerking> opmerkingen;
 
     @Column(name = "GEBOORTEDATUM")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    private LocalDate geboorteDatum;
+    @Temporal(TemporalType.DATE)
+    private Date geboorteDatum;
 
     @Column(name = "OVERLIJDENSDATUM")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    private LocalDate overlijdensdatum;
+    @Temporal(TemporalType.DATE)
+    private Date overlijdensdatum;
 
     @Column(name = "GESLACHT", length = 1)
     @Enumerated(EnumType.STRING)
@@ -166,7 +168,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     }
 
     public void setGeboorteDatum(LocalDate geboorteDatum) {
-        this.geboorteDatum = geboorteDatum;
+        this.geboorteDatum = geboorteDatum.toDateMidnight().toDate();
     }
 
     public LocalDate getOverlijdensdatum() {
@@ -174,7 +176,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     }
 
     public void setOverlijdensdatum(LocalDate overlijdensdatum) {
-        this.overlijdensdatum = overlijdensdatum;
+        this.overlijdensdatum = overlijdensdatum.toDateMidnight().toDate();
     }
 
     public Geslacht getGeslacht() {

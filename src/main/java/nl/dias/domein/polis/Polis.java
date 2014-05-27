@@ -54,8 +54,8 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @Column(name = "POLISNUMMER", length = 25)
     private String polisNummer;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "INGANGSDATUM")
+    @Temporal(TemporalType.DATE)
     private Date ingangsDatum;
 
     @AttributeOverride(name = "bedrag", column = @Column(name = "PREMIE"))
@@ -119,7 +119,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public void setIngangsDatum(LocalDate ingangsDatum) {
-        this.ingangsDatum = ingangsDatum.toDate();
+        this.ingangsDatum = ingangsDatum.toDateMidnight().toDate();
     }
 
     public String getIngangsDatumString() {
@@ -181,7 +181,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public void setWijzigingsDatum(LocalDate wijzigingsDatum) {
-        this.wijzigingsDatum = wijzigingsDatum.toDate();
+        this.wijzigingsDatum = wijzigingsDatum.toDateMidnight().toDate();
     }
 
     public LocalDate getProlongatieDatum() {
@@ -189,7 +189,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public void setProlongatieDatum(LocalDate prolongatieDatum) {
-        this.prolongatieDatum = prolongatieDatum.toDate();
+        this.prolongatieDatum = prolongatieDatum.toDateMidnight().toDate();
     }
 
     public Betaalfrequentie getBetaalfrequentie() {

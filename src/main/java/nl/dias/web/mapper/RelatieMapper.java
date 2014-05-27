@@ -42,10 +42,10 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         relatie.setBsn(jsonRelatie.getBsn());
         relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
         relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
-        relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
-        relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
-        relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht()));
-        relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat()));
+        // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
+        // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
+        relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
+        relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0, 1)));
 
         return relatie;
     }
@@ -107,9 +107,9 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
-        jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
+        // jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
         jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
-        jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum());
+        // jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum());
         jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
         if (relatie.getGeslacht() != null) {
             jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());

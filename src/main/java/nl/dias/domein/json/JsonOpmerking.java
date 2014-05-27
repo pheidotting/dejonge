@@ -3,13 +3,12 @@ package nl.dias.domein.json;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.joda.time.LocalDateTime;
 
 public class JsonOpmerking implements Serializable {
     private static final long serialVersionUID = -2035670222129537280L;
 
     private Long id;
-    private LocalDateTime tijd;
+    private String tijd;
     private String opmerking;
 
     public Long getId() {
@@ -20,11 +19,11 @@ public class JsonOpmerking implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getTijd() {
+    public String getTijd() {
         return tijd;
     }
 
-    public void setTijd(LocalDateTime tijd) {
+    public void setTijd(String tijd) {
         this.tijd = tijd;
     }
 
@@ -36,6 +35,7 @@ public class JsonOpmerking implements Serializable {
         this.opmerking = opmerking;
     }
 
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

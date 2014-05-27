@@ -1,16 +1,15 @@
 package nl.dias.domein.json;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class JsonPolis {
     private Long id;
     private String polisNummer;
-    private Date ingangsDatum;
+    private String ingangsDatum;
     private String premie;
-    private Date wijzigingsDatum;
-    private Date prolongatieDatum;
+    private String wijzigingsDatum;
+    private String prolongatieDatum;
     private String betaalfrequentie;
     private List<JsonOpmerking> opmerkingen;
     private String maatschappij;
@@ -33,11 +32,11 @@ public class JsonPolis {
         this.polisNummer = polisNummer;
     }
 
-    public Date getIngangsDatum() {
+    public String getIngangsDatum() {
         return ingangsDatum;
     }
 
-    public void setIngangsDatum(Date ingangsDatum) {
+    public void setIngangsDatum(String ingangsDatum) {
         this.ingangsDatum = ingangsDatum;
     }
 
@@ -49,19 +48,19 @@ public class JsonPolis {
         this.premie = premie;
     }
 
-    public Date getWijzigingsDatum() {
+    public String getWijzigingsDatum() {
         return wijzigingsDatum;
     }
 
-    public void setWijzigingsDatum(Date wijzigingsDatum) {
+    public void setWijzigingsDatum(String wijzigingsDatum) {
         this.wijzigingsDatum = wijzigingsDatum;
     }
 
-    public Date getProlongatieDatum() {
+    public String getProlongatieDatum() {
         return prolongatieDatum;
     }
 
-    public void setProlongatieDatum(Date prolongatieDatum) {
+    public void setProlongatieDatum(String prolongatieDatum) {
         this.prolongatieDatum = prolongatieDatum;
     }
 

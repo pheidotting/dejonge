@@ -8,10 +8,10 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
-import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.KantoorService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,6 +32,7 @@ public class GebruikerRepositoryTest {
     @Test
     public void zoek() {
         Kantoor kantoor = new Kantoor();
+        kantoor.setDatumOprichting(new LocalDate());
 
         gebruikerService.getEm().persist(kantoor);
 
@@ -80,7 +81,7 @@ public class GebruikerRepositoryTest {
         gebruikerService.opslaan(beheerder);
 
         assertEquals(1, gebruikerService.alles().size());
-        assertEquals(beheerder, (Beheerder) gebruikerService.zoek("p@h.n"));
+        assertEquals(beheerder, gebruikerService.zoek("p@h.n"));
     }
 
     @Test

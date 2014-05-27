@@ -38,9 +38,11 @@ public class LijstRelaties {
             if (!jsonRelatie.getAchternaam().equals(achternaam.get(index).getText())) {
                 ok = false;
             }
-            if (!jsonRelatie.getGeboorteDatum().toString("dd-MM-yyyy").equals(geboortedatum.get(index).getText())) {
-                ok = false;
-            }
+            // if
+            // (!jsonRelatie.getGeboorteDatum().toString("dd-MM-yyyy").equals(geboortedatum.get(index).getText()))
+            // {
+            // ok = false;
+            // }
             if (!jsonRelatie.getAdresOpgemaakt().equals(adres.get(index).getText())) {
                 ok = false;
             }

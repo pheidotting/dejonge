@@ -1,7 +1,5 @@
 package nl.dias.dias_web;
 
-import java.util.Date;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,8 +17,6 @@ import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
 import nl.dias.web.InterfaceGebruikerController;
-
-import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
 
@@ -75,12 +71,12 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis1.setId(1L);
             jsonPolis1.setBetaalfrequentie("Maandelijks");
             jsonPolis1.setPolisNummer("12345");
-            jsonPolis1.setIngangsDatum(new Date());
+            // jsonPolis1.setIngangsDatum(new LocalDate());
             jsonPolis1.setMaatschappij("Fa. List & Bedrog");
             jsonPolis1.setPremie("100 euro");
-            jsonPolis1.setProlongatieDatum(new Date());
+            // jsonPolis1.setProlongatieDatum(new LocalDate());
             jsonPolis1.setSoort("Autoverzekering");
-            jsonPolis1.setWijzigingsDatum(new Date());
+            // jsonPolis1.setWijzigingsDatum(new LocalDate());
 
             jsonRelatie.getPolissen().add(jsonPolis1);
 
@@ -88,12 +84,12 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis2.setId(1L);
             jsonPolis2.setBetaalfrequentie("Maandelijks");
             jsonPolis2.setPolisNummer("12345");
-            jsonPolis2.setIngangsDatum(new Date());
+            // jsonPolis2.setIngangsDatum(new LocalDate());
             jsonPolis2.setMaatschappij("Fa. List & Bedrog");
             jsonPolis2.setPremie("100 euro");
-            jsonPolis2.setProlongatieDatum(new Date());
+            // jsonPolis2.setProlongatieDatum(new LocalDate());
             jsonPolis2.setSoort("Woonhuisverzekering");
-            jsonPolis2.setWijzigingsDatum(new Date());
+            // jsonPolis2.setWijzigingsDatum(new LocalDate());
 
             JsonBijlage jsonBijlage = new JsonBijlage();
             // jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
@@ -129,7 +125,7 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonRelatie.setVoornaam("voornaam1");
             jsonRelatie.setTussenvoegsel("tussenvoegsel1");
             jsonRelatie.setAchternaam("achternaam1");
-            jsonRelatie.setGeboorteDatum(new LocalDate(2001, 1, 1));
+            // jsonRelatie.setGeboorteDatum(new LocalDate(2001, 1, 1));
             jsonRelatie.setAdresOpgemaakt("adresOpgemaakt1");
             GebruikerControllerTest.jsonLijstRelaties = new JsonLijstRelaties();
             GebruikerControllerTest.jsonLijstRelaties.getJsonRelaties().add(jsonRelatie);

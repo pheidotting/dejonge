@@ -57,10 +57,12 @@ public class Opmerking implements PersistenceObject, Serializable {
         tijd = new Date();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -70,7 +72,7 @@ public class Opmerking implements PersistenceObject, Serializable {
     }
 
     public void setTijd(LocalDateTime tijd) {
-        this.tijd = tijd.toDate();
+        this.tijd = tijd.toDateTime().toDate();
     }
 
     public Relatie getRelatie() {

@@ -40,10 +40,10 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
 
         jsonPolis.setId(polis.getId());
         jsonPolis.setPolisNummer(polis.getPolisNummer());
-        jsonPolis.setIngangsDatum(polis.getIngangsDatum().toDate());
+        // jsonPolis.setIngangsDatum(polis.getIngangsDatum());
         jsonPolis.setPremie(polis.getPremie().toString());
-        jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toDate());
-        jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toDate());
+        // jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum());
+        // jsonPolis.setProlongatieDatum(polis.getProlongatieDatum());
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }

@@ -83,10 +83,12 @@ public class Kantoor implements Serializable, PersistenceObject {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = RekeningNummer.class, mappedBy = "kantoor")
     private Set<RekeningNummer> rekeningnummers;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -175,7 +177,7 @@ public class Kantoor implements Serializable, PersistenceObject {
     }
 
     public void setDatumOprichting(LocalDate datumOprichting) {
-        this.datumOprichting = datumOprichting.toDate();
+        this.datumOprichting = datumOprichting.toDateMidnight().toDate();
     }
 
     public Rechtsvorm getRechtsvorm() {

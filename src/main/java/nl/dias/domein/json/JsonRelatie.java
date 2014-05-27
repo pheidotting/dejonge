@@ -1,16 +1,12 @@
 package nl.dias.domein.json;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.joda.time.LocalDate;
 
-public class JsonRelatie implements Serializable {
-    private static final long serialVersionUID = 1178673982786375486L;
-
+public class JsonRelatie {
     private Long id;
     private String identificatie;
     private String voornaam;
@@ -27,9 +23,9 @@ public class JsonRelatie implements Serializable {
     private List<JsonRekeningNummer> rekeningnummers;
     private Long kantoor;
     private List<JsonOpmerking> opmerkingen;
-    private LocalDate geboorteDatum;
+    private String geboorteDatum;
     private String geboorteDatumOpgemaakt;
-    private LocalDate overlijdensdatum;
+    private String overlijdensdatum;
     private String overlijdensdatumOpgemaakt;
     private String geslacht;
     private String burgerlijkeStaat;
@@ -37,6 +33,22 @@ public class JsonRelatie implements Serializable {
     private List<JsonBedrijf> bedrijven;
     private List<JsonPolis> polissen;
     private boolean zakelijkeKlant;
+
+    public String getGeboorteDatum() {
+        return geboorteDatum;
+    }
+
+    public void setGeboorteDatum(String geboorteDatum) {
+        this.geboorteDatum = geboorteDatum;
+    }
+
+    public String getOverlijdensdatum() {
+        return overlijdensdatum;
+    }
+
+    public void setOverlijdensdatum(String overlijdensdatum) {
+        this.overlijdensdatum = overlijdensdatum;
+    }
 
     public Long getId() {
         return id;
@@ -166,14 +178,14 @@ public class JsonRelatie implements Serializable {
         this.opmerkingen = opmerkingen;
     }
 
-    public LocalDate getGeboorteDatum() {
-        return geboorteDatum;
-    }
-
-    public void setGeboorteDatum(LocalDate geboorteDatum) {
-        this.geboorteDatum = geboorteDatum;
-        setGeboorteDatumOpgemaakt(geboorteDatum.toString("dd-MM-yyyy"));
-    }
+    // public LocalDate getGeboorteDatum() {
+    // return geboorteDatum;
+    // }
+    //
+    // public void setGeboorteDatum(LocalDate geboorteDatum) {
+    // this.geboorteDatum = geboorteDatum;
+    // setGeboorteDatumOpgemaakt(geboorteDatum.toString("dd-MM-yyyy"));
+    // }
 
     public String getGeboorteDatumOpgemaakt() {
         return geboorteDatumOpgemaakt;
@@ -183,14 +195,14 @@ public class JsonRelatie implements Serializable {
         this.geboorteDatumOpgemaakt = geboorteDatumOpgemaakt;
     }
 
-    public LocalDate getOverlijdensdatum() {
-        return overlijdensdatum;
-    }
-
-    public void setOverlijdensdatum(LocalDate overlijdensdatum) {
-        this.overlijdensdatum = overlijdensdatum;
-        setOverlijdensdatumOpgemaakt(overlijdensdatum.toString("dd-MM-yyyy"));
-    }
+    // public LocalDate getOverlijdensdatum() {
+    // return overlijdensdatum;
+    // }
+    //
+    // public void setOverlijdensdatum(LocalDate overlijdensdatum) {
+    // this.overlijdensdatum = overlijdensdatum;
+    // setOverlijdensdatumOpgemaakt(overlijdensdatum.toString("dd-MM-yyyy"));
+    // }
 
     public String getOverlijdensdatumOpgemaakt() {
         return overlijdensdatumOpgemaakt;
@@ -256,9 +268,9 @@ public class JsonRelatie implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(achternaam).append(bedrijven).append(bsn).append(burgerlijkeStaat).append(geboorteDatum).append(geslacht).append(huisnummer).append(id)
-                .append(identificatie).append(kantoor).append(onderlingeRelaties).append(opmerkingen).append(overlijdensdatum).append(plaats).append(postcode).append(rekeningnummers).append(straat)
-                .append(telefoonnummers).append(toevoeging).append(tussenvoegsel).append(voornaam).append(polissen).append(zakelijkeKlant).toHashCode();
+        return new HashCodeBuilder().append(achternaam).append(bedrijven).append(bsn).append(burgerlijkeStaat).append(geslacht).append(huisnummer).append(id).append(identificatie).append(kantoor)
+                .append(onderlingeRelaties).append(opmerkingen).append(plaats).append(postcode).append(rekeningnummers).append(straat).append(telefoonnummers).append(toevoeging).append(tussenvoegsel)
+                .append(voornaam).append(polissen).append(zakelijkeKlant).toHashCode();
     }
 
     @Override
@@ -275,11 +287,10 @@ public class JsonRelatie implements Serializable {
         JsonRelatie other = (JsonRelatie) obj;
 
         return new EqualsBuilder().append(achternaam, other.achternaam).append(bedrijven, other.bedrijven).append(bsn, other.bsn).append(burgerlijkeStaat, other.burgerlijkeStaat)
-                .append(geboorteDatum, other.geboorteDatum).append(geslacht, other.geslacht).append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie)
-                .append(kantoor, other.kantoor).append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(overlijdensdatum, other.overlijdensdatum)
-                .append(plaats, other.plaats).append(postcode, other.postcode).append(rekeningnummers, other.rekeningnummers).append(straat, other.straat)
-                .append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging).append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam)
-                .append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
+                .append(geslacht, other.geslacht).append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie).append(kantoor, other.kantoor)
+                .append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(plaats, other.plaats).append(postcode, other.postcode)
+                .append(rekeningnummers, other.rekeningnummers).append(straat, other.straat).append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging)
+                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
     }
 
     @Override
@@ -300,8 +311,8 @@ public class JsonRelatie implements Serializable {
         builder.append(", rekeningnummers=").append(rekeningnummers);
         builder.append(", kantoor=").append(kantoor);
         builder.append(", opmerkingen=").append(opmerkingen);
-        builder.append(", geboorteDatum=").append(geboorteDatum);
-        builder.append(", overlijdensdatum=").append(overlijdensdatum);
+        // builder.append(", geboorteDatum=").append(geboorteDatum);
+        // builder.append(", overlijdensdatum=").append(overlijdensdatum);
         builder.append(", geslacht=").append(geslacht);
         builder.append(", burgerlijkeStaat=").append(burgerlijkeStaat);
         builder.append(", onderlingeRelaties=").append(onderlingeRelaties);

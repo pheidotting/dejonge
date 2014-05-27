@@ -58,7 +58,7 @@ public class OpmerkingMapperTest {
 
         jsonOpmerking.setId(1L);
         jsonOpmerking.setOpmerking("opmerking");
-        jsonOpmerking.setTijd(new LocalDateTime(2014, 5, 3, 7, 5));
+        // jsonOpmerking.setTijd(new LocalDateTime(2014, 5, 3, 7, 5));
 
         return jsonOpmerking;
     }

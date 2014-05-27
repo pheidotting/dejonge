@@ -18,18 +18,22 @@ public class OpmerkingMapper implements Mapper<Opmerking, JsonOpmerking> {
 
         opmerking.setId(jsonOpmerking.getId());
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
-        opmerking.setTijd(jsonOpmerking.getTijd());
+        // opmerking.setTijd(jsonOpmerking.getTijd());
 
         return opmerking;
     }
 
     @Override
     public Set<Opmerking> mapAllVanJson(List<JsonOpmerking> jsonOpmerkingen) {
-        Set<Opmerking> ret = new HashSet<>();
-        for (JsonOpmerking jsonOpmerking : jsonOpmerkingen) {
-            ret.add(mapVanJson(jsonOpmerking));
+        if (jsonOpmerkingen != null) {
+            Set<Opmerking> ret = new HashSet<>();
+            for (JsonOpmerking jsonOpmerking : jsonOpmerkingen) {
+                ret.add(mapVanJson(jsonOpmerking));
+            }
+            return ret;
+        } else {
+            return null;
         }
-        return ret;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class OpmerkingMapper implements Mapper<Opmerking, JsonOpmerking> {
 
         jsonOpmerking.setId(opmerking.getId());
         jsonOpmerking.setOpmerking(opmerking.getOpmerking());
-        jsonOpmerking.setTijd(opmerking.getTijd());
+        // jsonOpmerking.setTijd(opmerking.getTijd());
 
         return jsonOpmerking;
     }

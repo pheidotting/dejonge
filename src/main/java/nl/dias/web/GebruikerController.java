@@ -30,7 +30,7 @@ import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/gebruiker")
-public class GebruikerController implements InterfaceGebruikerController {
+public class GebruikerController {// implements InterfaceGebruikerController {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     private String cookieCode;
@@ -134,7 +134,6 @@ public class GebruikerController implements InterfaceGebruikerController {
     // return messages;
     // }
 
-    @Override
     @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
@@ -152,7 +151,6 @@ public class GebruikerController implements InterfaceGebruikerController {
         return jsonRelatie;
     }
 
-    @Override
     @GET
     @Path("/lijstRelaties")
     @Produces(MediaType.APPLICATION_JSON)
@@ -177,11 +175,11 @@ public class GebruikerController implements InterfaceGebruikerController {
         return lijst;
     }
 
-    @Override
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonRelatie jsonRelatie) {
+    public void opslaan(JsonRelatie jsonRelatie) {
+        logger.debug("Opslaan " + jsonRelatie);
         Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
 
         logger.debug("Opslaan Relatie met id " + relatie.getId());
@@ -189,11 +187,8 @@ public class GebruikerController implements InterfaceGebruikerController {
         gebruikerService.opslaan(relatie);
 
         logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
-
-        return Response.status(200).entity(relatie.getId()).build();
     }
 
-    @Override
     @POST
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -214,7 +209,6 @@ public class GebruikerController implements InterfaceGebruikerController {
         return Response.status(200).build();
     }
 
-    @Override
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
@@ -226,7 +220,6 @@ public class GebruikerController implements InterfaceGebruikerController {
         return Response.status(200).build();
     }
 
-    @Override
     @GET
     @Path("/toevoegenRelatieRelatie")
     @Produces(MediaType.TEXT_PLAIN)
@@ -279,7 +272,6 @@ public class GebruikerController implements InterfaceGebruikerController {
         return messages;
     }
 
-    @Override
     @GET
     @Path("/isIngelogd")
     @Produces(MediaType.TEXT_PLAIN)

@@ -1,8 +1,10 @@
 package nl.dias.domein.json;
 
+import java.util.List;
+
 public class JsonBedrijf {
     private String id;
-    // private List<JsonPolis> polissen;
+    private List<JsonPolis> polissen;
     private String naam;
     private String kvk;
     private String straat;
@@ -20,13 +22,13 @@ public class JsonBedrijf {
         this.id = id;
     }
 
-    // public List<JsonPolis> getPolissen() {
-    // return polissen;
-    // }
-    //
-    // public void setPolissen(List<JsonPolis> polissen) {
-    // this.polissen = polissen;
-    // }
+    public List<JsonPolis> getPolissen() {
+        return polissen;
+    }
+
+    public void setPolissen(List<JsonPolis> polissen) {
+        this.polissen = polissen;
+    }
 
     public String getNaam() {
         return naam;
