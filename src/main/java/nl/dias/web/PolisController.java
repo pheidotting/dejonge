@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -41,7 +40,7 @@ import nl.dias.domein.polis.RecreatieVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
 import nl.dias.domein.polis.ZorgVerzekering;
-import nl.dias.repository.GebruikerRepository;
+import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 
@@ -60,7 +59,7 @@ public class PolisController {// extends AbstractController {
     @InjectParam
     private PolisService polisService;
     @InjectParam
-    private GebruikerRepository gebruikerService;
+    private GebruikerService gebruikerService;
     @InjectParam
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
 
@@ -233,20 +232,22 @@ public class PolisController {// extends AbstractController {
      * @param relatie
      * @return
      */
-    @GET
-    @Path("/allePolissen")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String allePolissen(@QueryParam("relatie") String strRelatie) {
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(strRelatie));
-
-        List<Polis> lijst = polisService.allePolissenVanRelatieEnZijnBedrijf(relatie);
-
-        for (Polis polis : lijst) {
-            polis.setBedrijf(null);
-            polis.setRelatie(null);
-        }
-        return gson.toJson(lijst);
-    }
+    // @GET
+    // @Path("/allePolissen")
+    // @Produces(MediaType.TEXT_PLAIN)
+    // public String allePolissen(@QueryParam("relatie") String strRelatie) {
+    // Relatie relatie = (Relatie)
+    // gebruikerService.lees(Long.parseLong(strRelatie));
+    //
+    // List<Polis> lijst =
+    // polisService.allePolissenVanRelatieEnZijnBedrijf(relatie);
+    //
+    // for (Polis polis : lijst) {
+    // polis.setBedrijf(null);
+    // polis.setRelatie(null);
+    // }
+    // return gson.toJson(lijst);
+    // }
 
     private LocalDate stringNaarLocalDate(String datum) {
         String[] d = datum.split("-");
@@ -264,7 +265,7 @@ public class PolisController {// extends AbstractController {
         this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
     }
 
-    public void setGebruikerService(GebruikerRepository gebruikerService) {
+    public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
     }
 }
