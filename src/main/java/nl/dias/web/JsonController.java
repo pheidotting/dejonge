@@ -27,7 +27,6 @@ public class JsonController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> lijstVerzekeringsMaatschappijen() {
 
-        System.out.println("ophalen lijst met VerzekeringsMaatschappijen");
         LOGGER.debug("ophalen lijst met VerzekeringsMaatschappijen");
 
         List<VerzekeringsMaatschappij> lijst = maatschappijService.alles();
