@@ -178,7 +178,9 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void opslaan(JsonRelatie jsonRelatie) {
         logger.debug("Opslaan " + jsonRelatie);
+
         Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+        relatie.setKantoor(kantoorRepository.getIngelogdKantoor());
 
         logger.debug("Opslaan Relatie met id " + relatie.getId());
 

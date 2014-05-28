@@ -106,8 +106,10 @@ public class GebruikerControllerTest extends EasyMockSupport {
     public void opslaan() {
         Relatie relatie = new Relatie();
         JsonRelatie jsonRelatie = new JsonRelatie();
+        Kantoor kantoor = new Kantoor();
 
         EasyMock.expect(mapper.mapVanJson(jsonRelatie)).andReturn(relatie);
+        EasyMock.expect(kantoorRepository.getIngelogdKantoor()).andReturn(kantoor);
         gebruikerService.opslaan(relatie);
         EasyMock.expectLastCall();
 
