@@ -16,10 +16,8 @@ import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 
-import org.junit.Ignore;
 import org.openqa.selenium.support.PageFactory;
 
-@Ignore
 public class BeherenRelatieTest extends AbstractSeleniumTest {
 
     @Override
@@ -32,16 +30,10 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
 
         JsonRelatie jsonRelatie = maakJsonRelatie();
 
-        // pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(),
-        // jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(),
-        // jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
-        // jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(),
-        // jsonRelatie.getPlaats(), jsonRelatie.getBsn(),
-        // jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-        // jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(),
-        // jsonRelatie.getBurgerlijkeStaat(),
-        // allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
-        // allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+        pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
+                jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
+                jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
+                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
         System.out.println("####################");
         System.out.println(jsonRelatie);
@@ -63,8 +55,8 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.setIdentificatie("identificatie");
         jsonRelatie.setTussenvoegsel("vd");
         jsonRelatie.setVoornaam("voornaam");
-        // jsonRelatie.setGeboorteDatum(new LocalDate(1979, 9, 6));
-        // jsonRelatie.setOverlijdensdatum(new LocalDate(2012, 5, 3));
+        jsonRelatie.setGeboorteDatum("06-09-1979");
+        jsonRelatie.setOverlijdensdatum("03-05-2012");
 
         jsonRelatie.setGeslacht("Vrouw");
         jsonRelatie.setBurgerlijkeStaat("Gehuwd");
@@ -89,6 +81,7 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer3", "Werk"));
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer4", "Mobiel"));
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer5", "Vast"));
+        jsonRelatie.getPolissen();
 
         return jsonRelatie;
     }

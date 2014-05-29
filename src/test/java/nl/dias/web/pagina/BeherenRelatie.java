@@ -4,7 +4,6 @@ import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
 
-import org.joda.time.LocalDate;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -68,7 +67,7 @@ public class BeherenRelatie {
     private List<WebElement> verwijderTelefoonNummer;
 
     public void vulVeldenEnDrukOpOpslaan(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn,
-            String emailadres, LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
+            String emailadres, String geboorteDatum, String overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
             List<BeherenRelatieTelefoonnummer> telefoonnummers) {
         vulVelden(voornaam, achternaam, tussenvoegsel, straat, huisnummer, toevoeging, postcode, plaats, bsn, emailadres, geboorteDatum, overlijdensdatum, geslacht, burgerlijkeStaat, rekeningnummers,
                 telefoonnummers);
@@ -76,8 +75,9 @@ public class BeherenRelatie {
     }
 
     public void vulVelden(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn, String emailadres,
-            LocalDate geboorteDatum, LocalDate overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
+            String geboorteDatum, String overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,
             List<BeherenRelatieTelefoonnummer> telefoonnummers) {
+        Hulp.wachtFf();
         Hulp.vulVeld(this.voornaam, voornaam);
         Hulp.vulVeld(this.achternaam, achternaam);
         Hulp.vulVeld(this.tussenvoegsel, tussenvoegsel);
@@ -88,12 +88,8 @@ public class BeherenRelatie {
         Hulp.vulVeld(this.plaats, plaats);
         Hulp.vulVeld(this.bsn, bsn);
         Hulp.vulVeld(this.emailadres, emailadres);
-        if (geboorteDatum != null) {
-            Hulp.vulVeld(this.geboorteDatum, geboorteDatum.toString("dd-MM-yyyy"));
-        }
-        if (overlijdensdatum != null) {
-            Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum.toString("dd-MM-yyyy"));
-        }
+        Hulp.vulVeld(this.geboorteDatum, geboorteDatum);
+        Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum);
         if (geslacht != null) {
             Hulp.selecteerUitSelectieBox(this.geslacht, geslacht);
         }

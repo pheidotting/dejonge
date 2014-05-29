@@ -226,29 +226,6 @@ public class PolisController {// extends AbstractController {
         }
     }
 
-    /**
-     * Levert alle Polissen, incl. die van de bedrijven van de Relatie
-     * 
-     * @param relatie
-     * @return
-     */
-    // @GET
-    // @Path("/allePolissen")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String allePolissen(@QueryParam("relatie") String strRelatie) {
-    // Relatie relatie = (Relatie)
-    // gebruikerService.lees(Long.parseLong(strRelatie));
-    //
-    // List<Polis> lijst =
-    // polisService.allePolissenVanRelatieEnZijnBedrijf(relatie);
-    //
-    // for (Polis polis : lijst) {
-    // polis.setBedrijf(null);
-    // polis.setRelatie(null);
-    // }
-    // return gson.toJson(lijst);
-    // }
-
     private LocalDate stringNaarLocalDate(String datum) {
         String[] d = datum.split("-");
 

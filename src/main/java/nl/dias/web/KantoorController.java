@@ -4,6 +4,8 @@
 //import java.math.BigInteger;
 //import java.security.SecureRandom;
 //
+//import javax.servlet.ServletException;
+//import javax.servlet.http.HttpServletRequest;
 //import javax.ws.rs.GET;
 //import javax.ws.rs.Path;
 //import javax.ws.rs.Produces;
@@ -25,7 +27,6 @@
 //import nl.dias.exception.PostcodeNietGoedException;
 //import nl.dias.exception.TelefoonnummerNietGoedException;
 //import nl.dias.service.GebruikerService;
-//import nl.dias.service.KantoorService;
 //import nl.dias.utils.MailgunUtil;
 //import nl.dias.utils.Utils;
 //import nl.dias.utils.Validatie;
@@ -37,7 +38,7 @@
 //
 //@Path("/kantoor")
 //public class KantoorController {// extends AbstractController {
-//    private Logger logger = Logger.getLogger(this.getClass());
+//    private final Logger logger = Logger.getLogger(this.getClass());
 //
 //    private String cookieCode;
 //    private Cookie cookie;
@@ -46,7 +47,7 @@
 //    private KantoorService kantoorService;
 //    @InjectParam
 //    private GebruikerService gebruikerService;
-//    private SecureRandom random = new SecureRandom();
+//    private final SecureRandom random = new SecureRandom();
 //    private String nieuwWachtwoord;
 //
 //    public String creerWachtwoord() {
@@ -133,13 +134,13 @@
 //
 //    private class Returnen {
 //        @SuppressWarnings("unused")
-//        private String kantoornaam;
+//        private final String kantoornaam;
 //        @SuppressWarnings("unused")
-//        private String voornaam;
+//        private final String voornaam;
 //        @SuppressWarnings("unused")
-//        private String idKantoor;
+//        private final String idKantoor;
 //        @SuppressWarnings("unused")
-//        private String idMedewerker;
+//        private final String idMedewerker;
 //
 //        public Returnen(String kantoornaam, String voornaam, String idKantoor, String idMedewerker) {
 //            this.kantoornaam = kantoornaam;

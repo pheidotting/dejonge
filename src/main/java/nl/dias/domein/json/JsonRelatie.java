@@ -139,6 +139,9 @@ public class JsonRelatie {
     }
 
     public List<JsonTelefoonnummer> getTelefoonnummers() {
+        if (telefoonnummers == null) {
+            telefoonnummers = new ArrayList<JsonTelefoonnummer>();
+        }
         return telefoonnummers;
     }
 
@@ -155,6 +158,9 @@ public class JsonRelatie {
     }
 
     public List<JsonRekeningNummer> getRekeningnummers() {
+        if (rekeningnummers == null) {
+            rekeningnummers = new ArrayList<JsonRekeningNummer>();
+        }
         return rekeningnummers;
     }
 
