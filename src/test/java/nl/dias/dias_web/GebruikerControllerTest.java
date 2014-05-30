@@ -127,7 +127,7 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonRelatie.setVoornaam("voornaam1");
             jsonRelatie.setTussenvoegsel("tussenvoegsel1");
             jsonRelatie.setAchternaam("achternaam1");
-            // jsonRelatie.setGeboorteDatum(new LocalDate(2001, 1, 1));
+            jsonRelatie.setGeboorteDatum("01-01-2001");
             jsonRelatie.setAdresOpgemaakt("adresOpgemaakt1");
             GebruikerControllerTest.jsonLijstRelaties = new JsonLijstRelaties();
             GebruikerControllerTest.jsonLijstRelaties.getJsonRelaties().add(jsonRelatie);

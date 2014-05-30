@@ -38,7 +38,7 @@
 		self.voornaam = ko.observable(data.voornaam);
 		self.tussenvoegsel = ko.observable(data.tussenvoegsel);
 		self.achternaam = ko.observable(data.achternaam);
-		self.geboortedatum = ko.observable(data.geboorteDatumOpgemaakt);
+		self.geboortedatum = ko.observable(data.geboorteDatum);
 		self.adres = ko.observable(data.adresOpgemaakt);
 
 		self.naarDetailScherm = function(relatie){
@@ -47,7 +47,6 @@
 	}
 	
 	function reset(){
-		console.log("ASdsdfsfaafsdfsd");
 		document.location.hash='#beherenRelatie';
 	}
 
