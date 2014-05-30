@@ -141,7 +141,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonRelatie jsonRelatie) {
-        System.out.println(jsonRelatie);
         GebruikerControllerTest.jsonRelatie = jsonRelatie;
         return null;
     }

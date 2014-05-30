@@ -18,7 +18,7 @@ import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 
 import org.openqa.selenium.support.PageFactory;
 
-public class BeherenRelatieTest extends AbstractSeleniumTest {
+public class BeherenRelatieTestVerwijderenTelefoonnummers extends AbstractSeleniumTest {
 
     @Override
     public void voerTestUit() {
@@ -30,15 +30,20 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
 
         JsonRelatie jsonRelatie = maakJsonRelatie();
 
-        pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
+        Hulp.naarAdres(driver, "http://localhost:9999/dias-web/index.html#beherenRelatie/3");
+        GebruikerControllerTest.jsonRelatie = null;
+        pagina.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
                 jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
                 jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
                 allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
-        assertEquals(jsonRelatie, GebruikerControllerTest.jsonRelatie);
+        pagina.verwijderTelefoonnummer(2);
+        jsonRelatie.getTelefoonnummers().remove(1);
+        pagina.verwijderTelefoonnummer(4);
+        jsonRelatie.getTelefoonnummers().remove(3);
+        pagina.drukOpOpslaan();
 
-        pagina.drukOpVerwijderen();
-        assertEquals("http://localhost:9999/dias-web/index.html#lijstRelaties", driver.getCurrentUrl());
+        assertEquals(jsonRelatie, GebruikerControllerTest.jsonRelatie);
     }
 
     private JsonRelatie maakJsonRelatie() {

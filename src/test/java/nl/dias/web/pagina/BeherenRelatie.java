@@ -113,8 +113,9 @@ public class BeherenRelatie {
     }
 
     public void drukOpOpslaan() {
+        Hulp.wachtFf();
         Hulp.klikEnWacht(opslaan);
-        Hulp.wachtFf(2000);
+        Hulp.wachtFf();
     }
 
     public void drukOpVerwijderen() {
@@ -122,11 +123,15 @@ public class BeherenRelatie {
     }
 
     public void verwijderRekeningnummer(int index) {
+        Hulp.wachtFf();
         Hulp.klikEnWacht(verwijderRekening.get(index - 1));
+        Hulp.wachtFf();
     }
 
     public void verwijderTelefoonnummer(int index) {
+        Hulp.wachtFf();
         Hulp.klikEnWacht(verwijderTelefoonNummer.get(index - 1));
+        Hulp.wachtFf();
     }
 
 }
