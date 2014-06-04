@@ -19,7 +19,7 @@ public class TelefoonnummerMapper implements Mapper<Telefoonnummer, JsonTelefoon
 
         telefoonnummer.setId(jsonTelefoonnummer.getId());
         telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
-        telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort()));
+        telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort().toUpperCase()));
 
         return telefoonnummer;
     }

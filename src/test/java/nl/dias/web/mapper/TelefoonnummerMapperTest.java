@@ -42,6 +42,7 @@ public class TelefoonnummerMapperTest {
 
         List<JsonTelefoonnummer> verwacht = new ArrayList<>();
         verwacht.add(maakJsonTelefoonnummer());
+        verwacht.get(0).setSoort(verwacht.get(0).getSoort().toUpperCase());
 
         List<JsonTelefoonnummer> terug = mapper.mapAllNaarJson(lijst);
         assertEquals(verwacht, terug);
@@ -62,7 +63,7 @@ public class TelefoonnummerMapperTest {
 
         telefoonnummer.setId(46L);
         telefoonnummer.setTelefoonnummer("0123456789");
-        telefoonnummer.setSoort("MOBIEL");
+        telefoonnummer.setSoort("Mobiel");
 
         return telefoonnummer;
     }

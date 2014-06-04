@@ -6,7 +6,9 @@ import javax.inject.Named;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
+import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -25,6 +27,15 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
+        // Even checken of over de connectie met de Relatie is ingevuld
+        if (gebruiker instanceof Relatie) {
+            for (Telefoonnummer telefoonnummer : ((Relatie) gebruiker).getTelefoonnummers()) {
+                telefoonnummer.setRelatie((Relatie) gebruiker);
+            }
+            for (RekeningNummer rekeningNummer : ((Relatie) gebruiker).getRekeningnummers()) {
+                rekeningNummer.setRelatie((Relatie) gebruiker);
+            }
+        }
         gebruikerRepository.opslaan(gebruiker);
     }
 
