@@ -7,7 +7,7 @@
 		this.id = ko.observable(data.id);
 		this.voornaam = ko.observable(data.voornaam);
 		this.achternaam = ko.observable(data.achternaam);
-	this.tussenvoegsel = ko.observable(data.tussenvoegsel);
+		this.tussenvoegsel = ko.observable(data.tussenvoegsel);
 		this.straat = ko.observable(data.straat);
 		this.huisnummer = ko.observable(data.huisnummer);
 		this.toevoeging = ko.observable(data.toevoeging);
@@ -66,11 +66,19 @@
 	    this.verwijderTelefoonNummer = function(telefoon) {
 	    	self.telefoonnummers.remove(telefoon);
 	    }
-	    /*
 	    this.voegPolisToe = function(){
-	    	self.polissen = new Polis("");
+	    	self.polissen.push(new Polis({
+            	premie : $('#premie').val().replace(",", "."),
+				maatschappij : $('#verzekeringsMaatschappijen').val(),
+				soort : $('#soortVerzekering').val(),
+				polisNummer : $('#polisNummer').val(),
+				ingangsDatum : $('#ingangsDatumString').val(),
+				wijzigingsDatum : $('#wijzigingsdatumString').val(),
+				prolongatieDatum : $('#prolongatiedatumString').val(),
+				betaalfrequentie : $('#betaalfrequentie').val()
+	    	}));
 	    }
-	    
+/*	    
 	    this.verwijderPolis = function(polis){
 	    	self.polissen.remove(polis);
 	    }*/
@@ -187,10 +195,15 @@
 		self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
 		self.maatschappij = ko.observable(data.maatschappij.naam);
 		self.soort = ko.observable(data.soort);
+		self.premie = ko.observable(data.premie);
+		self.betaalfrequentie = ko.observable(data.betaalfrequentie);
+
 		self.bijlages = ko.observableArray();
-		$.each(data.bijlages, function(i, item){
-			self.bijlages.push(new Bijlage(item));
-		})
+		if(data.bijlages != null){
+			$.each(data.bijlages, function(i, item){
+				self.bijlages.push(new Bijlage(item));
+			})
+		}
 	}
 	
 	function Polissen(data){
@@ -630,7 +643,7 @@
 				</div>
 				<input type="file" id="file" name="file" />
 			</form>
-			<button id="opslaanPolis">Opslaan</button>
+			<button id="opslaanPolis" data-bind="click: $root.voegPolisToe">Opslaan</button>
 			<progress style="display:none;"></progress>
 			<script>
 				$('#opslaanPolis').click(function(){
@@ -652,28 +665,30 @@
 						contentType: "application/json",
 			            data: json,
 			            success: function(data) {
-			            	$('progress').show();
-							var formData = new FormData($('form')[0]);
-		            	    $.ajax({
-								url: '../dejonge/rest/polis/upload',
-		            	        type: 'POST',
-		            	        xhr: function() {  // Custom XMLHttpRequest
-		            	            var myXhr = $.ajaxSettings.xhr();
-		            	            if(myXhr.upload){ // Check if upload property exists
-		            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-		            	            }
-		            	            return myXhr;
-		            	        },
-		            	        data: formData,
-		            	        cache: false,
-		            	        contentType: false,
-		            	        processData: false
-		            	    });
-		            	    function progressHandlingFunction(e){
-		            	        if(e.lengthComputable){
-		            	            $('progress').attr({value:e.loaded,max:e.total});
-		            	        }
-		            	    }
+			            	if($('#file').val() != ""){
+				            	$('progress').show();
+								var formData = new FormData($('form')[0]);
+			            	    $.ajax({
+									url: '../dejonge/rest/polis/upload',
+			            	        type: 'POST',
+			            	        xhr: function() {  // Custom XMLHttpRequest
+			            	            var myXhr = $.ajaxSettings.xhr();
+			            	            if(myXhr.upload){ // Check if upload property exists
+			            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+			            	            }
+			            	            return myXhr;
+			            	        },
+			            	        data: formData,
+			            	        cache: false,
+			            	        contentType: false,
+			            	        processData: false
+			            	    });
+			            	    function progressHandlingFunction(e){
+			            	        if(e.lengthComputable){
+			            	            $('progress').attr({value:e.loaded,max:e.total});
+			            	        }
+			            	    }
+			            	}
 			        	}
 			    	});
 				});

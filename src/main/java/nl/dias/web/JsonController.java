@@ -30,12 +30,22 @@ public class JsonController {
         LOGGER.debug("ophalen lijst met VerzekeringsMaatschappijen");
 
         List<VerzekeringsMaatschappij> lijst = maatschappijService.alles();
+
+        if (lijst == null) {
+            LOGGER.debug("GEEN VerzekeringsMaatschappijen gevonden");
+            return new ArrayList<String>();
+        }
+
+        LOGGER.debug("Gevonden, " + lijst.size() + " VerzekeringsMaatschappijen");
+
         List<String> ret = new ArrayList<>();
         ret.add("Kies een maatschappij...");
 
         for (VerzekeringsMaatschappij vm : lijst) {
             ret.add(vm.getNaam());
         }
+
+        LOGGER.debug(ret);
 
         return ret;
     }

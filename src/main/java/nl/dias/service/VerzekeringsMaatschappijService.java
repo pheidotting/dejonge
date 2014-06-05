@@ -4,35 +4,23 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Named;
-import javax.persistence.TypedQuery;
 
 import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import nl.dias.repository.VerzekeringsMaatschappijRepository;
 
-import org.springframework.transaction.annotation.Transactional;
+import com.sun.jersey.api.core.InjectParam;
 
 @Named
-public class VerzekeringsMaatschappijService extends AbstractRepository<VerzekeringsMaatschappij> {
-    public VerzekeringsMaatschappijService() {
-        super(VerzekeringsMaatschappij.class);
-        zetPersistenceContext("dias");
-    }
+public class VerzekeringsMaatschappijService {
+    @InjectParam
+    private VerzekeringsMaatschappijRepository verzekeringsMaatschappijRepository;
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
-    }
-
-    @Transactional
     public VerzekeringsMaatschappij zoekOpNaam(String naam) {
-        TypedQuery<VerzekeringsMaatschappij> query = getEm().createNamedQuery("VerzekeringsMaatschappij.zoekOpNaam", VerzekeringsMaatschappij.class);
-        query.setParameter("naam", naam);
-        return query.getSingleResult();
+        return verzekeringsMaatschappijRepository.zoekOpNaam(naam);
     }
 
-    @Override
     public List<VerzekeringsMaatschappij> alles() {
-        List<VerzekeringsMaatschappij> lijst = super.alles();
+        List<VerzekeringsMaatschappij> lijst = verzekeringsMaatschappijRepository.alles();
         Collections.sort(lijst);
 
         return lijst;

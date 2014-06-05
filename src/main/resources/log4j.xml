@@ -9,11 +9,11 @@
 		</layout>
 	</appender>
 
-	<appender name="diasLog" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="c:/logs/dias.log" />
-		<param name="append" value="true" />
+	<appender name="diasLog" class="org.apache.log4j.ConsoleAppender">
+		<param name="target" value="System.out" />
+		<param name="threshold" value="debug" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d [%t] %-5p %C{6} (%F:%L) - %m%n" />
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
 		</layout>
 	</appender>
 
@@ -21,12 +21,12 @@
 	<!-- log all classes in org.developers package -->
 	<logger name="nl.dias">
 		<!-- level info logs -->
-		<level value="debug" />
+		<level value="trace" />
 		<appender-ref ref="diasLog" />
 	</logger>
 
 	<root>
-		<priority value="error"></priority>
+		<priority value="trace"></priority>
 		<appender-ref ref="diasLog" />
 	</root>
 </log4j:configuration>
