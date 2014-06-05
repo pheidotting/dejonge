@@ -212,6 +212,7 @@ public class PolisController {// extends AbstractController {
     @Path("/download")
     @Produces("application/pdf")
     public Response getFile(@QueryParam("bijlageId") String bijlageId) {
+        logger.debug("Ophalen bijlage met id " + bijlageId);
 
         Bijlage bijlage = polisService.leesBijlage(Long.parseLong(bijlageId));
 
