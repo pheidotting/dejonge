@@ -107,9 +107,9 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
-        // jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum());
+        jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
         jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
-        // jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum());
+        jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
         jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
         if (relatie.getGeslacht() != null) {
             jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());

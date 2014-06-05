@@ -18,6 +18,8 @@ import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
 import nl.dias.web.InterfaceGebruikerController;
 
+import org.joda.time.LocalDate;
+
 import com.google.gson.Gson;
 
 @Path("/gebruiker")
@@ -73,12 +75,12 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis1.setId(1L);
             jsonPolis1.setBetaalfrequentie("Maandelijks");
             jsonPolis1.setPolisNummer("12345");
-            // jsonPolis1.setIngangsDatum(new LocalDate());
+            jsonPolis1.setIngangsDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis1.setMaatschappij("Fa. List & Bedrog");
             jsonPolis1.setPremie("100 euro");
-            // jsonPolis1.setProlongatieDatum(new LocalDate());
+            jsonPolis1.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis1.setSoort("Autoverzekering");
-            // jsonPolis1.setWijzigingsDatum(new LocalDate());
+            jsonPolis1.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
 
             jsonRelatie.getPolissen().add(jsonPolis1);
 
@@ -86,12 +88,12 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis2.setId(1L);
             jsonPolis2.setBetaalfrequentie("Maandelijks");
             jsonPolis2.setPolisNummer("12345");
-            // jsonPolis2.setIngangsDatum(new LocalDate());
+            jsonPolis2.setIngangsDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis2.setMaatschappij("Fa. List & Bedrog");
             jsonPolis2.setPremie("100 euro");
-            // jsonPolis2.setProlongatieDatum(new LocalDate());
+            jsonPolis2.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis2.setSoort("Woonhuisverzekering");
-            // jsonPolis2.setWijzigingsDatum(new LocalDate());
+            jsonPolis2.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
 
             JsonBijlage jsonBijlage = new JsonBijlage();
             // jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");

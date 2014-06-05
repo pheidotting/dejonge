@@ -70,25 +70,6 @@ public class PolisRepositoryTest {
     }
 
     @Test
-    public void alleVerzekeringsMaatschappijen() {
-        VerzekeringsMaatschappij maatschappij1 = new VerzekeringsMaatschappij();
-        VerzekeringsMaatschappij maatschappij2 = new VerzekeringsMaatschappij();
-        VerzekeringsMaatschappij maatschappij3 = new VerzekeringsMaatschappij();
-
-        maatschappij1.setNaam("maatschappij1");
-        maatschappij2.setNaam("maatschappij2");
-        maatschappij3.setNaam("maatschappij3");
-
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().persist(maatschappij1);
-        PolisRepository.getEm().persist(maatschappij2);
-        PolisRepository.getEm().persist(maatschappij3);
-        PolisRepository.getEm().getTransaction().commit();
-
-        assertEquals(3, PolisRepository.alleVerzekeringsMaatschappijen().size());
-    }
-
-    @Test
     public void allePolissenBijMaatschappij() {
         VerzekeringsMaatschappij maatschappij1 = new VerzekeringsMaatschappij();
         VerzekeringsMaatschappij maatschappij2 = new VerzekeringsMaatschappij();
