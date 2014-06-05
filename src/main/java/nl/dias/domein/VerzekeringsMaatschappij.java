@@ -19,7 +19,7 @@ import org.hibernate.envers.Audited;
 @Entity
 @Table(name = "VERZEKERINGSMAATSCHAPPIJ")
 @Audited
-@NamedQueries({ @NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v"),
+@NamedQueries({ @NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
         @NamedQuery(name = "VerzekeringsMaatschappij.zoekOpNaam", query = "select v from VerzekeringsMaatschappij v where v.naam = :naam") })
 public class VerzekeringsMaatschappij implements PersistenceObject, Serializable, Comparable<VerzekeringsMaatschappij> {
     private static final long serialVersionUID = 1721464750949552535L;
@@ -35,10 +35,12 @@ public class VerzekeringsMaatschappij implements PersistenceObject, Serializable
     @Column(name = "TONEN")
     private boolean tonen;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

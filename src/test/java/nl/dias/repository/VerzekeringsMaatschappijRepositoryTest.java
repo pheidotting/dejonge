@@ -36,18 +36,20 @@ public class VerzekeringsMaatschappijRepositoryTest {
     public void alles() {
         VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
         maatschappij.setNaam("aa");
+        maatschappij.setTonen(true);
         VerzekeringsMaatschappij maatschappij1 = new VerzekeringsMaatschappij();
         maatschappij1.setNaam("cc");
+        maatschappij1.setTonen(false);
         VerzekeringsMaatschappij maatschappij2 = new VerzekeringsMaatschappij();
         maatschappij2.setNaam("bb");
+        maatschappij2.setTonen(true);
 
         verzekeringsMaatschappijRepository.opslaan(maatschappij1);
         verzekeringsMaatschappijRepository.opslaan(maatschappij);
         verzekeringsMaatschappijRepository.opslaan(maatschappij2);
 
         List<VerzekeringsMaatschappij> lijst = verzekeringsMaatschappijRepository.alles();
-        assertEquals(3, lijst.size());
-
+        assertEquals(2, lijst.size());
     }
 
 }
