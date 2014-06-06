@@ -96,8 +96,6 @@ public class PolisControllerTest extends EasyMockSupport {
 
         Polis polis = new MotorVerzekering();
         polis.setPolisNummer("polisNummer");
-        ((MotorVerzekering) polis).setOldtimer(true);
-        ((MotorVerzekering) polis).setKenteken("kenteken");
         polis.setIngangsDatum(new LocalDate(2013, 2, 1));
         polis.setMaatschappij(verzekeringsMaatschappij);
         polis.setRelatie(relatie);

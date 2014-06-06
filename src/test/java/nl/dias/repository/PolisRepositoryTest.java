@@ -8,7 +8,6 @@ import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.OngevallenVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
-import nl.dias.domein.polis.SoortAutoVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
 
 import org.joda.time.LocalDate;
@@ -41,9 +40,7 @@ public class PolisRepositoryTest {
         autoVerzekering.setMaatschappij(maatschappij);
         autoVerzekering.setRelatie(relatie);
         autoVerzekering.setIngangsDatum(new LocalDate());
-        autoVerzekering.setKenteken("46-NLV-5");
         autoVerzekering.setPremie(new Bedrag(123.00));
-        autoVerzekering.setSoortAutoVerzekering(SoortAutoVerzekering.AUTO);
         autoVerzekering.setPolisNummer("polisNummer");
         ReisVerzekering reisVerzekering = new ReisVerzekering();
         reisVerzekering.setMaatschappij(maatschappij);
