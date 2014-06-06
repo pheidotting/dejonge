@@ -83,6 +83,18 @@
 	    	self.polissen.remove(polis);
 	    }*/
 	    
+	    self.toevoegenBedrijf = function(){
+	    	self.bedrijven.push(new Bedrijf({
+            	naam : $('#naamBedrijf').val(),
+            	kvk : $('#kvkBedrijf').val(),
+            	straat : $('#straatBedrijf').val(),
+            	huisnummer : $('#huisnummerBedrijf').val(),
+            	toevoeging : $('#toevoegingBedrijf').val(),
+            	postcode : $('#postcodeBedrijf').val(),
+            	plaats : $('#plaatsBedrijf').val()
+	    	}));
+	    }
+	    
 	    
 	    self.userClick = function (obj) {
 	        document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(obj.idNaar);
@@ -527,7 +539,7 @@
 			<input type="text" id="toevoegingBedrijf" placeholder="Toevoeging..." /><br />
 			<input type="text" id="postcodeBedrijf" placeholder="Postcode..." /><br />
 			<input type="text" id="plaatsBedrijf" placeholder="Plaats..." /><br />
-			<button id="opslaanBedrijf">Opslaan</button>
+			<button id="opslaanBedrijf" data-bind="click: $root.toevoegenBedrijf">Opslaan</button>
 			<script>
 				$('#opslaanBedrijf').click(function(){
 	            	var bedrijf = {
@@ -547,9 +559,6 @@
 						contentType: "application/json",
 			            data: json
 			    	});
-					$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
-			           	ko.applyBindings(new Relatie(data));
-				    });
 				});
 			</script>
 		</div>
