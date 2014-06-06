@@ -231,10 +231,10 @@
 	function Bijlage(data){
 		var self = this;
 	
-		self.bestandsNaam = ko.computed(function() {
-		        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
-		    }, this);
-
+		self.url = ko.computed(function() {
+	        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
+	    }, this);
+		self.bestandsNaam = ko.observable(data.bestandsNaam);
 	}
 	
 	
@@ -601,7 +601,10 @@
 				</div>
 					
 				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
-					<iframe data-bind="attr:{src: bestandsNaam}" width="600px;" height="800px;"></iframe>
+					<div>
+						<span class="polisLabel">Bijlage :</span>
+						<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam"></a>
+					</div>
 				</div>
 			</div>
 		</div>

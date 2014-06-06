@@ -96,8 +96,14 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis2.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
 
             JsonBijlage jsonBijlage = new JsonBijlage();
-            // jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
+            jsonBijlage.setId("1");
+            jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
             jsonPolis2.getBijlages().add(jsonBijlage);
+
+            JsonBijlage jsonBijlage1 = new JsonBijlage();
+            jsonBijlage1.setId("2");
+            jsonBijlage1.setBestandsNaam("Polis-5408096516-2.pdf");
+            jsonPolis2.getBijlages().add(jsonBijlage1);
 
             jsonRelatie.getPolissen().add(jsonPolis2);
 
