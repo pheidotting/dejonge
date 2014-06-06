@@ -233,7 +233,7 @@
 	
 		self.url = ko.computed(function() {
 	        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
-	    }, this);
+		}, this);
 		self.bestandsNaam = ko.observable(data.bestandsNaam);
 	}
 	
@@ -603,7 +603,7 @@
 				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
 					<div>
 						<span class="polisLabel">Bijlage :</span>
-						<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam"></a>
+						<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
 					</div>
 				</div>
 			</div>
