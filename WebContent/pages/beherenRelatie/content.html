@@ -75,6 +75,7 @@
 				ingangsDatum : $('#ingangsDatumString').val(),
 				wijzigingsDatum : $('#wijzigingsdatumString').val(),
 				prolongatieDatum : $('#prolongatiedatumString').val(),
+				bedrijf : $('#bedrijfBijPolis').val(),
 				betaalfrequentie : $('#betaalfrequentie').val()
 	    	}));
 	    }
@@ -208,6 +209,7 @@
 		self.soort = ko.observable(data.soort);
 		self.premie = ko.observable(data.premie);
 		self.betaalfrequentie = ko.observable(data.betaalfrequentie);
+		self.bedrijf = ko.observable(data.bedrijf);
 
 		self.bijlages = ko.observableArray();
 		if(data.bijlages != null){
@@ -593,6 +595,10 @@
 					<span class="polisLabel">Betaalfrequentie :</span>
 					<span data-bind="text: betaalfrequentie"></span>
 				</div>
+				<div data-bind="if: bedrijf">
+					<span class="polisLabel">Bedrijf :</span>
+					<span data-bind="text: bedrijf"></span>
+				</div>
 					
 				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
 					<iframe data-bind="attr:{src: bestandsNaam}" width="600px;" height="800px;"></iframe>
@@ -657,6 +663,9 @@
 						<option>Jaar</option>
 					</select>
 				</div>
+				<select id="bedrijfBijPolis" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
+					<option data-bind="text: naam, value: id"></option>
+				</select>
 				<input type="file" id="file" name="file" />
 			</form>
 			<button id="opslaanPolis" data-bind="click: $root.voegPolisToe">Opslaan</button>
@@ -672,6 +681,7 @@
 						ingangsDatumString : $('#ingangsDatumString').val(),
 						wijzigingsdatumString : $('#wijzigingsdatumString').val(),
 						prolongatiedatumString : $('#prolongatiedatumString').val(),
+						bedrijf : $('#bedrijfBijPolis').val(),
 						betaalfrequentie : $('#betaalfrequentie').val()
 	            	}
 	            	var json = JSON.stringify(polis);

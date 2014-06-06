@@ -102,16 +102,26 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonRelatie.getPolissen().add(jsonPolis2);
 
             JsonBedrijf jsonBedrijf1 = new JsonBedrijf();
-            // jsonBedrijf1.setId(1L);
-            // jsonBedrijf1.setHuisnummer(33L);
+            jsonBedrijf1.setId("2");
+            jsonBedrijf1.setHuisnummer("666");
             jsonBedrijf1.setKvk("kvknummer");
-            jsonBedrijf1.setNaam("NaamBedrijf");
-            jsonBedrijf1.setPlaats("PlaatsBedrijf");
+            jsonBedrijf1.setNaam("Fa. List & Bedrog");
+            jsonBedrijf1.setPlaats("Verwegistan");
             jsonBedrijf1.setPostcode("1234AA");
             jsonBedrijf1.setStraat("StraatBedrijf");
-            jsonBedrijf1.setToevoeging("A");
+
+            JsonBedrijf jsonBedrijf2 = new JsonBedrijf();
+            jsonBedrijf2.setId("1");
+            jsonBedrijf2.setHuisnummer("33");
+            jsonBedrijf2.setKvk("kvknummer");
+            jsonBedrijf2.setNaam("NaamBedrijf 1");
+            jsonBedrijf2.setPlaats("PlaatsBedrijf");
+            jsonBedrijf2.setPostcode("1234AA");
+            jsonBedrijf2.setStraat("StraatBedrijf");
+            jsonBedrijf2.setToevoeging("A");
 
             jsonRelatie.getBedrijven().add(jsonBedrijf1);
+            jsonRelatie.getBedrijven().add(jsonBedrijf2);
 
             GebruikerControllerTest.jsonRelatie = jsonRelatie;
         }

@@ -57,7 +57,9 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());
         jsonPolis.setSoort(polis.getClass().getSimpleName());
-
+        if (polis.getBedrijf() != null) {
+            jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
+        }
         return jsonPolis;
     }
 

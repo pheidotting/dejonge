@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
@@ -40,6 +41,7 @@ import nl.dias.domein.polis.RecreatieVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
 import nl.dias.domein.polis.ZorgVerzekering;
+import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
@@ -62,6 +64,8 @@ public class PolisController {// extends AbstractController {
     private GebruikerService gebruikerService;
     @InjectParam
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
+    @InjectParam
+    private BedrijfService bedrijfService;
 
     private final Gson gson = new Gson();
 
@@ -152,6 +156,11 @@ public class PolisController {// extends AbstractController {
 
                 relatie.getPolissen().add(polis);
                 polis.setRelatie(relatie);
+
+                Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(opslaanPolis.getBedrijf()));
+
+                polis.setBedrijf(bedrijf);
+                bedrijf.getPolissen().add(polis);
                 try {
                     polis.setPremie(new Bedrag(opslaanPolis.getPremie()));
                 } catch (NumberFormatException e) {

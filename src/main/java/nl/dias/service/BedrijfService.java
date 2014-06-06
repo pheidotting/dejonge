@@ -15,4 +15,8 @@ public class BedrijfService {
     public void opslaan(Bedrijf bedrijf) {
         bedrijfRepository.opslaan(bedrijf);
     }
+
+    public Bedrijf lees(Long id) {
+        return bedrijfRepository.lees(id);
+    }
 }

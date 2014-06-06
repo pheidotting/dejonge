@@ -10,6 +10,7 @@ public class OpslaanPolis {
     private String wijzigingsdatumString;
     private String prolongatiedatumString;
     private String betaalfrequentie;
+    private String bedrijf;
 
     public Long getRelatie() {
         return relatie;
@@ -81,5 +82,13 @@ public class OpslaanPolis {
 
     public void setBetaalfrequentie(String betaalfrequentie) {
         this.betaalfrequentie = betaalfrequentie;
+    }
+
+    public String getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(String bedrijf) {
+        this.bedrijf = bedrijf;
     }
 }
