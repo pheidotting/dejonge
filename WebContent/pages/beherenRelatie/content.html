@@ -576,6 +576,14 @@
 					<span class="polisLabel">Maatschappij :</span>
 					<span data-bind="text: maatschappij"></span>
 				</div>
+				<div data-bind="if: premie">
+					<span class="polisLabel">Premie :</span>
+					<span data-bind="text: premie"></span>
+				</div>
+				<div data-bind="if: betaalfrequentie">
+					<span class="polisLabel">Betaalfrequentie :</span>
+					<span data-bind="text: betaalfrequentie"></span>
+				</div>
 					
 				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
 					<iframe data-bind="attr:{src: bestandsNaam}" width="600px;" height="800px;"></iframe>

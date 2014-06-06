@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonPolis;
@@ -41,7 +42,7 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         jsonPolis.setId(polis.getId());
         jsonPolis.setPolisNummer(polis.getPolisNummer());
         jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
-        jsonPolis.setPremie(polis.getPremie().toString());
+        jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
         jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
         jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toString("yyyy-MM-dd"));
         if (polis.getBetaalfrequentie() != null) {
@@ -58,6 +59,17 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         jsonPolis.setSoort(polis.getClass().getSimpleName());
 
         return jsonPolis;
+    }
+
+    private String zetBedragOm(Bedrag bedrag) {
+        String waarde = null;
+        String[] x = bedrag.getBedrag().toString().split("\\.");
+        if (x[1].length() == 1) {
+            waarde = bedrag.getBedrag().toString() + "0 euro";
+        } else {
+            waarde = bedrag.getBedrag().toString() + " euro";
+        }
+        return waarde;
     }
 
     @Override
