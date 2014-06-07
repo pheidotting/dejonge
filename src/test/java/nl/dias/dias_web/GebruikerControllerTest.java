@@ -85,7 +85,7 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonRelatie.getPolissen().add(jsonPolis1);
 
             JsonPolis jsonPolis2 = new JsonPolis();
-            jsonPolis2.setId(1L);
+            jsonPolis2.setId(2L);
             jsonPolis2.setBetaalfrequentie("Maandelijks");
             jsonPolis2.setPolisNummer("12345");
             jsonPolis2.setIngangsDatum(new LocalDate().toString("yyyy-MM-dd"));

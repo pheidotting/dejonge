@@ -216,6 +216,12 @@
 		self.premie = ko.observable(data.premie);
 		self.betaalfrequentie = ko.observable(data.betaalfrequentie);
 		self.bedrijf = ko.observable(data.bedrijf);
+		self.idDiv = ko.computed(function() {
+	        return "collapsable" + data.id;
+		}, this);
+		self.idDivLink = ko.computed(function() {
+	        return "#collapsable" + data.id;
+		}, this);
 
 		self.bijlages = ko.observableArray();
 		if(data.bijlages != null){
@@ -574,50 +580,58 @@
 		</div>
 		<div id="polissen">
 			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
-				<fieldset>
-					<legend data-bind="text: soort" style="margin-bottom: 0px;"></legend>
-					
-					<div data-bind="if: polisNummer">
-						<span class="polisLabel">Polisnummer :</span>
-						<span data-bind="text: polisNummer"></span>
-					</div>
-					<div data-bind="if: ingangsDatum">
-						<span class="polisLabel">Ingangsdatum :</span>
-						<span data-bind="text: ingangsDatum"></span>
-					</div>
-					<div data-bind="if: wijzigingsDatum">
-						<span class="polisLabel">Wijzigingsdatum :</span>
-						<span data-bind="text: wijzigingsDatum"></span>
-					</div>
-					<div data-bind="if: prolongatieDatum">
-						<span class="polisLabel">Prolongatie :</span>
-						<span data-bind="text: prolongatieDatum"></span>
-					</div>
-					<div data-bind="if: maatschappij">
-						<span class="polisLabel">Maatschappij :</span>
-						<span data-bind="text: maatschappij"></span>
-					</div>
-					<div data-bind="if: premie">
-						<span class="polisLabel">Premie :</span>
-						<span data-bind="text: premie"></span>
-					</div>
-					<div data-bind="if: betaalfrequentie">
-						<span class="polisLabel">Betaalfrequentie :</span>
-						<span data-bind="text: betaalfrequentie"></span>
-					</div>
-					<div data-bind="if: bedrijf">
-						<span class="polisLabel">Bedrijf :</span>
-						<span data-bind="text: bedrijf"></span>
-					</div>
-						
-					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
-						<div>
-							<span class="polisLabel">Bijlage :</span>
-							<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soort"></a>
+							</h4>
+						</div>
+						<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div data-bind="if: polisNummer">
+									<span class="polisLabel">Polisnummer :</span>
+									<span data-bind="text: polisNummer"></span>
+								</div>
+								<div data-bind="if: ingangsDatum">
+									<span class="polisLabel">Ingangsdatum :</span>
+									<span data-bind="text: ingangsDatum"></span>
+								</div>
+								<div data-bind="if: wijzigingsDatum">
+									<span class="polisLabel">Wijzigingsdatum :</span>
+									<span data-bind="text: wijzigingsDatum"></span>
+								</div>
+								<div data-bind="if: prolongatieDatum">
+									<span class="polisLabel">Prolongatie :</span>
+									<span data-bind="text: prolongatieDatum"></span>
+								</div>
+								<div data-bind="if: maatschappij">
+									<span class="polisLabel">Maatschappij :</span>
+									<span data-bind="text: maatschappij"></span>
+								</div>
+								<div data-bind="if: premie">
+									<span class="polisLabel">Premie :</span>
+									<span data-bind="text: premie"></span>
+								</div>
+								<div data-bind="if: betaalfrequentie">
+									<span class="polisLabel">Betaalfrequentie :</span>
+									<span data-bind="text: betaalfrequentie"></span>
+								</div>
+								<div data-bind="if: bedrijf">
+									<span class="polisLabel">Bedrijf :</span>
+									<span data-bind="text: bedrijf"></span>
+								</div>
+									
+								<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+									<div>
+										<span class="polisLabel">Bijlage :</span>
+										<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-				</fieldset>
-				<Br />
+				</div>
 			</div>
 		</div>
 		<div id="toevoegenPolis">
