@@ -22,6 +22,7 @@ import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AansprakelijkheidVerzekering;
@@ -193,7 +194,7 @@ public class PolisController {// extends AbstractController {
 
         String output = "File uploaded to : " + uploadedFileLocation;
 
-        polisService.slaBijlageOp(bestandsNaam, polis.getId());
+        polisService.slaBijlageOp(bestandsNaam, polis.getId(), SoortBijlage.POLIS);
 
         return Response.status(200).entity(output).build();
 

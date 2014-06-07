@@ -6,6 +6,7 @@ import javax.inject.Named;
 
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.PolisRepository;
 
@@ -28,10 +29,11 @@ public class PolisService {
         return polisRepository.zoekOpPolisNummer(PolisNummer);
     }
 
-    public void slaBijlageOp(String bestandsNaam, Long polisId) {
+    public void slaBijlageOp(String bestandsNaam, Long polisId, SoortBijlage soortBijlage) {
         Bijlage bijlage = new Bijlage();
         bijlage.setBestandsNaam(bestandsNaam);
         bijlage.setPolis(polisRepository.lees(polisId));
+        bijlage.setSoortBijlage(soortBijlage);
 
         polisRepository.opslaanBijlage(bijlage);
     }

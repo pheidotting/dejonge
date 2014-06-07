@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,10 +39,16 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Column(name = "BESTANDSNAAM")
     private String bestandsNaam;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, name = "SOORTBIJLAGE")
+    private SoortBijlage soortBijlage;
+
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -59,5 +67,13 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setBestandsNaam(String bestandsNaam) {
         this.bestandsNaam = bestandsNaam;
+    }
+
+    public SoortBijlage getSoortBijlage() {
+        return soortBijlage;
+    }
+
+    public void setSoortBijlage(SoortBijlage soortBijlage) {
+        this.soortBijlage = soortBijlage;
     }
 }

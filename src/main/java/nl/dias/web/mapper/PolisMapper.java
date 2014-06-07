@@ -52,6 +52,8 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
             JsonBijlage jsonBijlage = new JsonBijlage();
             jsonBijlage.setBestandsNaam(bijlage.getBestandsNaam());
             jsonBijlage.setId(bijlage.getId().toString());
+            jsonBijlage.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
+
             jsonPolis.getBijlages().add(jsonBijlage);
         }
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
