@@ -16,6 +16,7 @@ public class JsonPolis {
     private String soort;
     private List<JsonBijlage> bijlages;
     private String bedrijf;
+    private boolean actief;
 
     public Long getId() {
         return id;
@@ -114,5 +115,13 @@ public class JsonPolis {
 
     public void setBedrijf(String bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public boolean isActief() {
+        return actief;
+    }
+
+    public void setActief(boolean actief) {
+        this.actief = actief;
     }
 }

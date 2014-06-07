@@ -13,6 +13,8 @@ import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
 
+import org.joda.time.LocalDate;
+
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
@@ -62,6 +64,13 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
         }
+
+        if (polis.getIngangsDatum().isAfter(new LocalDate())) {
+            jsonPolis.setActief(false);
+        } else {
+            jsonPolis.setActief(true);
+        }
+
         return jsonPolis;
     }
 

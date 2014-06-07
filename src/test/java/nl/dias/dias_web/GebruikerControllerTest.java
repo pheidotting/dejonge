@@ -81,6 +81,7 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis1.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis1.setSoort("Autoverzekering");
             jsonPolis1.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
+            jsonPolis1.setActief(true);
 
             jsonRelatie.getPolissen().add(jsonPolis1);
 
@@ -94,6 +95,7 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             jsonPolis2.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
             jsonPolis2.setSoort("Woonhuisverzekering");
             jsonPolis2.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
+            jsonPolis2.setActief(false);
 
             JsonBijlage jsonBijlage = new JsonBijlage();
             jsonBijlage.setId("1");

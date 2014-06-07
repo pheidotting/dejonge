@@ -222,6 +222,13 @@
 		self.idDivLink = ko.computed(function() {
 	        return "#collapsable" + data.id;
 		}, this);
+		self.className = ko.computed(function() {
+			if(data.actief){
+				return "panel-title";
+			}else{
+				return "polisNietActief panel-title";
+			}
+		}, this);
 
 		self.bijlages = ko.observableArray();
 		if(data.bijlages != null){
@@ -583,7 +590,7 @@
 				<div class="panel-group" id="accordion">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4 class="panel-title">
+							<h4 data-bind="attr:{class: className}">
 								<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soort"></a>
 							</h4>
 						</div>
