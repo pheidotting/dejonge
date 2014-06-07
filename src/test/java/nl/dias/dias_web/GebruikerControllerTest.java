@@ -98,11 +98,13 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
             JsonBijlage jsonBijlage = new JsonBijlage();
             jsonBijlage.setId("1");
             jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
+            jsonBijlage.setSoortBijlage("Polis");
             jsonPolis2.getBijlages().add(jsonBijlage);
 
             JsonBijlage jsonBijlage1 = new JsonBijlage();
             jsonBijlage1.setId("2");
             jsonBijlage1.setBestandsNaam("Polis-5408096516-2.pdf");
+            jsonBijlage1.setSoortBijlage("Polis");
             jsonPolis2.getBijlages().add(jsonBijlage1);
 
             jsonRelatie.getPolissen().add(jsonPolis2);
@@ -128,6 +130,9 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
 
             jsonRelatie.getBedrijven().add(jsonBedrijf1);
             jsonRelatie.getBedrijven().add(jsonBedrijf2);
+
+            jsonRelatie.getLijstBijlages().add(jsonBijlage);
+            jsonRelatie.getLijstBijlages().add(jsonBijlage1);
 
             GebruikerControllerTest.jsonRelatie = jsonRelatie;
         }

@@ -51,6 +51,12 @@
 				self.polissen.push(new Polis(item));
 			})
 		}
+ 		this.lijstBijlages = ko.observableArray();
+ 		if(data.lijstBijlages != null){
+			$.each(data.lijstBijlages, function(i, item){
+				self.lijstBijlages.push(new Bijlage(item));
+			})
+ 		}
 		this.voegRekeningToe = function() {
 	        self.rekeningnummers.push(new RekeningNummer(""));
 	    };
@@ -235,6 +241,7 @@
 	        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
 		}, this);
 		self.bestandsNaam = ko.observable(data.bestandsNaam);
+		self.soortBijlage = ko.observable(data.soortBijlage);
 	}
 	
 	
@@ -353,6 +360,7 @@
 		<li><a href="#zakelijkeGegevens">Zakelijke Gegevens</a></li>
 		<li><a href="#polissen">Polissen</a></li>
 		<li><a href="#toevoegenPolis">Toevoegen Polis</a></li>
+		<li><a href="overizchtBijlages">Overzicht Bijlages</a></li>
 	</ul>
 		<div>
 		<div id="relatieGegevens">
@@ -566,46 +574,50 @@
 		</div>
 		<div id="polissen">
 			<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
-				<h1 data-bind="text: soort"></h1>
-				<div data-bind="if: polisNummer">
-					<span class="polisLabel">Polisnummer :</span>
-					<span data-bind="text: polisNummer"></span>
-				</div>
-				<div data-bind="if: ingangsDatum">
-					<span class="polisLabel">Ingangsdatum :</span>
-					<span data-bind="text: ingangsDatum"></span>
-				</div>
-				<div data-bind="if: wijzigingsDatum">
-					<span class="polisLabel">Wijzigingsdatum :</span>
-					<span data-bind="text: wijzigingsDatum"></span>
-				</div>
-				<div data-bind="if: prolongatieDatum">
-					<span class="polisLabel">Prolongatie :</span>
-					<span data-bind="text: prolongatieDatum"></span>
-				</div>
-				<div data-bind="if: maatschappij">
-					<span class="polisLabel">Maatschappij :</span>
-					<span data-bind="text: maatschappij"></span>
-				</div>
-				<div data-bind="if: premie">
-					<span class="polisLabel">Premie :</span>
-					<span data-bind="text: premie"></span>
-				</div>
-				<div data-bind="if: betaalfrequentie">
-					<span class="polisLabel">Betaalfrequentie :</span>
-					<span data-bind="text: betaalfrequentie"></span>
-				</div>
-				<div data-bind="if: bedrijf">
-					<span class="polisLabel">Bedrijf :</span>
-					<span data-bind="text: bedrijf"></span>
-				</div>
+				<fieldset>
+					<legend data-bind="text: soort" style="margin-bottom: 0px;"></legend>
 					
-				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
-					<div>
-						<span class="polisLabel">Bijlage :</span>
-						<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+					<div data-bind="if: polisNummer">
+						<span class="polisLabel">Polisnummer :</span>
+						<span data-bind="text: polisNummer"></span>
 					</div>
-				</div>
+					<div data-bind="if: ingangsDatum">
+						<span class="polisLabel">Ingangsdatum :</span>
+						<span data-bind="text: ingangsDatum"></span>
+					</div>
+					<div data-bind="if: wijzigingsDatum">
+						<span class="polisLabel">Wijzigingsdatum :</span>
+						<span data-bind="text: wijzigingsDatum"></span>
+					</div>
+					<div data-bind="if: prolongatieDatum">
+						<span class="polisLabel">Prolongatie :</span>
+						<span data-bind="text: prolongatieDatum"></span>
+					</div>
+					<div data-bind="if: maatschappij">
+						<span class="polisLabel">Maatschappij :</span>
+						<span data-bind="text: maatschappij"></span>
+					</div>
+					<div data-bind="if: premie">
+						<span class="polisLabel">Premie :</span>
+						<span data-bind="text: premie"></span>
+					</div>
+					<div data-bind="if: betaalfrequentie">
+						<span class="polisLabel">Betaalfrequentie :</span>
+						<span data-bind="text: betaalfrequentie"></span>
+					</div>
+					<div data-bind="if: bedrijf">
+						<span class="polisLabel">Bedrijf :</span>
+						<span data-bind="text: bedrijf"></span>
+					</div>
+						
+					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+						<div>
+							<span class="polisLabel">Bijlage :</span>
+							<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+						</div>
+					</div>
+				</fieldset>
+				<Br />
 			</div>
 		</div>
 		<div id="toevoegenPolis">
@@ -723,5 +735,19 @@
 				});
 			</script>
 		</div>
-	</div></div>
+		<div id="overizchtBijlages">
+			<table class="table">
+				<tr>
+					<th>Soort</th>
+					<th>Bijlage</th>
+				</tr>
+				<tbody data-bind="foreach: lijstBijlages">
+					<tr>
+						<td data-bind="text: soortBijlage"></a></td>
+						<td><a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

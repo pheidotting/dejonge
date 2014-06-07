@@ -33,6 +33,7 @@ public class JsonRelatie {
     private List<JsonBedrijf> bedrijven;
     private List<JsonPolis> polissen;
     private boolean zakelijkeKlant;
+    private List<JsonBijlage> lijstBijlages;
 
     public String getGeboorteDatum() {
         return geboorteDatum;
@@ -254,11 +255,22 @@ public class JsonRelatie {
         this.zakelijkeKlant = zakelijkeKlant;
     }
 
+    public List<JsonBijlage> getLijstBijlages() {
+        if (lijstBijlages == null) {
+            lijstBijlages = new ArrayList<JsonBijlage>();
+        }
+        return lijstBijlages;
+    }
+
+    public void setLijstBijlages(List<JsonBijlage> lijstBijlages) {
+        this.lijstBijlages = lijstBijlages;
+    }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(achternaam).append(bedrijven).append(bsn).append(burgerlijkeStaat).append(geslacht).append(huisnummer).append(id).append(identificatie).append(kantoor)
                 .append(onderlingeRelaties).append(opmerkingen).append(plaats).append(postcode).append(rekeningnummers).append(straat).append(telefoonnummers).append(toevoeging).append(tussenvoegsel)
-                .append(voornaam).append(polissen).append(zakelijkeKlant).toHashCode();
+                .append(voornaam).append(polissen).append(zakelijkeKlant).append(lijstBijlages).toHashCode();
     }
 
     @Override
@@ -278,7 +290,8 @@ public class JsonRelatie {
                 .append(geslacht, other.geslacht).append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie).append(kantoor, other.kantoor)
                 .append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(plaats, other.plaats).append(postcode, other.postcode)
                 .append(rekeningnummers, other.rekeningnummers).append(straat, other.straat).append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging)
-                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
+                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant)
+                .append(lijstBijlages, other.lijstBijlages).isEquals();
     }
 
     @Override
