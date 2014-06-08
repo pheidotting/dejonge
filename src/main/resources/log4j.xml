@@ -16,17 +16,27 @@
 			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
 		</layout>
 	</appender>
-
+    
+    <appender name="diasLogFile" class="org.apache.log4j.FileAppender">
+        <param name="File" value="C:\logs\dias.log" />
+        <param name="Threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %t [%-40.40c] %x - %m%n"/>
+        </layout>
+    </appender>
+    
 	<!-- LOGGER LIST -->
 	<!-- log all classes in org.developers package -->
 	<logger name="nl.dias">
 		<!-- level info logs -->
 		<level value="trace" />
 		<appender-ref ref="diasLog" />
+		<appender-ref ref="diasLogFile" />
 	</logger>
 
 	<root>
 		<priority value="trace"></priority>
 		<appender-ref ref="diasLog" />
+		<appender-ref ref="diasLogFile" />
 	</root>
 </log4j:configuration>
