@@ -22,17 +22,23 @@
 			$('#tabs').puitabview('disable' , 1);
 		}
 		this.rekeningnummers = ko.observableArray();
-		$.each(data.rekeningnummers, function(i, item) {
-			self.rekeningnummers.push(new RekeningNummer(item));
-		});
+		if(data.rekeningnummer!=null){
+			$.each(data.rekeningnummers, function(i, item) {
+				self.rekeningnummers.push(new RekeningNummer(item));
+			});
+		}
 		this.telefoonnummers = ko.observableArray();
-		$.each(data.telefoonnummers, function(i, item) {
-			self.telefoonnummers.push(new TelefoonNummer(item));
-		});
+		if(data.telefoonnummers != null){
+			$.each(data.telefoonnummers, function(i, item) {
+				self.telefoonnummers.push(new TelefoonNummer(item));
+			});
+		}
 		this.bedrijven = ko.observableArray();
-		$.each(data.bedrijven, function(i, item) {
-			self.bedrijven.push(new Bedrijf(item));
-		});
+		if(data.bedrijven != null){
+			$.each(data.bedrijven, function(i, item) {
+				self.bedrijven.push(new Bedrijf(item));
+			});
+		}
 		this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
 		this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 		this.geslacht = ko.observable(data.geslacht);

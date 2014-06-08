@@ -17,6 +17,9 @@ public class JsonPolis {
     private List<JsonBijlage> bijlages;
     private String bedrijf;
     private boolean actief;
+    private String idDiv;
+    private String idDivLink;
+    private String className;
 
     public Long getId() {
         return id;
@@ -123,5 +126,29 @@ public class JsonPolis {
 
     public void setActief(boolean actief) {
         this.actief = actief;
+    }
+
+    public String getIdDiv() {
+        return idDiv;
+    }
+
+    public void setIdDiv(String idDiv) {
+        this.idDiv = idDiv;
+    }
+
+    public String getIdDivLink() {
+        return idDivLink;
+    }
+
+    public void setIdDivLink(String idDivLink) {
+        this.idDivLink = idDivLink;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }
