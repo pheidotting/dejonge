@@ -727,14 +727,14 @@
 						betaalfrequentie : $('#betaalfrequentie').val()
 	            	}
 	            	var json = JSON.stringify(polis);
- 					$.ajax({
+/*  					$.ajax({
 						type: "POST",
 						url: '../dejonge/rest/polis/opslaan',
 						contentType: "application/json",
 			            data: json,
 			            success: function(data) {
 			            	if($('#file').val() != ""){
-				            	$('progress').show();
+ */				            	$('progress').show();
 								var formData = new FormData($('form')[0]);
 			            	    $.ajax({
 									url: '../dejonge/rest/polis/upload',
@@ -756,10 +756,10 @@
 			            	            $('progress').attr({value:e.loaded,max:e.total});
 			            	        }
 			            	    }
-			            	}
+/* 			            	}
 			        	}
 			    	});
-				});
+ */				});
 			</script>
 		</div>
 		<div id="overizchtBijlages">
