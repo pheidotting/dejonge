@@ -28,6 +28,7 @@ import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AansprakelijkheidVerzekering;
 import nl.dias.domein.polis.AnnuleringsVerzekering;
 import nl.dias.domein.polis.AutoVerzekering;
+import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.BromSnorfietsVerzekering;
 import nl.dias.domein.polis.CamperVerzekering;
 import nl.dias.domein.polis.InboedelVerzekering;
@@ -46,9 +47,11 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
+import nl.lakedigital.archief.domain.ArchiefBestand;
+import nl.lakedigital.archief.service.ArchiefService;
 
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
@@ -57,7 +60,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @InjectParam
     private PolisService polisService;
@@ -67,6 +70,8 @@ public class PolisController {// extends AbstractController {
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
     @InjectParam
     private BedrijfService bedrijfService;
+    @InjectParam
+    private ArchiefService archiefService;
 
     private final Gson gson = new Gson();
 
@@ -152,6 +157,7 @@ public class PolisController {// extends AbstractController {
                 polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
                 polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
                 polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
+                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie()));
 
                 polis.setMaatschappij(maatschappij);
 
@@ -184,6 +190,8 @@ public class PolisController {// extends AbstractController {
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
+
+        logger.debug("opslaan bijlage bij polis {}, bestandsnaam {}", polisNummer, fileDetail.getFileName());
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
         String bestandsNaam = polis.getId() + "-" + fileDetail.getFileName();
@@ -192,11 +200,17 @@ public class PolisController {// extends AbstractController {
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
 
-        String output = "File uploaded to : " + uploadedFileLocation;
+        File file = new File(uploadedFileLocation);
+        ArchiefBestand archiefBestand = new ArchiefBestand();
+        archiefBestand.setBestand(file);
 
+        logger.debug("naar s3");
+        archiefService.opslaan(archiefBestand);
+
+        logger.debug("eigen database bijwerken");
         polisService.slaBijlageOp(bestandsNaam, polis.getId(), SoortBijlage.POLIS);
 
-        return Response.status(200).entity(output).build();
+        return Response.status(200).entity("").build();
 
     }
 
