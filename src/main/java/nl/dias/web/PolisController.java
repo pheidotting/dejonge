@@ -50,8 +50,8 @@ import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
-import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
@@ -60,7 +60,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     @InjectParam
     private PolisService polisService;
@@ -191,7 +191,7 @@ public class PolisController {// extends AbstractController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
 
-        logger.debug("opslaan bijlage bij polis {}, bestandsnaam {}", polisNummer, fileDetail.getFileName());
+        logger.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
         String bestandsNaam = polis.getId() + "-" + fileDetail.getFileName();
