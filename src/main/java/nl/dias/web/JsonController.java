@@ -31,11 +31,6 @@ public class JsonController {
 
         List<VerzekeringsMaatschappij> lijst = maatschappijService.alles();
 
-        if (lijst == null) {
-            LOGGER.debug("GEEN VerzekeringsMaatschappijen gevonden");
-            return new ArrayList<String>();
-        }
-
         LOGGER.debug("Gevonden, " + lijst.size() + " VerzekeringsMaatschappijen");
 
         List<String> ret = new ArrayList<>();
