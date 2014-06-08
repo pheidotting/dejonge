@@ -157,7 +157,7 @@ public class PolisController {// extends AbstractController {
                 polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
                 polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
                 polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
-                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie().toUpperCase()));
+                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
                 polis.setMaatschappij(maatschappij);
 
