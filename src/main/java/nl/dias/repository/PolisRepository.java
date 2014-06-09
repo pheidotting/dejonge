@@ -67,7 +67,9 @@ public class PolisRepository extends AbstractRepository<Polis> {
 
     @Transactional
     public void opslaanBijlage(Bijlage bijlage) {
+        getEm().getTransaction().begin();
         getEm().persist(bijlage);
+        getEm().getTransaction().commit();
     }
 
     public Bijlage leesBijlage(Long id) {

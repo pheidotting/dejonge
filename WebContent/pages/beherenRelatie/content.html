@@ -692,7 +692,7 @@
 				<option>Zorg</option>
 			</select>
 			<form enctype="multipart/form-data">
-				<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..."  />
+				<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" />
 				<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
 				<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
 				<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
@@ -727,15 +727,15 @@
 						betaalfrequentie : $('#betaalfrequentie').val()
 	            	}
 	            	var json = JSON.stringify(polis);
-/*  					$.ajax({
+ 					$.ajax({
 						type: "POST",
 						url: '../dejonge/rest/polis/opslaan',
 						contentType: "application/json",
 			            data: json,
 			            success: function(data) {
-			            	if($('#file').val() != ""){
+/* 			            	if($('#file').val() != ""){
  */				            	$('progress').show();
-								var formData = new FormData($('form')[0]);
+								var formData = new FormData($('form')[0]);	
 			            	    $.ajax({
 									url: '../dejonge/rest/polis/upload',
 			            	        type: 'POST',
@@ -757,9 +757,9 @@
 			            	        }
 			            	    }
 /* 			            	}
-			        	}
+ */			        	}
 			    	});
- */				});
+				});
 			</script>
 		</div>
 		<div id="overizchtBijlages">

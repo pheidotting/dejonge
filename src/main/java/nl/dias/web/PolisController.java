@@ -209,6 +209,8 @@ public class PolisController {// extends AbstractController {
             archiefService.setBucketName("dias");
             String identificatie = archiefService.opslaan(archiefBestand);
 
+            logger.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
+
             logger.debug("eigen database bijwerken");
             polisService.slaBijlageOp(fileDetail.getFileName(), polis.getId(), SoortBijlage.POLIS, identificatie);
         } catch (IOException e) {

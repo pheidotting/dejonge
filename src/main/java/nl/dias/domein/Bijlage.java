@@ -87,4 +87,19 @@ public class Bijlage implements PersistenceObject, Serializable {
     public void setS3Identificatie(String s3Identificatie) {
         this.s3Identificatie = s3Identificatie;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Bijlage [id=");
+        builder.append(id);
+        builder.append(", bestandsNaam=");
+        builder.append(bestandsNaam);
+        builder.append(", soortBijlage=");
+        builder.append(soortBijlage);
+        builder.append(", s3Identificatie=");
+        builder.append(s3Identificatie);
+        builder.append("]");
+        return builder.toString();
+    }
 }
