@@ -207,10 +207,10 @@ public class PolisController {// extends AbstractController {
 
             logger.debug("naar s3");
             archiefService.setBucketName("dias");
-            archiefService.opslaan(archiefBestand);
+            String identificatie = archiefService.opslaan(archiefBestand);
 
             logger.debug("eigen database bijwerken");
-            polisService.slaBijlageOp(fileDetail.getFileName(), polis.getId(), SoortBijlage.POLIS, archiefBestand.getIdentificatie());
+            polisService.slaBijlageOp(fileDetail.getFileName(), polis.getId(), SoortBijlage.POLIS, identificatie);
         } catch (IOException e) {
             logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
         }
