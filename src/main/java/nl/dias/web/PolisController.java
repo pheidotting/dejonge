@@ -202,9 +202,11 @@ public class PolisController {// extends AbstractController {
 
         File file = new File(uploadedFileLocation);
         ArchiefBestand archiefBestand = new ArchiefBestand();
+        archiefBestand.setBestandsnaam(fileDetail.getFileName());
         archiefBestand.setBestand(file);
 
         logger.debug("naar s3");
+        archiefService.setBucketName("dias");
         archiefService.opslaan(archiefBestand);
 
         logger.debug("eigen database bijwerken");
