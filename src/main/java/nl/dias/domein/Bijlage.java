@@ -43,6 +43,9 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Column(length = 50, name = "SOORTBIJLAGE")
     private SoortBijlage soortBijlage;
 
+    @Column(name = "S3")
+    private String s3Identificatie;
+
     @Override
     public Long getId() {
         return id;
@@ -75,5 +78,13 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setSoortBijlage(SoortBijlage soortBijlage) {
         this.soortBijlage = soortBijlage;
+    }
+
+    public String getS3Identificatie() {
+        return s3Identificatie;
+    }
+
+    public void setS3Identificatie(String s3Identificatie) {
+        this.s3Identificatie = s3Identificatie;
     }
 }

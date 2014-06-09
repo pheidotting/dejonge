@@ -194,23 +194,26 @@ public class PolisController {// extends AbstractController {
         logger.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
-        String bestandsNaam = polis.getId() + "-" + fileDetail.getFileName();
-        String uploadedFileLocation = "c://Uploads/" + bestandsNaam;
+        try {
+            File tempFile = File.createTempFile("dias", "upload");
 
-        // save it
-        writeToFile(uploadedInputStream, uploadedFileLocation);
+            // save it
+            writeToFile(uploadedInputStream, tempFile.getAbsolutePath());
 
-        File file = new File(uploadedFileLocation);
-        ArchiefBestand archiefBestand = new ArchiefBestand();
-        archiefBestand.setBestandsnaam(fileDetail.getFileName());
-        archiefBestand.setBestand(file);
+            // File file = new File(uploadedFileLocation);
+            ArchiefBestand archiefBestand = new ArchiefBestand();
+            archiefBestand.setBestandsnaam(fileDetail.getFileName());
+            archiefBestand.setBestand(tempFile);
 
-        logger.debug("naar s3");
-        archiefService.setBucketName("dias");
-        archiefService.opslaan(archiefBestand);
+            logger.debug("naar s3");
+            archiefService.setBucketName("dias");
+            archiefService.opslaan(archiefBestand);
 
-        logger.debug("eigen database bijwerken");
-        polisService.slaBijlageOp(bestandsNaam, polis.getId(), SoortBijlage.POLIS);
+            logger.debug("eigen database bijwerken");
+            polisService.slaBijlageOp(fileDetail.getFileName(), polis.getId(), SoortBijlage.POLIS, archiefBestand.getIdentificatie());
+        } catch (IOException e) {
+            logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
+        }
 
         return Response.status(200).entity("").build();
 

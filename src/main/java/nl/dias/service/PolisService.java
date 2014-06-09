@@ -29,11 +29,12 @@ public class PolisService {
         return polisRepository.zoekOpPolisNummer(PolisNummer);
     }
 
-    public void slaBijlageOp(String bestandsNaam, Long polisId, SoortBijlage soortBijlage) {
+    public void slaBijlageOp(String bestandsNaam, Long polisId, SoortBijlage soortBijlage, String s3Identificatie) {
         Bijlage bijlage = new Bijlage();
         bijlage.setBestandsNaam(bestandsNaam);
         bijlage.setPolis(polisRepository.lees(polisId));
         bijlage.setSoortBijlage(soortBijlage);
+        bijlage.setS3Identificatie(s3Identificatie);
 
         polisRepository.opslaanBijlage(bijlage);
     }
