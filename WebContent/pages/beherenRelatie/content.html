@@ -296,14 +296,14 @@
 			}
 		});
  */ 
-		if($('#id').val() != '0'){
-			$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
+/* 		if($('#id').val() != '0'){
+ */			$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
 	           	ko.applyBindings(new Relatie(data));
 		    });
-		}else{
-           	ko.applyBindings(new Relatie(""));
+/* 		}else{
+           	ko.applyBindings(new Relatie({id:0, rekeningnummers:[]}));
 		}
-		
+ */		
 		$('#soortVerzekering').change(function() {
  			$('#div_kenteken').hide();
 			$('#div_soortAutoVerzekering').hide();

@@ -1,6 +1,7 @@
 package nl.dias.web.mapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,9 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
+import nl.dias.domein.polis.PolisComperator;
+import nl.lakedigital.archief.domain.ArchiefBestand;
+import nl.lakedigital.archief.service.ArchiefService;
 
 import org.joda.time.LocalDate;
 
@@ -21,6 +25,8 @@ import com.sun.jersey.api.core.InjectParam;
 public class PolisMapper implements Mapper<Polis, JsonPolis> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
+    @InjectParam
+    private ArchiefService archiefService;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
@@ -51,10 +57,12 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
         for (Bijlage bijlage : polis.getBijlages()) {
+            ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), true);
+
             JsonBijlage jsonBijlage = new JsonBijlage();
-            jsonBijlage.setBestandsNaam(bijlage.getBestandsNaam());
             jsonBijlage.setId(bijlage.getId().toString());
             jsonBijlage.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
+            jsonBijlage.setBestandsNaam(archiefBestand.getBestandsnaam());
 
             jsonPolis.getBijlages().add(jsonBijlage);
         }
@@ -88,6 +96,13 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
     @Override
     public List<JsonPolis> mapAllNaarJson(Set<Polis> polissen) {
         List<JsonPolis> ret = new ArrayList<>();
+
+        List<Polis> polissenSortable = new ArrayList<Polis>();
+        for (Polis polis : polissen) {
+            polissenSortable.add(polis);
+        }
+        Collections.sort(polissenSortable, new PolisComperator());
+
         for (Polis polis : polissen) {
             ret.add(mapNaarJson(polis));
         }

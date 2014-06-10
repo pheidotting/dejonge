@@ -9,7 +9,9 @@ import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.Geslacht;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -24,6 +26,8 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
     private PolisMapper polisMapper;
     @InjectParam
     private BedrijfMapper bedrijfMapper;
+    @InjectParam
+    private BijlageMapper bijlageMapper;
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
@@ -122,6 +126,13 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         }
         jsonRelatie.setBedrijven(bedrijfMapper.mapAllNaarJson(relatie.getBedrijven()));
         jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
+
+        List<JsonBijlage> bijlages = new ArrayList<JsonBijlage>();
+        for (Polis polis : relatie.getPolissen()) {
+            bijlages.addAll(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
+        }
+
+        jsonRelatie.setLijstBijlages(bijlages);
 
         return jsonRelatie;
     }

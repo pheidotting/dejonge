@@ -138,11 +138,16 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     public JsonRelatie lees(@QueryParam("id") String id) {
         logger.debug("Ophalen Relatie met id : " + id);
 
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
+        JsonRelatie jsonRelatie = null;
+        if (id != null && !id.trim().equals("0")) {
+            Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
-        logger.debug("Opgehaald : " + relatie);
+            logger.debug("Opgehaald : " + relatie);
 
-        JsonRelatie jsonRelatie = relatieMapper.mapNaarJson(relatie);
+            jsonRelatie = relatieMapper.mapNaarJson(relatie);
+        } else {
+            jsonRelatie = new JsonRelatie();
+        }
 
         logger.debug("Naar de front-end : " + jsonRelatie);
 

@@ -81,8 +81,10 @@ public class PolisController {// extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public String opslaan(OpslaanPolis opslaanPolis) {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
+        logger.debug("maatschappij gevonden : " + maatschappij);
 
-        Relatie relatie = (Relatie) gebruikerService.lees(3L);// opslaanPolis.getRelatie());
+        Relatie relatie = (Relatie) gebruikerService.lees(opslaanPolis.getRelatie());
+        logger.debug("bij relatie : " + relatie);
 
         String messages = null;
 
@@ -153,6 +155,7 @@ public class PolisController {// extends AbstractController {
             if (polis == null) {
                 messages = "Kies een soort verzekering";
             } else {
+                logger.debug("polis aanmaken");
                 polis.setPolisNummer(opslaanPolis.getPolisNummer());
                 polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
                 polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
@@ -166,22 +169,28 @@ public class PolisController {// extends AbstractController {
 
                 Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(opslaanPolis.getBedrijf()));
 
-                polis.setBedrijf(bedrijf);
-                bedrijf.getPolissen().add(polis);
                 try {
+                    logger.debug("zet premiebedrag " + opslaanPolis.getPremie());
                     polis.setPremie(new Bedrag(opslaanPolis.getPremie()));
                 } catch (NumberFormatException e) {
                     logger.debug(e.getMessage());
                 }
+                polis.setBedrijf(bedrijf);
+                bedrijf.getPolissen().add(polis);
             }
 
             if (polis != null) {
+                logger.debug("Opslaan polis : " + polis);
                 polisService.opslaan(polis);
+            } else {
+                logger.error("lege polis..");
             }
         }
 
         if (messages == null) {
             messages = "ok";
+        } else {
+            logger.error(messages);
         }
         return gson.toJson(messages);
     }
@@ -212,7 +221,7 @@ public class PolisController {// extends AbstractController {
             logger.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
 
             logger.debug("eigen database bijwerken");
-            polisService.slaBijlageOp(fileDetail.getFileName(), polis.getId(), SoortBijlage.POLIS, identificatie);
+            polisService.slaBijlageOp(polis.getId(), SoortBijlage.POLIS, identificatie);
         } catch (IOException e) {
             logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
         }
@@ -243,15 +252,15 @@ public class PolisController {// extends AbstractController {
     @Path("/download")
     @Produces("application/pdf")
     public Response getFile(@QueryParam("bijlageId") String bijlageId) {
+        archiefService.setBucketName("dias");
         logger.debug("Ophalen bijlage met id " + bijlageId);
 
         Bijlage bijlage = polisService.leesBijlage(Long.parseLong(bijlageId));
+        ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), false);
 
-        File file = new File("c://Uploads//" + bijlage.getBestandsNaam());
-
-        Date fileDate = new Date(file.lastModified());
+        Date fileDate = new Date(archiefBestand.getBestand().lastModified());
         try {
-            return Response.ok(new FileInputStream(file)).lastModified(fileDate).build();
+            return Response.ok(new FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
             return null;

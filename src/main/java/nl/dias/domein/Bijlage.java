@@ -36,9 +36,6 @@ public class Bijlage implements PersistenceObject, Serializable {
     @JoinColumn(name = "POLIS", nullable = true)
     private Polis polis;
 
-    @Column(name = "BESTANDSNAAM")
-    private String bestandsNaam;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 50, name = "SOORTBIJLAGE")
     private SoortBijlage soortBijlage;
@@ -64,14 +61,6 @@ public class Bijlage implements PersistenceObject, Serializable {
         this.polis = polis;
     }
 
-    public String getBestandsNaam() {
-        return bestandsNaam;
-    }
-
-    public void setBestandsNaam(String bestandsNaam) {
-        this.bestandsNaam = bestandsNaam;
-    }
-
     public SoortBijlage getSoortBijlage() {
         return soortBijlage;
     }
@@ -93,8 +82,6 @@ public class Bijlage implements PersistenceObject, Serializable {
         StringBuilder builder = new StringBuilder();
         builder.append("Bijlage [id=");
         builder.append(id);
-        builder.append(", bestandsNaam=");
-        builder.append(bestandsNaam);
         builder.append(", soortBijlage=");
         builder.append(soortBijlage);
         builder.append(", s3Identificatie=");
