@@ -167,7 +167,11 @@ public class PolisController {// extends AbstractController {
                 relatie.getPolissen().add(polis);
                 polis.setRelatie(relatie);
 
-                Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(opslaanPolis.getBedrijf()));
+                if (opslaanPolis.getBedrijf() != null) {
+                    Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(opslaanPolis.getBedrijf()));
+                    polis.setBedrijf(bedrijf);
+                    bedrijf.getPolissen().add(polis);
+                }
 
                 try {
                     logger.debug("zet premiebedrag " + opslaanPolis.getPremie());
@@ -175,8 +179,6 @@ public class PolisController {// extends AbstractController {
                 } catch (NumberFormatException e) {
                     logger.debug(e.getMessage());
                 }
-                polis.setBedrijf(bedrijf);
-                bedrijf.getPolissen().add(polis);
             }
 
             if (polis != null) {
