@@ -184,6 +184,9 @@ public class PolisController {// extends AbstractController {
             if (polis != null) {
                 logger.debug("Opslaan polis : " + polis);
                 polisService.opslaan(polis);
+
+                relatie.getPolissen().add(polis);
+                gebruikerService.opslaan(relatie);
             } else {
                 logger.error("lege polis..");
             }
