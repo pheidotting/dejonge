@@ -168,9 +168,12 @@ public class PolisController {// extends AbstractController {
                 polis.setRelatie(relatie);
 
                 if (opslaanPolis.getBedrijf() != null) {
-                    Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(opslaanPolis.getBedrijf()));
-                    polis.setBedrijf(bedrijf);
-                    bedrijf.getPolissen().add(polis);
+                    Long bedrijfId = Long.valueOf(opslaanPolis.getBedrijf());
+                    if (bedrijfId != 0) {
+                        Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(bedrijfId));
+                        polis.setBedrijf(bedrijf);
+                        bedrijf.getPolissen().add(polis);
+                    }
                 }
 
                 try {
