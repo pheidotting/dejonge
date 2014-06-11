@@ -17,8 +17,6 @@ import nl.dias.domein.polis.PolisComperator;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
-import org.joda.time.LocalDate;
-
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
@@ -71,12 +69,6 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         jsonPolis.setSoort(polis.getClass().getSimpleName());
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
-        }
-
-        if (polis.getIngangsDatum().isAfter(new LocalDate())) {
-            jsonPolis.setActief(false);
-        } else {
-            jsonPolis.setActief(true);
         }
 
         return jsonPolis;

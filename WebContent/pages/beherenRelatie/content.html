@@ -79,14 +79,17 @@
 	    	self.telefoonnummers.remove(telefoon);
 	    }
 	    this.voegPolisToe = function(){
+	    	var ingangsDatum = moment($('#ingangsDatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
+	    	var wijzigingsDatum = moment($('#wijzigingsdatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
+	    	var prolongatieDatum = moment($('#prolongatiedatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
 	    	self.polissen.push(new Polis({
             	premie : $('#premie').val().replace(",", "."),
 				maatschappij : $('#verzekeringsMaatschappijen').val(),
 				soort : $('#soortVerzekering').val(),
 				polisNummer : $('#polisNummer').val(),
-				ingangsDatum : $('#ingangsDatumString').val(),
-				wijzigingsDatum : $('#wijzigingsdatumString').val(),
-				prolongatieDatum : $('#prolongatiedatumString').val(),
+				ingangsDatum : ingangsDatum,
+				wijzigingsDatum : wijzigingsDatum,
+				prolongatieDatum : prolongatieDatum,
 				bedrijf : $('#bedrijfBijPolis').val(),
 				betaalfrequentie : $('#betaalfrequentie').val()
 	    	}));
@@ -229,7 +232,9 @@
 	        return "#collapsable" + data.id;
 		}, this);
 		self.className = ko.computed(function() {
-			if(data.actief){
+			var datum = moment(data.ingangsDatum);
+			var tijd = moment(datum).fromNow();
+			if(tijd.substr(tijd.length - 3) == "ago"){
 				return "panel-title";
 			}else{
 				return "polisNietActief panel-title";

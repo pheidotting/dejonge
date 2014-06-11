@@ -16,7 +16,6 @@ public class JsonPolis {
     private String soort;
     private List<JsonBijlage> bijlages;
     private String bedrijf;
-    private boolean actief;
     private String idDiv;
     private String idDivLink;
     private String className;
@@ -118,14 +117,6 @@ public class JsonPolis {
 
     public void setBedrijf(String bedrijf) {
         this.bedrijf = bedrijf;
-    }
-
-    public boolean isActief() {
-        return actief;
-    }
-
-    public void setActief(boolean actief) {
-        this.actief = actief;
     }
 
     public String getIdDiv() {
