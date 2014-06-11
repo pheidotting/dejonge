@@ -31,6 +31,7 @@ public class JsonRelatie {
     private String burgerlijkeStaat;
     private List<Long> onderlingeRelaties;
     private List<JsonBedrijf> bedrijven;
+    private List<JsonBedrijf> bedrijvenVoorPolis;
     private List<JsonPolis> polissen;
     private boolean zakelijkeKlant;
     private List<JsonBijlage> lijstBijlages;
@@ -234,6 +235,14 @@ public class JsonRelatie {
 
     public void setBedrijven(List<JsonBedrijf> bedrijven) {
         this.bedrijven = bedrijven;
+    }
+
+    public List<JsonBedrijf> getBedrijvenVoorPolis() {
+        return bedrijvenVoorPolis;
+    }
+
+    public void setBedrijvenVoorPolis(List<JsonBedrijf> bedrijvenVoorPolis) {
+        this.bedrijvenVoorPolis = bedrijvenVoorPolis;
     }
 
     public List<JsonPolis> getPolissen() {

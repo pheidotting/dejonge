@@ -39,6 +39,14 @@
 				self.bedrijven.push(new Bedrijf(item));
 			});
 		}
+		this.bedrijvenVoorPolis = ko.observableArray();
+		if(data.bedrijven != null){
+			self.bedrijvenVoorPolis.push(new Bedrijf({id: 0, naam: 'Kies een bedrijf'}));
+			$.each(data.bedrijven, function(i, item) {
+				self.bedrijvenVoorPolis.push(new Bedrijf(item));
+			});
+		}
+
 		this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
 		this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 		this.geslacht = ko.observable(data.geslacht);
@@ -101,6 +109,15 @@
 	    
 	    self.toevoegenBedrijf = function(){
 	    	self.bedrijven.push(new Bedrijf({
+            	naam : $('#naamBedrijf').val(),
+            	kvk : $('#kvkBedrijf').val(),
+            	straat : $('#straatBedrijf').val(),
+            	huisnummer : $('#huisnummerBedrijf').val(),
+            	toevoeging : $('#toevoegingBedrijf').val(),
+            	postcode : $('#postcodeBedrijf').val(),
+            	plaats : $('#plaatsBedrijf').val()
+	    	}));
+	    	self.bedrijvenVoorPolis.push(new Bedrijf({
             	naam : $('#naamBedrijf').val(),
             	kvk : $('#kvkBedrijf').val(),
             	straat : $('#straatBedrijf').val(),
@@ -710,7 +727,7 @@
 						<option>Jaar</option>
 					</select>
 				</div>
-				<select id="bedrijfBijPolis" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
+				<select id="bedrijfBijPolis" data-bind="foreach: bedrijvenVoorPolis, visible: bedrijven().length > 0">
 					<option data-bind="text: naam, value: id"></option>
 				</select>
 				<input type="file" id="file" name="file" />
