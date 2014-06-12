@@ -266,6 +266,12 @@ public class PolisController {// extends AbstractController {
         Bijlage bijlage = polisService.leesBijlage(Long.parseLong(bijlageId));
         ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), false);
 
+        try {
+            writeToFile(new FileInputStream(archiefBestand.getBestand()), "/Users/patrickheidotting/Downloads/jadajada.pdf");
+        } catch (FileNotFoundException e1) {
+            logger.error(e1.getMessage());
+        }
+
         Date fileDate = new Date(archiefBestand.getBestand().lastModified());
         try {
             return Response.ok(new FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
