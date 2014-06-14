@@ -1,5 +1,9 @@
 <script type="text/javascript">
-	$('#tabs').puitabview();
+	$('#tabs').puitabview({
+		change: function(event, ui) {  
+			verbergMeldingen();
+	    } 
+	});
 
 	function Relatie(data) {
 	    var self = this;
