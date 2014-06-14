@@ -99,10 +99,12 @@
 			$('#alertDanger').html("Er is een fout opgetreden : " + foutmelding.foutmelding);
  		}
  		plaatsMelding = function(melding){
+ 			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').show();
 			$('#alertSucces').html(melding);
  		}
  		verbergMeldingen = function(){
+ 			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').hide();
 			$('#alertDanger').hide();
  		}
