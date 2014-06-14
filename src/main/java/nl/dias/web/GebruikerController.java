@@ -14,6 +14,7 @@ import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
+import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.repository.KantoorRepository;
@@ -181,34 +182,47 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void opslaan(JsonRelatie jsonRelatie) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response opslaan(JsonRelatie jsonRelatie) {
         logger.debug("Opslaan " + jsonRelatie);
 
-        Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
-        relatie.setKantoor(kantoorRepository.getIngelogdKantoor());
+        try {
+            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+            relatie.setKantoor(kantoorRepository.getIngelogdKantoor());
 
-        logger.debug("Opslaan Relatie met id " + relatie.getId());
+            logger.debug("Opslaan Relatie met id " + relatie.getId());
 
-        gebruikerService.opslaan(relatie);
+            gebruikerService.opslaan(relatie);
 
-        logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
+            logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
+            return Response.status(202).entity(new JsonFoutmelding()).build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
     }
 
     @POST
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
         Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(jsonBedrijf.getRelatie()));
 
-        Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
-        bedrijf.setRelatie(relatie);
-        bedrijfService.opslaan(bedrijf);
+        try {
+            Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
+            bedrijf.setRelatie(relatie);
+            bedrijfService.opslaan(bedrijf);
 
-        relatie.getBedrijven().add(bedrijf);
+            relatie.getBedrijven().add(bedrijf);
 
-        gebruikerService.opslaan(relatie);
+            gebruikerService.opslaan(relatie);
 
-        return Response.status(200).build();
+            return Response.status(200).entity(new JsonFoutmelding()).build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
     }
 
     @GET

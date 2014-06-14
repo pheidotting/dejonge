@@ -152,6 +152,7 @@
 	    }
 	    
 	    this.opslaan = function(){
+	    	verbergMeldingen();
 	    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
 	    		this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
 	    	}
@@ -159,18 +160,25 @@
 	    		this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
 	    	}
 	    	$.ajax({
-				type: "POST",
-				url: '../dejonge/rest/gebruiker/opslaan',
-				contentType: "application/json",
-	            data:  ko.toJSON(this),
-	            success: function(data) {
+	            url: '../dejonge/rest/gebruiker/opslaan',
+	            type: 'POST',
+	            data: ko.toJSON(this) ,
+	            contentType: 'application/json; charset=utf-8',
+	            success: function (response) {
+	            	plaatsMelding("De gegevens zijn opgeslagen");
+	            },
+	            error: function (data) {
+	            	plaatsFoutmelding(data);
+	            }
+	        });
+	    		  
+	            	
 /* 		 			if($.type(data) == "string"){
 						addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
 					}else{
 			           	ko.applyBindings(new Relatie(data));
 					}
- */				}
-	        });
+ */				
 	    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
 		    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 	    	}
@@ -593,6 +601,7 @@
 			<button id="opslaanBedrijf" data-bind="click: $root.toevoegenBedrijf">Opslaan</button>
 			<script>
 				$('#opslaanBedrijf').click(function(){
+			    	verbergMeldingen();
 	            	var bedrijf = {
 		            	relatie : $('#id').val(),
 		            	naam : $('#naamBedrijf').val(),
@@ -608,7 +617,13 @@
 						type: "POST",
 						url: '../dejonge/rest/gebruiker/opslaanBedrijf',
 						contentType: "application/json",
-			            data: json
+			            data: json,
+			            success: function (response) {
+			            	plaatsMelding("De gegevens zijn opgeslagen");
+			            },
+			            error: function (data) {
+			            	plaatsFoutmelding(data);
+			            }
 			    	});
 				});
 			</script>
@@ -736,6 +751,7 @@
 			<progress style="display:none;"></progress>
 			<script>
 				$('#opslaanPolis').click(function(){
+			    	verbergMeldingen();
 	            	var polis = {
 		            	relatie : $('#id').val(),
 		            	premie : $('#premie').val().replace(",", "."),
@@ -755,31 +771,38 @@
 						contentType: "application/json",
 			            data: json,
 			            success: function(data) {
-/* 			            	if($('#file').val() != ""){
- */				            	$('progress').show();
-								var formData = new FormData($('form')[0]);	
-			            	    $.ajax({
-									url: '../dejonge/rest/polis/upload',
-			            	        type: 'POST',
-			            	        xhr: function() {  // Custom XMLHttpRequest
-			            	            var myXhr = $.ajaxSettings.xhr();
-			            	            if(myXhr.upload){ // Check if upload property exists
-			            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-			            	            }
-			            	            return myXhr;
-			            	        },
-			            	        data: formData,
-			            	        cache: false,
-			            	        contentType: false,
-			            	        processData: false
-			            	    });
-			            	    function progressHandlingFunction(e){
-			            	        if(e.lengthComputable){
-			            	            $('progress').attr({value:e.loaded,max:e.total});
-			            	        }
-			            	    }
-/* 			            	}
- */			        	}
+			            	$('progress').show();
+							var formData = new FormData($('form')[0]);	
+		            	    $.ajax({
+								url: '../dejonge/rest/polis/upload',
+		            	        type: 'POST',
+		            	        xhr: function() {  // Custom XMLHttpRequest
+		            	            var myXhr = $.ajaxSettings.xhr();
+		            	            if(myXhr.upload){ // Check if upload property exists
+		            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+		            	            }
+		            	            return myXhr;
+		            	        },
+		            	        data: formData,
+		            	        cache: false,
+		            	        contentType: false,
+		            	        processData: false,
+		        	            success: function (response) {
+		        	            	plaatsMelding("De gegevens zijn opgeslagen");
+		        	            },
+		        	            error: function (data) {
+		        	            	plaatsFoutmelding(data);
+		        	            }
+		            	    });
+		            	    function progressHandlingFunction(e){
+		            	        if(e.lengthComputable){
+		            	            $('progress').attr({value:e.loaded,max:e.total});
+		            	        }
+		            	    }
+			        	},
+						error: function (data) {
+							plaatsFoutmelding(data);
+						}
 			    	});
 				});
 			</script>

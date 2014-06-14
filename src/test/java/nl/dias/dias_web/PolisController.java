@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
@@ -25,21 +26,20 @@ import nl.dias.domein.polis.WoonhuisVerzekering;
 
 import org.joda.time.LocalDate;
 
-import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
 
-    private final Gson gson = new Gson();
-
     @POST
     @Path("/opslaan")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String opslaan(OpslaanPolis opslaanPolis) {
-        return gson.toJson(2);
+    public Response opslaan(OpslaanPolis opslaanPolis) {
+        // return Response.status(500).entity(new
+        // JsonFoutmelding("jadajada")).build();
+        return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
     @POST

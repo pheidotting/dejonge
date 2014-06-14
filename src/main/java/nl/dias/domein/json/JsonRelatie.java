@@ -13,7 +13,7 @@ public class JsonRelatie {
     private String tussenvoegsel;
     private String achternaam;
     private String straat;
-    private Long huisnummer;
+    private String huisnummer;
     private String toevoeging;
     private String postcode;
     private String plaats;
@@ -100,11 +100,11 @@ public class JsonRelatie {
         this.straat = straat;
     }
 
-    public Long getHuisnummer() {
+    public String getHuisnummer() {
         return huisnummer;
     }
 
-    public void setHuisnummer(Long huisnummer) {
+    public void setHuisnummer(String huisnummer) {
         this.huisnummer = huisnummer;
     }
 

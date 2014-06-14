@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonBijlage;
+import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
@@ -166,18 +167,24 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonRelatie jsonRelatie) {
         GebruikerControllerTest.jsonRelatie = jsonRelatie;
-        return null;
+
+        return Response.status(500).entity(new JsonFoutmelding("jadajada")).build();
+        // return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
     @Override
     @POST
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
         System.out.println(jsonBedrijf);
-        return null;
+        // return Response.status(500).entity(new
+        // JsonFoutmelding("jadajada")).build();
+        return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
     @Override

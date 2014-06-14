@@ -38,7 +38,11 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
         relatie.setAchternaam(jsonRelatie.getAchternaam());
         relatie.getAdres().setStraat(jsonRelatie.getStraat());
-        relatie.getAdres().setHuisnummer(jsonRelatie.getHuisnummer());
+        try {
+            relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
+        } catch (NumberFormatException nfe) {
+            throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
+        }
         relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
         relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
         relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
@@ -84,7 +88,7 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());
         jsonRelatie.setAchternaam(relatie.getAchternaam());
         jsonRelatie.setStraat(relatie.getAdres().getStraat());
-        jsonRelatie.setHuisnummer(relatie.getAdres().getHuisnummer());
+        jsonRelatie.setHuisnummer(relatie.getAdres().getHuisnummer().toString());
         jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
         jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
         jsonRelatie.setPlaats(relatie.getAdres().getPlaats());

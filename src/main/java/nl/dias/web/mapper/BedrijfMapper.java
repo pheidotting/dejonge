@@ -18,7 +18,11 @@ public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
         Bedrijf bedrijf = new Bedrijf();
 
         if (json.getHuisnummer() != null) {
-            bedrijf.getAdres().setHuisnummer(Long.parseLong(json.getHuisnummer()));
+            try {
+                bedrijf.getAdres().setHuisnummer(Long.parseLong(json.getHuisnummer()));
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("Huisnummer bevat een ongeldig teken.");
+            }
         }
         bedrijf.getAdres().setPlaats(json.getPlaats());
         bedrijf.getAdres().setPostcode(json.getPostcode());

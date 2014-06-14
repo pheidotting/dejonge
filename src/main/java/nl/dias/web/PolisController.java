@@ -24,6 +24,7 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AansprakelijkheidVerzekering;
 import nl.dias.domein.polis.AnnuleringsVerzekering;
@@ -77,9 +78,9 @@ public class PolisController {// extends AbstractController {
 
     @POST
     @Path("/opslaan")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String opslaan(OpslaanPolis opslaanPolis) {
+    public Response opslaan(OpslaanPolis opslaanPolis) {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
         logger.debug("maatschappij gevonden : " + maatschappij);
 
@@ -199,8 +200,9 @@ public class PolisController {// extends AbstractController {
             messages = "ok";
         } else {
             logger.error(messages);
+            return Response.status(500).entity(new JsonFoutmelding(messages)).build();
         }
-        return gson.toJson(messages);
+        return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
     @POST

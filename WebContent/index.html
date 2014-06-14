@@ -92,10 +92,26 @@
 				}
 			});
  		}
+ 		plaatsFoutmelding = function(melding){
+        	var foutmelding = jQuery.parseJSON(melding.responseText);
+        	
+			$('#alertDanger').show();
+			$('#alertDanger').html("Er is een fout opgetreden : " + foutmelding.foutmelding);
+ 		}
+ 		plaatsMelding = function(melding){
+			$('#alertSucces').show();
+			$('#alertSucces').html(melding);
+ 		}
+ 		verbergMeldingen = function(){
+			$('#alertSucces').hide();
+			$('#alertDanger').hide();
+ 		}
 	</script>
 </head>
 <body id="body">
 	<div id="menu"></div>
+	<div class="alert alert-success" style="display:none;" id="alertSucces"></div>
+	<div class="alert alert-danger" style="display:none;" id="alertDanger"></div>
 	<div id="content">DIAS</div>
 </body>
 </html>
