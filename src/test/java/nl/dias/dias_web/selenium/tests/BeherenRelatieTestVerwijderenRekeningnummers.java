@@ -16,8 +16,10 @@ import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 
+import org.junit.Ignore;
 import org.openqa.selenium.support.PageFactory;
 
+@Ignore
 public class BeherenRelatieTestVerwijderenRekeningnummers extends AbstractSeleniumTest {
 
     @Override
@@ -61,7 +63,7 @@ public class BeherenRelatieTestVerwijderenRekeningnummers extends AbstractSeleni
         jsonRelatie.setBurgerlijkeStaat("Gehuwd");
 
         jsonRelatie.setStraat("Herderstraat");
-        jsonRelatie.setHuisnummer(65L);
+        jsonRelatie.setHuisnummer("65");
         jsonRelatie.setToevoeging("toevoeging");
         jsonRelatie.setPostcode("1234AA");
         jsonRelatie.setPlaats("plaats");
