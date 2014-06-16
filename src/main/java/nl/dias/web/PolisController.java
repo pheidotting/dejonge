@@ -158,9 +158,21 @@ public class PolisController {// extends AbstractController {
             } else {
                 logger.debug("polis aanmaken");
                 polis.setPolisNummer(opslaanPolis.getPolisNummer());
-                polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
-                polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
-                polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
+                try {
+                    polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
+                } catch (IllegalArgumentException e1) {
+                    messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
+                }
+                try {
+                    polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
+                } catch (IllegalArgumentException e1) {
+                    messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
+                }
+                try {
+                    polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
+                } catch (IllegalArgumentException e1) {
+                    messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
+                }
                 polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
                 polis.setMaatschappij(maatschappij);
@@ -283,10 +295,15 @@ public class PolisController {// extends AbstractController {
         }
     }
 
-    private LocalDate stringNaarLocalDate(String datum) {
+    private LocalDate stringNaarLocalDate(String datum) throws IllegalArgumentException {
         String[] d = datum.split("-");
 
-        LocalDate ld = new LocalDate(Integer.parseInt(d[2]), Integer.parseInt(d[1]), Integer.parseInt(d[0]));
+        LocalDate ld = null;
+        try {
+            ld = new LocalDate(Integer.parseInt(d[2]), Integer.parseInt(d[1]), Integer.parseInt(d[0]));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Datum bevat een ongeldige waarde.");
+        }
 
         return ld;
     }
