@@ -32,6 +32,15 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/polis")
 public class PolisController {// extends AbstractController {
 
+    @GET
+    @Path("/verwijder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verwijder(@QueryParam("id") Long id) {
+        System.out.println(id);
+        return Response.status(500).entity(new JsonFoutmelding("Nieh vunn'n")).build();
+    }
+
     @POST
     @Path("/opslaan")
     @Produces(MediaType.APPLICATION_JSON)

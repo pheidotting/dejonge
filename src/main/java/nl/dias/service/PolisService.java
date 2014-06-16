@@ -49,4 +49,13 @@ public class PolisService {
     public Bijlage leesBijlage(Long id) {
         return polisRepository.leesBijlage(id);
     }
+
+    public void verwijder(Long id) throws IllegalArgumentException {
+        Polis polis = polisRepository.lees(id);
+        if (polis == null) {
+            throw new IllegalArgumentException("Geen Polis gevonden met id " + id);
+        }
+
+        polisRepository.verwijder(polis);
+    }
 }

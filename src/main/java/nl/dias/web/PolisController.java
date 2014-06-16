@@ -295,6 +295,21 @@ public class PolisController {// extends AbstractController {
         }
     }
 
+    @GET
+    @Path("/verwijder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verwijder(@QueryParam("id") Long id) {
+        logger.debug("verwijderen Polis met id " + id);
+        try {
+            polisService.verwijder(id);
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage());
+            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
+        return Response.status(202).entity(new JsonFoutmelding()).build();
+    }
+
     private LocalDate stringNaarLocalDate(String datum) throws IllegalArgumentException {
         String[] d = datum.split("-");
 

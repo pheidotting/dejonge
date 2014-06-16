@@ -106,10 +106,16 @@
 				betaalfrequentie : $('#betaalfrequentie').val()
 	    	}));
 	    }
-/*	    
+
 	    this.verwijderPolis = function(polis){
-	    	self.polissen.remove(polis);
-	    }*/
+	    	console.log(polis);
+	    	
+			var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");
+			if (r==true) {
+				self.polissen.remove(polis);
+				$.get( "../dejonge/rest/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function( data ) {});
+			}
+	    }
 	    
 	    self.toevoegenBedrijf = function(){
 	    	self.bedrijven.push(new Bedrijf({
@@ -639,6 +645,8 @@
 						<div class="panel-heading">
 							<h4 data-bind="attr:{class: className}">
 								<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soort"></a>
+								&nbsp;&nbsp;&nbsp;
+								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
 							</h4>
 						</div>
 						<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
