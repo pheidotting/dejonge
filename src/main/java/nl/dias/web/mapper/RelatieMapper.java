@@ -87,12 +87,15 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setVoornaam(relatie.getVoornaam());
         jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());
         jsonRelatie.setAchternaam(relatie.getAchternaam());
-        jsonRelatie.setStraat(relatie.getAdres().getStraat());
-        jsonRelatie.setHuisnummer(relatie.getAdres().getHuisnummer().toString());
-        jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
-        jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
-        jsonRelatie.setPlaats(relatie.getAdres().getPlaats());
-
+        if (relatie.getAdres() != null) {
+            jsonRelatie.setStraat(relatie.getAdres().getStraat());
+            if (relatie.getAdres().getHuisnummer() != null) {
+                jsonRelatie.setHuisnummer(relatie.getAdres().getHuisnummer().toString());
+            }
+            jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
+            jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
+            jsonRelatie.setPlaats(relatie.getAdres().getPlaats());
+        }
         StringBuilder sb = new StringBuilder();
         if (jsonRelatie.getStraat() != null) {
             sb.append(jsonRelatie.getStraat() + " ");
