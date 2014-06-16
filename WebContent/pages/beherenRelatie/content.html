@@ -175,20 +175,13 @@
 	            data: ko.toJSON(this) ,
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {
+					document.location.hash='#lijstRelaties';
 	            	plaatsMelding("De gegevens zijn opgeslagen");
 	            },
 	            error: function (data) {
 	            	plaatsFoutmelding(data);
 	            }
 	        });
-	    		  
-	            	
-/* 		 			if($.type(data) == "string"){
-						addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);  
-					}else{
-			           	ko.applyBindings(new Relatie(data));
-					}
- */				
 	    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
 		    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 	    	}
@@ -749,8 +742,9 @@
 				<div id="div_betaalfrequentie">
 					<select id="betaalfrequentie">
 						<option value="">Betaalfrequentie...</option>
-						<option>Jaar</option>
+						<option>Maand</option>
 						<option>Kwartaal</option>
+						<option>Half jaar</option>
 						<option>Jaar</option>
 					</select>
 				</div>
