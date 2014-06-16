@@ -794,6 +794,7 @@
 		            	        contentType: false,
 		            	        processData: false,
 		        	            success: function (response) {
+									$('#tabs').puitabview('select', 2);
 		        	            	plaatsMelding("De gegevens zijn opgeslagen");
 		        	            },
 		        	            error: function (data) {
