@@ -21,11 +21,11 @@
 	</properties>
 
 	<dependencies>
-		<!--dependency>
+		<dependency>
 			<groupId>nl.lakedigital</groupId>
 			<artifactId>archief</artifactId>
-			<version>0.0.2</version>
-		</dependency-->
+			<version>0.0.3</version>
+		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
