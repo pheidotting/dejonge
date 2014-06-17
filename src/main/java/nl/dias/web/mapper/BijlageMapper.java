@@ -10,6 +10,7 @@ import javax.inject.Named;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
+import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -39,8 +40,7 @@ public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
 
     @Override
     public JsonBijlage mapNaarJson(Bijlage object) {
-        // ArchiefBestand archiefBestand =
-        // archiefService.ophalen(object.getS3Identificatie(), true);
+        ArchiefBestand archiefBestand = archiefService.ophalen(object.getS3Identificatie(), true);
 
         JsonBijlage json = new JsonBijlage();
         json.setId(object.getId().toString());
