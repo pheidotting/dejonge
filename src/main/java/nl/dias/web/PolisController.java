@@ -1,13 +1,10 @@
 package nl.dias.web;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,9 +17,7 @@ import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.OpslaanPolis;
@@ -48,8 +43,6 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -71,8 +64,8 @@ public class PolisController {// extends AbstractController {
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
     @InjectParam
     private BedrijfService bedrijfService;
-    @InjectParam
-    private ArchiefService archiefService;
+    // @InjectParam
+    // private ArchiefService archiefService;
 
     private final Gson gson = new Gson();
 
@@ -232,18 +225,20 @@ public class PolisController {// extends AbstractController {
             writeToFile(uploadedInputStream, tempFile.getAbsolutePath());
 
             // File file = new File(uploadedFileLocation);
-            ArchiefBestand archiefBestand = new ArchiefBestand();
-            archiefBestand.setBestandsnaam(fileDetail.getFileName());
-            archiefBestand.setBestand(tempFile);
-
-            logger.debug("naar s3");
-            archiefService.setBucketName("dias");
-            String identificatie = archiefService.opslaan(archiefBestand);
-
-            logger.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
-
-            logger.debug("eigen database bijwerken");
-            polisService.slaBijlageOp(polis.getId(), SoortBijlage.POLIS, identificatie);
+            // ArchiefBestand archiefBestand = new ArchiefBestand();
+            // archiefBestand.setBestandsnaam(fileDetail.getFileName());
+            // archiefBestand.setBestand(tempFile);
+            //
+            // logger.debug("naar s3");
+            // archiefService.setBucketName("dias");
+            // String identificatie = archiefService.opslaan(archiefBestand);
+            //
+            // logger.debug("Opgeslagen naar S3, identificatie terug : " +
+            // identificatie);
+            //
+            // logger.debug("eigen database bijwerken");
+            // polisService.slaBijlageOp(polis.getId(), SoortBijlage.POLIS,
+            // identificatie);
         } catch (IOException e) {
             logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
         }
@@ -274,25 +269,29 @@ public class PolisController {// extends AbstractController {
     @Path("/download")
     @Produces("application/pdf")
     public Response getFile(@QueryParam("bijlageId") String bijlageId) {
-        archiefService.setBucketName("dias");
-        logger.debug("Ophalen bijlage met id " + bijlageId);
-
-        Bijlage bijlage = polisService.leesBijlage(Long.parseLong(bijlageId));
-        ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), false);
-
-        try {
-            writeToFile(new FileInputStream(archiefBestand.getBestand()), "/Users/patrickheidotting/Downloads/jadajada.pdf");
-        } catch (FileNotFoundException e1) {
-            logger.error(e1.getMessage());
-        }
-
-        Date fileDate = new Date(archiefBestand.getBestand().lastModified());
-        try {
-            return Response.ok(new FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-            return null;
-        }
+        // archiefService.setBucketName("dias");
+        // logger.debug("Ophalen bijlage met id " + bijlageId);
+        //
+        // Bijlage bijlage =
+        // polisService.leesBijlage(Long.parseLong(bijlageId));
+        // ArchiefBestand archiefBestand =
+        // archiefService.ophalen(bijlage.getS3Identificatie(), false);
+        //
+        // try {
+        // writeToFile(new FileInputStream(archiefBestand.getBestand()),
+        // "/Users/patrickheidotting/Downloads/jadajada.pdf");
+        // } catch (FileNotFoundException e1) {
+        // logger.error(e1.getMessage());
+        // }
+        //
+        // Date fileDate = new Date(archiefBestand.getBestand().lastModified());
+        // try {
+        // return Response.ok(new
+        // FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
+        // } catch (FileNotFoundException e) {
+        // logger.error(e.getMessage());
+        return null;
+        // }
     }
 
     @GET

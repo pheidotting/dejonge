@@ -14,8 +14,6 @@ import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -23,8 +21,9 @@ import com.sun.jersey.api.core.InjectParam;
 public class PolisMapper implements Mapper<Polis, JsonPolis> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
-    private ArchiefService archiefService;
+
+    // @InjectParam
+    // private ArchiefService archiefService;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
@@ -55,14 +54,15 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
         for (Bijlage bijlage : polis.getBijlages()) {
-            ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), true);
+            // ArchiefBestand archiefBestand =
+            // archiefService.ophalen(bijlage.getS3Identificatie(), true);
 
             JsonBijlage jsonBijlage = new JsonBijlage();
             jsonBijlage.setId(bijlage.getId().toString());
             jsonBijlage.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
-            if (archiefBestand != null) {
-                jsonBijlage.setBestandsNaam(archiefBestand.getBestandsnaam());
-            }
+            // if (archiefBestand != null) {
+            // jsonBijlage.setBestandsNaam(archiefBestand.getBestandsnaam());
+            // }
 
             jsonPolis.getBijlages().add(jsonBijlage);
         }
