@@ -45,9 +45,9 @@ public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
         JsonBijlage json = new JsonBijlage();
         json.setId(object.getId().toString());
         json.setSoortBijlage(object.getSoortBijlage().getOmschrijving());
-        // if (archiefBestand != null) {
-        // json.setBestandsNaam(archiefBestand.getBestandsnaam());
-        // }
+        if (archiefBestand != null) {
+            json.setBestandsNaam(archiefBestand.getBestandsnaam());
+        }
 
         return json;
     }
