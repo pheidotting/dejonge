@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.OpslaanPolis;
@@ -43,6 +44,8 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
+import nl.lakedigital.archief.domain.ArchiefBestand;
+import nl.lakedigital.archief.service.ArchiefService;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -64,8 +67,8 @@ public class PolisController {// extends AbstractController {
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
     @InjectParam
     private BedrijfService bedrijfService;
-    // @InjectParam
-    // private ArchiefService archiefService;
+    @InjectParam
+    private ArchiefService archiefService;
 
     private final Gson gson = new Gson();
 
@@ -218,27 +221,29 @@ public class PolisController {// extends AbstractController {
         logger.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
+        String[] exp = fileDetail.getFileName().split("//.");
+        String extensie = exp[exp.length - 1];
+
+        logger.debug("Gevonden extensie " + extensie);
         try {
-            File tempFile = File.createTempFile("dias", "upload");
+            File tempFile = File.createTempFile("dias", "upload." + extensie);
 
             // save it
             writeToFile(uploadedInputStream, tempFile.getAbsolutePath());
 
             // File file = new File(uploadedFileLocation);
-            // ArchiefBestand archiefBestand = new ArchiefBestand();
-            // archiefBestand.setBestandsnaam(fileDetail.getFileName());
-            // archiefBestand.setBestand(tempFile);
-            //
-            // logger.debug("naar s3");
-            // archiefService.setBucketName("dias");
-            // String identificatie = archiefService.opslaan(archiefBestand);
-            //
-            // logger.debug("Opgeslagen naar S3, identificatie terug : " +
-            // identificatie);
-            //
-            // logger.debug("eigen database bijwerken");
-            // polisService.slaBijlageOp(polis.getId(), SoortBijlage.POLIS,
-            // identificatie);
+            ArchiefBestand archiefBestand = new ArchiefBestand();
+            archiefBestand.setBestandsnaam(fileDetail.getFileName());
+            archiefBestand.setBestand(tempFile);
+
+            logger.debug("naar s3");
+            archiefService.setBucketName("dias");
+            String identificatie = archiefService.opslaan(archiefBestand);
+
+            logger.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
+
+            logger.debug("eigen database bijwerken");
+            polisService.slaBijlageOp(polis.getId(), SoortBijlage.POLIS, identificatie);
         } catch (IOException e) {
             logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
         }
