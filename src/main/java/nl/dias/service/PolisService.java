@@ -54,6 +54,7 @@ public class PolisService {
     }
 
     public void verwijder(Long id) throws IllegalArgumentException {
+        archiefService.setBucketName("dias");
         Polis polis = polisRepository.lees(id);
         if (polis == null) {
             throw new IllegalArgumentException("Geen Polis gevonden met id " + id);
