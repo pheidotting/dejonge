@@ -9,6 +9,7 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.PolisRepository;
+import nl.lakedigital.archief.service.ArchiefService;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +21,8 @@ public class PolisService {
 
     @InjectParam
     private PolisRepository polisRepository;
+    @InjectParam
+    private ArchiefService archiefService;
 
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
         return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
@@ -54,6 +57,10 @@ public class PolisService {
         Polis polis = polisRepository.lees(id);
         if (polis == null) {
             throw new IllegalArgumentException("Geen Polis gevonden met id " + id);
+        }
+
+        for (Bijlage bijlage : polis.getBijlages()) {
+            archiefService.verwijderen(bijlage.getS3Identificatie());
         }
 
         polisRepository.verwijder(polis);
