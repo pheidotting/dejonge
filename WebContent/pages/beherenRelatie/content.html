@@ -50,6 +50,13 @@
 				self.bedrijvenVoorPolis.push(new Bedrijf(item));
 			});
 		}
+		this.polisVoorSchademelding = ko.observableArray();
+		if(data.polissen != null){
+			self.polisVoorSchademelding.push(new Polis({id: 0, soort: 'Kies een polis uit de lijst', maatschappij : 0}));
+			$.each(data.polissen, function(i, item) {
+				self.polisVoorSchademelding.push(new Polis(item));
+			});
+		}
 
 		this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
 		this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
@@ -108,8 +115,6 @@
 	    }
 
 	    this.verwijderPolis = function(polis){
-	    	console.log(polis);
-	    	
 			var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");
 			if (r==true) {
 				self.polissen.remove(polis);
@@ -141,24 +146,6 @@
 	    
 	    self.userClick = function (obj) {
 	        document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(obj.idNaar);
-	    }
-	    
-	    self.showBijlages = function(obj) {
-	        $.ajax({  
-	            type: "GET",  
-	            url: './BijlagenBijPolis',
-				data: {
-					polisId : ko.utils.unwrapObservable(obj.id),
-					relatieId : $('#id').val()
-	
-				},
-	            dataType: "json",  
-	            success: function(data) {
-	            	$.each(obj, function(data) {
-	            		console.log(obj);
-						})
-	        	}
-	    	})
 	    }
 	    
 	    this.opslaan = function(){
@@ -290,7 +277,7 @@
 		var self = this;
 	
 		self.url = ko.computed(function() {
-	        return "../dejonge/rest/polis/download?bijlageId=" + data.id;
+	        return "../dejonge/rest/bijlage/download?bijlageId=" + data.id;
 		}, this);
 		self.bestandsNaam = ko.observable(data.bestandsNaam);
 		self.soortBijlage = ko.observable(data.soortBijlage);
@@ -413,6 +400,7 @@
 		<li><a href="#polissen">Polissen</a></li>
 		<li><a href="#toevoegenPolis">Toevoegen Polis</a></li>
 		<li><a href="overizchtBijlages">Overzicht Bijlages</a></li>
+		<li><a href="schades">Schades</a></li>
 	</ul>
 		<div>
 		<div id="relatieGegevens">
@@ -778,34 +766,8 @@
 			            data: json,
 			            success: function(data) {
 			            	$('progress').show();
-							var formData = new FormData($('form')[0]);	
-		            	    $.ajax({
-								url: '../dejonge/rest/polis/upload',
-		            	        type: 'POST',
-		            	        xhr: function() {  // Custom XMLHttpRequest
-		            	            var myXhr = $.ajaxSettings.xhr();
-		            	            if(myXhr.upload){ // Check if upload property exists
-		            	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-		            	            }
-		            	            return myXhr;
-		            	        },
-		            	        data: formData,
-		            	        cache: false,
-		            	        contentType: false,
-		            	        processData: false,
-		        	            success: function (response) {
-									$('#tabs').puitabview('select', 2);
-		        	            	plaatsMelding("De gegevens zijn opgeslagen");
-		        	            },
-		        	            error: function (data) {
-		        	            	plaatsFoutmelding(data);
-		        	            }
-		            	    });
-		            	    function progressHandlingFunction(e){
-		            	        if(e.lengthComputable){
-		            	            $('progress').attr({value:e.loaded,max:e.total});
-		            	        }
-		            	    }
+							var formData = new FormData($('form')[0]);
+							uploadBestand(formData, '../dejonge/rest/polis/upload');
 			        	},
 						error: function (data) {
 							plaatsFoutmelding(data);
@@ -827,6 +789,16 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div id="schades">
+			<h4>Schademeldingen</h4>
+			<select id="polisVoorSchademelding" data-bind="foreach: polisVoorSchademelding, visible: polissen().length > 0">
+				<option data-bind="text: soort, value: id"></option>
+			</select>
+			<div class="form-group">
+				<label for="datum">Datum</label>
+				<input class="form-control" type="text" id="datum" name="datum" placeholder="dd-mm-eejj" />
+			</div>
 		</div>
 	</div>
 </div>

@@ -36,12 +36,12 @@ public class PolisService {
         return polisRepository.zoekOpPolisNummer(PolisNummer);
     }
 
-    public void slaBijlageOp(Long polisId, SoortBijlage soortBijlage, String s3Identificatie) {
-        LOGGER.debug("Opslaan Bijlage polisId " + polisId + " soortBijlage " + soortBijlage + " s3Identificatie " + s3Identificatie);
+    public void slaBijlageOp(Long polisId, String s3Identificatie) {
+        LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
         bijlage.setPolis(polisRepository.lees(polisId));
-        bijlage.setSoortBijlage(soortBijlage);
+        bijlage.setSoortBijlage(SoortBijlage.POLIS);
         bijlage.setS3Identificatie(s3Identificatie);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);

@@ -108,6 +108,35 @@
 			$('#alertSucces').hide();
 			$('#alertDanger').hide();
  		}
+		function uploadBestand(formData, url){
+    	    $.ajax({
+				url: url,
+    	        type: 'POST',
+    	        xhr: function() {  // Custom XMLHttpRequest
+    	            var myXhr = $.ajaxSettings.xhr();
+    	            if(myXhr.upload){ // Check if upload property exists
+    	                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+    	            }
+    	            return myXhr;
+    	        },
+    	        data: formData,
+    	        cache: false,
+    	        contentType: false,
+    	        processData: false,
+	            success: function (response) {
+					$('#tabs').puitabview('select', 2);
+	            	plaatsMelding("De gegevens zijn opgeslagen");
+	            },
+	            error: function (data) {
+	            	plaatsFoutmelding(data);
+	            }
+    	    });
+    	    function progressHandlingFunction(e){
+    	        if(e.lengthComputable){
+    	            $('progress').attr({value:e.loaded,max:e.total});
+    	        }
+    	    }
+		}
 	</script>
 </head>
 <body id="body">
