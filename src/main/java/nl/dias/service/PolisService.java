@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
@@ -23,6 +24,8 @@ public class PolisService {
     private PolisRepository polisRepository;
     @InjectParam
     private ArchiefService archiefService;
+    @InjectParam
+    private GebruikerService gebruikerService;
 
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
         return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
@@ -55,10 +58,27 @@ public class PolisService {
 
     public void verwijder(Long id) throws IllegalArgumentException {
         archiefService.setBucketName("dias");
+
+        LOGGER.debug("Ophalen Polis");
         Polis polis = polisRepository.lees(id);
+
         if (polis == null) {
             throw new IllegalArgumentException("Geen Polis gevonden met id " + id);
         }
+        LOGGER.debug("Polis gevonden : " + polis);
+
+        LOGGER.debug("Ophalen Relatie");
+        Relatie relatie = (Relatie) gebruikerService.lees(polis.getRelatie().getId());
+
+        LOGGER.debug("Verwijderen Polis bij Relatie");
+        relatie.getPolissen().remove(polis);
+        LOGGER.debug("Kijken of de Polis nog bij een bedrijf zit");
+        for (Bedrijf bedrijf : relatie.getBedrijven()) {
+            LOGGER.debug("Bedrijf met id " + bedrijf.getId());
+            bedrijf.getPolissen().remove(polis);
+        }
+
+        gebruikerService.opslaan(relatie);
 
         for (Bijlage bijlage : polis.getBijlages()) {
             archiefService.verwijderen(bijlage.getS3Identificatie());

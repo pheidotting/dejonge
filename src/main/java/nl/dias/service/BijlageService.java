@@ -18,7 +18,7 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 
 @Named
 public class BijlageService {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger LOGGER = Logger.getLogger(this.getClass());
     @InjectParam
     private ArchiefService archiefService;
 
@@ -28,7 +28,7 @@ public class BijlageService {
 
         String identificatie = null;
 
-        logger.debug("Gevonden extensie " + extensie);
+        LOGGER.debug("Gevonden extensie " + extensie);
         try {
             File tempFile = File.createTempFile("dias", "upload." + extensie);
 
@@ -40,13 +40,13 @@ public class BijlageService {
             archiefBestand.setBestandsnaam(fileDetail.getFileName());
             archiefBestand.setBestand(tempFile);
 
-            logger.debug("naar s3");
+            LOGGER.debug("naar s3");
             archiefService.setBucketName("dias");
             identificatie = archiefService.opslaan(archiefBestand);
 
-            logger.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
+            LOGGER.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
         } catch (IOException e) {
-            logger.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
+            LOGGER.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
         }
 
         return identificatie;
@@ -57,14 +57,20 @@ public class BijlageService {
             int read = 0;
             byte[] bytes = new byte[1024];
 
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
+            OutputStream out = null;
+            try {
+                out = new FileOutputStream(new File(uploadedFileLocation));
+                while ((read = uploadedInputStream.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+            } finally {
+                out.flush();
+                out.close();
             }
-            out.flush();
-            out.close();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
 
     }

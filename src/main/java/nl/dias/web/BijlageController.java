@@ -38,12 +38,18 @@ public class BijlageController {
             int read = 0;
             byte[] bytes = new byte[1024];
 
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
+            OutputStream out = null;
+            try {
+                out = new FileOutputStream(new File(uploadedFileLocation));
+                while ((read = uploadedInputStream.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+            } finally {
+                out.flush();
+                out.close();
             }
-            out.flush();
-            out.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
