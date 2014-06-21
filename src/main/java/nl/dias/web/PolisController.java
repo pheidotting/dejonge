@@ -74,6 +74,11 @@ public class PolisController {// extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaan(OpslaanPolis opslaanPolis) {
+        // Eerst kijken of het polisnummer al voorkomt
+        if (polisService.zoekOpPolisNummer(opslaanPolis.getPolisNummer()) != null) {
+            return Response.status(500).entity(new JsonFoutmelding("Het betreffende polisnummer komt al voor.")).build();
+        }
+
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
         logger.debug("maatschappij gevonden : " + maatschappij);
 

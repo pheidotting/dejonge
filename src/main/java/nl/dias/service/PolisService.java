@@ -3,12 +3,14 @@ package nl.dias.service;
 import java.util.List;
 
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.polis.Polis;
+import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import nl.lakedigital.archief.service.ArchiefService;
 
@@ -26,6 +28,8 @@ public class PolisService {
     private ArchiefService archiefService;
     @InjectParam
     private GebruikerService gebruikerService;
+    @InjectParam
+    private KantoorRepository kantoorRepository;
 
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
         return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
@@ -35,8 +39,13 @@ public class PolisService {
         polisRepository.opslaan(polis);
     }
 
-    public Polis zoekOpPolisNummer(String PolisNummer) {
-        return polisRepository.zoekOpPolisNummer(PolisNummer);
+    public Polis zoekOpPolisNummer(String polisNummer) {
+        try {
+            return polisRepository.zoekOpPolisNummer(polisNummer, kantoorRepository.lees(1L));
+        } catch (NoResultException e) {
+            LOGGER.debug("Niks gevonden " + e.getMessage());
+            return null;
+        }
     }
 
     public void slaBijlageOp(Long polisId, String s3Identificatie) {

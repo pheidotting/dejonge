@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.Polis;
@@ -59,9 +60,10 @@ public class PolisRepository extends AbstractRepository<Polis> {
     }
 
     @Transactional
-    public Polis zoekOpPolisNummer(String PolisNummer) {
+    public Polis zoekOpPolisNummer(String PolisNummer, Kantoor kantoor) {
         TypedQuery<Polis> query = getEm().createNamedQuery("Polis.zoekOpPolisNummer", Polis.class);
         query.setParameter("polisNummer", PolisNummer);
+        query.setParameter("kantoor", kantoor);
         return query.getSingleResult();
     }
 

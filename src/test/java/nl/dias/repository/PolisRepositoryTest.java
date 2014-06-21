@@ -1,11 +1,18 @@
 package nl.dias.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import javax.persistence.NoResultException;
+
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.AutoVerzekering;
+import nl.dias.domein.polis.CamperVerzekering;
+import nl.dias.domein.polis.FietsVerzekering;
 import nl.dias.domein.polis.OngevallenVerzekering;
 import nl.dias.domein.polis.ReisVerzekering;
 import nl.dias.domein.polis.WoonhuisVerzekering;
@@ -116,9 +123,80 @@ public class PolisRepositoryTest {
 
     }
 
+    @Test
+    public void zoekOpPolisNummer() {
+        Kantoor kantoor1 = new Kantoor();
+        Kantoor kantoor2 = new Kantoor();
+
+        opslaan(kantoor1);
+        opslaan(kantoor2);
+
+        Relatie relatie1 = new Relatie();
+        Relatie relatie2 = new Relatie();
+
+        relatie1.setKantoor(kantoor1);
+        relatie2.setKantoor(kantoor2);
+
+        opslaan(relatie1);
+        opslaan(relatie2);
+
+        kantoor1.getRelaties().add(relatie1);
+        kantoor1.getRelaties().add(relatie2);
+
+        update(kantoor1);
+        update(kantoor2);
+
+        VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
+        maatschappij.setNaam("Naam");
+        opslaan(maatschappij);
+
+        AutoVerzekering verzekering1 = new AutoVerzekering();
+        CamperVerzekering verzekering2 = new CamperVerzekering();
+        FietsVerzekering verzekering3 = new FietsVerzekering();
+
+        verzekering1.setPolisNummer("polisNummer1");
+        verzekering1.setRelatie(relatie1);
+        verzekering1.setMaatschappij(maatschappij);
+        verzekering2.setPolisNummer("polisNummer2");
+        verzekering2.setRelatie(relatie1);
+        verzekering2.setMaatschappij(maatschappij);
+        verzekering3.setPolisNummer("polisNummer3");
+        verzekering3.setRelatie(relatie2);
+        verzekering3.setMaatschappij(maatschappij);
+
+        opslaan(verzekering1);
+        opslaan(verzekering2);
+        opslaan(verzekering3);
+
+        relatie1.getPolissen().add(verzekering1);
+        relatie1.getPolissen().add(verzekering2);
+        relatie2.getPolissen().add(verzekering3);
+
+        update(relatie1);
+        update(relatie2);
+
+        assertEquals(verzekering1, PolisRepository.zoekOpPolisNummer("polisNummer1", kantoor1));
+        assertEquals(verzekering2, PolisRepository.zoekOpPolisNummer("polisNummer2", kantoor1));
+        assertEquals(verzekering3, PolisRepository.zoekOpPolisNummer("polisNummer3", kantoor2));
+
+        try {
+            assertEquals(verzekering3, PolisRepository.zoekOpPolisNummer("polisNummer3", kantoor1));
+            fail("exception verwacht");
+        } catch (NoResultException e) {
+            // verwacht
+        }
+
+    }
+
     private void opslaan(Object object) {
         PolisRepository.getEm().getTransaction().begin();
         PolisRepository.getEm().persist(object);
+        PolisRepository.getEm().getTransaction().commit();
+    }
+
+    private void update(Object object) {
+        PolisRepository.getEm().getTransaction().begin();
+        PolisRepository.getEm().merge(object);
         PolisRepository.getEm().getTransaction().commit();
     }
 }
