@@ -66,12 +66,16 @@ public class BijlageService {
             LOGGER.error(e.getMessage());
         } finally {
             try {
-                out.flush();
+                if (out != null) {
+                    out.flush();
+                }
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
             } finally {
                 try {
-                    out.close();
+                    if (out != null) {
+                        out.close();
+                    }
                 } catch (IOException e) {
                     LOGGER.error(e.getMessage());
                 }
