@@ -8,7 +8,6 @@ import nl.dias.domein.polis.MotorVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
-import nl.dias.service.VerzekeringsMaatschappijService;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
@@ -24,7 +23,6 @@ public class PolisControllerTest extends EasyMockSupport {
     // private HttpServletRequest request;
 
     private PolisService polisService;
-    private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
     private GebruikerService gebruikerService;
 
     @Before
@@ -34,13 +32,8 @@ public class PolisControllerTest extends EasyMockSupport {
         polisService = createMock(PolisService.class);
         controller.setPolisService(polisService);
 
-        verzekeringsMaatschappijService = createMock(VerzekeringsMaatschappijService.class);
-        controller.setVerzekeringsMaatschappijService(verzekeringsMaatschappijService);
-
         gebruikerService = createMock(GebruikerService.class);
         controller.setGebruikerService(gebruikerService);
-
-        // request = createMock(HttpServletRequest.class);
     }
 
     @After
@@ -52,7 +45,6 @@ public class PolisControllerTest extends EasyMockSupport {
     public void testAutoVerzekering() {
         VerzekeringsMaatschappij verzekeringsMaatschappij = new VerzekeringsMaatschappij();
         verzekeringsMaatschappij.setNaam("naamVerzekeringsMaatschappij");
-        EasyMock.expect(verzekeringsMaatschappijService.zoekOpNaam("bestaandeMaatschappij")).andReturn(verzekeringsMaatschappij);
 
         Relatie relatie = new Relatie();
 
@@ -90,7 +82,6 @@ public class PolisControllerTest extends EasyMockSupport {
     public void testMotorVerzekering() {
         VerzekeringsMaatschappij verzekeringsMaatschappij = new VerzekeringsMaatschappij();
         verzekeringsMaatschappij.setNaam("naamVerzekeringsMaatschappij");
-        EasyMock.expect(verzekeringsMaatschappijService.zoekOpNaam("bestaandeMaatschappij")).andReturn(verzekeringsMaatschappij);
 
         Relatie relatie = new Relatie();
 
