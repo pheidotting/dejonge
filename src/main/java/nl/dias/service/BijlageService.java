@@ -53,25 +53,29 @@ public class BijlageService {
     }
 
     private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
-        try {
-            int read = 0;
-            byte[] bytes = new byte[1024];
+        int read = 0;
+        byte[] bytes = new byte[1024];
 
-            OutputStream out = null;
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(uploadedFileLocation));
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        } finally {
             try {
-                out = new FileOutputStream(new File(uploadedFileLocation));
-                while ((read = uploadedInputStream.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-            } catch (Exception e) {
+                out.flush();
+            } catch (IOException e) {
                 LOGGER.error(e.getMessage());
             } finally {
-                out.flush();
-                out.close();
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
+                }
             }
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
         }
-
     }
 }
