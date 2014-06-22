@@ -34,6 +34,8 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
@@ -210,18 +212,8 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bijlages == null) ? 0 : bijlages.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((ingangsDatum == null) ? 0 : ingangsDatum.hashCode());
-        result = prime * result + ((ingangsDatumString == null) ? 0 : ingangsDatumString.hashCode());
-        result = prime * result + ((maatschappij == null) ? 0 : maatschappij.hashCode());
-        result = prime * result + ((opmerkingen == null) ? 0 : opmerkingen.hashCode());
-        result = prime * result + ((polisNummer == null) ? 0 : polisNummer.hashCode());
-        result = prime * result + ((premie == null) ? 0 : premie.hashCode());
-        result = prime * result + ((relatie == null) ? 0 : relatie.hashCode());
-        return result;
+        return new HashCodeBuilder().append(bijlages).append(id).append(ingangsDatum).append(ingangsDatumString).append(maatschappij).append(opmerkingen).append(polisNummer).append(premie)
+                .append(relatie).toHashCode();
     }
 
     @Override
@@ -236,69 +228,9 @@ public abstract class Polis implements PersistenceObject, Serializable {
             return false;
         }
         Polis other = (Polis) obj;
-        if (bijlages == null) {
-            if (other.bijlages != null) {
-                return false;
-            }
-        } else if (!bijlages.equals(other.bijlages)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (ingangsDatum == null) {
-            if (other.ingangsDatum != null) {
-                return false;
-            }
-        } else if (!ingangsDatum.equals(other.ingangsDatum)) {
-            return false;
-        }
-        if (ingangsDatumString == null) {
-            if (other.ingangsDatumString != null) {
-                return false;
-            }
-        } else if (!ingangsDatumString.equals(other.ingangsDatumString)) {
-            return false;
-        }
-        if (maatschappij == null) {
-            if (other.maatschappij != null) {
-                return false;
-            }
-        } else if (!maatschappij.equals(other.maatschappij)) {
-            return false;
-        }
-        if (opmerkingen == null) {
-            if (other.opmerkingen != null) {
-                return false;
-            }
-        } else if (!opmerkingen.equals(other.opmerkingen)) {
-            return false;
-        }
-        if (polisNummer == null) {
-            if (other.polisNummer != null) {
-                return false;
-            }
-        } else if (!polisNummer.equals(other.polisNummer)) {
-            return false;
-        }
-        if (premie == null) {
-            if (other.premie != null) {
-                return false;
-            }
-        } else if (!premie.equals(other.premie)) {
-            return false;
-        }
-        if (relatie == null) {
-            if (other.relatie != null) {
-                return false;
-            }
-        } else if (!relatie.equals(other.relatie)) {
-            return false;
-        }
-        return true;
+
+        return new EqualsBuilder().append(bijlages, other.bijlages).append(id, other.id).append(ingangsDatum, other.ingangsDatum).append(ingangsDatumString, other.ingangsDatumString)
+                .append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).append(relatie, other.relatie)
+                .isEquals();
     }
 }
