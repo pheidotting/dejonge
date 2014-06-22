@@ -40,19 +40,17 @@ import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
-import nl.lakedigital.archief.service.ArchiefService;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
-public class PolisController {// extends AbstractController {
-    private final Logger logger = Logger.getLogger(this.getClass());
+public class PolisController {
+    private final static Logger LOGGER = Logger.getLogger(PolisController.class);
 
     @InjectParam
     private PolisService polisService;
@@ -64,10 +62,6 @@ public class PolisController {// extends AbstractController {
     private BedrijfService bedrijfService;
     @InjectParam
     private BijlageService bijlageService;
-    @InjectParam
-    private ArchiefService archiefService;
-
-    private final Gson gson = new Gson();
 
     @POST
     @Path("/opslaan")
@@ -80,10 +74,10 @@ public class PolisController {// extends AbstractController {
         }
 
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
-        logger.debug("maatschappij gevonden : " + maatschappij);
+        LOGGER.debug("maatschappij gevonden : " + maatschappij);
 
         Relatie relatie = (Relatie) gebruikerService.lees(opslaanPolis.getRelatie());
-        logger.debug("bij relatie : " + relatie);
+        LOGGER.debug("bij relatie : " + relatie);
 
         String messages = null;
 
@@ -154,7 +148,7 @@ public class PolisController {// extends AbstractController {
             if (polis == null) {
                 messages = "Kies een soort verzekering";
             } else {
-                logger.debug("polis aanmaken");
+                LOGGER.debug("polis aanmaken");
                 polis.setPolisNummer(opslaanPolis.getPolisNummer());
                 try {
                     polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
@@ -188,28 +182,28 @@ public class PolisController {// extends AbstractController {
                 }
 
                 try {
-                    logger.debug("zet premiebedrag " + opslaanPolis.getPremie());
+                    LOGGER.debug("zet premiebedrag " + opslaanPolis.getPremie());
                     polis.setPremie(new Bedrag(opslaanPolis.getPremie()));
                 } catch (NumberFormatException e) {
-                    logger.debug(e.getMessage());
+                    LOGGER.debug(e.getMessage());
                 }
             }
 
             if (polis != null) {
-                logger.debug("Opslaan polis : " + polis);
+                LOGGER.debug("Opslaan polis : " + polis);
                 polisService.opslaan(polis);
 
                 relatie.getPolissen().add(polis);
                 gebruikerService.opslaan(relatie);
             } else {
-                logger.error("lege polis..");
+                LOGGER.error("lege polis..");
             }
         }
 
         if (messages == null) {
             messages = "ok";
         } else {
-            logger.error(messages);
+            LOGGER.error(messages);
             return Response.status(500).entity(new JsonFoutmelding(messages)).build();
         }
         return Response.status(200).entity(new JsonFoutmelding()).build();
@@ -220,10 +214,10 @@ public class PolisController {// extends AbstractController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
 
-        logger.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
+        LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
         Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
-        logger.debug("eigen database bijwerken");
+        LOGGER.debug("eigen database bijwerken");
         polisService.slaBijlageOp(polis.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail));
 
         return Response.status(200).entity("").build();
@@ -235,11 +229,11 @@ public class PolisController {// extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response verwijder(@QueryParam("id") Long id) {
-        logger.debug("verwijderen Polis met id " + id);
+        LOGGER.debug("verwijderen Polis met id " + id);
         try {
             polisService.verwijder(id);
         } catch (IllegalArgumentException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
         return Response.status(202).entity(new JsonFoutmelding()).build();

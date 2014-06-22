@@ -18,7 +18,7 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 
 @Named
 public class BijlageService {
-    private final Logger LOGGER = Logger.getLogger(this.getClass());
+    private static final Logger LOGGER = Logger.getLogger(BijlageService.class);
     @InjectParam
     private ArchiefService archiefService;
 
