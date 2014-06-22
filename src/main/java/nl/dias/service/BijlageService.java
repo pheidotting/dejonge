@@ -52,7 +52,7 @@ public class BijlageService {
         return identificatie;
     }
 
-    private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
+    public void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
         int read = 0;
         byte[] bytes = new byte[1024];
 
