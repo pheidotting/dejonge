@@ -3,6 +3,9 @@ package nl.dias.domein.json;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class JsonLijstRelaties {
     private List<JsonRelatie> jsonRelaties;
 
@@ -19,10 +22,7 @@ public class JsonLijstRelaties {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((jsonRelaties == null) ? 0 : jsonRelaties.hashCode());
-        return result;
+        return new HashCodeBuilder().append(jsonRelaties).toHashCode();
     }
 
     @Override
@@ -37,14 +37,8 @@ public class JsonLijstRelaties {
             return false;
         }
         JsonLijstRelaties other = (JsonLijstRelaties) obj;
-        if (jsonRelaties == null) {
-            if (other.jsonRelaties != null) {
-                return false;
-            }
-        } else if (!jsonRelaties.equals(other.jsonRelaties)) {
-            return false;
-        }
-        return true;
+
+        return new EqualsBuilder().append(jsonRelaties, other.jsonRelaties).isEquals();
     }
 
     @Override
