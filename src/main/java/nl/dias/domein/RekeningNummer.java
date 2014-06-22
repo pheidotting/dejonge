@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -86,12 +88,7 @@ public class RekeningNummer implements Serializable, PersistenceObject {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bic == null) ? 0 : bic.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((rekeningnummer == null) ? 0 : rekeningnummer.hashCode());
-        return result;
+        return new HashCodeBuilder().append(bic).append(id).append(rekeningnummer).toHashCode();
     }
 
     @Override
@@ -106,53 +103,16 @@ public class RekeningNummer implements Serializable, PersistenceObject {
             return false;
         }
         RekeningNummer other = (RekeningNummer) obj;
-        if (bic == null) {
-            if (other.bic != null) {
-                return false;
-            }
-        } else if (!bic.equals(other.bic)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (kantoor == null) {
-            if (other.kantoor != null) {
-                return false;
-            }
-        } else if (!kantoor.equals(other.kantoor)) {
-            return false;
-        }
-        if (rekeningnummer == null) {
-            if (other.rekeningnummer != null) {
-                return false;
-            }
-        } else if (!rekeningnummer.equals(other.rekeningnummer)) {
-            return false;
-        }
-        if (relatie == null) {
-            if (other.relatie != null) {
-                return false;
-            }
-        } else if (!relatie.equals(other.relatie)) {
-            return false;
-        }
-        return true;
+
+        return new EqualsBuilder().append(bic, other.bic).append(id, other.id).append(kantoor, other.kantoor).append(rekeningnummer, other.rekeningnummer).append(relatie, other.relatie).isEquals();
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("RekeningNummer [id=");
-        builder.append(id);
-        builder.append(", bic=");
-        builder.append(bic);
-        builder.append(", rekeningnummer=");
-        builder.append(rekeningnummer);
+        builder.append("RekeningNummer [id=").append(id);
+        builder.append(", bic=").append(bic);
+        builder.append(", rekeningnummer=").append(rekeningnummer);
         builder.append("]");
         return builder.toString();
     }
