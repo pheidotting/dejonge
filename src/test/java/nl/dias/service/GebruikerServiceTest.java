@@ -1,5 +1,7 @@
 package nl.dias.service;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -7,10 +9,12 @@ import java.util.List;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
+import nl.dias.domein.Medewerker;
+import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
 
-import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +41,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     public void testLees() {
         Gebruiker gebruiker = new Relatie();
 
-        EasyMock.expect(repository.lees(1L)).andReturn(gebruiker);
+        expect(repository.lees(1L)).andReturn(gebruiker);
 
         replayAll();
 
@@ -51,11 +55,11 @@ public class GebruikerServiceTest extends EasyMockSupport {
         List<Relatie> relaties = new ArrayList<>();
         relaties.add(relatie);
 
-        EasyMock.expect(repository.alleRelaties(kantoor)).andReturn(relaties);
+        expect(repository.alleRelaties(kantoor)).andReturn(relaties);
 
         replayAll();
 
-        assertEquals(relaties, repository.alleRelaties(kantoor));
+        assertEquals(relaties, service.alleRelaties(kantoor));
     }
 
     @Test
@@ -63,7 +67,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatie = new Relatie();
 
         repository.opslaan(relatie);
-        EasyMock.expectLastCall();
+        expectLastCall();
 
         replayAll();
 
@@ -71,12 +75,50 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
+    public void testOpslaanMetRekeningNummer() {
+        Relatie relatie = new Relatie();
+        relatie.getRekeningnummers().add(new RekeningNummer());
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+    }
+
+    @Test
+    public void testOpslaanMetTelefoonNummer() {
+        Relatie relatie = new Relatie();
+        relatie.getTelefoonnummers().add(new Telefoonnummer());
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+    }
+
+    @Test
+    public void testOpslaanMedewerker() {
+        Medewerker medewerker = new Medewerker();
+
+        repository.opslaan(medewerker);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(medewerker);
+    }
+
+    @Test
     public void testVerwijder() {
         Relatie relatie = new Relatie();
 
-        EasyMock.expect(repository.lees(1L)).andReturn(relatie);
+        expect(repository.lees(1L)).andReturn(relatie);
         repository.verwijder(relatie);
-        EasyMock.expectLastCall();
+        expectLastCall();
 
         replayAll();
 
