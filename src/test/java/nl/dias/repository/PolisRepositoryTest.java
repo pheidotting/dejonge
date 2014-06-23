@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
@@ -22,26 +24,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PolisRepositoryTest {
-    private PolisRepository PolisRepository;
+    private PolisRepository polisRepository;
 
     @Before
     public void setUp() throws Exception {
-        PolisRepository = new PolisRepository();
-        PolisRepository.zetPersistenceContext("unittest");
+        polisRepository = new PolisRepository();
+        polisRepository.setPersistenceContext("unittest");
     }
 
     @Test
     public void test() {
         Relatie relatie = new Relatie();
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().persist(relatie);
-        PolisRepository.getEm().getTransaction().commit();
+        polisRepository.getEm().getTransaction().begin();
+        polisRepository.getEm().persist(relatie);
+        polisRepository.getEm().getTransaction().commit();
 
         VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
         maatschappij.setNaam("Patrick's Verzekeringen");
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().persist(maatschappij);
-        PolisRepository.getEm().getTransaction().commit();
+        polisRepository.getEm().getTransaction().begin();
+        polisRepository.getEm().persist(maatschappij);
+        polisRepository.getEm().getTransaction().commit();
 
         AutoVerzekering autoVerzekering = new AutoVerzekering();
         autoVerzekering.setMaatschappij(maatschappij);
@@ -56,21 +58,21 @@ public class PolisRepositoryTest {
         relatie.getPolissen().add(autoVerzekering);
         relatie.getPolissen().add(reisVerzekering);
 
-        PolisRepository.opslaan(autoVerzekering);
+        polisRepository.opslaan(autoVerzekering);
         System.out.println(autoVerzekering.getId());
-        PolisRepository.opslaan(reisVerzekering);
+        polisRepository.opslaan(reisVerzekering);
         System.out.println(reisVerzekering.getId());
 
-        assertEquals(2, PolisRepository.alles().size());
-        assertEquals(1, PolisRepository.zoekPolissenOpSoort(AutoVerzekering.class).size());
-        assertEquals(1, PolisRepository.zoekPolissenOpSoort(ReisVerzekering.class).size());
+        assertEquals(2, polisRepository.alles().size());
+        assertEquals(1, polisRepository.zoekPolissenOpSoort(AutoVerzekering.class).size());
+        assertEquals(1, polisRepository.zoekPolissenOpSoort(ReisVerzekering.class).size());
 
         // TODO delete werkt nog niet
         relatie.getPolissen().remove(autoVerzekering);
-        PolisRepository.verwijder(autoVerzekering);
+        polisRepository.verwijder(autoVerzekering);
 
-        assertEquals(0, PolisRepository.zoekPolissenOpSoort(AutoVerzekering.class).size());
-        assertEquals(1, PolisRepository.zoekPolissenOpSoort(ReisVerzekering.class).size());
+        assertEquals(0, polisRepository.zoekPolissenOpSoort(AutoVerzekering.class).size());
+        assertEquals(1, polisRepository.zoekPolissenOpSoort(ReisVerzekering.class).size());
     }
 
     @Test
@@ -81,10 +83,10 @@ public class PolisRepositoryTest {
         maatschappij1.setNaam("maatschappij1");
         maatschappij2.setNaam("maatschappij2");
 
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().persist(maatschappij1);
-        PolisRepository.getEm().persist(maatschappij2);
-        PolisRepository.getEm().getTransaction().commit();
+        polisRepository.getEm().getTransaction().begin();
+        polisRepository.getEm().persist(maatschappij1);
+        polisRepository.getEm().persist(maatschappij2);
+        polisRepository.getEm().getTransaction().commit();
     }
 
     @Test
@@ -119,7 +121,7 @@ public class PolisRepositoryTest {
 
         opslaan(relatie);
 
-        assertEquals(3, PolisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie).size());
+        assertEquals(3, polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie).size());
 
     }
 
@@ -175,28 +177,66 @@ public class PolisRepositoryTest {
         update(relatie1);
         update(relatie2);
 
-        assertEquals(verzekering1, PolisRepository.zoekOpPolisNummer("polisNummer1", kantoor1));
-        assertEquals(verzekering2, PolisRepository.zoekOpPolisNummer("polisNummer2", kantoor1));
-        assertEquals(verzekering3, PolisRepository.zoekOpPolisNummer("polisNummer3", kantoor2));
+        assertEquals(verzekering1, polisRepository.zoekOpPolisNummer("polisNummer1", kantoor1));
+        assertEquals(verzekering2, polisRepository.zoekOpPolisNummer("polisNummer2", kantoor1));
+        assertEquals(verzekering3, polisRepository.zoekOpPolisNummer("polisNummer3", kantoor2));
 
         try {
-            assertEquals(verzekering3, PolisRepository.zoekOpPolisNummer("polisNummer3", kantoor1));
+            assertEquals(verzekering3, polisRepository.zoekOpPolisNummer("polisNummer3", kantoor1));
             fail("exception verwacht");
         } catch (NoResultException e) {
             // verwacht
         }
+    }
 
+    @Test
+    public void testAllePolissenBijMaatschappij() {
+        VerzekeringsMaatschappij maatschappij1 = new VerzekeringsMaatschappij();
+        maatschappij1.setNaam("naam1");
+
+        VerzekeringsMaatschappij maatschappij2 = new VerzekeringsMaatschappij();
+        maatschappij2.setNaam("naam2");
+
+        opslaan(maatschappij1);
+        opslaan(maatschappij2);
+
+        AutoVerzekering autoVerzekering = new AutoVerzekering();
+        CamperVerzekering camperVerzekering = new CamperVerzekering();
+        FietsVerzekering fietsVerzekering = new FietsVerzekering();
+
+        autoVerzekering.setMaatschappij(maatschappij1);
+        camperVerzekering.setMaatschappij(maatschappij1);
+        fietsVerzekering.setMaatschappij(maatschappij2);
+
+        polisRepository.opslaan(autoVerzekering);
+        polisRepository.opslaan(camperVerzekering);
+        polisRepository.opslaan(fietsVerzekering);
+
+        assertEquals(2, polisRepository.allePolissenBijMaatschappij(maatschappij1).size());
+        assertEquals(1, polisRepository.allePolissenBijMaatschappij(maatschappij2).size());
+    }
+
+    @Test
+    public void testOpslaanBijlage() {
+        Bijlage bijlage = new Bijlage();
+
+        polisRepository.opslaanBijlage(bijlage);
+
+        Query query = polisRepository.getEm().createQuery("select b from Bijlage b");
+        assertEquals(1, query.getResultList().size());
+
+        assertEquals(bijlage, polisRepository.leesBijlage(bijlage.getId()));
     }
 
     private void opslaan(Object object) {
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().persist(object);
-        PolisRepository.getEm().getTransaction().commit();
+        polisRepository.getEm().getTransaction().begin();
+        polisRepository.getEm().persist(object);
+        polisRepository.getEm().getTransaction().commit();
     }
 
     private void update(Object object) {
-        PolisRepository.getEm().getTransaction().begin();
-        PolisRepository.getEm().merge(object);
-        PolisRepository.getEm().getTransaction().commit();
+        polisRepository.getEm().getTransaction().begin();
+        polisRepository.getEm().merge(object);
+        polisRepository.getEm().getTransaction().commit();
     }
 }

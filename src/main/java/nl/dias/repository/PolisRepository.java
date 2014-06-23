@@ -41,6 +41,7 @@ public class PolisRepository extends AbstractRepository<Polis> {
     @Transactional
     public List<Polis> allePolissenBijMaatschappij(VerzekeringsMaatschappij maatschappij) {
         TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesBijMaatschappij", Polis.class);
+        query.setParameter("maatschappij", maatschappij);
 
         return query.getResultList();
     }
