@@ -11,7 +11,6 @@ import nl.dias.exception.BsnNietGoedException;
 import nl.dias.exception.IbanNietGoedException;
 import nl.dias.exception.PostcodeNietGoedException;
 import nl.dias.exception.TelefoonnummerNietGoedException;
-import nl.dias.repository.KantoorRepository;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -23,7 +22,7 @@ public class KantoorRepositoryTest {
     @Before
     public void init() {
         kantoorService = new KantoorRepository();
-        kantoorService.zetPersistenceContext("unittest");
+        kantoorService.setPersistenceContext("unittest");
     }
 
     @Test

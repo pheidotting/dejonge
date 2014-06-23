@@ -3,6 +3,9 @@ package nl.dias.domein.json;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class JsonPolis {
     private Long id;
     private String polisNummer;
@@ -77,6 +80,9 @@ public class JsonPolis {
     }
 
     public List<JsonOpmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new ArrayList<JsonOpmerking>();
+        }
         return opmerkingen;
     }
 
@@ -142,4 +148,51 @@ public class JsonPolis {
     public void setClassName(String className) {
         this.className = className;
     }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(bedrijf).append(betaalfrequentie).append(className).append(id).append(idDiv).append(idDivLink).append(ingangsDatum).append(maatschappij)
+                .append(opmerkingen).append(polisNummer).append(premie).append(prolongatieDatum).append(soort).append(wijzigingsDatum).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        JsonPolis other = (JsonPolis) obj;
+
+        return new EqualsBuilder().append(bedrijf, other.bedrijf).append(betaalfrequentie, other.betaalfrequentie).append(className, other.className).append(id, other.id).append(idDiv, other.idDiv)
+                .append(idDivLink, other.idDivLink).append(ingangsDatum, other.ingangsDatum).append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen)
+                .append(polisNummer, other.polisNummer).append(premie, other.premie).append(prolongatieDatum, other.prolongatieDatum).append(soort, other.soort)
+                .append(wijzigingsDatum, other.wijzigingsDatum).isEquals();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\nJsonPolis [id=").append(id);
+        builder.append(", polisNummer=").append(polisNummer);
+        builder.append(", ingangsDatum=").append(ingangsDatum);
+        builder.append(", premie=").append(premie);
+        builder.append(", wijzigingsDatum=").append(wijzigingsDatum);
+        builder.append(", prolongatieDatum=").append(prolongatieDatum);
+        builder.append(", betaalfrequentie=").append(betaalfrequentie);
+        builder.append(", opmerkingen=").append(opmerkingen);
+        builder.append(", maatschappij=").append(maatschappij);
+        builder.append(", soort=").append(soort);
+        builder.append(", bedrijf=").append(bedrijf);
+        builder.append(", idDiv=").append(idDiv);
+        builder.append(", idDivLink=").append(idDivLink);
+        builder.append(", className=").append(className);
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

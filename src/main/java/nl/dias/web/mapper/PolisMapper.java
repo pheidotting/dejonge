@@ -9,13 +9,9 @@ import java.util.Set;
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -23,9 +19,8 @@ import com.sun.jersey.api.core.InjectParam;
 public class PolisMapper implements Mapper<Polis, JsonPolis> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
-
     @InjectParam
-    private ArchiefService archiefService;
+    private BijlageMapper bijlageMapper;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
@@ -55,18 +50,7 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
-        for (Bijlage bijlage : polis.getBijlages()) {
-            ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), true);
-
-            JsonBijlage jsonBijlage = new JsonBijlage();
-            jsonBijlage.setId(bijlage.getId().toString());
-            jsonBijlage.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
-            if (archiefBestand != null) {
-                jsonBijlage.setBestandsNaam(archiefBestand.getBestandsnaam());
-            }
-
-            jsonPolis.getBijlages().add(jsonBijlage);
-        }
+        jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());
         jsonPolis.setSoort(polis.getClass().getSimpleName());
@@ -102,5 +86,13 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
             ret.add(mapNaarJson(polis));
         }
         return ret;
+    }
+
+    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
+        this.opmerkingMapper = opmerkingMapper;
+    }
+
+    public void setBijlageMapper(BijlageMapper bijlageMapper) {
+        this.bijlageMapper = bijlageMapper;
     }
 }
