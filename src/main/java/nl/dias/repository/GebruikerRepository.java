@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
-    private Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     public GebruikerRepository() {
         super(Gebruiker.class);
@@ -86,15 +86,17 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         return gebruiker;
     }
 
-    public Gebruiker zoekOpCookieCode(String cookieCode) throws NietGevondenException {
-        Gebruiker gebruiker = null;
-
-        getTx().begin();
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpCookieCode", Gebruiker.class);
-        query.setParameter("cookieCode", cookieCode);
-        gebruiker = query.getSingleResult();
-        getTx().commit();
-
-        return gebruiker;
-    }
+    // public Gebruiker zoekOpCookieCode(String cookieCode) throws
+    // NietGevondenException {
+    // Gebruiker gebruiker = null;
+    //
+    // getTx().begin();
+    // TypedQuery<Gebruiker> query =
+    // getEm().createNamedQuery("Gebruiker.zoekOpCookieCode", Gebruiker.class);
+    // query.setParameter("cookieCode", cookieCode);
+    // gebruiker = query.getSingleResult();
+    // getTx().commit();
+    //
+    // return gebruiker;
+    // }
 }
