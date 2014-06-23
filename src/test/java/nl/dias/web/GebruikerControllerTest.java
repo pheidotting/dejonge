@@ -103,6 +103,26 @@ public class GebruikerControllerTest extends EasyMockSupport {
     }
 
     @Test
+    public void lijstMetWeglaten() {
+        Relatie relatie = new Relatie();
+        relatie.setId(5L);
+        List<Relatie> lijst = new ArrayList<>();
+        lijst.add(relatie);
+
+        JsonLijstRelaties jsonLijstRelaties = new JsonLijstRelaties();
+        jsonLijstRelaties.getJsonRelaties();
+
+        Kantoor kantoor = new Kantoor();
+
+        EasyMock.expect(kantoorRepository.getIngelogdKantoor()).andReturn(kantoor);
+        EasyMock.expect(gebruikerService.alleRelaties(kantoor)).andReturn(lijst);
+
+        replayAll();
+
+        assertEquals(jsonLijstRelaties, controller.lijstRelaties("5"));
+    }
+
+    @Test
     public void opslaan() {
         Relatie relatie = new Relatie();
         JsonRelatie jsonRelatie = new JsonRelatie();
