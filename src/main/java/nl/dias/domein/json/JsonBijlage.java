@@ -1,5 +1,9 @@
 package nl.dias.domein.json;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 public class JsonBijlage {
     private String id;
     private String bestandsNaam;
@@ -36,5 +40,33 @@ public class JsonBijlage {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JsonBijlage)) {
+            return false;
+        }
+        JsonBijlage rhs = (JsonBijlage) object;
+        return new EqualsBuilder().append(this.bestandsNaam, rhs.bestandsNaam).append(this.id, rhs.id).append(this.soortBijlage, rhs.soortBijlage).append(this.url, rhs.url).isEquals();
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.bestandsNaam).append(this.id).append(this.soortBijlage).append(this.url).toHashCode();
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("soortBijlage", this.soortBijlage).append("url", this.url).append("bestandsNaam", this.bestandsNaam).append("id", this.id).toString();
     }
 }

@@ -61,4 +61,8 @@ public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
         return ret;
     }
 
+    public void setArchiefService(ArchiefService archiefService) {
+        this.archiefService = archiefService;
+    }
+
 }
