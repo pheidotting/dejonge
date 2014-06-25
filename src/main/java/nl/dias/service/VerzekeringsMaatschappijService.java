@@ -25,4 +25,8 @@ public class VerzekeringsMaatschappijService {
 
         return lijst;
     }
+
+    public void setVerzekeringsMaatschappijRepository(VerzekeringsMaatschappijRepository verzekeringsMaatschappijRepository) {
+        this.verzekeringsMaatschappijRepository = verzekeringsMaatschappijRepository;
+    }
 }
