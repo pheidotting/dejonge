@@ -176,6 +176,7 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testOpslaanOpslaanPolis() {
+        replayAll();
     }
 
 }
