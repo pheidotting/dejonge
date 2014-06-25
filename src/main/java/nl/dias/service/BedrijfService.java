@@ -19,4 +19,8 @@ public class BedrijfService {
     public Bedrijf lees(Long id) {
         return bedrijfRepository.lees(id);
     }
+
+    public void setBedrijfRepository(BedrijfRepository bedrijfRepository) {
+        this.bedrijfRepository = bedrijfRepository;
+    }
 }
