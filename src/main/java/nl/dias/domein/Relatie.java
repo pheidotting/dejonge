@@ -30,6 +30,9 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
@@ -250,24 +253,43 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
         this.bedrijven = bedrijven;
     }
 
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(1132232791, -646131157).appendSuper(super.hashCode()).append(this.burgerlijkeStaat).append(this.adres).append(this.bedrijven).append(this.polissen)
+                .append(this.onderlingeRelaties).append(this.bsn).append(this.kantoor).append(this.opmerkingen).append(this.adresOpgemaakt).append(this.geboorteDatum).append(this.geslacht)
+                .append(this.overlijdensdatum).append(this.rekeningnummers).append(this.telefoonnummers).toHashCode();
+    }
+
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Relatie)) {
+            return false;
+        }
+        Relatie rhs = (Relatie) object;
+        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.adres, rhs.adres).append(this.bedrijven, rhs.bedrijven)
+                .append(this.polissen, rhs.polissen).append(this.onderlingeRelaties, rhs.onderlingeRelaties).append(this.bsn, rhs.bsn).append(this.kantoor, rhs.kantoor)
+                .append(this.opmerkingen, rhs.opmerkingen).append(this.adresOpgemaakt, rhs.adresOpgemaakt).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht)
+                .append(this.overlijdensdatum, rhs.overlijdensdatum).append(this.rekeningnummers, rhs.rekeningnummers).append(this.telefoonnummers, rhs.telefoonnummers).isEquals();
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Relatie [adres=");
-        builder.append(adres);
-        builder.append(", telefoonnummers=");
-        builder.append(telefoonnummers);
-        builder.append(", bsn=");
-        builder.append(bsn);
-        builder.append(", rekeningnummers=");
-        builder.append(rekeningnummers);
-        builder.append(", adresOpgemaakt=");
-        builder.append(adresOpgemaakt);
-        builder.append(", polissen=");
-        builder.append(getPolissen().size());
-        builder.append(", toString()=");
-        builder.append(super.toString());
-        builder.append("]");
-        return builder.toString();
+        return new ToStringBuilder(this).append("geslacht", this.geslacht).append("kantoor", this.kantoor).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adres", this.adres)
+                .append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen())
+                .append("rekeningnummers", this.rekeningnummers).append("bedrijven", this.bedrijven).append("voornaam", this.getVoornaam()).append("id", this.getId())
+                .append("overlijdensdatum", this.overlijdensdatum).append("sessies", this.getSessies()).append("wachtwoord", this.getWachtwoord()).append("opmerkingen", this.opmerkingen)
+                .append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen()).append("salt", this.getSalt())
+                .append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("zakelijk", this.isZakelijk()).append("polissen", this.polissen)
+                .append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).append("adresOpgemaakt", this.adresOpgemaakt).toString();
     }
+
 }

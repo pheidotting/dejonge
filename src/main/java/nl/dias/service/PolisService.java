@@ -269,4 +269,29 @@ public class PolisService {
 
         return polis;
     }
+
+    public void setPolisRepository(PolisRepository polisRepository) {
+        this.polisRepository = polisRepository;
+    }
+
+    public void setArchiefService(ArchiefService archiefService) {
+        this.archiefService = archiefService;
+    }
+
+    public void setGebruikerService(GebruikerService gebruikerService) {
+        this.gebruikerService = gebruikerService;
+    }
+
+    public void setKantoorRepository(KantoorRepository kantoorRepository) {
+        this.kantoorRepository = kantoorRepository;
+    }
+
+    public void setBedrijfService(BedrijfService bedrijfService) {
+        this.bedrijfService = bedrijfService;
+    }
+
+    public void setVerzekeringsMaatschappijService(VerzekeringsMaatschappijService verzekeringsMaatschappijService) {
+        this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
+    }
+
 }
