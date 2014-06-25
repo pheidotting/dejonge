@@ -1,6 +1,7 @@
 package nl.dias.web.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,6 +32,11 @@ public class OpmerkingMapperTest {
         verwacht.add(maakOpmerking());
 
         assertEquals(verwacht, mapper.mapAllVanJson(lijst));
+    }
+
+    @Test
+    public void testMapAllVanJsonNull() {
+        assertNull(mapper.mapAllVanJson(null));
     }
 
     @Test
