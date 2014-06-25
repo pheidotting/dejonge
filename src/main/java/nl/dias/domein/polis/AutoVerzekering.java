@@ -8,6 +8,7 @@ import javax.persistence.Table;
 @Table(name = "POLIS")
 @DiscriminatorValue(value = "A")
 public class AutoVerzekering extends Polis {
+
     private static final long serialVersionUID = 4412157021471248581L;
 
     @Override

@@ -11,11 +11,15 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
+import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AutoVerzekering;
+import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.CamperVerzekering;
 import nl.dias.domein.polis.FietsVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
@@ -25,6 +29,7 @@ import nl.dias.repository.PolisRepository;
 import nl.lakedigital.archief.service.ArchiefService;
 
 import org.easymock.EasyMockSupport;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -176,7 +181,48 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testOpslaanOpslaanPolis() {
+        OpslaanPolis opslaanPolis = new OpslaanPolis();
+        opslaanPolis.setSoortVerzekering("Auto");
+        opslaanPolis.setPolisNummer("1234");
+        opslaanPolis.setMaatschappij("maatschappij");
+        opslaanPolis.setRelatie(46L);
+        opslaanPolis.setIngangsDatumString("01-02-2014");
+        opslaanPolis.setProlongatiedatumString("02-03-2014");
+        opslaanPolis.setWijzigingsdatumString("03-04-2014");
+        opslaanPolis.setBetaalfrequentie("jaar");
+        opslaanPolis.setPremie(12.0);
+
+        Kantoor kantoor = new Kantoor();
+        expect(kantoorRepository.lees(1L)).andReturn(kantoor);
+
+        expect(polisRepository.zoekOpPolisNummer("1234", kantoor)).andThrow(new NoResultException());
+
+        VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
+        expect(verzekeringsMaatschappijService.zoekOpNaam("maatschappij")).andReturn(maatschappij);
+
+        Relatie relatie = new Relatie();
+        expect(gebruikerService.lees(46L)).andReturn(relatie);
+
+        AutoVerzekering polis = new AutoVerzekering();
+        polis.setPolisNummer("1234");
+        polis.setMaatschappij(maatschappij);
+        polis.setRelatie(relatie);
+        polis.setIngangsDatum(new LocalDate(2014, 2, 1));
+        polis.setProlongatieDatum(new LocalDate(2014, 3, 2));
+        polis.setWijzigingsDatum(new LocalDate(2014, 4, 3));
+        polis.setBetaalfrequentie(Betaalfrequentie.J);
+        polis.setPremie(new Bedrag("12"));
+
+        polisRepository.opslaan(polis);
+        expectLastCall();
+
+        relatie.getPolissen().add(polis);
+        gebruikerService.opslaan(relatie);
+        expectLastCall();
+
         replayAll();
+
+        polisService.opslaan(opslaanPolis);
     }
 
 }
