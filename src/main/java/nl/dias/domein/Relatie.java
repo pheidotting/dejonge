@@ -258,9 +258,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(1132232791, -646131157).appendSuper(super.hashCode()).append(this.burgerlijkeStaat).append(this.adres).append(this.bedrijven).append(this.polissen)
-                .append(this.onderlingeRelaties).append(this.bsn).append(this.kantoor).append(this.opmerkingen).append(this.adresOpgemaakt).append(this.geboorteDatum).append(this.geslacht)
-                .append(this.overlijdensdatum).append(this.rekeningnummers).append(this.telefoonnummers).toHashCode();
+        return new HashCodeBuilder(1132232791, -646131157).appendSuper(super.hashCode()).append(this.burgerlijkeStaat).append(this.adres).append(this.bedrijven).append(this.onderlingeRelaties)
+                .append(this.bsn).append(this.kantoor).append(this.opmerkingen).append(this.adresOpgemaakt).append(this.geboorteDatum).append(this.geslacht).append(this.overlijdensdatum)
+                .append(this.rekeningnummers).append(this.telefoonnummers).toHashCode();
     }
 
     /**
@@ -273,9 +273,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
         }
         Relatie rhs = (Relatie) object;
         return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.adres, rhs.adres).append(this.bedrijven, rhs.bedrijven)
-                .append(this.polissen, rhs.polissen).append(this.onderlingeRelaties, rhs.onderlingeRelaties).append(this.bsn, rhs.bsn).append(this.kantoor, rhs.kantoor)
-                .append(this.opmerkingen, rhs.opmerkingen).append(this.adresOpgemaakt, rhs.adresOpgemaakt).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht)
-                .append(this.overlijdensdatum, rhs.overlijdensdatum).append(this.rekeningnummers, rhs.rekeningnummers).append(this.telefoonnummers, rhs.telefoonnummers).isEquals();
+                .append(this.onderlingeRelaties, rhs.onderlingeRelaties).append(this.bsn, rhs.bsn).append(this.kantoor, rhs.kantoor).append(this.opmerkingen, rhs.opmerkingen)
+                .append(this.adresOpgemaakt, rhs.adresOpgemaakt).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum)
+                .append(this.rekeningnummers, rhs.rekeningnummers).append(this.telefoonnummers, rhs.telefoonnummers).isEquals();
     }
 
     /**
