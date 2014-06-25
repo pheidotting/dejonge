@@ -11,6 +11,8 @@ import java.util.Set;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Opmerking;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonOpmerking;
@@ -74,7 +76,9 @@ public class PolisMapperTest extends EasyMockSupport {
         jsonPolis.setBedrijf("TestBedrijf");
 
         polissen = new HashSet<Polis>();
+        polissen.add(polis);
         jsonPolissen = new ArrayList<JsonPolis>();
+        jsonPolissen.add(jsonPolis);
     }
 
     @After
@@ -87,14 +91,13 @@ public class PolisMapperTest extends EasyMockSupport {
         replayAll();
 
         assertNull(mapper.mapVanJson(jsonPolis));
-        // assertEquals(polis, mapper.mapVanJson(jsonPolis));
     }
 
     @Test
     public void testMapAllVanJson() {
         replayAll();
 
-        assertEquals(polissen, mapper.mapAllVanJson(jsonPolissen));
+        assertNull(mapper.mapAllVanJson(jsonPolissen));
     }
 
     @Test
@@ -112,6 +115,12 @@ public class PolisMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapAllNaarJson() {
+        Set<Bijlage> bijlages = new HashSet<Bijlage>();
+        Set<Opmerking> opmerkingen = new HashSet<Opmerking>();
+
+        expect(bijlageMapper.mapAllNaarJson(bijlages)).andReturn(new ArrayList<JsonBijlage>());
+        expect(opmerkingMapper.mapAllNaarJson(opmerkingen)).andReturn(new ArrayList<JsonOpmerking>());
+
         replayAll();
 
         assertEquals(jsonPolissen, mapper.mapAllNaarJson(polissen));

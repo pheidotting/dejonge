@@ -2,7 +2,6 @@ package nl.dias.web.mapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,17 +23,12 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
-
         return null;
     }
 
     @Override
     public Set<Polis> mapAllVanJson(List<JsonPolis> jsonPolissen) {
-        Set<Polis> ret = new HashSet<>();
-        for (JsonPolis jsonPolis : jsonPolissen) {
-            ret.add(mapVanJson(jsonPolis));
-        }
-        return ret;
+        return null;
     }
 
     @Override
