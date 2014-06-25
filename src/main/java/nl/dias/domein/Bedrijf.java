@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -115,5 +117,25 @@ public class Bedrijf implements Serializable, PersistenceObject {
         builder.append(adres);
         builder.append("]");
         return builder.toString();
+    }
+
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Bedrijf)) {
+            return false;
+        }
+        Bedrijf rhs = (Bedrijf) object;
+        return new EqualsBuilder().append(this.id, rhs.id).append(this.adres, rhs.adres).append(this.kvk, rhs.kvk).append(this.naam, rhs.naam).isEquals();
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.id).append(this.adres).append(this.kvk).append(this.naam).toHashCode();
     }
 }
