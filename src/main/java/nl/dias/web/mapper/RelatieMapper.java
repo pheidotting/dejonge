@@ -1,12 +1,9 @@
 package nl.dias.web.mapper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.BurgerlijkeStaat;
-import nl.dias.domein.Geslacht;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBijlage;
@@ -31,41 +28,42 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
-        Relatie relatie = new Relatie();
-        relatie.setId(jsonRelatie.getId());
-        relatie.setIdentificatie(jsonRelatie.getIdentificatie());
-        relatie.setVoornaam(jsonRelatie.getVoornaam());
-        relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
-        relatie.setAchternaam(jsonRelatie.getAchternaam());
-        relatie.getAdres().setStraat(jsonRelatie.getStraat());
-        try {
-            relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
-        } catch (NumberFormatException nfe) {
-            throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
-        }
-        relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
-        relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
-        relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
-        relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
-        relatie.setBsn(jsonRelatie.getBsn());
-        relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
-        relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
-        // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
-        // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
-        relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
-        relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0, 1)));
+        // Relatie relatie = new Relatie();
+        // relatie.setId(jsonRelatie.getId());
+        // relatie.setIdentificatie(jsonRelatie.getIdentificatie());
+        // relatie.setVoornaam(jsonRelatie.getVoornaam());
+        // relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
+        // relatie.setAchternaam(jsonRelatie.getAchternaam());
+        // relatie.getAdres().setStraat(jsonRelatie.getStraat());
+        // relatie.setOverlijdensdatum(new
+        // LocalDate(jsonRelatie.getOverlijdensdatum()));
+        // try {
+        // relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
+        // } catch (NumberFormatException nfe) {
+        // throw new
+        // NumberFormatException("Huisnummer mag alleen cijfers bevatten");
+        // }
+        // relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
+        // relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
+        // relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
+        // relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
+        // relatie.setBsn(jsonRelatie.getBsn());
+        // relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
+        // relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
+        // // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
+        // // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
+        // relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0,
+        // 1)));
+        // relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0,
+        // 1)));
 
-        return relatie;
+        return null;
     }
 
     @Override
     public Set<Relatie> mapAllVanJson(List<JsonRelatie> jsonRelaties) {
-        Set<Relatie> relaties = new HashSet<>();
-        for (JsonRelatie jsonRelatie : jsonRelaties) {
-            relaties.add(mapVanJson(jsonRelatie));
-        }
 
-        return relaties;
+        return null;
     }
 
     @Override
@@ -118,10 +116,14 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
         jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
-        jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
-        jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
-        jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
-        jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
+        if (relatie.getGeboorteDatum() != null) {
+            jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
+            jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
+        }
+        if (relatie.getOverlijdensdatum() != null) {
+            jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
+            jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
+        }
         if (relatie.getGeslacht() != null) {
             jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());
         }
@@ -142,5 +144,29 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setLijstBijlages(bijlages);
 
         return jsonRelatie;
+    }
+
+    public void setTelefoonnummerMapper(TelefoonnummerMapper telefoonnummerMapper) {
+        this.telefoonnummerMapper = telefoonnummerMapper;
+    }
+
+    public void setRekeningnummerMapper(RekeningnummerMapper rekeningnummerMapper) {
+        this.rekeningnummerMapper = rekeningnummerMapper;
+    }
+
+    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
+        this.opmerkingMapper = opmerkingMapper;
+    }
+
+    public void setPolisMapper(PolisMapper polisMapper) {
+        this.polisMapper = polisMapper;
+    }
+
+    public void setBedrijfMapper(BedrijfMapper bedrijfMapper) {
+        this.bedrijfMapper = bedrijfMapper;
+    }
+
+    public void setBijlageMapper(BijlageMapper bijlageMapper) {
+        this.bijlageMapper = bijlageMapper;
     }
 }
