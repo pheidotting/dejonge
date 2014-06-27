@@ -289,4 +289,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
                 .append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).append("adresOpgemaakt", this.adresOpgemaakt).toString();
     }
 
+    @Override
+    public String getName() {
+        return this.getIdentificatie();
+    }
+
 }

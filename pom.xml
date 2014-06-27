@@ -279,7 +279,30 @@
 					</formats>
 				</configuration>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.glassfish.maven.plugin</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+                <configuration>
+                    <terse>false</terse>
+                    <echo>true</echo>
+                    <debug>true</debug>
+                    <glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/GlassfishServer/glassfish3</glassfishDirectory>
+                    <user>admin</user>
+                    <adminPassword>admin</adminPassword>
+                    <domain>
+                        <name>domain1</name>
+                        <host>localhost</host>
+                        <adminPort>4848</adminPort>
+                    </domain>
+                    <components>
+                        <component>
+                            <name>${project.artifactId}</name>
+                            <artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
+                        </component>
+                    </components>
+                </configuration>
+            </plugin>
+        </plugins>		
 		<finalName>dejonge</finalName>
 	</build>
 </project>

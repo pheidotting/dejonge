@@ -84,4 +84,9 @@ public class Medewerker extends Gebruiker implements Serializable, PersistenceOb
         return true;
     }
 
+    @Override
+    public String getName() {
+        return this.getIdentificatie();
+    }
+
 }

@@ -14,6 +14,7 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.easymock.EasyMockSupport;
 import org.junit.After;
@@ -123,5 +124,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         service.verwijder(1L);
+    }
+
+    @Test
+    public void testZoek() throws NietGevondenException {
+        Medewerker medewerker = new Medewerker();
+
+        expect(repository.zoek("e")).andReturn(medewerker);
+
+        replayAll();
+
+        assertEquals(medewerker, service.zoek("e"));
     }
 }

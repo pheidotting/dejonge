@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Sessie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
@@ -86,6 +87,17 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         return gebruiker;
     }
 
+    public void refresh(Sessie sessie) {
+        getEm().refresh(sessie);
+    }
+
+    public void opslaan(Sessie sessie) {
+        if (sessie.getId() == null) {
+            getEm().persist(sessie);
+        } else {
+            getEm().merge(sessie);
+        }
+    }
     // public Gebruiker zoekOpCookieCode(String cookieCode) throws
     // NietGevondenException {
     // Gebruiker gebruiker = null;

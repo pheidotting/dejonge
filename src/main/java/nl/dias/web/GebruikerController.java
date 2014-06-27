@@ -1,18 +1,21 @@
 package nl.dias.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
@@ -22,6 +25,8 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
 import org.apache.log4j.Logger;
 
@@ -29,11 +34,14 @@ import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/gebruiker")
-public class GebruikerController {// implements InterfaceGebruikerController {
-    private final Logger logger = Logger.getLogger(this.getClass());
+public class GebruikerController {
+    private final static Logger LOGGER = Logger.getLogger(GebruikerController.class);
 
-    private String cookieCode;
-    private Cookie cookie;
+    @Context
+    private HttpServletRequest httpServletRequest;
+    @Context
+    private HttpServletResponse httpServletResponse;
+
     @InjectParam
     private GebruikerService gebruikerService;
     @InjectParam
@@ -44,113 +52,42 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     private RelatieMapper relatieMapper;
     @InjectParam
     private BedrijfMapper bedrijfMapper;
+    @InjectParam
+    private AuthorisatieService authorisatieService;
 
-    //
-    // @GET
-    // @Path("/inloggen")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String inloggen(@QueryParam("emailadres") String emailadres,
-    // @QueryParam("wachtwoord") String wachtwoord, @QueryParam("strOnthouden")
-    // String strOnthouden,
-    // @Context HttpServletRequest request) {
-    // Gson gson = new Gson();
-    // String messages = null;
-    //
-    // try {
-    // logger.info("Proberen in te loggen met mail : " + emailadres);
-    //
-    // boolean onthouden = false;
-    // if (strOnthouden != null) {
-    // onthouden = strOnthouden.equals("true");
-    // }
-    //
-    // logger.info("onthouden = " + onthouden);
-    //
-    // if (emailadres == null || emailadres.equals("")) {
-    // throw new LeegVeldException("E-mailadres");
-    // }
-    // if (wachtwoord == null || wachtwoord.equals("")) {
-    // throw new LeegVeldException("wachtwoord");
-    // }
-    //
-    // @SuppressWarnings("serial")
-    // Onderwerp onderwerp = new Onderwerp() {
-    // };
-    // onderwerp.setIdentificatie(emailadres);
-    // onderwerp.setHashWachtwoord(wachtwoord);
-    //
-    // Onderwerp gevonden;
-    // try {
-    // gevonden = gebruikerService.zoek(emailadres);
-    // } catch (NietGevondenException e) {
-    // gevonden = gebruikerService.zoek(emailadres);
-    // }
-    //
-    // if (gevonden != null) {
-    // logger.info("gevonden id " + gevonden.getId());
-    // } else {
-    // logger.info(emailadres + ", werd niet gevonden");
-    // }
-    //
-    // HttpSession sessi = request.getSession();
-    // String sess = sessi.getId();
-    // String ipadres = request.getRemoteAddr();
-    //
-    // inlogUtil.inloggen(onderwerp, ipadres, gevonden);
-    //
-    // Sessie sessie = zoekSessie((Gebruiker) gevonden, sess, ipadres);
-    //
-    // if (sessie == null) {
-    // sessie = new Sessie();
-    // sessie.setIpadres(request.getRemoteAddr());
-    // sessie.setSessie(request.getSession().getId());
-    // }
-    // sessie.setBrowser(request.getHeader("user-agent"));
-    //
-    // if (onthouden) {
-    // sessie.setCookieCode(getCookieCode());
-    // // response addCookie ( getCookie()
-    // }
-    //
-    // ((Gebruiker) gevonden).getSessies().add(sessie);
-    // sessie.setGebruiker((Gebruiker) gevonden);
-    //
-    // gebruikerService.opslaan((Gebruiker) gevonden);
-    //
-    // messages = gson.toJson("ok");
-    //
-    // // TODO mailtje de deur uit doen met het wachtwoord erin.
-    //
-    // } catch (NietGevondenException | LeegVeldException |
-    // OnjuistWachtwoordException ex) {
-    // messages = gson.toJson(ex.getMessage());
-    // } catch (Exception ex) {
-    // messages = gson.toJson(ex.getMessage());
-    // } finally {
-    // logger.info("Messages naar de front-end " + messages);
-    // }
-    //
-    // return messages;
-    // }
+    @POST
+    @Path("/inloggen")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response inloggen(Inloggen inloggen) {
+        try {
+            authorisatieService.inloggen(inloggen.getIdentificatie(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
+        } catch (OnjuistWachtwoordException | NietGevondenException e) {
+            LOGGER.debug(e.getMessage());
+            return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
+
+        return Response.status(200).entity(new JsonFoutmelding()).build();
+    }
 
     @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonRelatie lees(@QueryParam("id") String id) {
-        logger.debug("Ophalen Relatie met id : " + id);
+        LOGGER.debug("Ophalen Relatie met id : " + id);
 
         JsonRelatie jsonRelatie = null;
         if (id != null && !id.trim().equals("0")) {
             Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
-            logger.debug("Opgehaald : " + relatie);
+            LOGGER.debug("Opgehaald : " + relatie);
 
             jsonRelatie = relatieMapper.mapNaarJson(relatie);
         } else {
             jsonRelatie = new JsonRelatie();
         }
 
-        logger.debug("Naar de front-end : " + jsonRelatie);
+        LOGGER.debug("Naar de front-end : " + jsonRelatie);
 
         return jsonRelatie;
     }
@@ -159,11 +96,11 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @Path("/lijstRelaties")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonLijstRelaties lijstRelaties(@QueryParam("weglaten") String weglaten) {
-        logger.debug("Ophalen lijst met alle Relaties");
+        LOGGER.debug("Ophalen lijst met alle Relaties");
 
         Long idWeglaten = null;
         if (weglaten != null) {
-            logger.debug("id " + weglaten + " moet worden weggelaten");
+            LOGGER.debug("id " + weglaten + " moet worden weggelaten");
             idWeglaten = Long.parseLong(weglaten);
         }
 
@@ -174,7 +111,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
                 lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
             }
         }
-        logger.debug("Opgehaald, lijst met " + lijst.getJsonRelaties().size() + " relaties");
+        LOGGER.debug("Opgehaald, lijst met " + lijst.getJsonRelaties().size() + " relaties");
 
         return lijst;
     }
@@ -184,20 +121,20 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonRelatie jsonRelatie) {
-        logger.debug("Opslaan " + jsonRelatie);
+        LOGGER.debug("Opslaan " + jsonRelatie);
 
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
             relatie.setKantoor(kantoorRepository.getIngelogdKantoor());
 
-            logger.debug("Opslaan Relatie met id " + relatie.getId());
+            LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
 
             gebruikerService.opslaan(relatie);
 
-            logger.debug("Relatie met id " + relatie.getId() + " opgeslagen");
+            LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
             return Response.status(202).entity(new JsonFoutmelding()).build();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
     }
@@ -220,7 +157,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
 
             return Response.status(200).entity(new JsonFoutmelding()).build();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
     }
@@ -229,7 +166,7 @@ public class GebruikerController {// implements InterfaceGebruikerController {
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
     public Response verwijderen(Long id) {
-        logger.debug("Verwijderen Relatie met id " + id);
+        LOGGER.debug("Verwijderen Relatie met id " + id);
 
         gebruikerService.verwijder(id);
 

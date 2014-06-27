@@ -18,6 +18,9 @@ import javax.persistence.TemporalType;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -52,10 +55,12 @@ public class Sessie implements PersistenceObject, Serializable {
         datumGecreerd = new Date();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -114,5 +119,26 @@ public class Sessie implements PersistenceObject, Serializable {
 
     public void setGebruiker(Gebruiker gebruiker) {
         this.gebruiker = gebruiker;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Sessie)) {
+            return false;
+        }
+        Sessie rhs = (Sessie) object;
+        return new EqualsBuilder().append(this.id, rhs.id).append(this.ipadres, rhs.ipadres).append(this.browser, rhs.browser).append(this.cookieCode, rhs.cookieCode).append(this.sessie, rhs.sessie)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.id).append(this.ipadres).append(this.browser).append(this.cookieCode).append(this.sessie).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", this.id).append("ipadres", this.ipadres).append("datumLaatstGebruikt", this.datumLaatstGebruikt).append("datumGecreerd", this.datumGecreerd)
+                .append("browser", this.browser).append("cookieCode", this.cookieCode).append("sessie", this.sessie).toString();
     }
 }

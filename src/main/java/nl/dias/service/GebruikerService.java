@@ -8,8 +8,10 @@ import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -44,6 +46,18 @@ public class GebruikerService {
         Gebruiker gebruiker = gebruikerRepository.lees(id);
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);
+    }
+
+    public Gebruiker zoek(String emailadres) throws NietGevondenException {
+        return gebruikerRepository.zoek(emailadres);
+    }
+
+    public void refresh(Sessie sessie) {
+        gebruikerRepository.refresh(sessie);
+    }
+
+    public void opslaan(Sessie sessie) {
+        gebruikerRepository.opslaan(sessie);
     }
 
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {

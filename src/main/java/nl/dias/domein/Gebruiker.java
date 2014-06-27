@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ import com.sun.xml.txw2.annotation.XmlElement;
 @Audited
 @XmlElement
 @XmlRootElement
-public abstract class Gebruiker extends Onderwerp implements PersistenceObject {
+public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
 
     @Column(name = "VOORNAAM")

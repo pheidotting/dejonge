@@ -21,6 +21,7 @@ import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class GebruikerControllerTest extends EasyMockSupport {
@@ -67,6 +68,7 @@ public class GebruikerControllerTest extends EasyMockSupport {
     }
 
     @Test
+    @Ignore
     public void lees() {
         Relatie relatie = new Relatie();
         JsonRelatie jsonRelatie = new JsonRelatie();

@@ -19,10 +19,11 @@ import org.hibernate.envers.Audited;
 @AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
 @Audited
 public class Beheerder extends Gebruiker implements PersistenceObject, Serializable {
-
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = 3403882985064145165L;
+
+    @Override
+    public String getName() {
+        return this.getIdentificatie();
+    }
 
 }
