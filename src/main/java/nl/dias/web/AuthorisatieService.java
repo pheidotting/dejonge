@@ -1,6 +1,7 @@
 package nl.dias.web;
 
 import java.util.Date;
+import java.util.Random;
 
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
@@ -63,9 +64,13 @@ public class AuthorisatieService {
         gebruikerUitDatabase.getSessies().add(sessie);
 
         gebruikerService.opslaan(gebruikerUitDatabase);
+        // TODO aanpassen met unieke code
+        sessie.setSessie(genereerNieuweCode(25));
+        gebruikerService.opslaan(sessie);
+        gebruikerService.opslaan(gebruikerUitDatabase);
 
-        LOGGER.debug("sessie id " + sessie.getId() + " in de request plaatsen");
-        request.getSession().setAttribute("sessie", sessie.getId());
+        LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
+        request.getSession().setAttribute("sessie", sessie.getSessie());
     }
 
     public void uitloggen(HttpServletRequest request) {
@@ -75,12 +80,25 @@ public class AuthorisatieService {
         Gebruiker gebruiker = null;
         try {
             gebruiker = gebruikerService.zoekOpSessieEnIpAdres(sessieId, ipadres);
+            LOGGER.debug(gebruiker.getSessies());
         } catch (NietGevondenException e) {
             LOGGER.error("Geen ingelogde gebruiker gevonden");
         }
 
         gebruiker.getSessies().remove(gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies()));
         gebruikerService.opslaan(gebruiker);
+    }
+
+    private String genereerNieuweCode(int max) {
+        Random ran = new Random();
+        char data = ' ';
+        String dat = "";
+        for (int i = 0; i <= max; i++) {
+            data = (char) (ran.nextInt(25) + 97);
+            dat = data + dat;
+        }
+
+        return dat;
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

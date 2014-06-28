@@ -1,6 +1,7 @@
 package nl.dias.web.filter;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,6 +15,8 @@ import javax.ws.rs.ext.Provider;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.service.GebruikerService;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +24,7 @@ import org.apache.log4j.Logger;
 public class AuthorisatieFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(AuthorisatieFilter.class);
 
+    private final GebruikerService gebruikerService = new GebruikerService();
     private final GebruikerRepository gebruikerRepository = new GebruikerRepository();
 
     @Override
@@ -28,51 +32,61 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        final String sessionId = null;// request.getHeaderValue("session-id");
-        // LOGGER.debug("Sessie id uit request " + sessionId);
-        //
-        // LOGGER.debug("1");
-        // LOGGER.debug(request.getHeaderValue("1"));
-        // LOGGER.debug("a");
-        // LOGGER.debug(request.getHeaderValue("a"));
-        // LOGGER.debug("b");
-        // LOGGER.debug(request.getHeaderValue(""));
+        if (getFullURL(req).startsWith("http://localhost:8080/dejonge/rest/gebruiker/inloggen") || getFullURL(req).startsWith("http://localhost:8080/dejonge/rest/gebruiker/uitloggen")) {
+            LOGGER.debug("Gebruiker wil blijkbaar inloggen, dit hoeft uiteraard niet gefilterd..");
+            chain.doFilter(request, response);
+        } else {
+            // TODO bij geen sessieId krijg je hier een NullPointer
+            final String sessieId = (String) req.getSession().getAttribute("sessie");
+            final String ipAdres = req.getRemoteAddr();
 
-        LOGGER.debug(req.getSession().getAttribute("a"));
+            Gebruiker gebruiker = null;
+            Sessie sessie = null;
 
-        Gebruiker gebruiker = null;
-        Sessie sessie = null;
+            if (sessieId != null && sessieId.length() > 0) {
+                LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
+                try {
+                    gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
+                    LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
+                } catch (NietGevondenException e) {
+                    LOGGER.debug(e.getMessage());
+                }
+            } else {
+                LOGGER.debug("Geen sessieId gevonden in het request");
+            }
 
-        if (sessionId != null && sessionId.length() > 0) {
-            // Load session object from repository
-            // sessie = gebruikerRepository.lees(1L);
+            if (gebruiker != null) {
+                LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
+                sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
+                sessie.setDatumLaatstGebruikt(new Date());
+                LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
+                gebruikerRepository.opslaan(gebruiker);
 
-            // Load associated user from session
-            // if (null != sessie) {
-            gebruiker = gebruikerRepository.lees(1L);
-            // }
+                LOGGER.debug("Verder filteren");
+                chain.doFilter(request, response);
+            }
         }
+    }
 
-        LOGGER.debug("ophalen uit gebruikerRepository");
-        Gebruiker gebruiker2 = gebruikerRepository.lees(1L);
-        LOGGER.debug(gebruiker2);
+    private String getFullURL(HttpServletRequest request) {
+        StringBuffer requestURL = request.getRequestURL();
+        String queryString = request.getQueryString();
 
-        chain.doFilter(request, response);
-        // Set security context
-        // request.setSecurityContext(new MySecurityContext(sessie, gebruiker));
-        // return response;
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
     }
 
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
-
+        LOGGER.debug("destroy filter");
     }
 
     @Override
     public void init(FilterConfig arg0) throws ServletException {
-        // TODO Auto-generated method stub
-
+        LOGGER.debug("init filter");
     }
 
 }
