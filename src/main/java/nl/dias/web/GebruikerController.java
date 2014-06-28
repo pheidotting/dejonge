@@ -70,6 +70,12 @@ public class GebruikerController {
         return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
+    @POST
+    @Path("/uitloggen")
+    public void uitloggen() {
+        authorisatieService.uitloggen(httpServletRequest);
+    }
+
     @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)

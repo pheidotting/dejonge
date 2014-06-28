@@ -68,6 +68,21 @@ public class AuthorisatieService {
         request.getSession().setAttribute("sessie", sessie.getId());
     }
 
+    public void uitloggen(HttpServletRequest request) {
+        String sessieId = (String) request.getSession().getAttribute("sessie");
+        String ipadres = request.getRemoteAddr();
+
+        Gebruiker gebruiker = null;
+        try {
+            gebruiker = gebruikerService.zoekOpSessieEnIpAdres(sessieId, ipadres);
+        } catch (NietGevondenException e) {
+            LOGGER.error("Geen ingelogde gebruiker gevonden");
+        }
+
+        gebruiker.getSessies().remove(gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies()));
+        gebruikerService.opslaan(gebruiker);
+    }
+
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
     }

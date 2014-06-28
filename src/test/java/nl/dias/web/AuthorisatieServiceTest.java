@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import nl.dias.domein.Medewerker;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
@@ -121,5 +122,24 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         replayAll();
 
         service.inloggen(identificatie, wachtwoord, onthouden, request, response);
+    }
+
+    @Test
+    public void testUitloggen() throws NietGevondenException {
+        expect(request.getSession()).andReturn(httpSession);
+        expect(httpSession.getAttribute("sessie")).andReturn("sessieId");
+        expect(request.getRemoteAddr()).andReturn("remoteAddr");
+
+        Sessie sessie = new Sessie();
+        Relatie relatie = new Relatie();
+        relatie.getSessies().add(sessie);
+        expect(gebruikerService.zoekOpSessieEnIpAdres("sessieId", "remoteAddr")).andReturn(relatie);
+        expect(gebruikerService.zoekSessieOp("sessieId", "remoteAddr", relatie.getSessies())).andReturn(sessie);
+        gebruikerService.opslaan(relatie);
+        expectLastCall();
+
+        replayAll();
+
+        service.uitloggen(request);
     }
 }

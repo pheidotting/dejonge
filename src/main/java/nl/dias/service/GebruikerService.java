@@ -1,6 +1,7 @@
 package nl.dias.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Named;
 
@@ -46,6 +47,20 @@ public class GebruikerService {
         Gebruiker gebruiker = gebruikerRepository.lees(id);
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);
+    }
+
+    public Gebruiker zoekOpSessieEnIpAdres(String sessie, String ipadres) throws NietGevondenException {
+        return gebruikerRepository.zoekOpSessieEnIpadres(sessie, ipadres);
+    }
+
+    public Sessie zoekSessieOp(String sessieId, String ipadres, Set<Sessie> sessies) {
+        for (Sessie sessie : sessies) {
+            if (sessie.getSessie().equals(sessieId) && sessie.getIpadres().equals(ipadres)) {
+                return sessie;
+            }
+        }
+
+        return null;
     }
 
     public Gebruiker zoek(String emailadres) throws NietGevondenException {
