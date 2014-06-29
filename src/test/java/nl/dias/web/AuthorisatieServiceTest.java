@@ -15,18 +15,19 @@ import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.service.GebruikerService;
+import nl.lakedigital.archief.service.CodeService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class AuthorisatieServiceTest extends EasyMockSupport {
     private AuthorisatieService service;
     private GebruikerService gebruikerService;
+    private CodeService codeService;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession httpSession;
@@ -40,6 +41,9 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
 
         gebruikerService = createMock(GebruikerService.class);
         service.setGebruikerService(gebruikerService);
+
+        codeService = createMock(CodeService.class);
+        service.setCodeService(codeService);
 
         request = createMock(HttpServletRequest.class);
         response = createMock(HttpServletResponse.class);
@@ -92,7 +96,6 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
     }
 
     @Test
-    @Ignore
     public void testInloggen() throws NietGevondenException, OnjuistWachtwoordException {
         identificatie = "identificatie";
         wachtwoord = "wachtwoord";
@@ -104,12 +107,14 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         expect(gebruikerService.zoek(identificatie)).andReturn(medewerker);
         expect(request.getHeader("user-agent")).andReturn("agent");
         expect(request.getRemoteAddr()).andReturn("addr");
+        expect(codeService.genereerNieuweCode(25)).andReturn("nieuweCode");
 
         Sessie sessie = new Sessie();
         sessie.setBrowser("agent");
         sessie.setIpadres("addr");
         sessie.setDatumLaatstGebruikt(new Date());
         sessie.setGebruiker(medewerker);
+        sessie.setSessie("nieuweCode");
         gebruikerService.opslaan(sessie);
         expectLastCall();
 
@@ -118,7 +123,7 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         expectLastCall();
 
         expect(request.getSession()).andReturn(httpSession);
-        httpSession.setAttribute("sessie", null);
+        httpSession.setAttribute("sessie", "nieuweCode");
         expectLastCall();
 
         replayAll();

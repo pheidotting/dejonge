@@ -1,7 +1,6 @@
 package nl.dias.web;
 
 import java.util.Date;
-import java.util.Random;
 
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.service.GebruikerService;
+import nl.lakedigital.archief.service.CodeService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
@@ -26,6 +26,8 @@ public class AuthorisatieService {
 
     @InjectParam
     private GebruikerService gebruikerService;
+    @InjectParam
+    private CodeService codeService;
 
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {
 
@@ -58,15 +60,12 @@ public class AuthorisatieService {
         sessie.setIpadres(request.getRemoteAddr());
         sessie.setDatumLaatstGebruikt(new Date());
         sessie.setGebruiker(gebruikerUitDatabase);
+        sessie.setSessie(codeService.genereerNieuweCode(25));
 
         gebruikerService.opslaan(sessie);
 
         gebruikerUitDatabase.getSessies().add(sessie);
 
-        gebruikerService.opslaan(gebruikerUitDatabase);
-        // TODO aanpassen met unieke code
-        sessie.setSessie(genereerNieuweCode(25));
-        gebruikerService.opslaan(sessie);
         gebruikerService.opslaan(gebruikerUitDatabase);
 
         LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
@@ -89,19 +88,11 @@ public class AuthorisatieService {
         gebruikerService.opslaan(gebruiker);
     }
 
-    private String genereerNieuweCode(int max) {
-        Random ran = new Random();
-        char data = ' ';
-        String dat = "";
-        for (int i = 0; i <= max; i++) {
-            data = (char) (ran.nextInt(25) + 97);
-            dat = data + dat;
-        }
-
-        return dat;
-    }
-
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
+    }
+
+    public void setCodeService(CodeService codeService) {
+        this.codeService = codeService;
     }
 }
