@@ -20,24 +20,32 @@
 	<listener>
 		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
 	</listener>
-	
+
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
-		     <param-name>com.sun.jersey.config.property.packages</param-name>
-		     <param-value>nl.dias.web</param-value>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>nl.dias.web</param-value>
 		</init-param>
 		<init-param>
-            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-            <param-value>true</param-value>
-        </init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
- 
+
+	<filter>
+		<filter-name>Authorisatie</filter-name>
+		<filter-class>nl.dias.web.filter.AuthorisatieFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Authorisatie</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-	
 </web-app>
