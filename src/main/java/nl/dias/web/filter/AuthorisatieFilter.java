@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ext.Provider;
 
 import nl.dias.domein.Gebruiker;
@@ -24,19 +25,18 @@ import org.apache.log4j.Logger;
 public class AuthorisatieFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(AuthorisatieFilter.class);
 
-    private final GebruikerService gebruikerService = new GebruikerService();
-    private final GebruikerRepository gebruikerRepository = new GebruikerRepository();
+    private GebruikerService gebruikerService = new GebruikerService();
+    private GebruikerRepository gebruikerRepository = new GebruikerRepository();
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (getFullURL(req).startsWith("http://localhost:8080/dejonge/rest/gebruiker/inloggen") || getFullURL(req).startsWith("http://localhost:8080/dejonge/rest/gebruiker/uitloggen")) {
+        if (getFullURL(req).endsWith("/rest/gebruiker/inloggen") || getFullURL(req).endsWith("/rest/gebruiker/uitloggen")) {
             LOGGER.debug("Gebruiker wil blijkbaar inloggen, dit hoeft uiteraard niet gefilterd..");
             chain.doFilter(request, response);
         } else {
-            // TODO bij geen sessieId krijg je hier een NullPointer
             final String sessieId = (String) req.getSession().getAttribute("sessie");
             final String ipAdres = req.getRemoteAddr();
 
@@ -64,6 +64,9 @@ public class AuthorisatieFilter implements Filter {
 
                 LOGGER.debug("Verder filteren");
                 chain.doFilter(request, response);
+            } else {
+                LOGGER.debug("Stuur een UNAUTHORIZED");
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
     }
@@ -89,4 +92,11 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("init filter");
     }
 
+    public void setGebruikerService(GebruikerService gebruikerService) {
+        this.gebruikerService = gebruikerService;
+    }
+
+    public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
+        this.gebruikerRepository = gebruikerRepository;
+    }
 }
