@@ -18,6 +18,7 @@ import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.IngelogdeGebruiker;
+import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
@@ -56,19 +57,14 @@ public class GebruikerController {
     @InjectParam
     private AuthorisatieService authorisatieService;
 
-    @GET
+    @POST
     @Path("/inloggen")
     @Produces(MediaType.APPLICATION_JSON)
-    // @Consumes(MediaType.APPLICATION_JSON)
-    public Response inloggen(@QueryParam("id") String id, @QueryParam("ww") String ww) {// Inloggen
-                                                                                        // inloggen)
-                                                                                        // {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response inloggen(Inloggen inloggen) {
         try {
             LOGGER.debug("Inloggen");
-            authorisatieService.inloggen(id, ww, true, httpServletRequest, httpServletResponse);
-            // authorisatieService.inloggen(inloggen.getIdentificatie(),
-            // inloggen.getWachtwoord(), inloggen.isOnthouden(),
-            // httpServletRequest, httpServletResponse);
+            authorisatieService.inloggen(inloggen.getIdentificatie(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
         } catch (OnjuistWachtwoordException | NietGevondenException e) {
             LOGGER.debug(e.getMessage());
             return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
