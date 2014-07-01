@@ -63,6 +63,24 @@ public class GebruikerService {
         return null;
     }
 
+    public Sessie zoekSessieOp(String cookieCode, Set<Sessie> sessies) {
+        for (Sessie sessie : sessies) {
+            if (sessie.getCookieCode().equals(cookieCode)) {
+                return sessie;
+            }
+        }
+
+        return null;
+    }
+
+    public Gebruiker zoekOpCookieCode(String cookieCode) {
+        try {
+            return gebruikerRepository.zoekOpCookieCode(cookieCode);
+        } catch (NietGevondenException e) {
+            return null;
+        }
+    }
+
     public Gebruiker zoek(String emailadres) throws NietGevondenException {
         return gebruikerRepository.zoek(emailadres);
     }

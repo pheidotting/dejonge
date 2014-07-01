@@ -1,8 +1,11 @@
 package nl.dias.web;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Named;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +26,8 @@ import com.sun.jersey.api.core.InjectParam;
 @Named
 public class AuthorisatieService {
     private final static Logger LOGGER = Logger.getLogger(AuthorisatieService.class);
+
+    public final static String COOKIE_DOMEIN_CODE = "lakedigitaladministratie";
 
     @InjectParam
     private GebruikerService gebruikerService;
@@ -70,11 +75,24 @@ public class AuthorisatieService {
 
         LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
         request.getSession().setAttribute("sessie", sessie.getSessie());
+
+        if (onthouden) {
+            LOGGER.debug("onthouden is true, dus cookie maken en opslaan");
+            String cookieCode = codeService.genereerNieuweCode(30);
+            Cookie cookie = new Cookie(COOKIE_DOMEIN_CODE, cookieCode);
+
+            LOGGER.debug("cookie op de response zetten, code : " + cookieCode);
+            response.addCookie(cookie);
+
+            // en ff naar de database
+            LOGGER.debug("opslaan sessie");
+            sessie.setCookieCode(cookieCode);
+            gebruikerService.opslaan(sessie);
+            gebruikerService.opslaan(gebruikerUitDatabase);
+        }
     }
 
-    public void uitloggen(HttpServletRequest request) {
-        String sessieId = (String) request.getSession().getAttribute("sessie");
-        String ipadres = request.getRemoteAddr();
+    public Gebruiker getIngelogdeGebruiker(HttpServletRequest request, String sessieId, String ipadres) {
 
         Gebruiker gebruiker = null;
         try {
@@ -84,8 +102,43 @@ public class AuthorisatieService {
             LOGGER.error("Geen ingelogde gebruiker gevonden");
         }
 
-        gebruiker.getSessies().remove(gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies()));
-        gebruikerService.opslaan(gebruiker);
+        return gebruiker;
+    }
+
+    public void uitloggen(HttpServletRequest request) {
+        String sessieId = (String) request.getSession().getAttribute("sessie");
+        String ipadres = request.getRemoteAddr();
+
+        Gebruiker gebruiker = getIngelogdeGebruiker(request, sessieId, ipadres);
+
+        if (gebruiker == null) {
+            LOGGER.debug("Er is helemaal niemand ingelogd");
+        } else {
+            LOGGER.debug(gebruiker.getSessies().size());
+            gebruiker.getSessies().remove(gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies()));
+            LOGGER.debug(gebruiker.getSessies().size());
+            gebruikerService.opslaan(gebruiker);
+            LOGGER.debug(gebruiker.getSessies().size());
+
+            // Cookies opruimen
+            for (Cookie cookie : getCookies(request)) {
+                if (gebruikerService.zoekOpCookieCode(cookie.getValue()) != null) {
+                    cookie.setMaxAge(0);
+                }
+            }
+        }
+    }
+
+    public List<Cookie> getCookies(HttpServletRequest request) {
+        List<Cookie> cookies = new ArrayList<Cookie>();
+
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals(COOKIE_DOMEIN_CODE)) {
+                cookies.add(cookie);
+            }
+        }
+
+        return cookies;
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

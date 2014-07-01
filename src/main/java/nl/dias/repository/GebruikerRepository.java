@@ -98,17 +98,18 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
             getEm().merge(sessie);
         }
     }
-    // public Gebruiker zoekOpCookieCode(String cookieCode) throws
-    // NietGevondenException {
-    // Gebruiker gebruiker = null;
-    //
-    // getTx().begin();
-    // TypedQuery<Gebruiker> query =
-    // getEm().createNamedQuery("Gebruiker.zoekOpCookieCode", Gebruiker.class);
-    // query.setParameter("cookieCode", cookieCode);
-    // gebruiker = query.getSingleResult();
-    // getTx().commit();
-    //
-    // return gebruiker;
-    // }
+
+    public Gebruiker zoekOpCookieCode(String cookieCode) throws NietGevondenException {
+        Gebruiker gebruiker = null;
+
+        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpCookieCode", Gebruiker.class);
+        query.setParameter("cookieCode", cookieCode);
+        try {
+            gebruiker = query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new NietGevondenException(cookieCode);
+        }
+
+        return gebruiker;
+    }
 }

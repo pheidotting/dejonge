@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -144,6 +145,16 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         expect(gebruikerService.zoekSessieOp("sessieId", "remoteAddr", relatie.getSessies())).andReturn(sessie);
         gebruikerService.opslaan(relatie);
         expectLastCall();
+
+        Cookie cookie = createMock(Cookie.class);
+        Cookie[] cookies = { cookie };
+        expect(request.getCookies()).andReturn(cookies);
+
+        expect(cookie.getName()).andReturn(AuthorisatieService.COOKIE_DOMEIN_CODE);
+        expect(cookie.getValue()).andReturn("value");
+        cookie.setMaxAge(0);
+        expectLastCall();
+        expect(gebruikerService.zoekOpCookieCode("value")).andReturn(relatie);
 
         replayAll();
 

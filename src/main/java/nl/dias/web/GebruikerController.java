@@ -13,8 +13,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.json.IngelogdeGebruiker;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
@@ -77,8 +80,10 @@ public class GebruikerController {
 
     @GET
     @Path("/uitloggen")
-    public void uitloggen() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uitloggen() {
         authorisatieService.uitloggen(httpServletRequest);
+        return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
     @GET
@@ -125,6 +130,29 @@ public class GebruikerController {
         LOGGER.debug("Opgehaald, lijst met " + lijst.getJsonRelaties().size() + " relaties");
 
         return lijst;
+    }
+
+    @GET
+    @Path("/ingelogdeGebruiker")
+    @Produces(MediaType.APPLICATION_JSON)
+    public IngelogdeGebruiker getIngelogdeGebruiker() {
+        LOGGER.debug("Ophalen ingelogde gebruiker");
+
+        Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
+
+        IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
+        if (gebruiker != null) {
+            ingelogdeGebruiker.setGebruikersnaam(gebruiker.getNaam());
+            if (gebruiker instanceof Beheerder) {
+            } else if (gebruiker instanceof Medewerker) {
+                ingelogdeGebruiker.setKantoor(((Medewerker) gebruiker).getKantoor().getNaam());
+            } else if (gebruiker instanceof Relatie) {
+                ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
+            }
+
+        }
+
+        return ingelogdeGebruiker;
     }
 
     @POST

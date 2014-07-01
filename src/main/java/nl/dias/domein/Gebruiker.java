@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import nl.lakedigital.domein.Onderwerp;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
 
 import com.sun.xml.txw2.annotation.XmlElement;
@@ -96,4 +97,22 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
         this.wachtwoordString = wachtwoordString;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("wachtwoordString", this.wachtwoordString).append("achternaam", this.achternaam).append("tussenvoegsel", this.tussenvoegsel)
+                .append("voornaam", this.voornaam).append("sessies", this.sessies).toString();
+    }
+
+    public String getNaam() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getVoornaam());
+        if (getTussenvoegsel() != null) {
+            sb.append(" ").append(getTussenvoegsel());
+        }
+        sb.append(" ").append(getAchternaam());
+        return sb.toString();
+    }
 }
