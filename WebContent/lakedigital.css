@@ -13,3 +13,15 @@ input{
 .polisNietActief{
 	color:#CCCCCC;
 }
+
+.panel-heading{
+	padding:10px 15px 30px;
+}
+
+.btn-group, .btn-group-vertical {
+	position: absolute;
+}
+
+input[type="checkbox"] {
+	width: 25px !important;
+}

@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Inloggen {
     private String identificatie;
     private String wachtwoord;
-    private boolean onthouden;
+    private String onthouden;
 
     public String getIdentificatie() {
         return identificatie;
@@ -26,10 +26,10 @@ public class Inloggen {
     }
 
     public boolean isOnthouden() {
-        return onthouden;
+        return onthouden.equals("on");
     }
 
-    public void setOnthouden(boolean onthouden) {
+    public void setOnthouden(String onthouden) {
         this.onthouden = onthouden;
     }
 
@@ -49,6 +49,6 @@ public class Inloggen {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("wachtwoord", this.wachtwoord).append("identificatie", this.identificatie).append("onthouden", this.onthouden).toString();
+        return new ToStringBuilder(this).append("wachtwoord", this.wachtwoord).append("identificatie", this.identificatie).append("onthouden", this.isOnthouden()).toString();
     }
 }

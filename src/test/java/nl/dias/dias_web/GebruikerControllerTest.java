@@ -9,6 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.json.IngelogdeGebruiker;
+import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonFoutmelding;
@@ -29,15 +31,26 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
     public static JsonRelatie jsonRelatie;
     public static JsonLijstRelaties jsonLijstRelaties;
 
-    // @GET
-    // @Path("/inloggen")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String inloggen(@QueryParam("emailadres") String emailadres,
-    // @QueryParam("wachtwoord") String wachtwoord, @QueryParam("strOnthouden")
-    // String strOnthouden,
-    // @Context HttpServletRequest request) {
-    // return null;
-    // }
+    @POST
+    @Path("/inloggen")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response inloggen(Inloggen inloggen) {
+        System.out.println(inloggen);
+        return Response.status(200).entity(new JsonFoutmelding("D'r ging wat fout, maar ik weet niet wat.")).build();
+    }
+
+    @GET
+    @Path("/ingelogdeGebruiker")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIngelogdeGebruiker() {
+        IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
+        ingelogdeGebruiker.setGebruikersnaam("Gebruikersnaam");
+        ingelogdeGebruiker.setKantoor("Fa. List & Bedrog");
+
+        // return Response.status(200).entity(ingelogdeGebruiker).build();
+        return Response.status(401).entity(null).build();
+    }
 
     @GET
     @Path("/lees")

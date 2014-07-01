@@ -32,7 +32,6 @@ import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
 import org.apache.log4j.Logger;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/gebruiker")
@@ -135,7 +134,7 @@ public class GebruikerController {
     @GET
     @Path("/ingelogdeGebruiker")
     @Produces(MediaType.APPLICATION_JSON)
-    public IngelogdeGebruiker getIngelogdeGebruiker() {
+    public Response getIngelogdeGebruiker() {
         LOGGER.debug("Ophalen ingelogde gebruiker");
 
         Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
@@ -150,9 +149,10 @@ public class GebruikerController {
                 ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
             }
 
+            return Response.status(200).entity(ingelogdeGebruiker).build();
         }
 
-        return ingelogdeGebruiker;
+        return Response.status(401).entity(null).build();
     }
 
     @POST
@@ -270,27 +270,12 @@ public class GebruikerController {
     @GET
     @Path("/isIngelogd")
     @Produces(MediaType.TEXT_PLAIN)
-    public String isIngelogd() {
-        // logger.debug("is gebruiker ingelogd");
+    public boolean isIngelogd() {
+        LOGGER.debug("is gebruiker ingelogd");
 
-        String messages = null;
-        // try {
-        boolean ingelogd = false;
-        // try {
-        // checkIngelogd(request);
-        ingelogd = true;
-        // } catch (NietIngelogdException e) {
-        // logger.debug(e.getMessage());
-        // }
+        Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
 
-        Gson gson = new Gson();
-        messages = gson.toJson(ingelogd);
-        // } catch (Exception ex) {
-        // messages = "Error: " + ex.getMessage();
-        // }
-
-        // logger.debug("naar front-end : " + messages);
-        return messages;
+        return gebruiker == null;
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {
@@ -312,58 +297,4 @@ public class GebruikerController {
     public void setKantoorRepository(KantoorRepository kantoorRepository) {
         this.kantoorRepository = kantoorRepository;
     }
-
-    // @GET
-    // @Path("/uitloggen")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String loguit(@Context HttpServletRequest request) {
-    // logger.debug("uitloggen");
-    //
-    // uitloggen(request);
-    //
-    // return "";
-    // }
-    //
-    // protected Sessie zoekSessie(Gebruiker gebruiker, String sessie, String
-    // ipadres) {
-    // Sessie gevondenSessie = null;
-    //
-    // for (Sessie s : gebruiker.getSessies()) {
-    // if (s.getSessie().equals(sessie) && s.getIpadres().equals(ipadres)) {
-    // gevondenSessie = s;
-    // break;
-    // }
-    // }
-    //
-    // return gevondenSessie;
-    // }
-    //
-    // public void setInlogUtil(InlogUtil inlogUtil) {
-    // this.inlogUtil = inlogUtil;
-    // }
-    //
-    // public String getCookieCode() {
-    // if (cookieCode == null || cookieCode.equals("")) {
-    // SecureRandom random = new SecureRandom();
-    // cookieCode = new BigInteger(50, random).toString(64);
-    // }
-    // return cookieCode;
-    // }
-    //
-    // public void setCookieCode(String cookieCode) {
-    // this.cookieCode = cookieCode;
-    // }
-    //
-    // public Cookie getCookie() {
-    // if (cookie == null) {
-    // cookie = new Cookie("inloggen", getCookieCode());
-    // cookie.setDomain("dias");
-    // }
-    // return cookie;
-    // }
-    //
-    // public void setCookie(Cookie cookie) {
-    // this.cookie = cookie;
-    // }
-
 }

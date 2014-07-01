@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-	<title>DIAS</title>
+	<title>De Jonge</title>
 	<!-- JQuery -->
     <link rel="stylesheet" href="jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
     <script type="text/javascript" src="jquery/js/jquery-1.9.1.js"></script>
@@ -38,7 +38,16 @@
 
 	<script type="text/javascript">
  		$(window).load(function(){
+			haalIngelogdeGebruiker();
 			var diasRoute = new Sammy('body');
+
+			diasRoute.route('GET', '#inloggen', function(context) {
+ 				$('#content').load('pages/inloggen/content.html', function(response, status, xhr) {
+					if (status == "success") {
+						start();
+					}
+				});
+			});
 
 			diasRoute.route('GET', '#lijstRelaties', function(context) {
  				$('#content').load('pages/lijstRelaties/content.html', function(response, status, xhr) {
@@ -124,7 +133,6 @@
     	        contentType: false,
     	        processData: false,
 	            success: function (response) {
-					$('#tabs').puitabview('select', 2);
 	            	plaatsMelding("De gegevens zijn opgeslagen");
 	            },
 	            error: function (data) {
@@ -137,9 +145,29 @@
     	        }
     	    }
 		}
+		haalIngelogdeGebruiker = function(){
+	    	$.ajax({
+	            url: '../dejonge/rest/gebruiker/ingelogdeGebruiker',
+	            type: 'GET',
+	            contentType: 'application/json; charset=utf-8',
+	            success: function (response) {
+	            	if(response.kantoor != null){
+						$('#ingelogdeGebruiker').html("Ingelogd als : " + response.gebruikersnaam + ", (" + response.kantoor + ")");
+	            	}else{
+						$('#ingelogdeGebruiker').html("Ingelogd als : " + response.gebruikersnaam);
+	            	}
+	            },
+	            error: function (data) {
+					$('#ingelogdeGebruiker').html("");
+	    			document.location.hash='#inloggen';
+	            }
+	        });
+		}
+		
 	</script>
 </head>
 <body id="body">
+	<div id="ingelogdeGebruiker"></div>
 	<div id="menu"></div>
 	<div class="alert alert-success" style="display:none;" id="alertSucces"></div>
 	<div class="alert alert-danger" style="display:none;" id="alertDanger"></div>

@@ -2,48 +2,42 @@
 	function start(){
 		$.ajax({
 			type: "GET",
-			url: './rest/overig/extraInfo',
-			async: false,
-			success: function (data) {
-				document.title = data;
-			}
-		});
-
-		$.ajax({
-			type: "GET",
 			url: './rest/gebruiker/isIngelogd',
 			dataType:'json',
-			success: function (data) {
-				if(new String(data) == "true"){
-					document.location.hash='#lijstRelaties';
-				}else{
-					$('#inlogButton').puibutton({
-						click: function(event) {
-							$.ajax({
-								type: "GET",
-								url: './rest/gebruiker/inloggen',
-								dataType:'json',
-								data: {
-									emailadres : $('#identificatie').val(),
-									wachtwoord : $('#wachtwoord').val(),
-									onthouden : $('#onthouden').is(':checked')
-								},
-								success: function (data) {
-									if(data != "ok"){
-										addMessage([{severity: 'error', summary: 'Er is een fout opgetreden', detail: data}]);
-									}else{
-										document.location.hash='#lijstRelaties';
-									}
-								}
-							});
-						}
+			error: function (data) {
+				$('#inlogButton').click(function(){
+	            	var inloggen = {
+            		    identificatie : $('#identificatie').val(),
+            		    wachtwoord : $('#wachtwoord').val(),
+            		    onthouden : $('#onthouden').is(':checked'),
+	            	}
+	            	var json = JSON.stringify(inloggen);
+					$.ajax({
+						type: "POST",
+						url: '../dejonge/rest/gebruiker/inloggen',
+						contentType: "application/json",
+						data: json,
+			            success: function (response) {
+			    			document.location.hash='#lijstRelaties';
+			            },
+			            error: function (data) {
+			            	plaatsFoutmelding(data);
+			            }
 					});
-				}
+				});
 			}
 		});
 	}
 </script>
-<input type="text" id="identificatie" placeholder="E-mailadres..." /><br />
-<input type="password" id="wachtwoord" placeholder="Wachtwoord..." /><br />
-<input type="checkbox" id="onthouden">Ingelogd blijven?</input><br />
-<button id="inlogButton">Inloggen</button>
+
+<br /><br />
+<div class="form-group">
+	<input type="text" id="identificatie" placeholder="E-mailadres..." />
+</div>
+<div class="form-group">
+	<input type="password" id="wachtwoord" placeholder="Wachtwoord..." />
+</div>
+<div class="checkbox">
+	<input type="checkbox" id="onthouden" />Ingelogd blijven?
+</div>
+<button id="inlogButton" class="btn btn-primary">Inloggen</button>
