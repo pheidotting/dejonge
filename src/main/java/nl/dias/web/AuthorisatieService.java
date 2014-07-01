@@ -48,6 +48,12 @@ public class AuthorisatieService {
             LOGGER.debug("Gebruiker is een Beheerder");
             inloggendeGebruiker = new Beheerder();
         }
+
+        // Eigenlijk is dit alleen om Sonar tevreden te houden
+        if (inloggendeGebruiker == null) {
+            throw new IllegalArgumentException();
+        }
+
         inloggendeGebruiker.setIdentificatie(identificatie);
         inloggendeGebruiker.setHashWachtwoord(wachtwoord);
 
