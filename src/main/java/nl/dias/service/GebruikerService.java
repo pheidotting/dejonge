@@ -65,7 +65,7 @@ public class GebruikerService {
 
     public Sessie zoekSessieOp(String cookieCode, Set<Sessie> sessies) {
         for (Sessie sessie : sessies) {
-            if (sessie.getCookieCode().equals(cookieCode)) {
+            if (sessie.getCookieCode() != null && sessie.getCookieCode().equals(cookieCode)) {
                 return sessie;
             }
         }
