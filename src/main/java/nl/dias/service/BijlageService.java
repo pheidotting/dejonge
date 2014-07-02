@@ -46,7 +46,7 @@ public class BijlageService {
 
             LOGGER.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
         } catch (IOException e) {
-            LOGGER.error("Fout bij opslaan bijlage " + e.getLocalizedMessage());
+            LOGGER.error("Fout bij opslaan bijlage ", e);
         }
 
         return identificatie;
@@ -63,21 +63,21 @@ public class BijlageService {
                 out.write(bytes, 0, read);
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("fout bij opslaan bijlage nar schijf", e);
         } finally {
             try {
                 if (out != null) {
                     out.flush();
                 }
             } catch (IOException e) {
-                LOGGER.error(e.getMessage());
+                LOGGER.error("fout bij opslaan bijlage nar schijf", e);
             } finally {
                 try {
                     if (out != null) {
                         out.close();
                     }
                 } catch (IOException e) {
-                    LOGGER.error(e.getMessage());
+                    LOGGER.error("fout bij opslaan bijlage nar schijf", e);
                 }
             }
         }
