@@ -155,6 +155,8 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         cookie.setMaxAge(0);
         expectLastCall();
         expect(gebruikerService.zoekOpCookieCode("value")).andReturn(relatie);
+        gebruikerService.verwijder(sessie);
+        expectLastCall();
 
         replayAll();
 
