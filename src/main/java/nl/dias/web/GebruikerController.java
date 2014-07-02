@@ -66,7 +66,7 @@ public class GebruikerController {
             LOGGER.debug("Inloggen");
             authorisatieService.inloggen(inloggen.getIdentificatie(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
         } catch (OnjuistWachtwoordException | NietGevondenException e) {
-            LOGGER.debug(e.getMessage());
+            LOGGER.debug("Onjuist wachtwoord of Gebruiker niet gevonden", e);
             return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
         }
 
@@ -88,7 +88,7 @@ public class GebruikerController {
         LOGGER.debug("Ophalen Relatie met id : " + id);
 
         JsonRelatie jsonRelatie = null;
-        if (id != null && !id.trim().equals("0")) {
+        if (id != null && !"0".equals(id.trim())) {
             Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
             LOGGER.debug("Opgehaald : " + relatie);
@@ -169,7 +169,7 @@ public class GebruikerController {
             LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
             return Response.status(202).entity(new JsonFoutmelding()).build();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Fout bij opslaan Relatie", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
     }
@@ -192,7 +192,7 @@ public class GebruikerController {
 
             return Response.status(200).entity(new JsonFoutmelding()).build();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Fout bij opslaan Bedrijf", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
     }
