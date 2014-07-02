@@ -1,5 +1,7 @@
 package nl.dias.web;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +57,12 @@ public class AuthorisatieService {
             throw new IllegalArgumentException();
         }
 
-        inloggendeGebruiker.setIdentificatie(identificatie);
-        inloggendeGebruiker.setHashWachtwoord(wachtwoord);
+        try {
+            inloggendeGebruiker.setIdentificatie(identificatie);
+            inloggendeGebruiker.setHashWachtwoord(wachtwoord);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            LOGGER.error(e.getMessage());
+        }
 
         LOGGER.debug("Ingevoerd wachtwoord    " + inloggendeGebruiker.getWachtwoord());
         LOGGER.debug("Wachtwoord uit database " + gebruikerUitDatabase.getWachtwoord());

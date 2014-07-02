@@ -5,6 +5,8 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import javax.servlet.http.Cookie;
@@ -75,7 +77,7 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testInloggenOnjuistWachtwoord() throws NietGevondenException {
+    public void testInloggenOnjuistWachtwoord() throws NietGevondenException, UnsupportedEncodingException, NoSuchAlgorithmException {
         identificatie = "identificatie";
         wachtwoord = "wachtwoord";
 
@@ -97,7 +99,7 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testInloggen() throws NietGevondenException, OnjuistWachtwoordException {
+    public void testInloggen() throws NietGevondenException, OnjuistWachtwoordException, UnsupportedEncodingException, NoSuchAlgorithmException {
         identificatie = "identificatie";
         wachtwoord = "wachtwoord";
 

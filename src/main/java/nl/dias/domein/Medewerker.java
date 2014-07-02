@@ -55,8 +55,6 @@ public class Medewerker extends Gebruiker implements Serializable, PersistenceOb
         builder.append(getIdentificatie());
         builder.append(", getWachtwoord()=");
         builder.append(getWachtwoord());
-        builder.append(", getSalt()=");
-        builder.append(getSalt());
         builder.append(", toString()=");
         builder.append(super.toString());
         builder.append(", hashCode()=");

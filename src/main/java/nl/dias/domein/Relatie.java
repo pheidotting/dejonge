@@ -284,7 +284,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
                 .append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen())
                 .append("rekeningnummers", this.rekeningnummers).append("bedrijven", this.bedrijven).append("voornaam", this.getVoornaam()).append("id", this.getId())
                 .append("overlijdensdatum", this.overlijdensdatum).append("sessies", this.getSessies()).append("wachtwoord", this.getWachtwoord()).append("opmerkingen", this.opmerkingen)
-                .append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen()).append("salt", this.getSalt())
+                .append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen())
                 .append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("zakelijk", this.isZakelijk()).append("polissen", this.polissen)
                 .append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).append("adresOpgemaakt", this.adresOpgemaakt).toString();
     }

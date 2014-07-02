@@ -2,6 +2,10 @@ package nl.dias.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import nl.dias.domein.Beheerder;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
@@ -23,7 +27,7 @@ public class GebruikerRepositoryTest {
     }
 
     @Test
-    public void zoek() {
+    public void zoek() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Kantoor kantoor = new Kantoor();
         kantoor.setDatumOprichting(new LocalDate());
 
@@ -52,7 +56,7 @@ public class GebruikerRepositoryTest {
     }
 
     @Test
-    public void beheerder() throws NietGevondenException {
+    public void beheerder() throws NietGevondenException, UnsupportedEncodingException, NoSuchAlgorithmException {
         Beheerder beheerder = new Beheerder();
         beheerder.setHashWachtwoord("ww");
         beheerder.setIdentificatie("p@h.n");
@@ -64,7 +68,7 @@ public class GebruikerRepositoryTest {
     }
 
     @Test
-    public void opSessieEnIp() {
+    public void opSessieEnIp() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Medewerker medewerker = new Medewerker();
         medewerker.setIdentificatie("identificatie");
 

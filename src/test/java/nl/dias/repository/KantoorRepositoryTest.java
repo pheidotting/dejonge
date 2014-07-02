@@ -2,6 +2,10 @@ package nl.dias.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Rechtsvorm;
@@ -26,7 +30,7 @@ public class KantoorRepositoryTest {
     }
 
     @Test
-    public void test() {
+    public void test() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Kantoor kantoor = new Kantoor();
         kantoor.setNaam("Patrick's mooie kantoortje");
         kantoor.getAdres().setHuisnummer(46L);

@@ -35,28 +35,19 @@ public abstract class Onderwerp implements Serializable {
         return this.wachtwoord;
     }
 
-    public void setHashWachtwoord(String wachtwoord) {
+    public void setHashWachtwoord(String wachtwoord) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         this.wachtwoord = hash(wachtwoord + getSalt());
     }
 
-    public String hash(String tekst) {
+    public String hash(String tekst) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-            // Change this to "UTF-16" if needed
-            md.update(tekst.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        if (md != null) {
-            byte[] digest = md.digest();
-            BigInteger bigInt = new BigInteger(1, digest);
-            return bigInt.toString(16);
-        } else {
-            return null;
-        }
+        md = MessageDigest.getInstance("SHA-512");
+        // Change this to "UTF-16" if needed
+        md.update(tekst.getBytes("UTF-8"));
+
+        byte[] digest = md.digest();
+        BigInteger bigInt = new BigInteger(1, digest);
+        return bigInt.toString(16);
     }
 
     public Long getId() {
@@ -71,7 +62,7 @@ public abstract class Onderwerp implements Serializable {
         return identificatie;
     }
 
-    public void setIdentificatie(String identificatie) {
+    public void setIdentificatie(String identificatie) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         this.identificatie = identificatie;
         this.setSalt(null);
         this.getSalt();
@@ -86,7 +77,7 @@ public abstract class Onderwerp implements Serializable {
         this.setSalt(null);
     }
 
-    public String getSalt() {
+    public String getSalt() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         if (this.salt == null || this.salt.equals("")) {
             if (this.identificatie != null && !this.identificatie.equals("")) {
                 this.salt = hash(this.identificatie);
