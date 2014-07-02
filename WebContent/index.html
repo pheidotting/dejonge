@@ -156,18 +156,29 @@
 	            	}else{
 						$('#ingelogdeGebruiker').html("Ingelogd als : " + response.gebruikersnaam);
 	            	}
+					$('#uitloggen').show();
 	            },
 	            error: function (data) {
 					$('#ingelogdeGebruiker').html("");
+					$('#uitloggen').hide();
 	    			document.location.hash='#inloggen';
 	            }
 	        });
+		}
+		uitloggen = function(){
+	    	$.ajax({
+	            url: '../dejonge/rest/gebruiker/uitloggen',
+	            type: 'GET'
+	    	})
+			$('#ingelogdeGebruiker').html("");
+			$('#uitloggen').hide();
+			document.location.hash='#inloggen';
 		}
 		
 	</script>
 </head>
 <body id="body">
-	<div id="ingelogdeGebruiker"></div>
+	<div id="ingelogdeGebruiker"></div><div class="uitloggen" id="uitloggen" onclick="uitloggen();">Uitloggen</div>
 	<div id="menu"></div>
 	<div class="alert alert-success" style="display:none;" id="alertSucces"></div>
 	<div class="alert alert-danger" style="display:none;" id="alertDanger"></div>

@@ -6,6 +6,7 @@
 			dataType:'json',
 			error: function (data) {
 				$('#inlogButton').click(function(){
+					verbergMeldingen();
 	            	var inloggen = {
             		    identificatie : $('#identificatie').val(),
             		    wachtwoord : $('#wachtwoord').val(),

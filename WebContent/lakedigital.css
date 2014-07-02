@@ -1,27 +1,36 @@
-label{
-    float: left;
-    margin-bottom: 0px;
-    width: 200px;
+label {
+	float: left;
+	margin-bottom: 0px;
+	width: 200px;
 }
-input{
+
+input {
 	width: 500px !important;
 }
-.polisLabel{
-	width:200px;
-	float:left;	
-}
-.polisNietActief{
-	color:#CCCCCC;
+
+.polisLabel {
+	width: 200px;
+	float: left;
 }
 
-.panel-heading{
-	padding:10px 15px 30px;
+.polisNietActief {
+	color: #CCCCCC;
 }
 
-.btn-group, .btn-group-vertical {
+.panel-heading {
+	padding: 10px 15px 30px;
+}
+
+.btn-group,.btn-group-vertical {
 	position: absolute;
 }
 
 input[type="checkbox"] {
 	width: 25px !important;
+}
+
+.uitloggen {
+	display: none;
+	cursor: pointer;
+	text-decoration: underline;
 }
