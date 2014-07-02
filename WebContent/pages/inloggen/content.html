@@ -18,6 +18,7 @@
 						contentType: "application/json",
 						data: json,
 			            success: function (response) {
+			            	haalIngelogdeGebruiker();
 			    			document.location.hash='#lijstRelaties';
 			            },
 			            error: function (data) {

@@ -99,6 +99,10 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         }
     }
 
+    public void verwijder(Sessie sessie) {
+        getEm().remove(sessie);
+    }
+
     public Gebruiker zoekOpCookieCode(String cookieCode) throws NietGevondenException {
         Gebruiker gebruiker = null;
 

@@ -35,6 +35,7 @@ public class AuthorisatieService {
     private CodeService codeService;
 
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {
+        LOGGER.debug("Inloggen met " + identificatie + " en onthouden " + onthouden);
 
         Gebruiker gebruikerUitDatabase = gebruikerService.zoek(identificatie);
         Gebruiker inloggendeGebruiker = null;
@@ -120,11 +121,10 @@ public class AuthorisatieService {
         if (gebruiker == null) {
             LOGGER.debug("Er is helemaal niemand ingelogd");
         } else {
-            LOGGER.debug(gebruiker.getSessies().size());
-            gebruiker.getSessies().remove(gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies()));
-            LOGGER.debug(gebruiker.getSessies().size());
+            Sessie sessie = gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies());
+            gebruikerService.verwijder(sessie);
+            gebruiker.getSessies().remove(sessie);
             gebruikerService.opslaan(gebruiker);
-            LOGGER.debug(gebruiker.getSessies().size());
 
             // Cookies opruimen
             for (Cookie cookie : getCookies(request)) {
@@ -138,9 +138,11 @@ public class AuthorisatieService {
     public List<Cookie> getCookies(HttpServletRequest request) {
         List<Cookie> cookies = new ArrayList<Cookie>();
 
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals(COOKIE_DOMEIN_CODE)) {
-                cookies.add(cookie);
+        if (request != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(COOKIE_DOMEIN_CODE)) {
+                    cookies.add(cookie);
+                }
             }
         }
 

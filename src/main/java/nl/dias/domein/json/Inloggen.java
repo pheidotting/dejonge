@@ -26,7 +26,7 @@ public class Inloggen {
     }
 
     public boolean isOnthouden() {
-        return onthouden.equals("on");
+        return onthouden.equals("true");
     }
 
     public void setOnthouden(String onthouden) {

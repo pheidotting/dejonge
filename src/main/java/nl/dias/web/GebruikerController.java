@@ -199,7 +199,8 @@ public class GebruikerController {
 
     @GET
     @Path("/verwijderen")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response verwijderen(Long id) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
 
@@ -265,13 +266,13 @@ public class GebruikerController {
 
     @GET
     @Path("/isIngelogd")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public boolean isIngelogd() {
         LOGGER.debug("is gebruiker ingelogd");
 
         Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
 
-        return gebruiker == null;
+        return gebruiker != null;
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

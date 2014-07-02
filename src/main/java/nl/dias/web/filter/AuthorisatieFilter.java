@@ -49,11 +49,13 @@ public class AuthorisatieFilter implements Filter {
             Cookie cookie = null;
 
             LOGGER.debug("koekjes opzoeken");
+            init();
             List<Cookie> cookies = authorisatieService.getCookies(req);
             for (Cookie koekje : cookies) {
                 LOGGER.debug(koekje.getValue());
                 if (gebruiker == null) {
                     try {
+                        init();
                         gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
                     } catch (NietGevondenException e) {
                         LOGGER.debug("niks gevonden in de database op basis van cookie code");
@@ -73,6 +75,7 @@ public class AuthorisatieFilter implements Filter {
                 if (sessieId != null && sessieId.length() > 0) {
                     LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
                     try {
+                        init();
                         gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
                         LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
                     } catch (NietGevondenException e) {
@@ -84,6 +87,7 @@ public class AuthorisatieFilter implements Filter {
 
                 if (gebruiker != null) {
                     LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
+                    init();
                     sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
                     sessie.setDatumLaatstGebruikt(new Date());
                     LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
@@ -101,6 +105,7 @@ public class AuthorisatieFilter implements Filter {
                     ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
             } else {
+                init();
                 Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
                 req.getSession().setAttribute("sessie", sessie2.getSessie());
 

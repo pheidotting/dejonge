@@ -93,6 +93,10 @@ public class GebruikerService {
         gebruikerRepository.opslaan(sessie);
     }
 
+    public void verwijder(Sessie sessie) {
+        gebruikerRepository.verwijder(sessie);
+    }
+
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
         this.gebruikerRepository = gebruikerRepository;
     }
