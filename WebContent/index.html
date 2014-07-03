@@ -38,7 +38,8 @@
 
 	<script type="text/javascript">
  		$(window).load(function(){
-			haalIngelogdeGebruiker();
+			window.setInterval(haalIngelogdeGebruiker, 30000);
+
 			var diasRoute = new Sammy('body');
 
 			diasRoute.route('GET', '#inloggen', function(context) {
