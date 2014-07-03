@@ -81,7 +81,7 @@ public class AuthorisatieFilterTest extends EasyMockSupport {
         expect(gebruiker.getSessies()).andReturn(sessies);
         expect(gebruikerService.zoekSessieOp("sessie", "ipadres", sessies)).andReturn(sessie);
 
-        gebruikerRepository.opslaan(gebruiker);
+        gebruikerRepository.opslaan(sessie);
         expectLastCall();
 
         chain.doFilter(request, response);
