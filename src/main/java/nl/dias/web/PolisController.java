@@ -43,7 +43,7 @@ public class PolisController {
         try {
             polisService.opslaan(opslaanPolis);
         } catch (IllegalArgumentException e) {
-            LOGGER.debug(e.getStackTrace());
+            LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
         return Response.status(200).entity(new JsonFoutmelding()).build();
@@ -73,7 +73,7 @@ public class PolisController {
         try {
             polisService.verwijder(id);
         } catch (IllegalArgumentException e) {
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error("Fout bij verwijderen Polis", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
         return Response.status(202).entity(new JsonFoutmelding()).build();
