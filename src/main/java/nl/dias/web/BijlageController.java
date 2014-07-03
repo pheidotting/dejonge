@@ -48,14 +48,14 @@ public class BijlageController {
         try {
             bijlageService.writeToFile(new FileInputStream(archiefBestand.getBestand()), tmpFile.toString());
         } catch (FileNotFoundException e1) {
-            LOGGER.error(e1.getMessage());
+            LOGGER.error("Bestand niet gevonden", e1);
         }
 
         Date fileDate = new Date(archiefBestand.getBestand().lastModified());
         try {
             return Response.ok(new FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
         } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Bestand niet gevonden", e);
             return Response.noContent().build();
         }
     }
