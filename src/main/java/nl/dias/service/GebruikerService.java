@@ -14,10 +14,14 @@ import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
+import org.apache.log4j.Logger;
+
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class GebruikerService {
+    private final static Logger LOGGER = Logger.getLogger(GebruikerService.class);
+
     @InjectParam
     private GebruikerRepository gebruikerRepository;
 
@@ -77,6 +81,7 @@ public class GebruikerService {
         try {
             return gebruikerRepository.zoekOpCookieCode(cookieCode);
         } catch (NietGevondenException e) {
+            LOGGER.debug("Niets gevonden", e);
             return null;
         }
     }
