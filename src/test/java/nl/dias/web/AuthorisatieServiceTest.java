@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.archief.service.CodeService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;

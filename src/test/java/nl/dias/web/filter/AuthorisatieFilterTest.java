@@ -19,8 +19,8 @@ import javax.servlet.http.HttpSession;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
-import nl.dias.web.AuthorisatieService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.easymock.EasyMockSupport;

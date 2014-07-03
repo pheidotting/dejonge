@@ -1,4 +1,4 @@
-package nl.dias.web;
+package nl.dias.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +16,6 @@ import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
-import nl.dias.service.GebruikerService;
 import nl.lakedigital.archief.service.CodeService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;

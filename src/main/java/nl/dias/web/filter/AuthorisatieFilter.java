@@ -18,8 +18,8 @@ import javax.ws.rs.ext.Provider;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
-import nl.dias.web.AuthorisatieService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
@@ -91,7 +91,7 @@ public class AuthorisatieFilter implements Filter {
                     sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
                     sessie.setDatumLaatstGebruikt(new Date());
                     LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
-                    gebruikerRepository.opslaan(gebruiker);
+                    gebruikerRepository.opslaan(sessie);
 
                     LOGGER.debug("Verder filteren");
 
