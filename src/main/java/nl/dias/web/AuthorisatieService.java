@@ -61,7 +61,7 @@ public class AuthorisatieService {
             inloggendeGebruiker.setIdentificatie(identificatie);
             inloggendeGebruiker.setHashWachtwoord(wachtwoord);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Fout opgetreden", e);
         }
 
         LOGGER.debug("Ingevoerd wachtwoord    " + inloggendeGebruiker.getWachtwoord());
@@ -112,7 +112,7 @@ public class AuthorisatieService {
             gebruiker = gebruikerService.zoekOpSessieEnIpAdres(sessieId, ipadres);
             LOGGER.debug(gebruiker.getSessies());
         } catch (NietGevondenException e) {
-            LOGGER.error("Geen ingelogde gebruiker gevonden");
+            LOGGER.error("Geen ingelogde gebruiker gevonden", e);
         }
 
         return gebruiker;
