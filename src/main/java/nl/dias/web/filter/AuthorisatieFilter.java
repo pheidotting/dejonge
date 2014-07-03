@@ -58,7 +58,7 @@ public class AuthorisatieFilter implements Filter {
                         init();
                         gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
                     } catch (NietGevondenException e) {
-                        LOGGER.debug("niks gevonden in de database op basis van cookie code");
+                        LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
                     }
                     cookie = koekje;
                 }
@@ -79,7 +79,7 @@ public class AuthorisatieFilter implements Filter {
                         gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
                         LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
                     } catch (NietGevondenException e) {
-                        LOGGER.debug(e.getMessage());
+                        LOGGER.debug("Niet gevonden", e);
                     }
                 } else {
                     LOGGER.debug("Geen sessieId gevonden in het request");
