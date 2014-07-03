@@ -100,7 +100,7 @@ public final class Validatie {
                     // dit is verwacht, want deeltwee moet alfanumeriek zijn
                 }
             } catch (Exception e) {
-                LOGGER.debug(e.getMessage());
+                LOGGER.debug("Fout opgetreden", e);
                 throw new PostcodeNietGoedException(adres.getPostcode());
             }
         }
@@ -112,7 +112,7 @@ public final class Validatie {
         try {
             Double.parseDouble(bsn);
         } catch (Exception e) {
-            LOGGER.debug(e.getMessage());
+            LOGGER.debug("Fout opgetreden", e);
             throw new BsnNietGoedException();
         }
 
