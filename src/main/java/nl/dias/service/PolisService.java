@@ -68,7 +68,7 @@ public class PolisService {
         try {
             return polisRepository.zoekOpPolisNummer(polisNummer, kantoorRepository.lees(1L));
         } catch (NoResultException e) {
-            LOGGER.debug("Niks gevonden " + e.getMessage());
+            LOGGER.debug("Niks gevonden ", e);
             return null;
         }
     }
@@ -148,16 +148,19 @@ public class PolisService {
                 try {
                     polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
                 } catch (IllegalArgumentException e1) {
+                    LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
                 }
                 try {
                     polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
                 } catch (IllegalArgumentException e1) {
+                    LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
                 }
                 try {
                     polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
                 } catch (IllegalArgumentException e1) {
+                    LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
                 }
                 polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
@@ -209,6 +212,7 @@ public class PolisService {
         try {
             ld = new LocalDate(Integer.parseInt(d[2]), Integer.parseInt(d[1]), Integer.parseInt(d[0]));
         } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.debug("Ongeledige datum meegegeven", e);
             throw new IllegalArgumentException("Datum bevat een ongeldige waarde.");
         }
 
