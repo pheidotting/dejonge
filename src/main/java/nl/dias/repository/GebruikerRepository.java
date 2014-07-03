@@ -55,7 +55,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         try {
             gebruiker = query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info(e.getMessage());
+            logger.info("Niets gevonden", e);
             throw new NietGevondenException(emailadres);
         }
 
@@ -111,6 +111,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         try {
             gebruiker = query.getSingleResult();
         } catch (NoResultException e) {
+            logger.info("Niets gevonden", e);
             throw new NietGevondenException(cookieCode);
         }
 
