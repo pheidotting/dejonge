@@ -8,6 +8,7 @@ import nl.dias.domein.polis.MotorVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
+import nl.dias.web.medewerker.PolisController;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;

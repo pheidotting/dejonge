@@ -2,7 +2,7 @@
 	function maakDatatable(){
 		$.ajax({
 			type: "GET",
-			url: '../dejonge/rest/gebruiker/isIngelogd',
+			url: '../dejonge/rest/authorisatie/authorisatie/isIngelogd',
 			dataType:'json',
 			success: function (data) {
 				if(new String(data) == "false"){
@@ -10,7 +10,7 @@
 				}else{
 					$.ajax({  
 						type: "GET",  
-						url: '../dejonge/rest/gebruiker/lijstRelaties',
+						url: '../dejonge/rest/medewerker/gebruiker/lijstRelaties',
 						dataType: "json",  
 						context: this,  
 						success: function(response) {

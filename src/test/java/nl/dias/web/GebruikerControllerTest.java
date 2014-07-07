@@ -16,6 +16,7 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
+import nl.dias.web.medewerker.GebruikerController;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;

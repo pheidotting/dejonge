@@ -34,3 +34,12 @@ input[type="checkbox"] {
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+.tt-suggestions{
+	background-color:#FFFFFF;
+	padding:15px;
+}
+
+.tt-cursor{
+	cursor:pointer;
+}

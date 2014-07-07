@@ -1,8 +1,8 @@
 package nl.dias.dias_web.selenium.tests;
 
 import static org.junit.Assert.assertTrue;
-import nl.dias.dias_web.GebruikerControllerTest;
 import nl.dias.dias_web.hulp.Hulp;
+import nl.dias.dias_web.medewerker.GebruikerControllerTest;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;

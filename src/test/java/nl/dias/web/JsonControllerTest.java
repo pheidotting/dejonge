@@ -7,6 +7,7 @@ import java.util.List;
 
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.service.VerzekeringsMaatschappijService;
+import nl.dias.web.medewerker.JsonController;
 
 import org.easymock.EasyMock;
 import org.junit.After;

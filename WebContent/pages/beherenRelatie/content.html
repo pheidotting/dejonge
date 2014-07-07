@@ -112,14 +112,22 @@
 				bedrijf : $('#bedrijfBijPolis').val(),
 				betaalfrequentie : $('#betaalfrequentie').val()
 	    	}));
+			$('#tabs').puitabview('select', 2);
 	    }
 
 	    this.verwijderPolis = function(polis){
 			var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");
 			if (r==true) {
 				self.polissen.remove(polis);
-				$.get( "../dejonge/rest/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function( data ) {});
+				$.get( "../dejonge/rest/medewerker/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function( data ) {});
 			}
+	    }
+	    
+	    this.schadeMeldenBijPolis = function(polis){
+			$('#tabs').puitabview('select', 6);
+			console.log(ko.utils.unwrapObservable(polis.id));
+			console.log($('#polisVoorSchademelding').val());
+			$('#polisVoorSchademelding').val(ko.utils.unwrapObservable(polis.id));
 	    }
 	    
 	    self.toevoegenBedrijf = function(){
@@ -157,7 +165,7 @@
 	    		this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
 	    	}
 	    	$.ajax({
-	            url: '../dejonge/rest/gebruiker/opslaan',
+	            url: '../dejonge/rest/medewerker/gebruiker/opslaan',
 	            type: 'POST',
 	            data: ko.toJSON(this) ,
 	            contentType: 'application/json; charset=utf-8',
@@ -180,7 +188,7 @@
 	    this.verwijderenRelatie = function(obj){
 			$.ajax({
 				type: "GET",
-				url: '../dejonge/rest/gebruiker/verwijderen',
+				url: '../dejonge/rest/medewerker/gebruiker/verwijderen',
 				dataType:'json',
 				data: {
 					id : ko.utils.unwrapObservable(obj.id)
@@ -277,7 +285,7 @@
 		var self = this;
 	
 		self.url = ko.computed(function() {
-	        return "../dejonge/rest/bijlage/download?bijlageId=" + data.id;
+	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
 		}, this);
 		self.bestandsNaam = ko.observable(data.bestandsNaam);
 		self.soortBijlage = ko.observable(data.soortBijlage);
@@ -285,45 +293,52 @@
 	
 	
 	function start(){
-/* 		$.ajax({
+		var bestPictures = new Bloodhound({
+			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			remote: '../dejonge/rest/medewerker/overig/soortenSchade?query=%QUERY'
+		});
+		
+		bestPictures.initialize();
+		
+		$('#soortSchade').typeahead({
+			hint: true,
+			highlight: true,
+			minLength: 1
+		},
+		{
+			name: 'states',
+			displayKey: 'value',
+			source: bestPictures.ttAdapter()
+		});
+
+		$.ajax({
 			type: "GET",
-			url: '../dejonge/rest/gebruiker/isIngelogd',
-			dataType:'json',
-			success: function (data) {
-				if(new String(data) == "false"){
-					document.location.hash='#inloggen';
-				}else{
- */					$.ajax({
-						type: "GET",
-						url: '../dejonge/rest/overig/lijstVerzekeringsMaatschappijen',
-						dataType: "json",
-						context: this,
-						success: function(data) {
-							var $select = $('#verzekeringsMaatschappijen');
-							$.each(data, function(key, value) {
-							    $('<option>').text(value).appendTo($select);
-							});
-/* 							$('#verzekeringsMaatschappijen').puidropdown({
-								source:data,
-								content: function(option) {
-									console.log(option);
-									return '<img src="images/maatschappijen/' + option + '.jpg" alt="' + option + '" /><span style="float:right;font-size:14px">' + option + '</span>';
-								}
-							});
- */						}
-					});
-/* 				}
+			url: '../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen',
+			dataType: "json",
+			context: this,
+			success: function(data) {
+				var $select = $('#verzekeringsMaatschappijen');
+				$.each(data, function(key, value) {
+				    $('<option>').text(value).appendTo($select);
+				});
 			}
 		});
- */ 
-/* 		if($('#id').val() != '0'){
- */			$.get( "../dejonge/rest/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
-	           	ko.applyBindings(new Relatie(data));
-		    });
-/* 		}else{
-           	ko.applyBindings(new Relatie({id:0, rekeningnummers:[]}));
-		}
- */		
+		$.ajax({
+			type: "GET",
+			url: '../dejonge/rest/medewerker/overig/lijstStatusSchade',
+			dataType: "json",
+			context: this,
+			success: function(data) {
+				var $select = $('#statusSchade');
+				$.each(data, function(key, value) {
+				    $('<option>').text(value).appendTo($select);
+				});
+			}
+		});
+		$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : $('#id').val()}, function( data ) {
+           	ko.applyBindings(new Relatie(data));
+	    });
 		$('#soortVerzekering').change(function() {
  			$('#div_kenteken').hide();
 			$('#div_soortAutoVerzekering').hide();
@@ -340,7 +355,7 @@
 			}
 
 		});
-		
+ 
 		$("#lijstRelaties").puidatatable({
 	        caption: "Lijst Relaties" + $('#zoekCriteriaLijstRelaties').val(),  
 	        columns: [
@@ -354,7 +369,7 @@
 	        datasource: function(callback) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: '../dejonge/rest/gebruiker/lijstRelaties',
+	                url: '../dejonge/rest/medewerker/gebruiker/lijstRelaties',
 					data: {
 						weglaten : $('#id').val(),
 	   					criteria : $('#zoekCriteriaLijstRelaties').val()
@@ -370,7 +385,7 @@
 	        rowSelect: function(event, data) {
 	            $.ajax({  
 	                type: "GET",  
-	                url: '../dejonge/rest/gebruiker/toevoegenRelatieRelatie',
+	                url: '../dejonge/rest/medewerker/gebruiker/toevoegenRelatieRelatie',
 					data: {
 						idToeTeVoegen : data.id,
 	   					idAanToevoegen : $('#id').val(),
@@ -400,7 +415,8 @@
 		<li><a href="#polissen">Polissen</a></li>
 		<li><a href="#toevoegenPolis">Toevoegen Polis</a></li>
 		<li><a href="overizchtBijlages">Overzicht Bijlages</a></li>
-		<!--li><a href="schades">Schades</a></li-->
+		<li><a href="schades">Schades</a></li>
+		<li><a href="schademelden">Schade Melden</a></li>
 	</ul>
 		<div>
 		<div id="relatieGegevens">
@@ -606,7 +622,7 @@
 	            	var json = JSON.stringify(bedrijf);
 					$.ajax({
 						type: "POST",
-						url: '../dejonge/rest/gebruiker/opslaanBedrijf',
+						url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
 						contentType: "application/json",
 			            data: json,
 			            success: function (response) {
@@ -627,7 +643,26 @@
 							<h4 data-bind="attr:{class: className}">
 								<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soort"></a>
 								&nbsp;&nbsp;&nbsp;
-								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										Kies een actie <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li>
+											<span class="glyphicon glyphicon-pencil" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
+											<span style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis">Bewerken</span>
+										</li>
+										<li>
+											<span class="glyphicon glyphicon-thumbs-down" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
+											<span style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis">Schade melden</span>
+										</li>
+										<li class="divider"></li>
+										<li>
+											<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
+											<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis">Verwijderen</span>
+										</li>
+									</ul>
+								</div>
 							</h4>
 						</div>
 						<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
@@ -761,13 +796,13 @@
 	            	var json = JSON.stringify(polis);
  					$.ajax({
 						type: "POST",
-						url: '../dejonge/rest/polis/opslaan',
+						url: '../dejonge/rest/medewerker/polis/opslaan',
 						contentType: "application/json",
 			            data: json,
 			            success: function(data) {
 			            	$('progress').show();
 							var formData = new FormData($('form')[0]);
-							uploadBestand(formData, '../dejonge/rest/polis/upload');
+							uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
 			        	},
 						error: function (data) {
 							plaatsFoutmelding(data);
@@ -790,15 +825,64 @@
 				</tbody>
 			</table>
 		</div>
-		<!--div id="schades">
+		<div id="schades">
+		</div>
+		<div id="schadeMelden">
 			<h4>Schademeldingen</h4>
-			<select id="polisVoorSchademelding" data-bind="foreach: polisVoorSchademelding, visible: polissen().length > 0">
-				<option data-bind="text: soort, value: id"></option>
-			</select>
 			<div class="form-group">
-				<label for="datum">Datum</label>
-				<input class="form-control" type="text" id="datum" name="datum" placeholder="dd-mm-eejj" />
+				<label for="polisVoorSchademelding">Verzekering</label>
+				<select id="polisVoorSchademelding" data-bind="foreach: polisVoorSchademelding, visible: polissen().length > 0">
+					<option id="polisVoorSchade" data-bind="text: soort, value: id"></option>
+				</select>
 			</div>
-		</div-->
+			<div class="form-group">
+				<label for="schadeNummerMaatschappij">Schadenummer Maatschappij</label>
+				<input class="form-control" type="text" id="schadeNummerMaatschappij" name="schadeNummerMaatschappij" />
+			</div>
+			<div class="form-group">
+				<label for="schadeNummerTussenpersoon">Schadenummer Tussenpersoon</label>
+				<input class="form-control" type="text" id="schadeNummerTussenpersoon" name="schadeNummerTussenpersoon" />
+			</div>
+			<div class="form-group">
+				<label for="soortSchade">Soort schade</label>
+				<input class="form-control" type="text" id="soortSchade" name="soortSchade" />
+			</div>
+			<div class="form-group">
+				<label for="locatieSchade">Locatie schade</label>
+				<input class="form-control" type="text" id="locatieSchade" name="locatieSchade" />
+			</div>
+			<div class="form-group">
+				<label for="statusSchade">Status schade</label>
+				<select id="statusSchade" name="statusSchade"></select>
+			</div>
+			<div class="form-group">
+				<label for="datumTijdSchade">Datum tijd schade</label>
+				<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" />
+			</div>
+			<div class="form-group">
+				<label for="datumTijdMelding">Datum tijd melding</label>
+				<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" />
+			</div>
+			<div class="form-group">
+				<label for="datumAfgehandeld">Datum afgehandeld</label>
+				<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" />
+			</div>
+			<div class="form-group">
+				<label for="eigenRisico">Eigen risico</label>
+				<input class="form-control" type="text" id="eigenRisico" name="eigenRisico" />
+			</div>
+			<div class="form-group">
+				<label for="omschrijving">Omschrijving</label>
+				<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="file" name="file" />
+			</div>
+			<div class="form-group">
+				<label for="schadeMeldingOpslaan">&nbsp;</label>
+				<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: $root.voegPolisToe">Opslaan</button>
+			</div>
+		</div>
 	</div>
 </div>

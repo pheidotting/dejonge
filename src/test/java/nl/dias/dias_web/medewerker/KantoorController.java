@@ -1,4 +1,4 @@
-package nl.dias.dias_web;
+package nl.dias.dias_web.medewerker;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

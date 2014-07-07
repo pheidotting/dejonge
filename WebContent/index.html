@@ -23,7 +23,8 @@
     
     <!-- Twitter Bootstrap -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<script src="bootstrap/js/bootstrap.min.js"></script>    
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/typeahead.js"></script>
 
 	<!-- Prime UI -->
     <link rel="stylesheet" href="prime-ui/css/datatable/datatable.css" />
@@ -38,8 +39,8 @@
 
 	<script type="text/javascript">
  		$(window).load(function(){
- 			haalIngelogdeGebruiker();
-			window.setInterval(haalIngelogdeGebruiker, 30000);
+// 			haalIngelogdeGebruiker();
+//		window.setInterval(haalIngelogdeGebruiker, 30000);
 
 			var diasRoute = new Sammy('body');
 
@@ -92,7 +93,7 @@
  		laadMenu = function() {
 			$.ajax({
 				type: "GET",
-				url: './rest/gebruiker/isIngelogd',
+				url: './rest/authorisatie/authorisatie/isIngelogd',
 				dataType:'json',
 				success: function (data) {
 					if(new String(data) == "true"){
@@ -149,7 +150,7 @@
 		}
 		haalIngelogdeGebruiker = function(){
 	    	$.ajax({
-	            url: '../dejonge/rest/gebruiker/ingelogdeGebruiker',
+	            url: '../dejonge/rest/authorisatie/authorisatie/ingelogdeGebruiker',
 	            type: 'GET',
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {
@@ -169,7 +170,7 @@
 		}
 		uitloggen = function(){
 	    	$.ajax({
-	            url: '../dejonge/rest/gebruiker/uitloggen',
+	            url: '../dejonge/rest/authorisatie/authorisatie/uitloggen',
 	            type: 'GET'
 	    	})
 			$('#ingelogdeGebruiker').html("");

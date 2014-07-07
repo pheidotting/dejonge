@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.dias_web.GebruikerControllerTest;
 import nl.dias.dias_web.hulp.Hulp;
+import nl.dias.dias_web.medewerker.GebruikerControllerTest;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonRekeningNummer;

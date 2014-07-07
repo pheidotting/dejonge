@@ -1,4 +1,4 @@
-package nl.dias.dias_web;
+package nl.dias.dias_web.medewerker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/overig")
@@ -62,5 +63,41 @@ public class JsonController {
     public String extraInfo() {
         return "DIAS Webtest";
 
+    }
+
+    @GET
+    @Path("/soortenSchade")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SoortSchade> soortenSchade(@QueryParam("query") String query) {
+        List<SoortSchade> soorten = new ArrayList<SoortSchade>();
+
+        soorten.add(new SoortSchade("Soort1"));
+        soorten.add(new SoortSchade("Soort2"));
+        soorten.add(new SoortSchade("Soort3"));
+        soorten.add(new SoortSchade("Soort4"));
+        soorten.add(new SoortSchade("Soort5"));
+
+        return soorten;
+    }
+
+    private class SoortSchade {
+        private final String value;
+
+        public SoortSchade(String tekst) {
+            this.value = tekst;
+        }
+    }
+
+    @GET
+    @Path("/lijstStatusSchade")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> lijstStatusSchade() {
+        List<String> ret = new ArrayList<String>();
+
+        ret.add("");
+        ret.add("Status 1");
+        ret.add("Status 2");
+
+        return ret;
     }
 }

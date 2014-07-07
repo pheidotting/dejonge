@@ -1,4 +1,4 @@
-package nl.dias.web;
+package nl.dias.web.medewerker;
 
 import javax.ws.rs.core.Response;
 

@@ -38,17 +38,21 @@ public class Opmerking implements PersistenceObject, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date tijd;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Kantoor.class)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "POLIS")
     private Polis polis;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "SCHADE")
+    private Polis schade;
 
     @Column(columnDefinition = "TEXT", name = "OPMERKING")
     private String opmerking;
@@ -105,6 +109,14 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     public void setPolis(Polis polis) {
         this.polis = polis;
+    }
+
+    public Polis getSchade() {
+        return schade;
+    }
+
+    public void setSchade(Polis schade) {
+        this.schade = schade;
     }
 
     @Override

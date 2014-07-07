@@ -1,4 +1,4 @@
-package nl.dias.dias_web;
+package nl.dias.dias_web.medewerker;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,8 +9,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import nl.dias.domein.json.IngelogdeGebruiker;
-import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonFoutmelding;
@@ -19,38 +17,14 @@ import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
-import nl.dias.web.InterfaceGebruikerController;
 
 import org.joda.time.LocalDate;
 
-import com.google.gson.Gson;
-
 @Path("/gebruiker")
-public class GebruikerControllerTest implements InterfaceGebruikerController {
+public class GebruikerControllerTest {
     public static Long id;
     public static JsonRelatie jsonRelatie;
     public static JsonLijstRelaties jsonLijstRelaties;
-
-    @POST
-    @Path("/inloggen")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response inloggen(Inloggen inloggen) {
-        System.out.println(inloggen);
-        return Response.status(200).entity(new JsonFoutmelding("D'r ging wat fout, maar ik weet niet wat.")).build();
-    }
-
-    @GET
-    @Path("/ingelogdeGebruiker")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getIngelogdeGebruiker() {
-        IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
-        ingelogdeGebruiker.setGebruikersnaam("Gebruikersnaam");
-        ingelogdeGebruiker.setKantoor("Fa. List & Bedrog");
-
-        // return Response.status(200).entity(ingelogdeGebruiker).build();
-        return Response.status(401).entity(null).build();
-    }
 
     @GET
     @Path("/lees")
@@ -156,7 +130,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         return GebruikerControllerTest.jsonRelatie;
     }
 
-    @Override
     @GET
     @Path("/lijstRelaties")
     @Produces(MediaType.APPLICATION_JSON)
@@ -176,7 +149,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         return GebruikerControllerTest.jsonLijstRelaties;
     }
 
-    @Override
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -188,7 +160,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         // return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
-    @Override
     @POST
     @Path("/opslaanBedrijf")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -200,7 +171,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
-    @Override
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.TEXT_PLAIN)
@@ -210,7 +180,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         return null;
     }
 
-    @Override
     @GET
     @Path("/toevoegenRelatieRelatie")
     @Produces(MediaType.TEXT_PLAIN)
@@ -218,20 +187,6 @@ public class GebruikerControllerTest implements InterfaceGebruikerController {
         return null;
     }
 
-    @Override
-    @GET
-    @Path("/isIngelogd")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String isIngelogd() {
-        Gson gson = new Gson();
-        return gson.toJson(true);
-    }
-
-    @Override
-    public JsonRelatie lees(String id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
     //
     // @GET
     // @Path("/uitloggen")

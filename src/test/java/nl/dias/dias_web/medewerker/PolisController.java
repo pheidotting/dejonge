@@ -1,4 +1,4 @@
-package nl.dias.dias_web;
+package nl.dias.dias_web.medewerker;
 
 import java.io.File;
 import java.io.FileOutputStream;

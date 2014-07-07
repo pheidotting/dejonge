@@ -27,6 +27,7 @@ import org.hibernate.envers.Audited;
 @Table(name = "BEDRIJF")
 @Audited
 public class Bedrijf implements Serializable, PersistenceObject {
+    private static final long serialVersionUID = 4611123664803995245L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

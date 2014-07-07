@@ -31,6 +31,7 @@ import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Schade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
@@ -92,6 +93,9 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     @JoinColumn(name = "MAATSCHAPPIJ")
     private VerzekeringsMaatschappij maatschappij;
+
+    @OneToMany(mappedBy = "polis")
+    private Set<Schade> schades;
 
     @Transient
     private String ingangsDatumString;
@@ -208,6 +212,17 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     public void setBedrijf(Bedrijf bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public Set<Schade> getSchades() {
+        if (schades == null) {
+            schades = new HashSet<Schade>();
+        }
+        return schades;
+    }
+
+    public void setSchades(Set<Schade> schades) {
+        this.schades = schades;
     }
 
     @Override

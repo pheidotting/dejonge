@@ -2,7 +2,7 @@
 	function start(){
 		$.ajax({
 			type: "GET",
-			url: './rest/gebruiker/isIngelogd',
+			url: './rest/authorisatie/authorisatie/isIngelogd',
 			dataType:'json',
 			error: function (data) {
 				$('#inlogButton').click(function(){
@@ -15,7 +15,7 @@
 	            	var json = JSON.stringify(inloggen);
 					$.ajax({
 						type: "POST",
-						url: '../dejonge/rest/gebruiker/inloggen',
+						url: '../dejonge/rest/authorisatie/authorisatie/inloggen',
 						contentType: "application/json",
 						data: json,
 			            success: function (response) {

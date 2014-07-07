@@ -39,7 +39,7 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (getFullURL(req).contains("/rest/gebruiker/inloggen") || getFullURL(req).endsWith("/rest/gebruiker/uitloggen")) {
+        if (getFullURL(req).contains("/rest/medewerker/gebruiker/inloggen") || getFullURL(req).endsWith("/rest/medewerker/gebruiker/uitloggen")) {
             LOGGER.debug("Gebruiker wil blijkbaar inloggen, dit hoeft uiteraard niet gefilterd..");
             chain.doFilter(request, response);
         } else {
@@ -91,6 +91,7 @@ public class AuthorisatieFilter implements Filter {
                     sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
                     sessie.setDatumLaatstGebruikt(new Date());
                     LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
+                    init();
                     gebruikerRepository.opslaan(sessie);
 
                     LOGGER.debug("Verder filteren");

@@ -1,36 +1,26 @@
-package nl.dias.web;
+package nl.dias.web.medewerker;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.IngelogdeGebruiker;
-import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.repository.KantoorRepository;
-import nl.dias.service.AuthorisatieService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
-import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
 import org.apache.log4j.Logger;
 
@@ -39,11 +29,6 @@ import com.sun.jersey.api.core.InjectParam;
 @Path("/gebruiker")
 public class GebruikerController {
     private final static Logger LOGGER = Logger.getLogger(GebruikerController.class);
-
-    @Context
-    private HttpServletRequest httpServletRequest;
-    @Context
-    private HttpServletResponse httpServletResponse;
 
     @InjectParam
     private GebruikerService gebruikerService;
@@ -55,32 +40,6 @@ public class GebruikerController {
     private RelatieMapper relatieMapper;
     @InjectParam
     private BedrijfMapper bedrijfMapper;
-    @InjectParam
-    private AuthorisatieService authorisatieService;
-
-    @POST
-    @Path("/inloggen")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response inloggen(Inloggen inloggen) {
-        try {
-            LOGGER.debug("Inloggen");
-            authorisatieService.inloggen(inloggen.getIdentificatie(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
-        } catch (OnjuistWachtwoordException | NietGevondenException e) {
-            LOGGER.debug("Onjuist wachtwoord of Gebruiker niet gevonden", e);
-            return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
-        }
-
-        return Response.status(200).entity(new JsonFoutmelding()).build();
-    }
-
-    @GET
-    @Path("/uitloggen")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response uitloggen() {
-        authorisatieService.uitloggen(httpServletRequest);
-        return Response.status(200).entity(new JsonFoutmelding()).build();
-    }
 
     @GET
     @Path("/lees")
@@ -126,30 +85,6 @@ public class GebruikerController {
         LOGGER.debug("Opgehaald, lijst met " + lijst.getJsonRelaties().size() + " relaties");
 
         return lijst;
-    }
-
-    @GET
-    @Path("/ingelogdeGebruiker")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getIngelogdeGebruiker() {
-        LOGGER.debug("Ophalen ingelogde gebruiker");
-
-        Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
-
-        IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
-        if (gebruiker != null) {
-            ingelogdeGebruiker.setGebruikersnaam(gebruiker.getNaam());
-            if (gebruiker instanceof Beheerder) {
-            } else if (gebruiker instanceof Medewerker) {
-                ingelogdeGebruiker.setKantoor(((Medewerker) gebruiker).getKantoor().getNaam());
-            } else if (gebruiker instanceof Relatie) {
-                ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
-            }
-
-            return Response.status(200).entity(ingelogdeGebruiker).build();
-        }
-
-        return Response.status(401).entity(null).build();
     }
 
     @POST
@@ -264,17 +199,6 @@ public class GebruikerController {
     //
     // return messages;
     // }
-
-    @GET
-    @Path("/isIngelogd")
-    @Produces(MediaType.APPLICATION_JSON)
-    public boolean isIngelogd() {
-        LOGGER.debug("is gebruiker ingelogd");
-
-        Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, httpServletRequest.getSession().getAttribute("sessie").toString(), httpServletRequest.getRemoteAddr());
-
-        return gebruiker != null;
-    }
 
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
