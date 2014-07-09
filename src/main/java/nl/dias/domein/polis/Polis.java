@@ -94,7 +94,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @JoinColumn(name = "MAATSCHAPPIJ")
     private VerzekeringsMaatschappij maatschappij;
 
-    @OneToMany(mappedBy = "polis")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
     private Set<Schade> schades;
 
     @Transient

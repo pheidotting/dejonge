@@ -1,11 +1,14 @@
 package nl.dias.domein;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,20 +22,22 @@ import javax.persistence.TemporalType;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
-import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "SCHADE")
 @Audited
-public class Schade implements PersistenceObject {
+public class Schade implements PersistenceObject, Serializable {
+    private static final long serialVersionUID = -8340805705038811388L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @JoinColumn(name = "POLIS")
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(name = "POLIS", nullable = true)
     private Polis polis;
 
     @Column(length = 25, name = "SCHADENUMMERMAATSCHAPPIJ", nullable = false)
@@ -41,8 +46,8 @@ public class Schade implements PersistenceObject {
     @Column(length = 25, name = "SCHADENUMMERTUSSENPERSOON")
     private String schadeNummerTussenPersoon;
 
-    @JoinColumn(name = "SOORT")
-    @ManyToOne(optional = true)
+    @JoinColumn(name = "SOORT", nullable = true)
+    @ManyToOne
     private SoortSchade soortSchade;
 
     @Column(name = "SOORTSCHADEONGEDEFINIEERD", length = 100)
@@ -51,8 +56,8 @@ public class Schade implements PersistenceObject {
     @Column(length = 50, name = "LOCATIE")
     private String locatie;
 
-    @JoinColumn(name = "STATUS")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "STATUS", nullable = false)
+    @ManyToOne
     private StatusSchade statusSchade;
 
     @Column(name = "DATUMTIJD", nullable = false)
@@ -73,7 +78,7 @@ public class Schade implements PersistenceObject {
     @Column(length = 1000, name = "OMSCHRIJVING")
     private String omschrijving;
 
-    @OneToMany(mappedBy = "schade")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
     @Override
@@ -118,6 +123,14 @@ public class Schade implements PersistenceObject {
         this.soortSchade = soortSchade;
     }
 
+    public String getSoortSchadeOngedefinieerd() {
+        return soortSchadeOngedefinieerd;
+    }
+
+    public void setSoortSchadeOngedefinieerd(String soortSchadeOngedefinieerd) {
+        this.soortSchadeOngedefinieerd = soortSchadeOngedefinieerd;
+    }
+
     public String getLocatie() {
         return locatie;
     }
@@ -134,28 +147,28 @@ public class Schade implements PersistenceObject {
         this.statusSchade = statusSchade;
     }
 
-    public LocalDate getDatumTijdSchade() {
-        return new LocalDate(datumTijdSchade);
+    public Date getDatumTijdSchade() {
+        return datumTijdSchade;
     }
 
-    public void setDatumTijdSchade(LocalDate datumTijdSchade) {
-        this.datumTijdSchade = datumTijdSchade.toDate();
+    public void setDatumTijdSchade(Date datumTijdSchade) {
+        this.datumTijdSchade = datumTijdSchade;
     }
 
-    public LocalDate getDatumTijdMelding() {
-        return new LocalDate(datumTijdMelding);
+    public Date getDatumTijdMelding() {
+        return datumTijdMelding;
     }
 
-    public void setDatumTijdMelding(LocalDate datumTijdMelding) {
-        this.datumTijdMelding = datumTijdMelding.toDate();
+    public void setDatumTijdMelding(Date datumTijdMelding) {
+        this.datumTijdMelding = datumTijdMelding;
     }
 
-    public LocalDate getDatumAfgehandeld() {
-        return new LocalDate(datumAfgehandeld);
+    public Date getDatumAfgehandeld() {
+        return datumAfgehandeld;
     }
 
-    public void setDatumAfgehandeld(LocalDate datumAfgehandeld) {
-        this.datumAfgehandeld = datumAfgehandeld.toDate();
+    public void setDatumAfgehandeld(Date datumAfgehandeld) {
+        this.datumAfgehandeld = datumAfgehandeld;
     }
 
     public Bedrag getEigenRisico() {
@@ -182,4 +195,14 @@ public class Schade implements PersistenceObject {
         this.opmerkingen = opmerkingen;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("soortSchade", this.soortSchade).append("datumTijdMelding", this.datumTijdMelding).append("locatie", this.locatie).append("polis", this.polis.getId())
+                .append("schadeNummerMaatschappij", this.schadeNummerMaatschappij).append("datumTijdSchade", this.datumTijdSchade).append("statusSchade", this.statusSchade).append("id", this.id)
+                .append("soortSchadeOngedefinieerd", this.soortSchadeOngedefinieerd).append("opmerkingen", this.opmerkingen).append("schadeNummerTussenPersoon", this.schadeNummerTussenPersoon)
+                .append("eigenRisico", this.eigenRisico).append("omschrijving", this.omschrijving).append("datumAfgehandeld", this.datumAfgehandeld).toString();
+    }
 }
