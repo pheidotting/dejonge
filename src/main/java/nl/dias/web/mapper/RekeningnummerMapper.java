@@ -1,17 +1,12 @@
 package nl.dias.web.mapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.inject.Named;
 
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.json.JsonRekeningNummer;
 
 @Named
-public class RekeningnummerMapper implements Mapper<RekeningNummer, JsonRekeningNummer> {
+public class RekeningnummerMapper extends Mapper<RekeningNummer, JsonRekeningNummer> {
     @Override
     public RekeningNummer mapVanJson(JsonRekeningNummer jsonRekeningNummer) {
         RekeningNummer rekeningNummer = new RekeningNummer();
@@ -24,15 +19,6 @@ public class RekeningnummerMapper implements Mapper<RekeningNummer, JsonRekening
     }
 
     @Override
-    public Set<RekeningNummer> mapAllVanJson(List<JsonRekeningNummer> jsonRekeningNummers) {
-        Set<RekeningNummer> ret = new HashSet<>();
-        for (JsonRekeningNummer json : jsonRekeningNummers) {
-            ret.add(mapVanJson(json));
-        }
-        return ret;
-    }
-
-    @Override
     public JsonRekeningNummer mapNaarJson(RekeningNummer rekeningNummer) {
         JsonRekeningNummer jsonRekeningNummer = new JsonRekeningNummer();
 
@@ -41,14 +27,5 @@ public class RekeningnummerMapper implements Mapper<RekeningNummer, JsonRekening
         jsonRekeningNummer.setRekeningnummer(rekeningNummer.getRekeningnummer());
 
         return jsonRekeningNummer;
-    }
-
-    @Override
-    public List<JsonRekeningNummer> mapAllNaarJson(Set<RekeningNummer> rekeningNummers) {
-        List<JsonRekeningNummer> ret = new ArrayList<>();
-        for (RekeningNummer rekeningNummer : rekeningNummers) {
-            ret.add(mapNaarJson(rekeningNummer));
-        }
-        return ret;
     }
 }

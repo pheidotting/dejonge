@@ -42,6 +42,10 @@ public class Opmerking implements PersistenceObject, Serializable {
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "MEDEWERKER")
+    private Medewerker medewerker;
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
@@ -85,6 +89,14 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     public void setRelatie(Relatie relatie) {
         this.relatie = relatie;
+    }
+
+    public Medewerker getMedewerker() {
+        return medewerker;
+    }
+
+    public void setMedewerker(Medewerker medewerker) {
+        this.medewerker = medewerker;
     }
 
     public Kantoor getKantoor() {

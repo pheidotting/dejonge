@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonOpmerking;
 
@@ -56,6 +57,12 @@ public class OpmerkingMapperTest {
         opmerking.setOpmerking("opmerking");
         opmerking.setTijd(new LocalDateTime(2014, 5, 3, 7, 5));
 
+        Medewerker medewerker = new Medewerker();
+        medewerker.setVoornaam("voornaam");
+        medewerker.setAchternaam("achternaam");
+
+        opmerking.setMedewerker(medewerker);
+
         return opmerking;
     }
 
@@ -64,7 +71,8 @@ public class OpmerkingMapperTest {
 
         jsonOpmerking.setId(1L);
         jsonOpmerking.setOpmerking("opmerking");
-        // jsonOpmerking.setTijd(new LocalDateTime(2014, 5, 3, 7, 5));
+        jsonOpmerking.setTijd("03-05-2014");
+        jsonOpmerking.setMedewerker("voornaam achternaam");
 
         return jsonOpmerking;
     }

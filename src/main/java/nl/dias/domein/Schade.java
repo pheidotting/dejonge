@@ -24,6 +24,8 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "SCHADE")
@@ -80,6 +82,9 @@ public class Schade implements PersistenceObject, Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
+    private Set<Bijlage> bijlages;
 
     @Override
     public Long getId() {
@@ -147,28 +152,28 @@ public class Schade implements PersistenceObject, Serializable {
         this.statusSchade = statusSchade;
     }
 
-    public Date getDatumTijdSchade() {
-        return datumTijdSchade;
+    public LocalDateTime getDatumTijdSchade() {
+        return new LocalDateTime(datumTijdSchade);
     }
 
-    public void setDatumTijdSchade(Date datumTijdSchade) {
-        this.datumTijdSchade = datumTijdSchade;
+    public void setDatumTijdSchade(LocalDateTime datumTijdSchade) {
+        this.datumTijdSchade = datumTijdSchade.toDate();
     }
 
-    public Date getDatumTijdMelding() {
-        return datumTijdMelding;
+    public LocalDateTime getDatumTijdMelding() {
+        return new LocalDateTime(datumTijdMelding);
     }
 
-    public void setDatumTijdMelding(Date datumTijdMelding) {
-        this.datumTijdMelding = datumTijdMelding;
+    public void setDatumTijdMelding(LocalDateTime datumTijdMelding) {
+        this.datumTijdMelding = datumTijdMelding.toDate();
     }
 
-    public Date getDatumAfgehandeld() {
-        return datumAfgehandeld;
+    public LocalDate getDatumAfgehandeld() {
+        return new LocalDate(datumAfgehandeld);
     }
 
-    public void setDatumAfgehandeld(Date datumAfgehandeld) {
-        this.datumAfgehandeld = datumAfgehandeld;
+    public void setDatumAfgehandeld(LocalDate datumAfgehandeld) {
+        this.datumAfgehandeld = datumAfgehandeld.toDate();
     }
 
     public Bedrag getEigenRisico() {
@@ -193,6 +198,14 @@ public class Schade implements PersistenceObject, Serializable {
 
     public void setOpmerkingen(Set<Opmerking> opmerkingen) {
         this.opmerkingen = opmerkingen;
+    }
+
+    public Set<Bijlage> getBijlages() {
+        return bijlages;
+    }
+
+    public void setBijlages(Set<Bijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     /**

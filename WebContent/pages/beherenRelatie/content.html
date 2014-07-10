@@ -97,6 +97,14 @@
 	    this.verwijderTelefoonNummer = function(telefoon) {
 	    	self.telefoonnummers.remove(telefoon);
 	    }
+	    
+		this.schades = ko.observableArray();
+		if(data.schades != null){
+			$.each(data.schades, function(i, item) {
+				self.schades.push(new Schade(item));
+			});
+		}
+	    
 	    this.voegPolisToe = function(){
 	    	var ingangsDatum = moment($('#ingangsDatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
 	    	var wijzigingsDatum = moment($('#wijzigingsdatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
@@ -232,6 +240,46 @@
 	    this.toevoeging = ko.observable(data.toevoeging);
 	    this.postcode = ko.observable(data.postcode);
 	    this.plaats = ko.observable(data.plaats);
+	}
+	
+	function Schade(data){
+		var self = this;
+		
+	    self.id = ko.observable(data.id);
+	    self.polis = ko.observable(data.polis);
+	    self.schadeNummerMaatschappij = ko.observable(data.schadeNummerMaatschappij);
+	    self.schadeNummerTussenPersoon = ko.observable(data.schadeNummerTussenPersoon);
+	    self.soortSchade = ko.observable(data.soortSchade);
+	    self.locatie = ko.observable(data.locatie);
+	    self.statusSchade = ko.observable(data.statusSchade);
+	    self.datumTijdSchade = ko.observable(data.datumTijdSchade);
+	    self.datumTijdMelding = ko.observable(data.datumTijdMelding);
+	    self.datumAfgehandeld = ko.observable(data.datumAfgehandeld);
+	    self.eigenRisico = ko.observable(data.eigenRisico);
+	    self.omschrijving = ko.observable(data.omschrijving);
+	    
+		self.idDiv = ko.computed(function() {
+	        return "collapsableSchade" + data.id;
+		}, this);
+		self.idDivLink = ko.computed(function() {
+	        return "#collapsableSchade" + data.id;
+		}, this);
+
+	    this.opmerkingen = ko.observableArray();
+ 		if(data.opmerkingen != null){
+			$.each(data.opmerkingen, function(i, item){
+				self.opmerkingen.push(new Opmerking(item));
+			})
+ 		}
+	}
+	
+	function Opmerking(data){
+		var self = this;
+		
+	    self.id = ko.observable(data.id);
+	    self.tijd = ko.observable(data.tijd);
+	    self.opmerking = ko.observable(data.opmerking);
+	    self.medewerker = ko.observable(data.medewerker);
 	}
 	
 	function Polis(data){
@@ -826,6 +874,40 @@
 			</table>
 		</div>
 		<div id="schades">
+			<div id="schadesHerhaal" data-bind="foreach: schades, visible: schades().length > 0">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>
+								<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soortSchade"></a>
+							</h4>
+						</div>
+						<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
+							<div class="panel-body">
+							    <div data-bind="text: soortSchade" />
+							    <div data-bind="text: id" />
+							    <div data-bind="text: polis" />
+							    <div data-bind="text: schadeNummerMaatschappij" />
+							    <div data-bind="text: schadeNummerTussenPersoon" />
+							    <div data-bind="text: locatie" />
+							    <div data-bind="text: statusSchade" />
+							    <div data-bind="text: datumTijdSchade" />
+							    <div data-bind="text: datumTijdMelding" />
+							    <div data-bind="text: datumAfgehandeld" />
+							    <div data-bind="text: eigenRisico" />
+							    <div data-bind="text: omschrijving" />
+
+								<div id="opmerkingenBijSchade" data-bind="foreach: opmerkingen, visible: opmerkingen().length > 0">
+								    <div data-bind="text: tijd" />
+								    <div data-bind="text: medewerker" />
+								    <div data-bind="text: opmerking" />
+								</div>
+
+							</div>
+						</div>
+			    	</div>
+			    </div>
+			</div>
 		</div>
 		<div id="schadeMelden">
 			<h4>Schademeldingen</h4>
@@ -875,10 +957,51 @@
 				<label for="omschrijving">Omschrijving</label>
 				<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;"></textarea>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="uploadSchade1">
 				<label for="file">&nbsp;</label>
-				<input type="file" id="file" name="file" />
+				<input type="file" id="fileSchade1File" name="fileSchade1File" onchange="nieuweSchadeUpload(1);" />
 			</div>
+			<div class="form-group" id="uploadSchade2" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade2File" name="uploadSchade2File" onchange="nieuweSchadeUpload(2);" />
+			</div>
+			<div class="form-group" id="uploadSchade3" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade3File" name="uploadSchade3File" onchange="nieuweSchadeUpload(3);" />
+			</div>
+			<div class="form-group" id="uploadSchade4" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade4File" name="uploadSchade4File" onchange="nieuweSchadeUpload(4);" />
+			</div>
+			<div class="form-group" id="uploadSchade5" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade5File" name="uploadSchade5File" onchange="nieuweSchadeUpload(5);" />
+			</div>
+			<div class="form-group" id="uploadSchade6" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade6File" name="uploadSchade6File" onchange="nieuweSchadeUpload(6);" />
+			</div>
+			<div class="form-group" id="uploadSchade7" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade7File" name="uploadSchade7File" onchange="nieuweSchadeUpload(7);" />
+			</div>
+			<div class="form-group" id="uploadSchade8" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade8File" name="uploadSchade8File" onchange="nieuweSchadeUpload(8);" />
+			</div>
+			<div class="form-group" id="uploadSchade9" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade9File" name="uploadSchade9File" onchange="nieuweSchadeUpload(9);" />
+			</div>
+			<div class="form-group" id="uploadSchade10" style="display:none;">
+				<label for="file">&nbsp;</label>
+				<input type="file" id="uploadSchade10File" name="uploadSchade10File" onchange="nieuweSchadeUpload(10);" />
+			</div>
+			<script>
+				function nieuweSchadeUpload(nummer){
+					$('#uploadSchade' + ++nummer).show();
+				}
+			</script>
 			<div class="form-group">
 				<label for="schadeMeldingOpslaan">&nbsp;</label>
 				<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: $root.voegPolisToe">Opslaan</button>

@@ -1,17 +1,12 @@
 package nl.dias.web.mapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.json.JsonBedrijf;
 
 @Named
-public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
+public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
 
     @Override
     public Bedrijf mapVanJson(JsonBedrijf json) {
@@ -39,17 +34,6 @@ public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
     }
 
     @Override
-    public Set<Bedrijf> mapAllVanJson(List<JsonBedrijf> jsons) {
-        Set<Bedrijf> lijst = new HashSet<>();
-
-        for (JsonBedrijf json : jsons) {
-            lijst.add(mapVanJson(json));
-        }
-
-        return lijst;
-    }
-
-    @Override
     public JsonBedrijf mapNaarJson(Bedrijf object) {
         JsonBedrijf json = new JsonBedrijf();
 
@@ -68,17 +52,6 @@ public class BedrijfMapper implements Mapper<Bedrijf, JsonBedrijf> {
         json.setToevoeging(object.getAdres().getToevoeging());
 
         return json;
-    }
-
-    @Override
-    public List<JsonBedrijf> mapAllNaarJson(Set<Bedrijf> objecten) {
-        List<JsonBedrijf> lijst = new ArrayList<>();
-
-        for (Bedrijf bedrijf : objecten) {
-            lijst.add(mapNaarJson(bedrijf));
-        }
-
-        return lijst;
     }
 
 }

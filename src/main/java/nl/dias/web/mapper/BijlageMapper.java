@@ -1,10 +1,5 @@
 package nl.dias.web.mapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.inject.Named;
 
 import nl.dias.domein.Bijlage;
@@ -16,7 +11,7 @@ import nl.lakedigital.archief.service.ArchiefService;
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
-public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
+public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
     @InjectParam
     private ArchiefService archiefService;
 
@@ -27,15 +22,6 @@ public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
         bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
         return bijlage;
-    }
-
-    @Override
-    public Set<Bijlage> mapAllVanJson(List<JsonBijlage> jsons) {
-        Set<Bijlage> ret = new HashSet<Bijlage>();
-        for (JsonBijlage json : jsons) {
-            ret.add(mapVanJson(json));
-        }
-        return ret;
     }
 
     @Override
@@ -50,15 +36,6 @@ public class BijlageMapper implements Mapper<Bijlage, JsonBijlage> {
         }
 
         return json;
-    }
-
-    @Override
-    public List<JsonBijlage> mapAllNaarJson(Set<Bijlage> objecten) {
-        List<JsonBijlage> ret = new ArrayList<JsonBijlage>();
-        for (Bijlage bijlage : objecten) {
-            ret.add(mapNaarJson(bijlage));
-        }
-        return ret;
     }
 
     public void setArchiefService(ArchiefService archiefService) {

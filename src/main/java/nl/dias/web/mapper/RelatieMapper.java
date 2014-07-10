@@ -2,7 +2,6 @@ package nl.dias.web.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
@@ -12,7 +11,7 @@ import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
 
-public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
+public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     @InjectParam
     private TelefoonnummerMapper telefoonnummerMapper;
     @InjectParam
@@ -58,22 +57,6 @@ public class RelatieMapper implements Mapper<Relatie, JsonRelatie> {
         // 1)));
 
         return null;
-    }
-
-    @Override
-    public Set<Relatie> mapAllVanJson(List<JsonRelatie> jsonRelaties) {
-
-        return null;
-    }
-
-    @Override
-    public List<JsonRelatie> mapAllNaarJson(Set<Relatie> relaties) {
-        List<JsonRelatie> jsonRelaties = new ArrayList<>();
-        for (Relatie relatie : relaties) {
-            jsonRelaties.add(mapNaarJson(relatie));
-        }
-
-        return jsonRelaties;
     }
 
     @Override

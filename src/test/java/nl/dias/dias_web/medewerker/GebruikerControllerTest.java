@@ -13,9 +13,11 @@ import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
+import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.json.JsonTelefoonnummer;
 
 import org.joda.time.LocalDate;
@@ -124,6 +126,36 @@ public class GebruikerControllerTest {
 
             jsonRelatie.getLijstBijlages().add(jsonBijlage);
             jsonRelatie.getLijstBijlages().add(jsonBijlage1);
+
+            JsonSchade jsonSchade = new JsonSchade();
+            jsonSchade.setDatumAfgehandeld("01-07-2014");
+            jsonSchade.setDatumTijdMelding("30-06-2014 09:12");
+            jsonSchade.setDatumTijdSchade("29-06-2014 10:23");
+            jsonSchade.setEigenRisico("100 euro");
+            jsonSchade.setLocatie("Ergens tussen de weg en de straat");
+            jsonSchade.setOmschrijving("Tja, toen was het ineens boem!");
+            jsonSchade.setPolis(1L);
+            jsonSchade.setSchadeNummerMaatschappij("schadeNummerMaatschappij");
+            jsonSchade.setSchadeNummerTussenPersoon("schadeNummerTussenPersoon");
+            jsonSchade.setSoortSchade("Diefstal");
+            jsonSchade.setStatusSchade("statusSchade");
+
+            JsonOpmerking jsonOpmerking1 = new JsonOpmerking();
+            jsonOpmerking1.setId(1L);
+            jsonOpmerking1.setOpmerking("Dit is een opmerking");
+            jsonOpmerking1.setTijd("01-02-2014 09:55");
+            jsonOpmerking1.setMedewerker("Patrick Heidotting");
+            jsonSchade.getOpmerkingen().add(jsonOpmerking1);
+
+            JsonOpmerking jsonOpmerking2 = new JsonOpmerking();
+            jsonOpmerking2.setId(1L);
+            jsonOpmerking2
+                    .setOpmerking("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec purus sollicitudin, volutpat velit ac, ultricies ipsum. Proin sem lacus, interdum vel tellus a, hendrerit ultricies orci. Nulla facilisi. Phasellus lobortis, lectus non luctus consectetur, tortor eros pulvinar mauris, in hendrerit augue enim vitae lectus. Vestibulum elementum malesuada pretium. Cras ac tempus lorem. Quisque ultrices nunc id posuere pretium. Sed varius consequat nunc. Praesent odio lacus, pretium euismod mi interdum, pellentesque fringilla risus. Quisque a leo dolor. Nulla adipiscing tempus eros, ac sodales lorem congue vel. Aenean scelerisque quam diam, vitae molestie eros porta nec. Vivamus pretium sed augue nec.");
+            jsonOpmerking2.setTijd("02-03-2014 13:45");
+            jsonOpmerking2.setMedewerker("Gerben Zwiers");
+            jsonSchade.getOpmerkingen().add(jsonOpmerking2);
+
+            jsonRelatie.getSchades().add(jsonSchade);
 
             GebruikerControllerTest.jsonRelatie = jsonRelatie;
         }

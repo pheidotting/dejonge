@@ -38,6 +38,10 @@ public class Bijlage implements PersistenceObject, Serializable {
     @JoinColumn(name = "POLIS", nullable = true)
     private Polis polis;
 
+    @ManyToOne
+    @JoinColumn(name = "SCHADE", nullable = true)
+    private Schade schade;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50, name = "SOORTBIJLAGE")
     private SoortBijlage soortBijlage;
@@ -61,6 +65,14 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setPolis(Polis polis) {
         this.polis = polis;
+    }
+
+    public Schade getSchade() {
+        return schade;
+    }
+
+    public void setSchade(Schade schade) {
+        this.schade = schade;
     }
 
     public SoortBijlage getSoortBijlage() {

@@ -15,19 +15,16 @@ import nl.dias.domein.polis.PolisComperator;
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
-public class PolisMapper implements Mapper<Polis, JsonPolis> {
+public class PolisMapper extends Mapper<Polis, JsonPolis> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
     private BijlageMapper bijlageMapper;
+    @InjectParam
+    private SchadeMapper schadeMapper;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
-        return null;
-    }
-
-    @Override
-    public Set<Polis> mapAllVanJson(List<JsonPolis> jsonPolissen) {
         return null;
     }
 
@@ -51,6 +48,7 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
         }
+        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
 
         return jsonPolis;
     }
@@ -88,5 +86,9 @@ public class PolisMapper implements Mapper<Polis, JsonPolis> {
 
     public void setBijlageMapper(BijlageMapper bijlageMapper) {
         this.bijlageMapper = bijlageMapper;
+    }
+
+    public void setSchadeMapper(SchadeMapper schadeMapper) {
+        this.schadeMapper = schadeMapper;
     }
 }

@@ -40,6 +40,7 @@ public class RelatieMapperTest extends EasyMockSupport {
     private PolisMapper polisMapper;
     private BedrijfMapper bedrijfMapper;
     private BijlageMapper bijlageMapper;
+    private SchadeMapper schadeMapper;
 
     private Relatie relatie;
     private JsonRelatie jsonRelatie;

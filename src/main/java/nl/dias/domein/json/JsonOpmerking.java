@@ -10,6 +10,7 @@ public class JsonOpmerking implements Serializable {
     private Long id;
     private String tijd;
     private String opmerking;
+    private String medewerker;
 
     public Long getId() {
         return id;
@@ -33,6 +34,14 @@ public class JsonOpmerking implements Serializable {
 
     public void setOpmerking(String opmerking) {
         this.opmerking = opmerking;
+    }
+
+    public String getMedewerker() {
+        return medewerker;
+    }
+
+    public void setMedewerker(String medewerker) {
+        this.medewerker = medewerker;
     }
 
     @Override

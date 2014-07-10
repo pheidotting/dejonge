@@ -22,6 +22,7 @@ public class JsonPolis {
     private String idDiv;
     private String idDivLink;
     private String className;
+    private List<JsonSchade> schades;
 
     public Long getId() {
         return id;
@@ -123,6 +124,17 @@ public class JsonPolis {
 
     public void setBedrijf(String bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public List<JsonSchade> getSchades() {
+        if (schades == null) {
+            schades = new ArrayList<JsonSchade>();
+        }
+        return schades;
+    }
+
+    public void setSchades(List<JsonSchade> schades) {
+        this.schades = schades;
     }
 
     public String getIdDiv() {

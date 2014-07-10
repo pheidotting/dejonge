@@ -11,12 +11,11 @@ import java.util.Set;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Opmerking;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonPolis;
+import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.FietsVerzekering;
 import nl.dias.domein.polis.Polis;
@@ -31,6 +30,7 @@ public class PolisMapperTest extends EasyMockSupport {
     private PolisMapper mapper;
     private OpmerkingMapper opmerkingMapper;
     private BijlageMapper bijlageMapper;
+    private SchadeMapper schadeMapper;
 
     private Polis polis;
     private JsonPolis jsonPolis;
@@ -47,6 +47,9 @@ public class PolisMapperTest extends EasyMockSupport {
         bijlageMapper = createMock(BijlageMapper.class);
         mapper.setBijlageMapper(bijlageMapper);
 
+        schadeMapper = createMock(SchadeMapper.class);
+        mapper.setSchadeMapper(schadeMapper);
+
         VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
         maatschappij.setNaam("Fa. List & Bedrog");
 
@@ -62,6 +65,7 @@ public class PolisMapperTest extends EasyMockSupport {
         polis.setBetaalfrequentie(Betaalfrequentie.H);
         polis.getBijlages();
         polis.setBedrijf(bedrijf);
+        polis.getSchades();
 
         jsonPolis = new JsonPolis();
         jsonPolis.setPremie("12345.00 euro");
@@ -74,6 +78,7 @@ public class PolisMapperTest extends EasyMockSupport {
         jsonPolis.getBijlages();
         jsonPolis.getOpmerkingen();
         jsonPolis.setBedrijf("TestBedrijf");
+        jsonPolis.getSchades();
 
         polissen = new HashSet<Polis>();
         polissen.add(polis);
@@ -94,36 +99,17 @@ public class PolisMapperTest extends EasyMockSupport {
     }
 
     @Test
-    public void testMapAllVanJson() {
-        replayAll();
-
-        assertNull(mapper.mapAllVanJson(jsonPolissen));
-    }
-
-    @Test
     public void testMapNaarJson() {
         List<JsonBijlage> bijlages = new ArrayList<JsonBijlage>();
         List<JsonOpmerking> opmerkingen = new ArrayList<JsonOpmerking>();
+        List<JsonSchade> schades = new ArrayList<JsonSchade>();
 
         expect(bijlageMapper.mapAllNaarJson(polis.getBijlages())).andReturn(bijlages);
         expect(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen())).andReturn(opmerkingen);
+        expect(schadeMapper.mapAllNaarJson(polis.getSchades())).andReturn(schades);
 
         replayAll();
 
         assertEquals(jsonPolis, mapper.mapNaarJson(polis));
     }
-
-    @Test
-    public void testMapAllNaarJson() {
-        Set<Bijlage> bijlages = new HashSet<Bijlage>();
-        Set<Opmerking> opmerkingen = new HashSet<Opmerking>();
-
-        expect(bijlageMapper.mapAllNaarJson(bijlages)).andReturn(new ArrayList<JsonBijlage>());
-        expect(opmerkingMapper.mapAllNaarJson(opmerkingen)).andReturn(new ArrayList<JsonOpmerking>());
-
-        replayAll();
-
-        assertEquals(jsonPolissen, mapper.mapAllNaarJson(polissen));
-    }
-
 }

@@ -35,6 +35,7 @@ public class JsonRelatie {
     private List<JsonPolis> polissen;
     private boolean zakelijkeKlant;
     private List<JsonBijlage> lijstBijlages;
+    private List<JsonSchade> schades;
 
     public String getGeboorteDatum() {
         return geboorteDatum;
@@ -273,6 +274,17 @@ public class JsonRelatie {
 
     public void setLijstBijlages(List<JsonBijlage> lijstBijlages) {
         this.lijstBijlages = lijstBijlages;
+    }
+
+    public List<JsonSchade> getSchades() {
+        if (schades == null) {
+            schades = new ArrayList<JsonSchade>();
+        }
+        return schades;
+    }
+
+    public void setSchades(List<JsonSchade> schades) {
+        this.schades = schades;
     }
 
     @Override
