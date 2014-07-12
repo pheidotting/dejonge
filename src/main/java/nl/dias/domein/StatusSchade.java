@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
@@ -14,6 +16,7 @@ import org.hibernate.envers.Audited;
 @Entity
 @Table(name = "STATUSSCHADE")
 @Audited
+@NamedQueries({ @NamedQuery(name = "StatusSchade.zoekOpSoort", query = "select s from StatusSchade s where s.status =:status and s.ingebruik = '1'") })
 public class StatusSchade implements PersistenceObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +26,7 @@ public class StatusSchade implements PersistenceObject {
     @Column(name = "STATUS", length = 250, nullable = false)
     private String status;
 
-    @Column(name = "INGEBRUIK")
+    @Column(name = "INGEBRUIK", unique = true)
     private boolean ingebruik;
 
     public StatusSchade() {

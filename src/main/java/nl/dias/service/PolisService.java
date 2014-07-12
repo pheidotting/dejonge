@@ -64,6 +64,10 @@ public class PolisService {
         polisRepository.opslaan(polis);
     }
 
+    public Polis lees(Long id) {
+        return polisRepository.lees(id);
+    }
+
     public Polis zoekOpPolisNummer(String polisNummer) {
         try {
             return polisRepository.zoekOpPolisNummer(polisNummer, kantoorRepository.lees(1L));

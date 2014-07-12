@@ -4,15 +4,24 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Schade;
 import nl.dias.domein.SoortSchade;
+import nl.dias.domein.StatusSchade;
+import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
+
+import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class SchadeService {
+    private final static Logger LOGGER = Logger.getLogger(SchadeService.class);
+
     @InjectParam
     private SchadeRepository schadeRepository;
+    @InjectParam
+    private PolisService polisService;
 
     public List<SoortSchade> soortenSchade() {
         return schadeRepository.soortenSchade();
@@ -22,7 +31,48 @@ public class SchadeService {
         return schadeRepository.soortenSchade(omschrijving);
     }
 
+    public StatusSchade getStatussen(String status) {
+        return schadeRepository.getStatussen(status);
+    }
+
+    public List<StatusSchade> getStatussen() {
+        return schadeRepository.getStatussen();
+    }
+
+    public void opslaan(Schade schadeIn, String soortSchade, Long polisId, String statusSchade) {
+        LOGGER.debug("Opslaan schade");
+
+        Schade schade = schadeIn;
+
+        LOGGER.debug("Soort schade opzoeken " + soortSchade);
+        List<SoortSchade> soorten = schadeRepository.soortenSchade(soortSchade);
+
+        LOGGER.debug("Status schade opzoeken " + statusSchade);
+        StatusSchade status = schadeRepository.getStatussen(statusSchade);
+
+        schade.setStatusSchade(status);
+
+        if (soorten.size() > 0) {
+            LOGGER.debug("Soort schade gevonden in database (" + soorten.size() + ")");
+            schade.setSoortSchade(soorten.get(0));
+        } else {
+            LOGGER.debug("Geen soort schade gevonden in database, tekst dus opslaan");
+            schade.setSoortSchadeOngedefinieerd(soortSchade);
+        }
+
+        LOGGER.debug("Polis opzoeken, id : " + polisId);
+        Polis polis = polisService.lees(polisId);
+        schade.setPolis(polis);
+
+        LOGGER.debug("Schade opslaan");
+        schadeRepository.opslaan(schade);
+    }
+
     public void setSchadeRepository(SchadeRepository schadeRepository) {
         this.schadeRepository = schadeRepository;
+    }
+
+    public void setPolisService(PolisService polisService) {
+        this.polisService = polisService;
     }
 }

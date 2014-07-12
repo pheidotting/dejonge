@@ -21,6 +21,8 @@ public class JsonSchade {
     private String omschrijving;
     private List<JsonOpmerking> opmerkingen;
     private List<JsonBijlage> bijlages;
+    private String idDiv;
+    private String idDivLink;
 
     public Long getId() {
         return id;
@@ -138,6 +140,22 @@ public class JsonSchade {
 
     public void setBijlages(List<JsonBijlage> bijlages) {
         this.bijlages = bijlages;
+    }
+
+    public String getIdDiv() {
+        return idDiv;
+    }
+
+    public void setIdDiv(String idDiv) {
+        this.idDiv = idDiv;
+    }
+
+    public String getIdDivLink() {
+        return idDivLink;
+    }
+
+    public void setIdDivLink(String idDivLink) {
+        this.idDivLink = idDivLink;
     }
 
     /**

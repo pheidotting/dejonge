@@ -13,6 +13,11 @@ input {
 	float: left;
 }
 
+.schadeLabel {
+	width: 250px;
+	float: left;
+}
+
 .polisNietActief {
 	color: #CCCCCC;
 }

@@ -2,8 +2,13 @@ package nl.dias.web.mapper;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonSchade;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -16,7 +21,23 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
     @Override
     public Schade mapVanJson(JsonSchade json) {
-        return null;
+        String pattern = "dd-MM-yyyy HH.mm";
+
+        LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(pattern));
+        LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(pattern));
+
+        Schade schade = new Schade();
+
+        schade.setDatumAfgehandeld(new LocalDate(json.getDatumAfgehandeld()));
+        schade.setDatumTijdMelding(new LocalDateTime(datumTijdMelding));
+        schade.setDatumTijdSchade(new LocalDateTime(datumTijdSchade));
+        schade.setEigenRisico(new Bedrag(json.getEigenRisico()));
+        schade.setLocatie(json.getLocatie());
+        schade.setOmschrijving(json.getOmschrijving());
+        schade.setSchadeNummerMaatschappij(json.getSchadeNummerMaatschappij());
+        schade.setSchadeNummerTussenPersoon(json.getSchadeNummerTussenPersoon());
+
+        return schade;
     }
 
     @Override

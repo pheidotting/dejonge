@@ -40,7 +40,6 @@ public class RelatieMapperTest extends EasyMockSupport {
     private PolisMapper polisMapper;
     private BedrijfMapper bedrijfMapper;
     private BijlageMapper bijlageMapper;
-    private SchadeMapper schadeMapper;
 
     private Relatie relatie;
     private JsonRelatie jsonRelatie;
@@ -109,13 +108,6 @@ public class RelatieMapperTest extends EasyMockSupport {
         replayAll();
 
         assertNull(mapper.mapVanJson(jsonRelatie));
-    }
-
-    @Test
-    public void testMapAllVanJson() {
-        replayAll();
-
-        assertNull(mapper.mapAllVanJson(jsonRelaties));
     }
 
     @Test

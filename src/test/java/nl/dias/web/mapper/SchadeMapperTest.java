@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,6 @@ public class SchadeMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapVanJsonJsonSchade() {
-        assertNull(mapper.mapVanJson(null));
     }
 
     @Test

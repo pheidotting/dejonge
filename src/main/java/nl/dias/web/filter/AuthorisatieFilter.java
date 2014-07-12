@@ -39,80 +39,74 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (getFullURL(req).contains("/rest/medewerker/gebruiker/inloggen") || getFullURL(req).endsWith("/rest/medewerker/gebruiker/uitloggen")) {
-            LOGGER.debug("Gebruiker wil blijkbaar inloggen, dit hoeft uiteraard niet gefilterd..");
-            chain.doFilter(request, response);
-        } else {
+        Gebruiker gebruiker = null;
+        Sessie sessie = null;
+        Cookie cookie = null;
 
-            Gebruiker gebruiker = null;
-            Sessie sessie = null;
-            Cookie cookie = null;
-
-            LOGGER.debug("koekjes opzoeken");
-            init();
-            List<Cookie> cookies = authorisatieService.getCookies(req);
-            for (Cookie koekje : cookies) {
-                LOGGER.debug(koekje.getValue());
-                if (gebruiker == null) {
-                    try {
-                        init();
-                        gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
-                    } catch (NietGevondenException e) {
-                        LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
-                    }
-                    cookie = koekje;
-                }
-            }
-            LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
-            if (cookie != null) {
-                LOGGER.debug("via cookie met code " + cookie.getValue());
-            }
-
+        LOGGER.debug("koekjes opzoeken");
+        init();
+        List<Cookie> cookies = authorisatieService.getCookies(req);
+        for (Cookie koekje : cookies) {
+            LOGGER.debug(koekje.getValue());
             if (gebruiker == null) {
-                final String sessieId = (String) req.getSession().getAttribute("sessie");
-                final String ipAdres = req.getRemoteAddr();
-
-                if (sessieId != null && sessieId.length() > 0) {
-                    LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
-                    try {
-                        init();
-                        gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
-                        LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
-                    } catch (NietGevondenException e) {
-                        LOGGER.debug("Niet gevonden", e);
-                    }
-                } else {
-                    LOGGER.debug("Geen sessieId gevonden in het request");
+                try {
+                    init();
+                    gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
+                } catch (NietGevondenException e) {
+                    LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
                 }
+                cookie = koekje;
+            }
+        }
+        LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
+        if (cookie != null) {
+            LOGGER.debug("via cookie met code " + cookie.getValue());
+        }
 
-                if (gebruiker != null) {
-                    LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
+        if (gebruiker == null) {
+            final String sessieId = (String) req.getSession().getAttribute("sessie");
+            final String ipAdres = req.getRemoteAddr();
+
+            if (sessieId != null && sessieId.length() > 0) {
+                LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
+                try {
                     init();
-                    sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
-                    sessie.setDatumLaatstGebruikt(new Date());
-                    LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
-                    init();
-                    gebruikerRepository.opslaan(sessie);
-
-                    LOGGER.debug("Verder filteren");
-
-                    opruimen();
-
-                    chain.doFilter(request, response);
-                } else {
-                    opruimen();
-
-                    LOGGER.debug("Stuur een UNAUTHORIZED");
-                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
+                    LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
+                } catch (NietGevondenException e) {
+                    LOGGER.debug("Niet gevonden", e);
                 }
             } else {
+                LOGGER.debug("Geen sessieId gevonden in het request");
+            }
+
+            if (gebruiker != null) {
+                LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
                 init();
-                Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
-                req.getSession().setAttribute("sessie", sessie2.getSessie());
+                sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
+                sessie.setDatumLaatstGebruikt(new Date());
+                LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
+                init();
+                gebruikerRepository.opslaan(sessie);
+
+                LOGGER.debug("Verder filteren");
 
                 opruimen();
+
                 chain.doFilter(request, response);
+            } else {
+                opruimen();
+
+                LOGGER.debug("Stuur een UNAUTHORIZED");
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
+        } else {
+            init();
+            Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
+            req.getSession().setAttribute("sessie", sessie2.getSessie());
+
+            opruimen();
+            chain.doFilter(request, response);
         }
     }
 

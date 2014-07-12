@@ -140,6 +140,22 @@ public class GebruikerControllerTest {
             jsonSchade.setSoortSchade("Diefstal");
             jsonSchade.setStatusSchade("statusSchade");
 
+            JsonBijlage jsonBijlage2 = new JsonBijlage();
+            jsonBijlage2.setBestandsNaam("schadeformulier.pdf");
+            jsonBijlage2.setSoortBijlage("Schade");
+            jsonBijlage2.setId("3");
+
+            JsonBijlage jsonBijlage3 = new JsonBijlage();
+            jsonBijlage3.setBestandsNaam("politiedossier.pdf");
+            jsonBijlage3.setSoortBijlage("Schade");
+            jsonBijlage3.setId("4");
+
+            jsonSchade.getBijlages().add(jsonBijlage2);
+            jsonSchade.getBijlages().add(jsonBijlage3);
+
+            jsonRelatie.getLijstBijlages().add(jsonBijlage2);
+            jsonRelatie.getLijstBijlages().add(jsonBijlage3);
+
             JsonOpmerking jsonOpmerking1 = new JsonOpmerking();
             jsonOpmerking1.setId(1L);
             jsonOpmerking1.setOpmerking("Dit is een opmerking");

@@ -7,6 +7,7 @@ import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -24,6 +25,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private BedrijfMapper bedrijfMapper;
     @InjectParam
     private BijlageMapper bijlageMapper;
+    @InjectParam
+    private SchadeMapper schadeMapper;
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
@@ -120,11 +123,14 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
 
         List<JsonBijlage> bijlages = new ArrayList<JsonBijlage>();
+        List<JsonSchade> schades = new ArrayList<>();
         for (Polis polis : relatie.getPolissen()) {
             bijlages.addAll(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
+            schades.addAll(schadeMapper.mapAllNaarJson(polis.getSchades()));
         }
 
         jsonRelatie.setLijstBijlages(bijlages);
+        jsonRelatie.setSchades(schades);
 
         return jsonRelatie;
     }

@@ -56,7 +56,7 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "SCHADE")
-    private Polis schade;
+    private Schade schade;
 
     @Column(columnDefinition = "TEXT", name = "OPMERKING")
     private String opmerking;
@@ -123,11 +123,11 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.polis = polis;
     }
 
-    public Polis getSchade() {
+    public Schade getSchade() {
         return schade;
     }
 
-    public void setSchade(Polis schade) {
+    public void setSchade(Schade schade) {
         this.schade = schade;
     }
 

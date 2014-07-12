@@ -28,18 +28,22 @@ public class AuthorisatieController {
     @Path("/ingelogdeGebruiker")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIngelogdeGebruiker() {
+        System.out.println("@@@@@@@FIJIJIJJIIJIJIJIJDFJIDJ");
+        System.out.println("ingelogdeGebruiker");
+
         IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
         ingelogdeGebruiker.setGebruikersnaam("Patrick Heidotting");
         ingelogdeGebruiker.setKantoor("Fa. List & Bedrog");
 
         return Response.status(200).entity(ingelogdeGebruiker).build();
-        // return Response.status(401).entity(null).build();
     }
 
     @GET
     @Path("/isIngelogd")
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean isIngelogd() {
-        return true;
+    public Response isIngelogd() {
+        System.out.println("@@@@@@@FIJIJIJJIIJIJIJIJDFJIDJ");
+        System.out.println("isIngelogd");
+        return Response.status(200).entity(true).build();
     }
 }

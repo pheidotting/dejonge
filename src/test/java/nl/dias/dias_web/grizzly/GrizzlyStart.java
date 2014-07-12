@@ -36,13 +36,13 @@ public class GrizzlyStart {
 
             // Maak een adapter voor Jersey en plak deze aan de server
             ServletAdapter jerseyAdapterMedewerker = new ServletAdapter();
-            jerseyAdapterMedewerker.addInitParameter("com.sun.jersey.config.property.packages", "nl.dias.dias_web.medewerker");
+            jerseyAdapterMedewerker.addInitParameter("com.sun.jersey.config.property.packages", "nl.dias.dias_web");
             jerseyAdapterMedewerker.setContextPath(getJerseyPad() + "medewerker");
             jerseyAdapterMedewerker.setServletInstance(new ServletContainer());
             jerseyAdapterMedewerker.addContextParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
 
-            System.out.println("Jerseypad : " + getJerseyPad() + "medewerker");
-            gws.addGrizzlyAdapter(jerseyAdapterMedewerker, new String[] { getJerseyPad() + "medewerker" });
+            System.out.println("Jerseypad : " + getJerseyPad());
+            gws.addGrizzlyAdapter(jerseyAdapterMedewerker, new String[] { getJerseyPad() });
 
             // Adapter maken voor de statische WebContent en plak deze aan de
             // server

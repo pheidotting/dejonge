@@ -105,6 +105,37 @@
 			});
 		}
 	    
+	    this.voegSchadeToe = function(){
+	    	var schade = new Schade({
+	    		polis : $('#polisVoorSchademelding').val(),
+		        schadeNummerMaatschappij : $('#schadeNummerMaatschappij').val(),
+		        schadeNummerTussenPersoon : $('#schadeNummerTussenPersoon').val(),
+		        soortSchade : $('#soortSchade').val(),
+		        locatie : $('#locatie').val(),
+		        statusSchade : $('#statusSchade').val(),
+		        datumTijdSchade : $('#datumTijdSchade').val(),
+		        datumTijdMelding : $('#datumTijdMelding').val(),
+		        datumAfgehandeld : $('#datumAfgehandeld').val(),
+		        eigenRisico : $('#eigenRisico').val(),
+		        omschrijving : $('#omschrijving').val()
+	    	});
+	    	self.schades.push(schade);
+	    	console.log(ko.toJSON(schade));
+	    	$.ajax({
+	            url: '../dejonge/rest/medewerker/schade/opslaan',
+	            type: 'POST',
+	            data: ko.toJSON(schade) ,
+	            contentType: 'application/json; charset=utf-8',
+	            success: function (response) {
+	            	plaatsMelding("De gegevens zijn opgeslagen");
+	            },
+	            error: function (data) {
+	            	plaatsFoutmelding(data);
+	            }
+	        });
+			$('#tabs').puitabview('select', 5);
+	    }
+
 	    this.voegPolisToe = function(){
 	    	var ingangsDatum = moment($('#ingangsDatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
 	    	var wijzigingsDatum = moment($('#wijzigingsdatumString').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
@@ -271,6 +302,13 @@
 				self.opmerkingen.push(new Opmerking(item));
 			})
  		}
+
+		self.bijlages = ko.observableArray();
+		if(data.bijlages != null){
+			$.each(data.bijlages, function(i, item){
+				self.bijlages.push(new Bijlage(item));
+			})
+		}
 	}
 	
 	function Opmerking(data){
@@ -884,23 +922,65 @@
 						</div>
 						<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
 							<div class="panel-body">
-							    <div data-bind="text: soortSchade" />
-							    <div data-bind="text: id" />
-							    <div data-bind="text: polis" />
-							    <div data-bind="text: schadeNummerMaatschappij" />
-							    <div data-bind="text: schadeNummerTussenPersoon" />
-							    <div data-bind="text: locatie" />
-							    <div data-bind="text: statusSchade" />
-							    <div data-bind="text: datumTijdSchade" />
-							    <div data-bind="text: datumTijdMelding" />
-							    <div data-bind="text: datumAfgehandeld" />
-							    <div data-bind="text: eigenRisico" />
-							    <div data-bind="text: omschrijving" />
+								<div data-bind="if: soortSchade">
+									<span class="schadeLabel">Soort schade :</span>
+									<span data-bind="text: soortSchade"></span>
+								</div>
+								<div data-bind="if: schadeNummerTussenPersoon">
+									<span class="schadeLabel">Schadenummer Maatschappij :</span>
+									<span data-bind="text: schadeNummerMaatschappij"></span>
+								</div>
+								<div data-bind="if: schadeNummerTussenPersoon">
+									<span class="schadeLabel">Schadenummer Tussenpersoon :</span>
+									<span data-bind="text: schadeNummerTussenPersoon"></span>
+								</div>
+								<div data-bind="if: locatie">
+									<span class="schadeLabel">Locatie :</span>
+									<span data-bind="text: locatie"></span>
+								</div>
+								<div data-bind="if: statusSchade">
+									<span class="schadeLabel">Status schade :</span>
+									<span data-bind="text: statusSchade"></span>
+								</div>
+								<div data-bind="if: datumTijdMelding">
+									<span class="schadeLabel">Datum/Tijd schade :</span>
+									<span data-bind="text: datumTijdSchade"></span>
+								</div>
+								<div data-bind="if: datumTijdMelding">
+									<span class="schadeLabel">Datum/Tijd melding :</span>
+									<span data-bind="text: datumTijdMelding"></span>
+								</div>
+								<div data-bind="if: eigenRisico">
+									<span class="schadeLabel">Datum afgehandeld :</span>
+									<span data-bind="text: datumAfgehandeld"></span>
+								</div>
+								<div data-bind="if: eigenRisico">
+									<span class="schadeLabel">Eigen risico :</span>
+									<span data-bind="text: eigenRisico"></span>
+								</div>
+								<div data-bind="if: omschrijving">
+									<span class="schadeLabel">Omschrijving :</span>
+									<span data-bind="text: omschrijving"></span>
+								</div>
 
 								<div id="opmerkingenBijSchade" data-bind="foreach: opmerkingen, visible: opmerkingen().length > 0">
-								    <div data-bind="text: tijd" />
-								    <div data-bind="text: medewerker" />
-								    <div data-bind="text: opmerking" />
+									<div data-bind="if: tijd">
+										<span class="schadeLabel">Opmerking</span>
+										<span data-bind="text: tijd"></span>
+										<span data-bind="text: medewerker"></span>
+									</div>
+									<div data-bind="if: opmerking">
+										<span class="schadeLabel">&nbsp;</span>
+										<span data-bind="text: opmerking" style="width:900px;display:block;float:left;"></span>
+									</div>
+									<div style="clear:both;"></div>
+								</div>
+
+								<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+									<div>
+										<span class="schadeLabel">Bijlage :</span>
+										<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+									</div>
 								</div>
 
 							</div>
@@ -1004,7 +1084,7 @@
 			</script>
 			<div class="form-group">
 				<label for="schadeMeldingOpslaan">&nbsp;</label>
-				<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: $root.voegPolisToe">Opslaan</button>
+				<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: $root.voegSchadeToe">Opslaan</button>
 			</div>
 		</div>
 	</div>

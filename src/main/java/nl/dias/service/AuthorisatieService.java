@@ -92,9 +92,11 @@ public class AuthorisatieService {
             LOGGER.debug("onthouden is true, dus cookie maken en opslaan");
             String cookieCode = codeService.genereerNieuweCode(30);
             Cookie cookie = new Cookie(COOKIE_DOMEIN_CODE, cookieCode);
-
+            cookie.setMaxAge(60 * 60);
             LOGGER.debug("cookie op de response zetten, code : " + cookieCode);
             response.addCookie(cookie);
+
+            getCookies(request);
 
             // en ff naar de database
             LOGGER.debug("opslaan sessie");
@@ -145,6 +147,9 @@ public class AuthorisatieService {
 
         if (request != null) {
             for (Cookie cookie : request.getCookies()) {
+                LOGGER.debug(cookie.getDomain());
+                LOGGER.debug(cookie.getName());
+                LOGGER.debug(cookie.getValue());
                 if (cookie.getName().equals(COOKIE_DOMEIN_CODE)) {
                     cookies.add(cookie);
                 }
