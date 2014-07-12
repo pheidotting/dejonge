@@ -26,8 +26,10 @@ import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class AuthorisatieServiceTest extends EasyMockSupport {
     private AuthorisatieService service;
     private GebruikerService gebruikerService;
