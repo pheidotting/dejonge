@@ -21,7 +21,7 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
     @Override
     public Schade mapVanJson(JsonSchade json) {
-        String pattern = "dd-MM-yyyy HH.mm";
+        String pattern = "dd-MM-yyyy HH:mm";
 
         LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(pattern));
         LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(pattern));

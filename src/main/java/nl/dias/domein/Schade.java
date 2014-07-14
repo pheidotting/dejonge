@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,6 +32,7 @@ import org.joda.time.LocalDateTime;
 @Entity
 @Table(name = "SCHADE")
 @Audited
+@NamedQueries({ @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij") })
 public class Schade implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8340805705038811388L;
 

@@ -9,9 +9,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonSoortSchade;
+import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
+import nl.dias.web.mapper.SoortSchadeMapper;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +26,10 @@ public class JsonController {
 
     @InjectParam
     private VerzekeringsMaatschappijService maatschappijService;
+    @InjectParam
+    private SchadeService schadeService;
+    @InjectParam
+    private SoortSchadeMapper soortSchadeMapper;
 
     @GET
     @Path("/lijstVerzekeringsMaatschappijen")
@@ -70,16 +77,20 @@ public class JsonController {
     @Path("/soortenSchade")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonSoortSchade> soortenSchade(@QueryParam("query") String query) {
-        List<JsonSoortSchade> soorten = new ArrayList<JsonSoortSchade>();
-
-        return soorten;
+        return soortSchadeMapper.mapAllNaarJson(schadeService.soortenSchade(query));
     }
 
     @GET
     @Path("/lijstStatusSchade")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> lijstStatusSchade() {
+        List<StatusSchade> lijst = schadeService.getStatussen();
+
         List<String> ret = new ArrayList<String>();
+
+        for (StatusSchade statusSchade : lijst) {
+            ret.add(statusSchade.getStatus());
+        }
 
         return ret;
     }

@@ -109,7 +109,7 @@
 	    	var schade = new Schade({
 	    		polis : $('#polisVoorSchademelding').val(),
 		        schadeNummerMaatschappij : $('#schadeNummerMaatschappij').val(),
-		        schadeNummerTussenPersoon : $('#schadeNummerTussenPersoon').val(),
+		        schadeNummerTussenPersoon : $('#schadeNummerTussenpersoon').val(),
 		        soortSchade : $('#soortSchade').val(),
 		        locatie : $('#locatie').val(),
 		        statusSchade : $('#statusSchade').val(),
@@ -120,13 +120,16 @@
 		        omschrijving : $('#omschrijving').val()
 	    	});
 	    	self.schades.push(schade);
-	    	console.log(ko.toJSON(schade));
 	    	$.ajax({
 	            url: '../dejonge/rest/medewerker/schade/opslaan',
 	            type: 'POST',
 	            data: ko.toJSON(schade) ,
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {
+	    			for (var int = 1; int <= ($('#hoeveelFiles').val() + 1); int++) {
+	    				var formData = new FormData($('#schadeMeldForm')[0]);
+	    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
+	    			}
 	            	plaatsMelding("De gegevens zijn opgeslagen");
 	            },
 	            error: function (data) {
@@ -991,6 +994,7 @@
 		</div>
 		<div id="schadeMelden">
 			<h4>Schademeldingen</h4>
+			<form enctype="multipart/form-data" id="schadeMeldForm">
 			<div class="form-group">
 				<label for="polisVoorSchademelding">Verzekering</label>
 				<select id="polisVoorSchademelding" data-bind="foreach: polisVoorSchademelding, visible: polissen().length > 0">
@@ -1039,53 +1043,66 @@
 			</div>
 			<div class="form-group" id="uploadSchade1">
 				<label for="file">&nbsp;</label>
-				<input type="file" id="fileSchade1File" name="fileSchade1File" onchange="nieuweSchadeUpload(1);" />
+				<input type="file" id="uploadSchade1File" name="uploadSchade1File" onchange="nieuweSchadeUpload(1);" />
+				<progress id="fileSchade1Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade2" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade2File" name="uploadSchade2File" onchange="nieuweSchadeUpload(2);" />
+				<progress id="fileSchade2Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade3" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade3File" name="uploadSchade3File" onchange="nieuweSchadeUpload(3);" />
+				<progress id="fileSchade3Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade4" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade4File" name="uploadSchade4File" onchange="nieuweSchadeUpload(4);" />
+				<progress id="fileSchade4Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade5" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade5File" name="uploadSchade5File" onchange="nieuweSchadeUpload(5);" />
+				<progress id="fileSchade5Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade6" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade6File" name="uploadSchade6File" onchange="nieuweSchadeUpload(6);" />
+				<progress id="fileSchade6Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade7" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade7File" name="uploadSchade7File" onchange="nieuweSchadeUpload(7);" />
+				<progress id="fileSchade7Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade8" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade8File" name="uploadSchade8File" onchange="nieuweSchadeUpload(8);" />
+				<progress id="fileSchade8Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade9" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade9File" name="uploadSchade9File" onchange="nieuweSchadeUpload(9);" />
+				<progress id="fileSchade9Progress" style="display:none;"></progress>
 			</div>
 			<div class="form-group" id="uploadSchade10" style="display:none;">
 				<label for="file">&nbsp;</label>
 				<input type="file" id="uploadSchade10File" name="uploadSchade10File" onchange="nieuweSchadeUpload(10);" />
+				<progress id="fileSchade10Progress" style="display:none;"></progress>
 			</div>
+			<input type="hidden" id="hoeveelFiles" />
 			<script>
 				function nieuweSchadeUpload(nummer){
 					$('#uploadSchade' + ++nummer).show();
+					$('#hoeveelFiles').val(nummer);
 				}
 			</script>
 			<div class="form-group">
 				<label for="schadeMeldingOpslaan">&nbsp;</label>
 				<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: $root.voegSchadeToe">Opslaan</button>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>

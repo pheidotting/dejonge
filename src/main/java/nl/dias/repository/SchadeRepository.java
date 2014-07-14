@@ -5,10 +5,13 @@ import java.util.List;
 import javax.inject.Named;
 import javax.persistence.TypedQuery;
 
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class SchadeRepository extends AbstractRepository<Schade> {
@@ -41,6 +44,20 @@ public class SchadeRepository extends AbstractRepository<Schade> {
     }
 
     public List<StatusSchade> getStatussen() {
-        return getEm().createQuery("select s from StatusSchade where s.ingebruik = '1'", StatusSchade.class).getResultList();
+        return getEm().createQuery("select s from StatusSchade s where s.ingebruik = '1'", StatusSchade.class).getResultList();
+    }
+
+    public Schade zoekOpSchadeNummerMaatschappij(String schadeNummerMaatschappij) {
+        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.zoekOpschadeNummerMaatschappij", Schade.class);
+        query.setParameter("schadeNummerMaatschappij", schadeNummerMaatschappij);
+
+        return query.getSingleResult();
+    }
+
+    @Transactional
+    public void opslaanBijlage(Bijlage bijlage) {
+        getEm().getTransaction().begin();
+        getEm().persist(bijlage);
+        getEm().getTransaction().commit();
     }
 }

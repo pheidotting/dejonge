@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Schade;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.polis.Polis;
@@ -37,6 +39,23 @@ public class SchadeService {
 
     public List<StatusSchade> getStatussen() {
         return schadeRepository.getStatussen();
+    }
+
+    public Schade zoekOpSchadeNummerMaatschappij(String schadeNummer) {
+        return schadeRepository.zoekOpSchadeNummerMaatschappij(schadeNummer);
+    }
+
+    public void slaBijlageOp(Long schadeId, String s3Identificatie) {
+        LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId + " s3Identificatie " + s3Identificatie);
+
+        Bijlage bijlage = new Bijlage();
+        bijlage.setSchade(schadeRepository.lees(schadeId));
+        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
+        bijlage.setS3Identificatie(s3Identificatie);
+
+        LOGGER.debug("Bijlage naar repository " + bijlage);
+
+        schadeRepository.opslaanBijlage(bijlage);
     }
 
     public void opslaan(Schade schadeIn, String soortSchade, Long polisId, String statusSchade) {
