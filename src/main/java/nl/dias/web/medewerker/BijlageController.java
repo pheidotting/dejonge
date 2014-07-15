@@ -195,7 +195,7 @@ public class BijlageController {
     private void uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String polisNummer, String schadeNummerMaatschappij) {
 
         String bestandsnaam = null;
-        if (fileDetail != null && uploadedInputStream != null) {
+        if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
             bestandsnaam = fileDetail.getFileName();
 
             LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", of bij schadeNummerMaatschappij " + schadeNummerMaatschappij + " en bestandsnaam " + bestandsnaam);

@@ -131,12 +131,12 @@
 	    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
 	    			}
 	            	plaatsMelding("De gegevens zijn opgeslagen");
+					$('#tabs').puitabview('select', 5);
 	            },
 	            error: function (data) {
 	            	plaatsFoutmelding(data);
 	            }
 	        });
-			$('#tabs').puitabview('select', 5);
 	    }
 
 	    this.voegPolisToe = function(){
