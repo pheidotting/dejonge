@@ -127,10 +127,13 @@
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {
 	    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
-	    				if($('uploadSchade' + int + 'File').val().length != 0){
+	    				console.log(int);/* 
+	    				console.log($('uploadSchade' + int + 'File'));
+	    				console.log($('uploadSchade' + int + 'File').val());
+	    				if($('uploadSchad */e' + int + 'File').val() != null && $('uploadSchade' + int + 'File').val() != undefined && $('uploadSchade' + int + 'File').val() != ''){
 		    				var formData = new FormData($('#schadeMeldForm')[0]);
 		    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
-	    				}
+	    				}/*  */
 	    			}
 	            	plaatsMelding("De gegevens zijn opgeslagen");
 	            },
