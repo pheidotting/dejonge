@@ -126,8 +126,8 @@
 	            data: ko.toJSON(schade) ,
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {
-	    			for (var int = 1; int <= ($('#hoeveelFiles').val() + 1); int++) {
-	    				if($('uploadSchade' + int + 'File').val() != ''){
+	    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
+	    				if($('uploadSchade' + int + 'File').val().length != 0){
 		    				var formData = new FormData($('#schadeMeldForm')[0]);
 		    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
 	    				}
