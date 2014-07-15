@@ -113,16 +113,15 @@ public class AuthorisatieService {
             gebruiker = gebruikerService.zoekOpSessieEnIpAdres(sessieId, ipadres);
 
             if (gebruiker != null) {
-                Sessie sessie = gebruikerService.zoekSessieOp(sessieId, gebruiker.getSessies());
+                LOGGER.debug("Opzoeken Sessie met id " + sessieId + " en ipadres " + ipadres);
+                Sessie sessie = gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies());
                 if (sessie != null) {
                     sessie.setDatumLaatstGebruikt(new Date());
 
                     gebruikerService.opslaan(gebruiker);
-                } else {
-                    LOGGER.debug("iets raars... sessie = null, KAN NIET!!");
-                }
 
-                LOGGER.debug(gebruiker.getSessies());
+                    gebruikerService.verwijderVerlopenSessies(gebruiker);
+                }
             }
         } catch (NietGevondenException e) {
             LOGGER.error("Geen ingelogde gebruiker gevonden", e);

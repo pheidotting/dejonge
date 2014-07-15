@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,10 +24,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
+import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "SESSIE")
 @Audited
+@NamedQueries({ @NamedQuery(name = "Sessie.allesVanGebruiker", query = "select s from Sessie s where s.gebruiker = :gebruiker") })
 public class Sessie implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -6578849306393389265L;
 
@@ -105,8 +109,8 @@ public class Sessie implements PersistenceObject, Serializable {
         this.datumGecreerd = datumGecreerd;
     }
 
-    public Date getDatumLaatstGebruikt() {
-        return datumLaatstGebruikt;
+    public LocalDate getDatumLaatstGebruikt() {
+        return new LocalDate(datumLaatstGebruikt);
     }
 
     public void setDatumLaatstGebruikt(Date datumLaatstGebruikt) {

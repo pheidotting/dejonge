@@ -25,13 +25,8 @@
         </layout>
     </appender>
     
-	<!-- LOGGER LIST -->
-	<!-- log all classes in org.developers package -->
 	<logger name="nl.dias">
-		<!-- level info logs -->
 		<level value="trace" />
-		<appender-ref ref="diasLog" />
-		<appender-ref ref="diasLogFile" />
 	</logger>
 
 	<root>

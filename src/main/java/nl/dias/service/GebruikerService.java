@@ -1,5 +1,6 @@
 package nl.dias.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -100,6 +102,26 @@ public class GebruikerService {
 
     public void verwijder(Sessie sessie) {
         gebruikerRepository.verwijder(sessie);
+    }
+
+    public void verwijderVerlopenSessies(Gebruiker gebr) {
+        Gebruiker gebruiker = gebruikerRepository.lees(gebr.getId());
+
+        List<Sessie> teVerwijderenSessies = new ArrayList<>();
+
+        for (Sessie sessie : gebruiker.getSessies()) {
+            if (sessie.getDatumLaatstGebruikt().isBefore(LocalDate.now().minusDays(3))) {
+                teVerwijderenSessies.add(sessie);
+            }
+        }
+
+        if (teVerwijderenSessies.size() > 0) {
+            for (Sessie sessie : teVerwijderenSessies) {
+                gebruiker.getSessies().remove(sessie);
+            }
+
+            gebruikerRepository.opslaan(gebruiker);
+        }
     }
 
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {

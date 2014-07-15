@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final static Logger LOGGER = Logger.getLogger(GebruikerRepository.class);
 
     public GebruikerRepository() {
         super(Gebruiker.class);
@@ -55,7 +55,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         try {
             gebruiker = query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Niets gevonden", e);
+            LOGGER.info("Niets gevonden", e);
             throw new NietGevondenException(emailadres);
         }
 
@@ -63,7 +63,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     }
 
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
-        logger.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
+        LOGGER.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
 
         Gebruiker gebruiker = null;
 
@@ -74,13 +74,13 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         List<Gebruiker> lijst = query.getResultList();
 
         if (lijst != null && lijst.size() > 0) {
-            logger.debug("Aantal gevonden : " + lijst.size());
+            LOGGER.debug("Aantal gevonden : " + lijst.size());
             gebruiker = lijst.get(0);
         } else if (lijst != null) {
-            logger.debug("Lege lijst");
+            LOGGER.debug("Lege lijst");
             throw new NietGevondenException(sessie);
         } else {
-            logger.debug("null lijst");
+            LOGGER.debug("null lijst");
             throw new NietGevondenException(sessie);
         }
 
@@ -111,7 +111,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         try {
             gebruiker = query.getSingleResult();
         } catch (NoResultException e) {
-            logger.info("Niets gevonden", e);
+            LOGGER.info("Niets gevonden", e);
             throw new NietGevondenException(cookieCode);
         }
 
