@@ -197,21 +197,21 @@ public class BijlageController {
         String bestandsnaam = null;
         if (fileDetail != null) {
             bestandsnaam = fileDetail.getFileName();
-        }
 
-        LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", of bij schadeNummerMaatschappij " + schadeNummerMaatschappij + " en bestandsnaam " + bestandsnaam);
+            LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", of bij schadeNummerMaatschappij " + schadeNummerMaatschappij + " en bestandsnaam " + bestandsnaam);
 
-        if (StringUtils.isNotBlank(polisNummer)) {
-            Polis polis = polisService.zoekOpPolisNummer(polisNummer);
+            if (StringUtils.isNotBlank(polisNummer)) {
+                Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
-            LOGGER.debug("eigen database bijwerken");
-            polisService.slaBijlageOp(polis.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail));
-        } else {
-            Schade schade = schadeService.zoekOpSchadeNummerMaatschappij(schadeNummerMaatschappij);
+                LOGGER.debug("eigen database bijwerken");
+                polisService.slaBijlageOp(polis.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail));
+            } else {
+                Schade schade = schadeService.zoekOpSchadeNummerMaatschappij(schadeNummerMaatschappij);
 
-            LOGGER.debug("Opslaan schade en uploaden bijlage " + fileDetail.getFileName());
+                LOGGER.debug("Opslaan schade en uploaden bijlage " + fileDetail.getFileName());
 
-            schadeService.slaBijlageOp(schade.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail));
+                schadeService.slaBijlageOp(schade.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail));
+            }
         }
     }
 }
