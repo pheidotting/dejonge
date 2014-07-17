@@ -1,0 +1,28 @@
+<h2>Gegevens van de bedrijven</h2>
+<div id="bedrijven" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
+	<h3 data-bind="text: naam"></h3>
+	<div data-bind="if: kvk">
+		<span class="polisLabel">Kvk :</span>
+		<span data-bind="text: kvk"></span>
+	</div>
+	<div data-bind="if: straat">
+		<span class="polisLabel">Straat :</span>
+		<span data-bind="text: straat"></span>
+	</div>
+	<div data-bind="if: huisnummer">
+		<span class="polisLabel">Huisnummer :</span>
+		<span data-bind="text: huisnummer"></span>
+	</div>
+	<div data-bind="if: toevoeging">
+		<span class="polisLabel">Toevoeging :</span>
+		<span data-bind="text: toevoeging"></span>
+	</div>
+	<div data-bind="if: postcode">
+		<span class="polisLabel">Postcode :</span>
+		<span data-bind="text: postcode"></span>
+	</div>
+	<div data-bind="if: plaats">
+		<span class="polisLabel">Plaats :</span>
+		<span data-bind="text: plaats"></span>
+	</div>
+</div>

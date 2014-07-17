@@ -22,7 +22,7 @@ public abstract class Mapper<T, Z> {
         }
     }
 
-    List<Z> mapAllNaarJson(Set<T> objecten) {
+    public List<Z> mapAllNaarJson(Set<T> objecten) {
         if (objecten != null) {
             List<Z> ret = new ArrayList<>();
             for (T obj : objecten) {

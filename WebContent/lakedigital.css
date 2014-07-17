@@ -48,3 +48,34 @@ input[type="checkbox"] {
 .tt-cursor{
 	cursor:pointer;
 }
+
+.navdiv {
+    display: block;
+    padding: 10px 15px;
+    position: relative;
+    color: #428bca;
+    text-decoration: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+}
+
+.navdivactive{
+    display: block;
+    padding: 10px 15px;
+    position: relative;
+    color: #428bca;
+    text-decoration: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #fff;
+    border-color: #ddd #ddd transparent;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    color: #555;
+    cursor: default;
+}

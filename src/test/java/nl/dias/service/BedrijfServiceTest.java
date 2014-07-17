@@ -1,7 +1,12 @@
 package nl.dias.service;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Relatie;
 import nl.dias.repository.BedrijfRepository;
 
 import org.easymock.EasyMock;
@@ -48,5 +53,17 @@ public class BedrijfServiceTest extends EasyMockSupport {
         replayAll();
 
         assertEquals(bedrijf, bedrijfService.lees(1L));
+    }
+
+    @Test
+    public void testAlleBedrijvenBijRelatie() {
+        List<Bedrijf> bedrijven = new ArrayList<>();
+        Relatie relatie = new Relatie();
+
+        EasyMock.expect(bedrijfRepository.alleBedrijvenBijRelatie(relatie)).andReturn(bedrijven);
+
+        replayAll();
+
+        assertEquals(bedrijven, bedrijfService.alleBedrijvenBijRelatie(relatie));
     }
 }

@@ -8,6 +8,8 @@
     <script type="text/javascript" src="jquery/js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
 
+	<script type="text/javascript" src="log4javascript.js"></script>
+
 	<!-- Sammy -->
  	<script type='text/javascript' src="sammy.js"></script>
  	
@@ -39,9 +41,16 @@
 
 	<script type="text/javascript">
  		$(window).load(function(){
- 			haalIngelogdeGebruiker();
-			window.setInterval(haalIngelogdeGebruiker, 60000);
+ 			var log = log4javascript.getLogger("LakeDigital");
+ 			var browserAppender = new log4javascript.BrowserConsoleAppender();
+ 		    var popUpLayout = new log4javascript.PatternLayout("%d{HH:mm:ss} %-5p - %m%n");
+			browserAppender.setLayout(popUpLayout);
+			log.addAppender(browserAppender);
 
+ /*  			haalIngelogdeGebruiker();
+			window.setInterval(haalIngelogdeGebruiker, 60000);
+ */
+ 
 			var diasRoute = new Sammy('body');
 
 			diasRoute.route('GET', '#inloggen', function(context) {
@@ -60,22 +69,33 @@
 				});
 			});
 
+			diasRoute.route('GET', '#beherenRelatie/:id/:actie/:subId', function(context) {
+				id = this.params['id'];
+				actie = this.params['actie'];
+				subId = this.params['subId'];
+				$.getScript("pages/beherenRelatie/beherenRelatie.js", function(){
+					start(log, id, actie, subId);
+				});
+			});
+
+			diasRoute.route('GET', '#beherenRelatie/:id/:actie', function(context) {
+				id = this.params['id'];
+				actie = this.params['actie'];
+				$.getScript("pages/beherenRelatie/beherenRelatie.js", function(){
+					start(log, id, actie);
+				});
+			});
+
 			diasRoute.route('GET', '#beherenRelatie/:id', function(context) {
 				id = this.params['id'];
- 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
-					if (status == "success") {
-						$('#id').val(id);
-						start();
- 					}
+				$.getScript("pages/beherenRelatie/beherenRelatie.js", function(){
+					start(log, id);
 				});
 			});
 
 			diasRoute.route('GET', '#beherenRelatie', function(context) {
- 				$('#content').load('pages/beherenRelatie/content.html', function(response, status, xhr) {
-					if (status == "success") {
-						$('#id').val('0');
-						start();
-					}
+				$.getScript("pages/beherenRelatie/beherenRelatie.js", function(){
+					start(log, null);
 				});
 			});
 
@@ -168,6 +188,9 @@
 	            }
 	        });
 		}
+		$("#aa").click(function(){
+			document.location.hash='#beherenRelatie/3';
+		});
 		uitloggen = function(){
 	    	$.ajax({
 	            url: '../dejonge/rest/authorisatie/authorisatie/uitloggen',

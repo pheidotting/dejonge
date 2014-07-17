@@ -1,8 +1,11 @@
 package nl.dias.service;
 
+import java.util.List;
+
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Relatie;
 import nl.dias.repository.BedrijfRepository;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -18,6 +21,10 @@ public class BedrijfService {
 
     public Bedrijf lees(Long id) {
         return bedrijfRepository.lees(id);
+    }
+
+    public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {
+        return bedrijfRepository.alleBedrijvenBijRelatie(relatie);
     }
 
     public void setBedrijfRepository(BedrijfRepository bedrijfRepository) {

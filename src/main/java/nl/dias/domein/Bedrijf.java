@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +28,7 @@ import org.hibernate.envers.Audited;
 @Entity
 @Table(name = "BEDRIJF")
 @Audited
+@NamedQueries({ @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie") })
 public class Bedrijf implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 4611123664803995245L;
 

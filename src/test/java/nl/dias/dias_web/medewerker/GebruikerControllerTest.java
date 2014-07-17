@@ -10,17 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.json.JsonTelefoonnummer;
-
-import org.joda.time.LocalDate;
 
 @Path("/gebruiker")
 public class GebruikerControllerTest {
@@ -36,12 +30,21 @@ public class GebruikerControllerTest {
             return new JsonRelatie();
         }
         if (GebruikerControllerTest.jsonRelatie == null) {
-            // String json =
-            // "{\"id\":3,\"identificatie\":\"p@h.nl\",\"voornaam\":\"Patrick\",\"tussenvoegsel\":\"van der\",\"achternaam\":\"Heidotting\",\"straat\":\"Eemslandweg\",\"huisnummer\":41,\"toevoeging\":JJ,\"postcode\":7894AB,\"plaats\":\"Zwartemeer\",\"adresOpgemaakt\":\"Eemslandweg 41 Zwartemeer \",\"telefoonnummers\":[],\"bsn\":103127586,\"rekeningnummers\":[],\"kantoor\":1,\"opmerkingen\":[],\"geboorteDatum\":{\"dayOfMonth\":6,\"dayOfWeek\":4,\"era\":1,\"dayOfYear\":249,\"year\":1979,\"chronology\":{\"zone\":{\"fixed\":true,\"id\":\"UTC\"}},\"centuryOfEra\":19,\"yearOfEra\":1979,\"yearOfCentury\":79,\"weekyear\":1979,\"monthOfYear\":9,\"weekOfWeekyear\":36,\"fields\":[{\"rangeDurationField\":null,\"lenient\":false,\"leapDurationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"minimumValue\":-292275054,\"maximumValue\":292278993,\"durationField\":{\"unitMillis\":31556952000,\"precise\":false,\"name\":\"years\",\"type\":{\"name\":\"years\"},\"supported\":true},\"name\":\"year\",\"type\":{\"durationType\":{\"name\":\"years\"},\"rangeDurationType\":null,\"name\":\"year\"},\"supported\":true},{\"rangeDurationField\":{\"unitMillis\":31556952000,\"precise\":false,\"name\":\"years\",\"type\":{\"name\":\"years\"},\"supported\":true},\"lenient\":false,\"leapDurationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"minimumValue\":1,\"maximumValue\":12,\"durationField\":{\"unitMillis\":2629746000,\"precise\":false,\"name\":\"months\",\"type\":{\"name\":\"months\"},\"supported\":true},\"name\":\"monthOfYear\",\"type\":{\"durationType\":{\"name\":\"months\"},\"rangeDurationType\":{\"name\":\"years\"},\"name\":\"monthOfYear\"},\"supported\":true},{\"rangeDurationField\":{\"unitMillis\":2629746000,\"precise\":false,\"name\":\"months\",\"type\":{\"name\":\"months\"},\"supported\":true},\"minimumValue\":1,\"maximumValue\":31,\"lenient\":false,\"unitMillis\":86400000,\"durationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"name\":\"dayOfMonth\",\"type\":{\"durationType\":{\"name\":\"days\"},\"rangeDurationType\":{\"name\":\"months\"},\"name\":\"dayOfMonth\"},\"supported\":true,\"leapDurationField\":null}],\"values\":[1979,9,6],\"fieldTypes\":[{\"durationType\":{\"name\":\"years\"},\"rangeDurationType\":null,\"name\":\"year\"},{\"durationType\":{\"name\":\"months\"},\"rangeDurationType\":{\"name\":\"years\"},\"name\":\"monthOfYear\"},{\"durationType\":{\"name\":\"days\"},\"rangeDurationType\":{\"name\":\"months\"},\"name\":\"dayOfMonth\"}]},\"geboorteDatumOpgemaakt\":\"06-09-1979\",\"overlijdensdatum\":{\"dayOfMonth\":12,\"dayOfWeek\":1,\"era\":1,\"dayOfYear\":132,\"year\":2014,\"chronology\":{\"zone\":{\"fixed\":true,\"id\":\"UTC\"}},\"centuryOfEra\":20,\"yearOfEra\":2014,\"yearOfCentury\":14,\"weekyear\":2014,\"monthOfYear\":5,\"weekOfWeekyear\":20,\"fields\":[{\"rangeDurationField\":null,\"lenient\":false,\"leapDurationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"minimumValue\":-292275054,\"maximumValue\":292278993,\"durationField\":{\"unitMillis\":31556952000,\"precise\":false,\"name\":\"years\",\"type\":{\"name\":\"years\"},\"supported\":true},\"name\":\"year\",\"type\":{\"durationType\":{\"name\":\"years\"},\"rangeDurationType\":null,\"name\":\"year\"},\"supported\":true},{\"rangeDurationField\":{\"unitMillis\":31556952000,\"precise\":false,\"name\":\"years\",\"type\":{\"name\":\"years\"},\"supported\":true},\"lenient\":false,\"leapDurationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"minimumValue\":1,\"maximumValue\":12,\"durationField\":{\"unitMillis\":2629746000,\"precise\":false,\"name\":\"months\",\"type\":{\"name\":\"months\"},\"supported\":true},\"name\":\"monthOfYear\",\"type\":{\"durationType\":{\"name\":\"months\"},\"rangeDurationType\":{\"name\":\"years\"},\"name\":\"monthOfYear\"},\"supported\":true},{\"rangeDurationField\":{\"unitMillis\":2629746000,\"precise\":false,\"name\":\"months\",\"type\":{\"name\":\"months\"},\"supported\":true},\"minimumValue\":1,\"maximumValue\":31,\"lenient\":false,\"unitMillis\":86400000,\"durationField\":{\"unitMillis\":86400000,\"precise\":true,\"name\":\"days\",\"type\":{\"name\":\"days\"},\"supported\":true},\"name\":\"dayOfMonth\",\"type\":{\"durationType\":{\"name\":\"days\"},\"rangeDurationType\":{\"name\":\"months\"},\"name\":\"dayOfMonth\"},\"supported\":true,\"leapDurationField\":null}],\"values\":[2014,5,12],\"fieldTypes\":[{\"durationType\":{\"name\":\"years\"},\"rangeDurationType\":null,\"name\":\"year\"},{\"durationType\":{\"name\":\"months\"},\"rangeDurationType\":{\"name\":\"years\"},\"name\":\"monthOfYear\"},{\"durationType\":{\"name\":\"days\"},\"rangeDurationType\":{\"name\":\"months\"},\"name\":\"dayOfMonth\"}]},\"geslacht\":Vrouw,\"burgerlijkeStaat\":Gehuwd,\"onderlingeRelaties\":null,\"bedrijven\":null}";
-            // Gson gson = new Gson();
-            //
-            // JsonRelatie jsonRelatie = gson.fromJson(json, JsonRelatie.class);
             JsonRelatie jsonRelatie = new JsonRelatie();
+            jsonRelatie.setAchternaam("Heidotting");
+            jsonRelatie.setAdresOpgemaakt("Eemslandweg 41");
+            jsonRelatie.setBsn("103127586");
+            jsonRelatie.setBurgerlijkeStaat("Ongehuwd");
+            jsonRelatie.setGeboorteDatumOpgemaakt("06-09-1979");
+            jsonRelatie.setGeslacht("Man");
+            jsonRelatie.setHuisnummer("41");
+            jsonRelatie.setId(3L);
+            jsonRelatie.setIdentificatie("patrick@heidotting.nl");
+            jsonRelatie.setPlaats("Zwartemeer");
+            jsonRelatie.setPostcode("7894AB");
+            jsonRelatie.setStraat("Eemslandweg");
+            jsonRelatie.setVoornaam("Patrick");
+
             jsonRelatie.setZakelijkeKlant(true);
 
             JsonRekeningNummer jsonRekeningNummer = new JsonRekeningNummer();
@@ -64,114 +67,120 @@ public class GebruikerControllerTest {
             jsonTelefoonnummer2.setTelefoonnummer("telefoonnummer2");
             jsonRelatie.getTelefoonnummers().add(jsonTelefoonnummer2);
 
-            JsonPolis jsonPolis1 = new JsonPolis();
-            jsonPolis1.setId(1L);
-            jsonPolis1.setBetaalfrequentie("Maandelijks");
-            jsonPolis1.setPolisNummer("12345");
-            jsonPolis1.setIngangsDatum(new LocalDate().toString("yyyy-MM-dd"));
-            jsonPolis1.setMaatschappij("Fa. List & Bedrog");
-            jsonPolis1.setPremie("100 euro");
-            jsonPolis1.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
-            jsonPolis1.setSoort("Autoverzekering");
-            jsonPolis1.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
-
-            jsonRelatie.getPolissen().add(jsonPolis1);
-
-            JsonPolis jsonPolis2 = new JsonPolis();
-            jsonPolis2.setId(2L);
-            jsonPolis2.setBetaalfrequentie("Maandelijks");
-            jsonPolis2.setPolisNummer("12345");
-            jsonPolis2.setIngangsDatum(new LocalDate().toString("yyyy-MM-dd"));
-            jsonPolis2.setMaatschappij("Fa. List & Bedrog");
-            jsonPolis2.setPremie("100 euro");
-            jsonPolis2.setProlongatieDatum(new LocalDate().toString("yyyy-MM-dd"));
-            jsonPolis2.setSoort("Woonhuisverzekering");
-            jsonPolis2.setWijzigingsDatum(new LocalDate().toString("yyyy-MM-dd"));
-
-            JsonBijlage jsonBijlage = new JsonBijlage();
-            jsonBijlage.setId("1");
-            jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
-            jsonBijlage.setSoortBijlage("Polis");
-            jsonPolis2.getBijlages().add(jsonBijlage);
-
-            JsonBijlage jsonBijlage1 = new JsonBijlage();
-            jsonBijlage1.setId("2");
-            jsonBijlage1.setBestandsNaam("Polis-5408096516-2.pdf");
-            jsonBijlage1.setSoortBijlage("Polis");
-            jsonPolis2.getBijlages().add(jsonBijlage1);
-
-            jsonRelatie.getPolissen().add(jsonPolis2);
-
-            JsonBedrijf jsonBedrijf1 = new JsonBedrijf();
-            jsonBedrijf1.setId("2");
-            jsonBedrijf1.setHuisnummer("666");
-            jsonBedrijf1.setKvk("kvknummer");
-            jsonBedrijf1.setNaam("Fa. List & Bedrog");
-            jsonBedrijf1.setPlaats("Verwegistan");
-            jsonBedrijf1.setPostcode("1234AA");
-            jsonBedrijf1.setStraat("StraatBedrijf");
-
-            JsonBedrijf jsonBedrijf2 = new JsonBedrijf();
-            jsonBedrijf2.setId("1");
-            jsonBedrijf2.setHuisnummer("33");
-            jsonBedrijf2.setKvk("kvknummer");
-            jsonBedrijf2.setNaam("NaamBedrijf 1");
-            jsonBedrijf2.setPlaats("PlaatsBedrijf");
-            jsonBedrijf2.setPostcode("1234AA");
-            jsonBedrijf2.setStraat("StraatBedrijf");
-            jsonBedrijf2.setToevoeging("A");
-
-            jsonRelatie.getBedrijven().add(jsonBedrijf1);
-            jsonRelatie.getBedrijven().add(jsonBedrijf2);
-
-            jsonRelatie.getLijstBijlages().add(jsonBijlage);
-            jsonRelatie.getLijstBijlages().add(jsonBijlage1);
-
-            JsonSchade jsonSchade = new JsonSchade();
-            jsonSchade.setDatumAfgehandeld("01-07-2014");
-            jsonSchade.setDatumTijdMelding("30-06-2014 09:12");
-            jsonSchade.setDatumTijdSchade("29-06-2014 10:23");
-            jsonSchade.setEigenRisico("100 euro");
-            jsonSchade.setLocatie("Ergens tussen de weg en de straat");
-            jsonSchade.setOmschrijving("Tja, toen was het ineens boem!");
-            jsonSchade.setPolis(1L);
-            jsonSchade.setSchadeNummerMaatschappij("schadeNummerMaatschappij");
-            jsonSchade.setSchadeNummerTussenPersoon("schadeNummerTussenPersoon");
-            jsonSchade.setSoortSchade("Diefstal");
-            jsonSchade.setStatusSchade("statusSchade");
-
-            JsonBijlage jsonBijlage2 = new JsonBijlage();
-            jsonBijlage2.setBestandsNaam("schadeformulier.pdf");
-            jsonBijlage2.setSoortBijlage("Schade");
-            jsonBijlage2.setId("3");
-
-            JsonBijlage jsonBijlage3 = new JsonBijlage();
-            jsonBijlage3.setBestandsNaam("politiedossier.pdf");
-            jsonBijlage3.setSoortBijlage("Schade");
-            jsonBijlage3.setId("4");
-
-            jsonSchade.getBijlages().add(jsonBijlage2);
-            jsonSchade.getBijlages().add(jsonBijlage3);
-
-            jsonRelatie.getLijstBijlages().add(jsonBijlage2);
-            jsonRelatie.getLijstBijlages().add(jsonBijlage3);
-
-            JsonOpmerking jsonOpmerking1 = new JsonOpmerking();
-            jsonOpmerking1.setId(1L);
-            jsonOpmerking1.setOpmerking("Dit is een opmerking");
-            jsonOpmerking1.setTijd("01-02-2014 09:55");
-            jsonOpmerking1.setMedewerker("Patrick Heidotting");
-            jsonSchade.getOpmerkingen().add(jsonOpmerking1);
-
-            JsonOpmerking jsonOpmerking2 = new JsonOpmerking();
-            jsonOpmerking2.setId(1L);
-            jsonOpmerking2
-                    .setOpmerking("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec purus sollicitudin, volutpat velit ac, ultricies ipsum. Proin sem lacus, interdum vel tellus a, hendrerit ultricies orci. Nulla facilisi. Phasellus lobortis, lectus non luctus consectetur, tortor eros pulvinar mauris, in hendrerit augue enim vitae lectus. Vestibulum elementum malesuada pretium. Cras ac tempus lorem. Quisque ultrices nunc id posuere pretium. Sed varius consequat nunc. Praesent odio lacus, pretium euismod mi interdum, pellentesque fringilla risus. Quisque a leo dolor. Nulla adipiscing tempus eros, ac sodales lorem congue vel. Aenean scelerisque quam diam, vitae molestie eros porta nec. Vivamus pretium sed augue nec.");
-            jsonOpmerking2.setTijd("02-03-2014 13:45");
-            jsonOpmerking2.setMedewerker("Gerben Zwiers");
-            jsonSchade.getOpmerkingen().add(jsonOpmerking2);
-
-            jsonRelatie.getSchades().add(jsonSchade);
+            // JsonPolis jsonPolis1 = new JsonPolis();
+            // jsonPolis1.setId(1L);
+            // jsonPolis1.setBetaalfrequentie("Maandelijks");
+            // jsonPolis1.setPolisNummer("12345");
+            // jsonPolis1.setIngangsDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            // jsonPolis1.setMaatschappij("Fa. List & Bedrog");
+            // jsonPolis1.setPremie("100 euro");
+            // jsonPolis1.setProlongatieDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            // jsonPolis1.setSoort("Autoverzekering");
+            // jsonPolis1.setWijzigingsDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            //
+            // jsonRelatie.getPolissen().add(jsonPolis1);
+            //
+            // JsonPolis jsonPolis2 = new JsonPolis();
+            // jsonPolis2.setId(2L);
+            // jsonPolis2.setBetaalfrequentie("Maandelijks");
+            // jsonPolis2.setPolisNummer("12345");
+            // jsonPolis2.setIngangsDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            // jsonPolis2.setMaatschappij("Fa. List & Bedrog");
+            // jsonPolis2.setPremie("100 euro");
+            // jsonPolis2.setProlongatieDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            // jsonPolis2.setSoort("Woonhuisverzekering");
+            // jsonPolis2.setWijzigingsDatum(new
+            // LocalDate().toString("yyyy-MM-dd"));
+            //
+            // JsonBijlage jsonBijlage = new JsonBijlage();
+            // jsonBijlage.setId("1");
+            // jsonBijlage.setBestandsNaam("Polis-5408096516-2.pdf");
+            // jsonBijlage.setSoortBijlage("Polis");
+            // jsonPolis2.getBijlages().add(jsonBijlage);
+            //
+            // JsonBijlage jsonBijlage1 = new JsonBijlage();
+            // jsonBijlage1.setId("2");
+            // jsonBijlage1.setBestandsNaam("Polis-5408096516-2.pdf");
+            // jsonBijlage1.setSoortBijlage("Polis");
+            // jsonPolis2.getBijlages().add(jsonBijlage1);
+            //
+            // jsonRelatie.getPolissen().add(jsonPolis2);
+            //
+            // JsonBedrijf jsonBedrijf1 = new JsonBedrijf();
+            // jsonBedrijf1.setId("2");
+            // jsonBedrijf1.setHuisnummer("666");
+            // jsonBedrijf1.setKvk("kvknummer");
+            // jsonBedrijf1.setNaam("Fa. List & Bedrog");
+            // jsonBedrijf1.setPlaats("Verwegistan");
+            // jsonBedrijf1.setPostcode("1234AA");
+            // jsonBedrijf1.setStraat("StraatBedrijf");
+            //
+            // JsonBedrijf jsonBedrijf2 = new JsonBedrijf();
+            // jsonBedrijf2.setId("1");
+            // jsonBedrijf2.setHuisnummer("33");
+            // jsonBedrijf2.setKvk("kvknummer");
+            // jsonBedrijf2.setNaam("NaamBedrijf 1");
+            // jsonBedrijf2.setPlaats("PlaatsBedrijf");
+            // jsonBedrijf2.setPostcode("1234AA");
+            // jsonBedrijf2.setStraat("StraatBedrijf");
+            // jsonBedrijf2.setToevoeging("A");
+            //
+            // jsonRelatie.getBedrijven().add(jsonBedrijf1);
+            // jsonRelatie.getBedrijven().add(jsonBedrijf2);
+            //
+            // jsonRelatie.getLijstBijlages().add(jsonBijlage);
+            // jsonRelatie.getLijstBijlages().add(jsonBijlage1);
+            //
+            // JsonSchade jsonSchade = new JsonSchade();
+            // jsonSchade.setDatumAfgehandeld("01-07-2014");
+            // jsonSchade.setDatumTijdMelding("30-06-2014 09:12");
+            // jsonSchade.setDatumTijdSchade("29-06-2014 10:23");
+            // jsonSchade.setEigenRisico("100 euro");
+            // jsonSchade.setLocatie("Ergens tussen de weg en de straat");
+            // jsonSchade.setOmschrijving("Tja, toen was het ineens boem!");
+            // jsonSchade.setPolis(1L);
+            // jsonSchade.setSchadeNummerMaatschappij("schadeNummerMaatschappij");
+            // jsonSchade.setSchadeNummerTussenPersoon("schadeNummerTussenPersoon");
+            // jsonSchade.setSoortSchade("Diefstal");
+            // jsonSchade.setStatusSchade("statusSchade");
+            //
+            // JsonBijlage jsonBijlage2 = new JsonBijlage();
+            // jsonBijlage2.setBestandsNaam("schadeformulier.pdf");
+            // jsonBijlage2.setSoortBijlage("Schade");
+            // jsonBijlage2.setId("3");
+            //
+            // JsonBijlage jsonBijlage3 = new JsonBijlage();
+            // jsonBijlage3.setBestandsNaam("politiedossier.pdf");
+            // jsonBijlage3.setSoortBijlage("Schade");
+            // jsonBijlage3.setId("4");
+            //
+            // jsonSchade.getBijlages().add(jsonBijlage2);
+            // jsonSchade.getBijlages().add(jsonBijlage3);
+            //
+            // jsonRelatie.getLijstBijlages().add(jsonBijlage2);
+            // jsonRelatie.getLijstBijlages().add(jsonBijlage3);
+            //
+            // JsonOpmerking jsonOpmerking1 = new JsonOpmerking();
+            // jsonOpmerking1.setId(1L);
+            // jsonOpmerking1.setOpmerking("Dit is een opmerking");
+            // jsonOpmerking1.setTijd("01-02-2014 09:55");
+            // jsonOpmerking1.setMedewerker("Patrick Heidotting");
+            // jsonSchade.getOpmerkingen().add(jsonOpmerking1);
+            //
+            // JsonOpmerking jsonOpmerking2 = new JsonOpmerking();
+            // jsonOpmerking2.setId(1L);
+            // jsonOpmerking2
+            // .setOpmerking("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec purus sollicitudin, volutpat velit ac, ultricies ipsum. Proin sem lacus, interdum vel tellus a, hendrerit ultricies orci. Nulla facilisi. Phasellus lobortis, lectus non luctus consectetur, tortor eros pulvinar mauris, in hendrerit augue enim vitae lectus. Vestibulum elementum malesuada pretium. Cras ac tempus lorem. Quisque ultrices nunc id posuere pretium. Sed varius consequat nunc. Praesent odio lacus, pretium euismod mi interdum, pellentesque fringilla risus. Quisque a leo dolor. Nulla adipiscing tempus eros, ac sodales lorem congue vel. Aenean scelerisque quam diam, vitae molestie eros porta nec. Vivamus pretium sed augue nec.");
+            // jsonOpmerking2.setTijd("02-03-2014 13:45");
+            // jsonOpmerking2.setMedewerker("Gerben Zwiers");
+            // jsonSchade.getOpmerkingen().add(jsonOpmerking2);
+            //
+            // jsonRelatie.getSchades().add(jsonSchade);
 
             GebruikerControllerTest.jsonRelatie = jsonRelatie;
         }
@@ -204,8 +213,9 @@ public class GebruikerControllerTest {
     public Response opslaan(JsonRelatie jsonRelatie) {
         GebruikerControllerTest.jsonRelatie = jsonRelatie;
 
-        return Response.status(500).entity(new JsonFoutmelding("jadajada")).build();
-        // return Response.status(202).entity(new JsonFoutmelding()).build();
+        // return Response.status(500).entity(new
+        // JsonFoutmelding("jadajada")).build();
+        return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
     @POST

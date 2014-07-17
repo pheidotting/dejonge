@@ -1,14 +1,8 @@
 package nl.dias.web.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.JsonSchade;
-import nl.dias.domein.polis.Polis;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -19,14 +13,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private RekeningnummerMapper rekeningnummerMapper;
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
-    private PolisMapper polisMapper;
-    @InjectParam
-    private BedrijfMapper bedrijfMapper;
-    @InjectParam
-    private BijlageMapper bijlageMapper;
-    @InjectParam
-    private SchadeMapper schadeMapper;
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
@@ -119,18 +105,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(ol.getId());
         }
-        jsonRelatie.setBedrijven(bedrijfMapper.mapAllNaarJson(relatie.getBedrijven()));
-        jsonRelatie.setPolissen(polisMapper.mapAllNaarJson(relatie.getPolissen()));
-
-        List<JsonBijlage> bijlages = new ArrayList<JsonBijlage>();
-        List<JsonSchade> schades = new ArrayList<>();
-        for (Polis polis : relatie.getPolissen()) {
-            bijlages.addAll(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
-            schades.addAll(schadeMapper.mapAllNaarJson(polis.getSchades()));
-        }
-
-        jsonRelatie.setLijstBijlages(bijlages);
-        jsonRelatie.setSchades(schades);
 
         return jsonRelatie;
     }
@@ -145,17 +119,5 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
         this.opmerkingMapper = opmerkingMapper;
-    }
-
-    public void setPolisMapper(PolisMapper polisMapper) {
-        this.polisMapper = polisMapper;
-    }
-
-    public void setBedrijfMapper(BedrijfMapper bedrijfMapper) {
-        this.bedrijfMapper = bedrijfMapper;
-    }
-
-    public void setBijlageMapper(BijlageMapper bijlageMapper) {
-        this.bijlageMapper = bijlageMapper;
     }
 }

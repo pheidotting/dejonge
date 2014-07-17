@@ -30,12 +30,7 @@ public class JsonRelatie {
     private String geslacht;
     private String burgerlijkeStaat;
     private List<Long> onderlingeRelaties;
-    private List<JsonBedrijf> bedrijven;
-    private List<JsonBedrijf> bedrijvenVoorPolis;
-    private List<JsonPolis> polissen;
     private boolean zakelijkeKlant;
-    private List<JsonBijlage> lijstBijlages;
-    private List<JsonSchade> schades;
 
     public String getGeboorteDatum() {
         return geboorteDatum;
@@ -227,36 +222,6 @@ public class JsonRelatie {
         this.onderlingeRelaties = onderlingeRelaties;
     }
 
-    public List<JsonBedrijf> getBedrijven() {
-        if (bedrijven == null) {
-            bedrijven = new ArrayList<>();
-        }
-        return bedrijven;
-    }
-
-    public void setBedrijven(List<JsonBedrijf> bedrijven) {
-        this.bedrijven = bedrijven;
-    }
-
-    public List<JsonBedrijf> getBedrijvenVoorPolis() {
-        return bedrijvenVoorPolis;
-    }
-
-    public void setBedrijvenVoorPolis(List<JsonBedrijf> bedrijvenVoorPolis) {
-        this.bedrijvenVoorPolis = bedrijvenVoorPolis;
-    }
-
-    public List<JsonPolis> getPolissen() {
-        if (polissen == null) {
-            polissen = new ArrayList<>();
-        }
-        return polissen;
-    }
-
-    public void setPolissen(List<JsonPolis> polissen) {
-        this.polissen = polissen;
-    }
-
     public boolean isZakelijkeKlant() {
         return zakelijkeKlant;
     }
@@ -265,33 +230,11 @@ public class JsonRelatie {
         this.zakelijkeKlant = zakelijkeKlant;
     }
 
-    public List<JsonBijlage> getLijstBijlages() {
-        if (lijstBijlages == null) {
-            lijstBijlages = new ArrayList<JsonBijlage>();
-        }
-        return lijstBijlages;
-    }
-
-    public void setLijstBijlages(List<JsonBijlage> lijstBijlages) {
-        this.lijstBijlages = lijstBijlages;
-    }
-
-    public List<JsonSchade> getSchades() {
-        if (schades == null) {
-            schades = new ArrayList<JsonSchade>();
-        }
-        return schades;
-    }
-
-    public void setSchades(List<JsonSchade> schades) {
-        this.schades = schades;
-    }
-
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(achternaam).append(bedrijven).append(bsn).append(burgerlijkeStaat).append(geslacht).append(huisnummer).append(id).append(identificatie).append(kantoor)
+        return new HashCodeBuilder().append(achternaam).append(bsn).append(burgerlijkeStaat).append(geslacht).append(huisnummer).append(id).append(identificatie).append(kantoor)
                 .append(onderlingeRelaties).append(opmerkingen).append(plaats).append(postcode).append(rekeningnummers).append(straat).append(telefoonnummers).append(toevoeging).append(tussenvoegsel)
-                .append(voornaam).append(polissen).append(zakelijkeKlant).append(lijstBijlages).toHashCode();
+                .append(voornaam).append(zakelijkeKlant).toHashCode();
     }
 
     @Override
@@ -307,12 +250,11 @@ public class JsonRelatie {
         }
         JsonRelatie other = (JsonRelatie) obj;
 
-        return new EqualsBuilder().append(achternaam, other.achternaam).append(bedrijven, other.bedrijven).append(bsn, other.bsn).append(burgerlijkeStaat, other.burgerlijkeStaat)
-                .append(geslacht, other.geslacht).append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie).append(kantoor, other.kantoor)
+        return new EqualsBuilder().append(achternaam, other.achternaam).append(bsn, other.bsn).append(burgerlijkeStaat, other.burgerlijkeStaat).append(geslacht, other.geslacht)
+                .append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie).append(kantoor, other.kantoor)
                 .append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(plaats, other.plaats).append(postcode, other.postcode)
                 .append(rekeningnummers, other.rekeningnummers).append(straat, other.straat).append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging)
-                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(polissen, other.polissen).append(zakelijkeKlant, other.zakelijkeKlant)
-                .append(lijstBijlages, other.lijstBijlages).isEquals();
+                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
     }
 
     @Override
@@ -338,8 +280,6 @@ public class JsonRelatie {
         builder.append(", geslacht=").append(geslacht);
         builder.append(", burgerlijkeStaat=").append(burgerlijkeStaat);
         builder.append(", onderlingeRelaties=").append(onderlingeRelaties);
-        builder.append(", bedrijven=").append(bedrijven);
-        builder.append(", polissen=").append(polissen);
         builder.append(", zakelijkeKlant=").append(zakelijkeKlant);
         builder.append("]");
         return builder.toString();
