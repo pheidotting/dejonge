@@ -8,7 +8,6 @@ import java.util.List;
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.dias_web.medewerker.GebruikerControllerTest;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
-import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
@@ -62,7 +61,6 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.setToevoeging("toevoeging");
         jsonRelatie.setPostcode("1234AA");
         jsonRelatie.setPlaats("plaats");
-        jsonRelatie.setBedrijven(new ArrayList<JsonBedrijf>());
         jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic1", "rekeningnummer1"));
@@ -77,7 +75,6 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer3", "Werk"));
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer4", "Mobiel"));
         jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer5", "Vast"));
-        jsonRelatie.getPolissen();
 
         return jsonRelatie;
     }
