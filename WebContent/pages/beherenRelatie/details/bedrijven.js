@@ -1,5 +1,5 @@
 function go(log, relatieId, actie, subId){
-	$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"id" : relatieId}, function(data) {
+	$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 		log.debug("Gegevens opgehaald, applyBindings");
        	ko.applyBindings(new Bedrijven(data, log));
     });

@@ -34,7 +34,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
 @Entity
@@ -43,7 +42,6 @@ import org.joda.time.LocalDate;
 @AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
 @NamedQueries({ @NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres") })
-@Audited
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 
@@ -167,6 +165,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     }
 
     public LocalDate getGeboorteDatum() {
+        if (geboorteDatum == null) {
+            return null;
+        }
         return new LocalDate(geboorteDatum);
     }
 
@@ -175,6 +176,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     }
 
     public LocalDate getOverlijdensdatum() {
+        if (overlijdensdatum == null) {
+            return null;
+        }
         return new LocalDate(overlijdensdatum);
     }
 

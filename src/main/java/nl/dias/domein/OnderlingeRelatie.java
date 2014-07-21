@@ -17,11 +17,8 @@ import javax.persistence.Table;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
-import org.hibernate.envers.Audited;
-
 @Entity
 @Table(name = "ONDERLINGERELATIES")
-@Audited
 public class OnderlingeRelatie implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8731485363183283190L;
 
@@ -57,10 +54,12 @@ public class OnderlingeRelatie implements PersistenceObject, Serializable {
         setRelatieMet(relatieMet, terug);
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

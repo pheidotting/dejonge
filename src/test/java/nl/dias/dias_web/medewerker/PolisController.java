@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.json.JsonFoutmelding;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
@@ -31,6 +32,38 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
+
+    @GET
+    @Path("/lijst")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {
+
+        List<JsonPolis> lijst = new ArrayList<>();
+        JsonPolis polis1 = new JsonPolis();
+        polis1.setId(1L);
+        polis1.setIngangsDatum("01-02-2014");
+        polis1.setPolisNummer("polisNummer1");
+        polis1.setProlongatieDatum("02-03-2014");
+        polis1.setMaatschappij("maatschappij1");
+        JsonPolis polis2 = new JsonPolis();
+        polis2.setId(2L);
+        polis2.setIngangsDatum("03-04-2014");
+        polis2.setPolisNummer("polisNummer2");
+        polis2.setProlongatieDatum("04-05-2014");
+        polis2.setMaatschappij("maatschappij2");
+        JsonPolis polis3 = new JsonPolis();
+        polis3.setId(3L);
+        polis3.setIngangsDatum("05-06-2014");
+        polis3.setPolisNummer("polisNummer3");
+        polis3.setProlongatieDatum("06-07-2014");
+        polis3.setMaatschappij("maatschappij3");
+
+        lijst.add(polis1);
+        lijst.add(polis2);
+        lijst.add(polis3);
+
+        return lijst;
+    }
 
     @GET
     @Path("/verwijder")

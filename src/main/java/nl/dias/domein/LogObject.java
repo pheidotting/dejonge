@@ -7,59 +7,58 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "LOG")
-@Audited
 public class LogObject {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private Long id;
-	@Column(name = "LEVEL")
-	private String level;
-	@Column(name = "MESSAGE")
-	private String message;
-	@Column(name = "TIMESTAMP")
-	private LocalDateTime timestamp;
-	@Column(name = "URL")
-	private String url;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "LEVEL")
+    private final String level;
+    @Column(name = "MESSAGE")
+    private final String message;
+    @Column(name = "TIMESTAMP")
+    private final LocalDateTime timestamp;
+    @Column(name = "URL")
+    private final String url;
 
-	public LogObject(String level, String message, String timestamp, String url) {
-		super();
-		this.level = level;
-		this.message = message;
-		this.timestamp = converteerTimestampNaarLocalDate(timestamp);
-		this.url = url;
-	}
+    public LogObject(String level, String message, String timestamp, String url) {
+        super();
+        this.level = level;
+        this.message = message;
+        this.timestamp = converteerTimestampNaarLocalDate(timestamp);
+        this.url = url;
+    }
 
-	public String getLevel() {
-		return level;
-	}
+    public String getLevel() {
+        return level;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String toString() {
+    @Override
+    public String toString() {
 
-		String seperator = " - ";
+        String seperator = " - ";
 
-		return level + seperator + message + seperator + timestamp + seperator + url;
-	}
+        return level + seperator + message + seperator + timestamp + seperator + url;
+    }
 
-	private LocalDateTime converteerTimestampNaarLocalDate(String timestamp) {
-		return new LocalDateTime(Long.parseLong(timestamp));
-	}
+    private LocalDateTime converteerTimestampNaarLocalDate(String timestamp) {
+        return new LocalDateTime(Long.parseLong(timestamp));
+    }
 
 }

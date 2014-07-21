@@ -14,11 +14,9 @@ import javax.persistence.Table;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "VERZEKERINGSMAATSCHAPPIJ")
-@Audited
 @NamedQueries({ @NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
         @NamedQuery(name = "VerzekeringsMaatschappij.zoekOpNaam", query = "select v from VerzekeringsMaatschappij v where v.naam = :naam") })
 public class VerzekeringsMaatschappij implements PersistenceObject, Serializable, Comparable<VerzekeringsMaatschappij> {

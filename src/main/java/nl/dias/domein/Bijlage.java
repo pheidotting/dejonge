@@ -20,12 +20,12 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "BIJLAGE")
-@Audited
-@NamedQueries({ @NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis") })
+@NamedQueries({ @NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"),
+        @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"),
+        @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie") })
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
 

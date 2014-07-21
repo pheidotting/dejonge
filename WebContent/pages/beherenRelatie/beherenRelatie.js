@@ -15,28 +15,28 @@ function start(log, relatieId, actie, subId){
 			
 			//Navigatie
 			$("#beherenRelatie").click(function(){
-				document.location.hash='#beherenRelatie/3';
+				document.location.hash='#beherenRelatie/' + relatieId;
 			});
 			$("#bedrijven").click(function(){
-				document.location.hash='#beherenRelatie/3/bedrijven';
+				document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
 			});
 			$("#bedrijf").click(function(){
-				document.location.hash='#beherenRelatie/3/bedrijf/0';
+				document.location.hash='#beherenRelatie/' + relatieId + '/bedrijf/0';
 			});
 			$("#polissen").click(function(){
-				document.location.hash='#beherenRelatie/3/polissen';
+				document.location.hash='#beherenRelatie/' + relatieId + '/polissen';
 			});
 			$("#polis").click(function(){
-				document.location.hash='#beherenRelatie/3/polis/0';
+				document.location.hash='#beherenRelatie/' + relatieId + '/polis/0';
 			});
 			$("#schades").click(function(){
-				document.location.hash='#beherenRelatie/3/schades';
+				document.location.hash='#beherenRelatie/' + relatieId + '/schades';
 			});
 			$("#schade").click(function(){
-				document.location.hash='#beherenRelatie/3/schade/0';
+				document.location.hash='#beherenRelatie/' + relatieId + '/schade/0';
 			});
 			$("#bijlages").click(function(){
-				document.location.hash='#beherenRelatie/3/bijlages';
+				document.location.hash='#beherenRelatie/' + relatieId + '/bijlages';
 			});
 		}
 	});

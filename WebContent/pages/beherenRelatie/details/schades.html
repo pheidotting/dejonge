@@ -1,0 +1,76 @@
+<div id="schadesHerhaal" data-bind="foreach: schades, visible: schades().length > 0">
+	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>
+					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soortSchade"></a>
+				</h4>
+			</div>
+			<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div data-bind="if: soortSchade">
+						<span class="schadeLabel">Soort schade :</span>
+						<span data-bind="text: soortSchade"></span>
+					</div>
+					<div data-bind="if: schadeNummerTussenPersoon">
+						<span class="schadeLabel">Schadenummer Maatschappij :</span>
+						<span data-bind="text: schadeNummerMaatschappij"></span>
+					</div>
+					<div data-bind="if: schadeNummerTussenPersoon">
+						<span class="schadeLabel">Schadenummer Tussenpersoon :</span>
+						<span data-bind="text: schadeNummerTussenPersoon"></span>
+					</div>
+					<div data-bind="if: locatie">
+						<span class="schadeLabel">Locatie :</span>
+						<span data-bind="text: locatie"></span>
+					</div>
+					<div data-bind="if: statusSchade">
+						<span class="schadeLabel">Status schade :</span>
+						<span data-bind="text: statusSchade"></span>
+					</div>
+					<div data-bind="if: datumTijdMelding">
+						<span class="schadeLabel">Datum/Tijd schade :</span>
+						<span data-bind="text: datumTijdSchade"></span>
+					</div>
+					<div data-bind="if: datumTijdMelding">
+						<span class="schadeLabel">Datum/Tijd melding :</span>
+						<span data-bind="text: datumTijdMelding"></span>
+					</div>
+					<div data-bind="if: eigenRisico">
+						<span class="schadeLabel">Datum afgehandeld :</span>
+						<span data-bind="text: datumAfgehandeld"></span>
+					</div>
+					<div data-bind="if: eigenRisico">
+						<span class="schadeLabel">Eigen risico :</span>
+						<span data-bind="text: eigenRisico"></span>
+					</div>
+					<div data-bind="if: omschrijving">
+						<span class="schadeLabel">Omschrijving :</span>
+						<span data-bind="text: omschrijving"></span>
+					</div>
+
+					<div id="opmerkingenBijSchade" data-bind="foreach: opmerkingen, visible: opmerkingen().length > 0">
+						<div data-bind="if: tijd">
+							<span class="schadeLabel">Opmerking</span>
+							<span data-bind="text: tijd"></span>
+							<span data-bind="text: medewerker"></span>
+						</div>
+						<div data-bind="if: opmerking">
+							<span class="schadeLabel">&nbsp;</span>
+							<span data-bind="text: opmerking" style="width:900px;display:block;float:left;"></span>
+						</div>
+						<div style="clear:both;"></div>
+					</div>
+
+					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+						<div>
+							<span class="schadeLabel">Bijlage :</span>
+							<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+    	</div>
+    </div>
+</div>

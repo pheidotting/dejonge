@@ -5,9 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
+import nl.dias.repository.BijlageRepository;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
@@ -21,6 +25,12 @@ public class BijlageService {
     private static final Logger LOGGER = Logger.getLogger(BijlageService.class);
     @InjectParam
     private ArchiefService archiefService;
+    @InjectParam
+    private BijlageRepository bijlageRepository;
+
+    public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
+        return bijlageRepository.alleBijlagesBijRelatie(relatie);
+    }
 
     public String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
         String[] exp = fileDetail.getFileName().split("//.");

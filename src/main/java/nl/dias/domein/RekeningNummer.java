@@ -17,11 +17,9 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "REKENINGNUMMER")
-@Audited
 public class RekeningNummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 6164849876034232194L;
 

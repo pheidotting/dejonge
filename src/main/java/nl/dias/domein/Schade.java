@@ -25,14 +25,13 @@ import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "SCHADE")
-@Audited
-@NamedQueries({ @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij") })
+@NamedQueries({ @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
+        @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie") })
 public class Schade implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8340805705038811388L;
 

@@ -19,11 +19,9 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "TELEFOONNUMMER")
-@Audited
 public class Telefoonnummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -8991287195295458633L;
 
@@ -40,10 +38,12 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

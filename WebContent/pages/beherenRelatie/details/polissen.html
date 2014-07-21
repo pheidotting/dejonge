@@ -1,0 +1,75 @@
+<div id="polissenHerhaal" data-bind="foreach: polissen, visible: polissen().length > 0">
+	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 data-bind="attr:{class: className}">
+					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: soort"></a>
+					&nbsp;&nbsp;&nbsp;
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							Kies een actie <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<span class="glyphicon glyphicon-pencil" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
+								<span style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis">Bewerken</span>
+							</li>
+							<li>
+								<span class="glyphicon glyphicon-thumbs-down" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
+								<span style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis">Schade melden</span>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
+								<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis">Verwijderen</span>
+							</li>
+						</ul>
+					</div>
+				</h4>
+			</div>
+			<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div data-bind="if: polisNummer">
+						<span class="polisLabel">Polisnummer :</span>
+						<span data-bind="text: polisNummer"></span>
+					</div>
+					<div data-bind="if: ingangsDatum">
+						<span class="polisLabel">Ingangsdatum :</span>
+						<span data-bind="text: ingangsDatum"></span>
+					</div>
+					<div data-bind="if: wijzigingsDatum">
+						<span class="polisLabel">Wijzigingsdatum :</span>
+						<span data-bind="text: wijzigingsDatum"></span>
+					</div>
+					<div data-bind="if: prolongatieDatum">
+						<span class="polisLabel">Prolongatie :</span>
+						<span data-bind="text: prolongatieDatum"></span>
+					</div>
+					<div data-bind="if: maatschappij">
+						<span class="polisLabel">Maatschappij :</span>
+						<span data-bind="text: maatschappij"></span>
+					</div>
+					<div data-bind="if: premie">
+						<span class="polisLabel">Premie :</span>
+						<span data-bind="text: premie"></span>
+					</div>
+					<div data-bind="if: betaalfrequentie">
+						<span class="polisLabel">Betaalfrequentie :</span>
+						<span data-bind="text: betaalfrequentie"></span>
+					</div>
+					<div data-bind="if: bedrijf">
+						<span class="polisLabel">Bedrijf :</span>
+						<span data-bind="text: bedrijf"></span>
+					</div>
+						
+					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+						<div>
+							<span class="polisLabel">Bijlage :</span>
+							<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

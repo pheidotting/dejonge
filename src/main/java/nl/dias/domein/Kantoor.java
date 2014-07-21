@@ -27,12 +27,10 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "KANTOOR")
-@Audited
 public class Kantoor implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 3842257675777516787L;
 

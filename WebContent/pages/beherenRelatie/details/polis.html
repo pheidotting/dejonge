@@ -1,0 +1,65 @@
+<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen"></select>
+<select id="soortVerzekering" name="soortVerzekering">
+	<option value="">Kies een soort verzekering...</option>
+	<option>Aansprakelijkheid</option>
+	<option>Auto</option>
+	<option>Brom-/Snorfiets</option>
+	<option>Camper</option>
+	<option>Doorlopende Annulering</option>
+	<option>Doorlopende Reis</option>
+	<option>Fiets</option>
+	<option>Inboedel</option>
+	<option>Leven</option>
+	<option>Mobiele apparatuur</option>
+	<option>Motor</option>
+	<option>Ongevallen</option>
+	<option>Pleziervaartuigen</option>
+	<option>Recreatie</option>
+	<option>Rechtsbijstand</option>
+	<option>Reis</option>
+	<option>Woonhuis</option>
+	<option>Zorg</option>
+</select>
+<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;">
+	<option value="">Kies een soort verzekering...</option>
+	<option>Aansprakelijkheid</option>
+	<option>Auto</option>
+	<option>Brom-/Snorfiets</option>
+	<option>Camper</option>
+	<option>Doorlopende Annulering</option>
+	<option>Doorlopende Reis</option>
+	<option>Fiets</option>
+	<option>Inboedel</option>
+	<option>Leven</option>
+	<option>Mobiele apparatuur</option>
+	<option>Motor</option>
+	<option>Ongevallen</option>
+	<option>Pleziervaartuigen</option>
+	<option>Recreatie</option>
+	<option>Rechtsbijstand</option>
+	<option>Reis</option>
+	<option>Woonhuis</option>
+	<option>Zorg</option>
+</select>
+<form enctype="multipart/form-data">
+	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" />
+	<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
+	<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
+	<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
+	<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." />
+	<div id="div_betaalfrequentie">
+		<select id="betaalfrequentie">
+			<option value="">Betaalfrequentie...</option>
+			<option>Maand</option>
+			<option>Kwartaal</option>
+			<option>Half jaar</option>
+			<option>Jaar</option>
+		</select>
+	</div>
+	<select id="bedrijfBijPolis" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
+		<option data-bind="text: naam, value: id"></option>
+	</select>
+	<input type="file" id="file" name="file" />
+</form>
+<button id="opslaanPolis" class=" btn btn-primary" data-bind="click: $root.voegPolisToe">Opslaan</button>
+<progress style="display:none;"></progress>

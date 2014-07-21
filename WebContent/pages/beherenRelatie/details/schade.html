@@ -1,0 +1,110 @@
+<h4>Schademeldingen</h4>
+<form enctype="multipart/form-data" id="schadeMeldForm">
+<div class="form-group">
+	<label for="polisVoorSchademelding">Verzekering</label>
+	<select id="polisVoorSchademelding" data-bind="foreach: polissen, visible: polissen().length > 0">
+		<option id="polisVoorSchade" data-bind="text: soort, value: id"></option>
+	</select>
+</div>
+<div class="form-group">
+	<label for="schadeNummerMaatschappij">Schadenummer Maatschappij</label>
+	<input class="form-control" type="text" id="schadeNummerMaatschappij" name="schadeNummerMaatschappij" />
+</div>
+<div class="form-group">
+	<label for="schadeNummerTussenpersoon">Schadenummer Tussenpersoon</label>
+	<input class="form-control" type="text" id="schadeNummerTussenpersoon" name="schadeNummerTussenpersoon" />
+</div>
+<div class="form-group">
+	<label for="soortSchade">Soort schade</label>
+	<input class="form-control" type="text" id="soortSchade" name="soortSchade" />
+</div>
+<div class="form-group">
+	<label for="locatieSchade">Locatie schade</label>
+	<input class="form-control" type="text" id="locatieSchade" name="locatieSchade" />
+</div>
+<div class="form-group">
+	<label for="statusSchade">Status schade</label>
+	<select id="statusSchade" name="statusSchade"></select>
+</div>
+<div class="form-group">
+	<label for="datumTijdSchade">Datum tijd schade</label>
+	<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" />
+</div>
+<div class="form-group">
+	<label for="datumTijdMelding">Datum tijd melding</label>
+	<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" />
+</div>
+<div class="form-group">
+	<label for="datumAfgehandeld">Datum afgehandeld</label>
+	<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" />
+</div>
+<div class="form-group">
+	<label for="eigenRisico">Eigen risico</label>
+	<input class="form-control" type="text" id="eigenRisico" name="eigenRisico" />
+</div>
+<div class="form-group">
+	<label for="omschrijving">Omschrijving</label>
+	<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;"></textarea>
+</div>
+<div class="form-group" id="uploadSchade1">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade1File" name="uploadSchade1File" onchange="nieuweSchadeUpload(1);" />
+	<progress id="fileSchade1Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade2" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade2File" name="uploadSchade2File" onchange="nieuweSchadeUpload(2);" />
+	<progress id="fileSchade2Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade3" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade3File" name="uploadSchade3File" onchange="nieuweSchadeUpload(3);" />
+	<progress id="fileSchade3Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade4" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade4File" name="uploadSchade4File" onchange="nieuweSchadeUpload(4);" />
+	<progress id="fileSchade4Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade5" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade5File" name="uploadSchade5File" onchange="nieuweSchadeUpload(5);" />
+	<progress id="fileSchade5Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade6" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade6File" name="uploadSchade6File" onchange="nieuweSchadeUpload(6);" />
+	<progress id="fileSchade6Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade7" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade7File" name="uploadSchade7File" onchange="nieuweSchadeUpload(7);" />
+	<progress id="fileSchade7Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade8" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade8File" name="uploadSchade8File" onchange="nieuweSchadeUpload(8);" />
+	<progress id="fileSchade8Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade9" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade9File" name="uploadSchade9File" onchange="nieuweSchadeUpload(9);" />
+	<progress id="fileSchade9Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadSchade10" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadSchade10File" name="uploadSchade10File" onchange="nieuweSchadeUpload(10);" />
+	<progress id="fileSchade10Progress" style="display:none;"></progress>
+</div>
+<input type="hidden" id="hoeveelFiles" />
+<script>
+	function nieuweSchadeUpload(nummer){
+		$('#uploadSchade' + ++nummer).show();
+		$('#hoeveelFiles').val(nummer);
+	}
+</script>
+<div class="form-group">
+	<label for="schadeMeldingOpslaan">&nbsp;</label>
+	<button class="btn btn-primary" id="schadeMeldingOpslaan">Opslaan</button>
+</div>
+</form>

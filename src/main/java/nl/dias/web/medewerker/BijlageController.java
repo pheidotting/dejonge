@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,11 +20,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
+import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.BijlageService;
+import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.SchadeService;
+import nl.dias.web.mapper.BijlageMapper;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
@@ -44,6 +51,24 @@ public class BijlageController {
     private BijlageService bijlageService;
     @InjectParam
     private SchadeService schadeService;
+    @InjectParam
+    private GebruikerService gebruikerService;
+    @InjectParam
+    private BijlageMapper bijlageMapper;
+
+    @GET
+    @Path("/lijst")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonBijlage> lijst(@QueryParam("relatieId") String relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
+
+        Set<Bijlage> bijlages = new HashSet<>();
+        for (Bijlage bijlage : bijlageService.alleBijlagesBijRelatie(relatie)) {
+            bijlages.add(bijlage);
+        }
+
+        return bijlageMapper.mapAllNaarJson(bijlages);
+    }
 
     @GET
     @Path("/download")

@@ -23,12 +23,10 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "SESSIE")
-@Audited
 @NamedQueries({ @NamedQuery(name = "Sessie.allesVanGebruiker", query = "select s from Sessie s where s.gebruiker = :gebruiker") })
 public class Sessie implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -6578849306393389265L;

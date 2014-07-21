@@ -6,6 +6,7 @@ import javax.inject.Named;
 import javax.persistence.TypedQuery;
 
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
@@ -52,6 +53,13 @@ public class SchadeRepository extends AbstractRepository<Schade> {
         query.setParameter("schadeNummerMaatschappij", schadeNummerMaatschappij);
 
         return query.getSingleResult();
+    }
+
+    public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
+        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.allesVanRelatie", Schade.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
     }
 
     @Transactional

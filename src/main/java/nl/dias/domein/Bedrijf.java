@@ -23,11 +23,9 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "BEDRIJF")
-@Audited
 @NamedQueries({ @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie") })
 public class Bedrijf implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 4611123664803995245L;

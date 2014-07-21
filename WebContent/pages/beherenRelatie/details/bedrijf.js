@@ -4,7 +4,7 @@ function go(log, relatieId, actie, subId){
 	$('#opslaanBedrijf').click(function(){
 		verbergMeldingen();
       	var bedrijf = {
-	       	relatie : $('#id').val(),
+	       	relatie : relatieId,
 	       	naam : $('#naamBedrijf').val(),
 	        kvk : $('#kvkBedrijf').val(),
 	       	straat : $('#straatBedrijf').val(),
@@ -21,6 +21,7 @@ function go(log, relatieId, actie, subId){
 	        data: json,
 	        success: function (response) {
 	        	plaatsMelding("De gegevens zijn opgeslagen");
+	    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
 	        },
 	        error: function (data) {
 	        	plaatsFoutmelding(data);

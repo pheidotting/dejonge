@@ -125,6 +125,10 @@ public class PolisService {
         polisRepository.verwijder(polis);
     }
 
+    public List<Polis> allePolissenBijRelatie(Relatie relatie) {
+        return polisRepository.allePolissenBijRelatie(relatie);
+    }
+
     public void opslaan(OpslaanPolis opslaanPolis) {
         // Eerst kijken of het polisnummer al voorkomt
         if (zoekOpPolisNummer(opslaanPolis.getPolisNummer()) != null) {

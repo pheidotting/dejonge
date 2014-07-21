@@ -18,15 +18,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import nl.lakedigital.domein.Onderwerp;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.envers.Audited;
-
-import com.sun.xml.txw2.annotation.XmlElement;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -36,9 +32,6 @@ import com.sun.xml.txw2.annotation.XmlElement;
 @NamedQueries({ @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.identificatie = :emailadres"),
         @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"),
         @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), })
-@Audited
-@XmlElement
-@XmlRootElement
 public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
 

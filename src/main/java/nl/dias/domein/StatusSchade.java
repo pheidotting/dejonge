@@ -11,11 +11,8 @@ import javax.persistence.Table;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
-import org.hibernate.envers.Audited;
-
 @Entity
 @Table(name = "STATUSSCHADE")
-@Audited
 @NamedQueries({ @NamedQuery(name = "StatusSchade.zoekOpSoort", query = "select s from StatusSchade s where s.status =:status and s.ingebruik = '1'") })
 public class StatusSchade implements PersistenceObject {
     @Id

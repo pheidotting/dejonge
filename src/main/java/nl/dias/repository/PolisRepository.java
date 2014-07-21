@@ -46,6 +46,13 @@ public class PolisRepository extends AbstractRepository<Polis> {
         return query.getResultList();
     }
 
+    public List<Polis> allePolissenBijRelatie(Relatie relatie) {
+        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesVanRelatie", Polis.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
+    }
+
     @Transactional
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
         relatie = getEm().find(Relatie.class, relatie.getId());

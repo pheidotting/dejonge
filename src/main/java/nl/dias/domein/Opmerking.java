@@ -20,12 +20,10 @@ import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.envers.Audited;
 import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "OPMERKING")
-@Audited
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
 

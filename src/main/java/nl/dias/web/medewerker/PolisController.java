@@ -1,6 +1,9 @@
 package nl.dias.web.medewerker;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -11,12 +14,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonFoutmelding;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
+import nl.dias.web.mapper.PolisMapper;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +40,22 @@ public class PolisController {
     private GebruikerService gebruikerService;
     @InjectParam
     private BijlageService bijlageService;
+    @InjectParam
+    private PolisMapper polisMapper;
+
+    @GET
+    @Path("/lijst")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
+
+        Set<Polis> polissen = new HashSet<>();
+        for (Polis polis : polisService.allePolissenBijRelatie(relatie)) {
+            polissen.add(polis);
+        }
+
+        return polisMapper.mapAllNaarJson(polissen);
+    }
 
     @POST
     @Path("/opslaan")

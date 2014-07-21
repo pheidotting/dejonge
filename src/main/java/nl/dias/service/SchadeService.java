@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Named;
 
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.SoortSchade;
@@ -85,6 +86,10 @@ public class SchadeService {
 
         LOGGER.debug("Schade opslaan");
         schadeRepository.opslaan(schade);
+    }
+
+    public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
+        return schadeRepository.alleSchadesBijRelatie(relatie);
     }
 
     public void setSchadeRepository(SchadeRepository schadeRepository) {
