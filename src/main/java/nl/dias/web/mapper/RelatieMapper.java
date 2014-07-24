@@ -39,6 +39,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setAchternaam(jsonRelatie.getAchternaam());
         relatie.getAdres().setStraat(jsonRelatie.getStraat());
         relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
+        relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
         try {
             relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
         } catch (NumberFormatException nfe) {
@@ -51,10 +52,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setBsn(jsonRelatie.getBsn());
         relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
         relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
-        // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
-        // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
         relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
         relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0, 1)));
+        relatie.getBedrijven();
         return relatie;
     }
 

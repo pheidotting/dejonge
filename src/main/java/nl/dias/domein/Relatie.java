@@ -284,7 +284,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("geslacht", this.geslacht).append("kantoor", this.kantoor).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adres", this.adres)
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", this.kantoor).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adres", this.adres)
                 .append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen())
                 .append("rekeningnummers", this.rekeningnummers).append("bedrijven", this.bedrijven).append("voornaam", this.getVoornaam()).append("id", this.getId())
                 .append("overlijdensdatum", this.overlijdensdatum).append("sessies", this.getSessies()).append("wachtwoord", this.getWachtwoord()).append("opmerkingen", this.opmerkingen)

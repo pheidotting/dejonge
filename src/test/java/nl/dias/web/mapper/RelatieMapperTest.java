@@ -2,7 +2,6 @@ package nl.dias.web.mapper;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -73,8 +72,8 @@ public class RelatieMapperTest extends EasyMockSupport {
         jsonRelatie.setHuisnummer("41");
         jsonRelatie.setGeslacht("Man");
         jsonRelatie.setBurgerlijkeStaat("Ongehuwd");
-        jsonRelatie.setGeboorteDatum("03-03-2014");
-        jsonRelatie.setOverlijdensdatum("07-06-2014");
+        jsonRelatie.setGeboorteDatum("2014-02-03");
+        jsonRelatie.setOverlijdensdatum("2014-6-07");
         jsonRelatie.setTelefoonnummers(new ArrayList<JsonTelefoonnummer>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.setOpmerkingen(new ArrayList<JsonOpmerking>());
@@ -90,9 +89,13 @@ public class RelatieMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapVanJson() {
+        expect(telefoonnummerMapper.mapAllVanJson(new ArrayList<JsonTelefoonnummer>())).andReturn(new HashSet<Telefoonnummer>());
+        expect(rekeningnummerMapper.mapAllVanJson(new ArrayList<JsonRekeningNummer>())).andReturn(new HashSet<RekeningNummer>());
+        expect(opmerkingMapper.mapAllVanJson(new ArrayList<JsonOpmerking>())).andReturn(new HashSet<Opmerking>());
+
         replayAll();
 
-        assertNull(mapper.mapVanJson(jsonRelatie));
+        assertEquals(relatie, mapper.mapVanJson(jsonRelatie));
     }
 
     @Test
