@@ -1,6 +1,7 @@
-function Relatie(data) {
+function Relatie(data, log) {
     var self = this;
     
+	this.identificatie = ko.observable(data.identificatie);
 	this.id = ko.observable(data.id);
 	this.voornaam = ko.observable(data.voornaam);
 	this.achternaam = ko.observable(data.achternaam);
@@ -11,12 +12,11 @@ function Relatie(data) {
 	this.postcode = ko.observable(data.postcode);
 	this.plaats = ko.observable(data.plaats);
 	this.bsn = ko.observable(data.bsn);
-	this.identificatie = ko.observable(data.identificatie);
 	this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
 	if(this.zakelijkeKlant){
-		$('#tabs').puitabview('enable' , 1);
+//		$('#tabs').puitabview('enable' , 1);
 	}else{
-		$('#tabs').puitabview('disable' , 1);
+//		$('#tabs').puitabview('disable' , 1);
 	}
 	this.rekeningnummers = ko.observableArray();
 	if(data.rekeningnummers != null){
@@ -36,7 +36,7 @@ function Relatie(data) {
 	this.geslacht = ko.observable(data.geslacht);
 	this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
 
-	this.onderlingeRelaties = ko.observableArray();
+//	this.onderlingeRelaties = ko.observableArray();
 	/*		if(data.onderlingeRelaties != null){
 		$.each(data.onderlingeRelaties, function(i, item) {
 			self.onderlingeRelaties.push(new OnderlingeRelatie(item));
@@ -59,8 +59,8 @@ function Relatie(data) {
     	self.telefoonnummers.remove(telefoon);
     }
     
-    
     this.opslaan = function(){
+    	console.log("opslaan");
     	verbergMeldingen();
     	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
     		this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
@@ -133,8 +133,13 @@ function Bijlage(data){
 
 function go(log, relatieId, actie, subId){
 	log.debug("Ophalen gegevens Relatie met id " + relatieId);
-	$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
-		log.debug("Gegevens opgehaald, applyBindings");
-       	ko.applyBindings(new Relatie(data));
-    });
+	if(relatieId != 0 && relatieId != null){
+		$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
+			log.debug("Gegevens opgehaald, applyBindings");
+	       	ko.applyBindings(new Relatie(data, log));
+	    });
+	}else{
+		log.debug("applyBindings op een nieuwe Relatie object");
+		ko.applyBindings(new Relatie('', log));
+	}
 }

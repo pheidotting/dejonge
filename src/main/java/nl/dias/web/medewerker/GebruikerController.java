@@ -1,22 +1,27 @@
 package nl.dias.web.medewerker;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.repository.KantoorRepository;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
@@ -40,6 +45,12 @@ public class GebruikerController {
     private RelatieMapper relatieMapper;
     @InjectParam
     private BedrijfMapper bedrijfMapper;
+    @InjectParam
+    private AuthorisatieService authorisatieService;
+    @Context
+    private HttpServletRequest httpServletRequest;
+    @Context
+    private HttpServletResponse httpServletResponse;
 
     @GET
     @Path("/lees")
@@ -96,7 +107,20 @@ public class GebruikerController {
 
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
-            relatie.setKantoor(kantoorRepository.getIngelogdKantoor());
+            String sessie = new String();
+            if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
+                sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
+            }
+
+            Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+
+            LOGGER.debug(medewerker);
+            LOGGER.debug(medewerker.getKantoor());
+            LOGGER.debug(medewerker.getKantoor().getId());
+            LOGGER.debug(relatie);
+            LOGGER.debug(kantoorRepository);
+
+            relatie.setKantoor(kantoorRepository.lees(medewerker.getKantoor().getId()));
 
             LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
 

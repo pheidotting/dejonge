@@ -20,6 +20,8 @@ public class LijstRelaties {
     private List<WebElement> geboortedatum;
     @FindBy(name = "adres")
     private List<WebElement> adres;
+    @FindBy(id = "toevoegenNieuweRelatie")
+    private WebElement toevoegenNieuweRelatie;
 
     public boolean checkVelden(JsonLijstRelaties jsonLijstRelaties) {
         boolean ok = true;
@@ -56,5 +58,9 @@ public class LijstRelaties {
         }
 
         return ok;
+    }
+
+    public void toevoegenNieuweRelatie() {
+        Hulp.klikEnWacht(toevoegenNieuweRelatie);
     }
 }

@@ -7,7 +7,7 @@ import nl.dias.dias_web.hulp.Hulp;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class BeherenRelatie {
+public class BeherenRelatie extends IndexPagina {
     @FindBy(id = "voornaam")
     private WebElement voornaam;
     @FindBy(id = "achternaam")
@@ -38,7 +38,7 @@ public class BeherenRelatie {
     private WebElement burgerlijkeStaat;
 
     @FindBy(id = "opslaanrelatie")
-    private WebElement opslaan;
+    private WebElement opslaanrelatie;
     @FindBy(id = "verwijderen")
     private WebElement verwijderen;
 
@@ -114,7 +114,7 @@ public class BeherenRelatie {
 
     public void drukOpOpslaan() {
         Hulp.wachtFf();
-        Hulp.klikEnWacht(opslaan);
+        Hulp.klikEnWacht(opslaanrelatie);
         Hulp.wachtFf();
     }
 

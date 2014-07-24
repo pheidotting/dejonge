@@ -1,8 +1,15 @@
 package nl.dias.web.mapper;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import nl.dias.domein.BurgerlijkeStaat;
+import nl.dias.domein.Geslacht;
 import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonRelatie;
+
+import org.joda.time.LocalDate;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -16,36 +23,39 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
-        // Relatie relatie = new Relatie();
-        // relatie.setId(jsonRelatie.getId());
-        // relatie.setIdentificatie(jsonRelatie.getIdentificatie());
-        // relatie.setVoornaam(jsonRelatie.getVoornaam());
-        // relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
-        // relatie.setAchternaam(jsonRelatie.getAchternaam());
-        // relatie.getAdres().setStraat(jsonRelatie.getStraat());
-        // relatie.setOverlijdensdatum(new
-        // LocalDate(jsonRelatie.getOverlijdensdatum()));
-        // try {
-        // relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
-        // } catch (NumberFormatException nfe) {
-        // throw new
-        // NumberFormatException("Huisnummer mag alleen cijfers bevatten");
-        // }
-        // relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
-        // relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
-        // relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
-        // relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
-        // relatie.setBsn(jsonRelatie.getBsn());
-        // relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
-        // relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
-        // // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
-        // // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
-        // relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0,
-        // 1)));
-        // relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0,
-        // 1)));
-
-        return null;
+        Relatie relatie = new Relatie();
+        relatie.setId(jsonRelatie.getId());
+        try {
+            relatie.setIdentificatie(jsonRelatie.getIdentificatie());
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        relatie.setVoornaam(jsonRelatie.getVoornaam());
+        relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
+        relatie.setAchternaam(jsonRelatie.getAchternaam());
+        relatie.getAdres().setStraat(jsonRelatie.getStraat());
+        relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
+        try {
+            relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
+        } catch (NumberFormatException nfe) {
+            throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
+        }
+        relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
+        relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
+        relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
+        relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
+        relatie.setBsn(jsonRelatie.getBsn());
+        relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
+        relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
+        // relatie.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
+        // relatie.setOverlijdensdatum(jsonRelatie.getOverlijdensdatum());
+        relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
+        relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0, 1)));
+        return relatie;
     }
 
     @Override

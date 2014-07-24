@@ -28,14 +28,6 @@
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/typeahead.js"></script>
 
-	<!-- Prime UI -->
-    <link rel="stylesheet" href="prime-ui/css/datatable/datatable.css" />
-    <link rel="stylesheet" href="prime-ui/css/dropdown/dropdown.css" />
-    <link rel="stylesheet" href="prime-ui/css/tabview/tabview.css" />
-    <script type="text/javascript" src="prime-ui/js/datatable/datatable.js"></script>
-    <script type="text/javascript" src="prime-ui/js/dropdown/dropdown.js"></script>
-    <script type="text/javascript" src="prime-ui/js/tabview/tabview.js"></script>
-
 	<!-- Eigen CSS -->
 	<link rel="stylesheet" href="lakedigital.css">
 
@@ -49,7 +41,7 @@
 
   			haalIngelogdeGebruiker();
 			window.setInterval(haalIngelogdeGebruiker, 60000);
- 
+
 			var diasRoute = new Sammy('body');
 
 			diasRoute.route('GET', '#inloggen', function(context) {
@@ -187,9 +179,6 @@
 	            }
 	        });
 		}
-		$("#aa").click(function(){
-			document.location.hash='#beherenRelatie/3';
-		});
 		uitloggen = function(){
 	    	$.ajax({
 	            url: '../dejonge/rest/authorisatie/authorisatie/uitloggen',

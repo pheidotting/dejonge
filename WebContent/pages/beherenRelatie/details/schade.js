@@ -57,7 +57,7 @@ function go(log, relatieId, actie, subId){
     				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
     			}
             	plaatsMelding("De gegevens zijn opgeslagen");
-				$('#tabs').puitabview('select', 5);
+//				$('#tabs').puitabview('select', 5);
             },
             error: function (data) {
             	plaatsFoutmelding(data);
