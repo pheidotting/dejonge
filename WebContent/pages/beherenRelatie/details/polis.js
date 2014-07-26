@@ -12,6 +12,7 @@ function go(log, relatieId, actie, subId){
 	$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 		$.getScript("pages/beherenRelatie/details/bedrijven.js", function(dataX, textStatus, jqxhr) {
 			var $select = $('#bedrijfBijPolis');
+		    $('<option>', { value : '0' }).text('Kies (evt.) een Bedrijf uit de lijst').appendTo($select);
 			$.each(data, function(key, value) {
 			    $('<option>', { value : key }).text(value.naam).appendTo($select);
 			});
