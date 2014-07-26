@@ -47,7 +47,9 @@ public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
         }
         json.setPlaats(object.getAdres().getPlaats());
         json.setPostcode(object.getAdres().getPostcode());
-        json.setRelatie(object.getRelatie().getId().toString());
+        if (object.getRelatie() != null && object.getRelatie().getId() != null) {
+            json.setRelatie(object.getRelatie().getId().toString());
+        }
         json.setStraat(object.getAdres().getStraat());
         json.setToevoeging(object.getAdres().getToevoeging());
 
