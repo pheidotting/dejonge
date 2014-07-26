@@ -8,10 +8,10 @@ function start(log, relatieId, actie, subId){
 			$("#" + actie).addClass("navdivactive");
 			
 			//Onderliggende pagina aanroepen
-			$('#details').load("pages/beherenRelatie/details/" + actie + ".html");
 			$.getScript("pages/beherenRelatie/details/" + actie + ".js", function(){
 				go(log, relatieId, actie, subId);
 			});
+			$('#details').load("pages/beherenRelatie/details/" + actie + ".html");
 			
 			//Navigatie
 			$("#beherenRelatie").click(function(){

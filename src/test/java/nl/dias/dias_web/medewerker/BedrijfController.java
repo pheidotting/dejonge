@@ -37,6 +37,10 @@ public class BedrijfController {
         jsonBedrijf2.setStraat("StraatBedrijf");
         jsonBedrijf2.setToevoeging("A");
 
+        JsonBedrijf dummy = new JsonBedrijf();
+        dummy.setNaam("Kies (evt.) een Bedrijf uit de lijst");
+        bedrijven.add(dummy);
+
         bedrijven.add(jsonBedrijf1);
         bedrijven.add(jsonBedrijf2);
 

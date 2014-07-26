@@ -60,7 +60,6 @@ function Relatie(data, log) {
     }
     
     this.opslaan = function(){
-    	console.log("opslaan");
     	verbergMeldingen();
     	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
     		this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));

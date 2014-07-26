@@ -44,6 +44,17 @@ public class PolisController {
     private PolisMapper polisMapper;
 
     @GET
+    @Path("/lees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonPolis lees(@QueryParam("id") String id) {
+        if (id != null && !id.equals("") && !id.equals("0")) {
+            return polisMapper.mapNaarJson(polisService.lees(Long.valueOf(id)));
+        } else {
+            return new JsonPolis();
+        }
+    }
+
+    @GET
     @Path("/lijst")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {

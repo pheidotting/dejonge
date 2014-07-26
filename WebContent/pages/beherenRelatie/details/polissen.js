@@ -1,8 +1,10 @@
 function go(log, relatieId, actie, subId){
-	$.get( "../dejonge/rest/medewerker/polis/lijst", {"relatieId" : relatieId}, function(data) {
-		log.debug("Gegevens opgehaald, applyBindings");
-       	ko.applyBindings(new Polissen(data, log));
-    });
+	$.getScript("pages/beherenRelatie/details/bijlages.js", function(data) {
+		$.get( "../dejonge/rest/medewerker/polis/lijst", {"relatieId" : relatieId}, function(data) {
+			log.debug("Gegevens opgehaald, applyBindings");
+	       	ko.applyBindings(new Polissen(data, log));
+	    });
+	});
 }
 
 function Polis(data, log){
@@ -41,6 +43,26 @@ function Polis(data, log){
 			self.bijlages.push(new Bijlage(item));
 		})
 	}
+	
+    self.verwijderPolis = function(polis){
+		var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");
+		if (r==true) {
+			self.polissen.remove(polis);
+			$.get( "../dejonge/rest/medewerker/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function( data ) {});
+		}
+    }
+    
+    self.schadeMeldenBijPolis = function(polis){
+//		$('#tabs').puitabview('select', 6);
+		console.log(ko.utils.unwrapObservable(polis.id));
+		console.log($('#polisVoorSchademelding').val());
+//		$('#polisVoorSchademelding').val(ko.utils.unwrapObservable(polis.id));
+    }
+    
+    self.bewerkPolis = function(polis){
+    	document.location.hash = "#beherenRelatie/3/polis/" + ko.utils.unwrapObservable(polis.id);
+    }
+
 }
 
 function Polissen(data, log){

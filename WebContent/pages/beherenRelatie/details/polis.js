@@ -1,6 +1,7 @@
 function go(log, relatieId, actie, subId){
-	$.getScript("pages/beherenRelatie/details/polissen.js");
-
+//	$.getScript("pages/beherenRelatie/details/polissen.js");
+//	$.getScript("pages/beherenRelatie/details/bijlages.js");
+	
 	$.get( "../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen", {}, function(data) {
 		var $select = $('#verzekeringsMaatschappijen');
 		$.each(data, function(key, value) {
@@ -10,13 +11,34 @@ function go(log, relatieId, actie, subId){
 	
 	$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 		$.getScript("pages/beherenRelatie/details/bedrijven.js", function(dataX, textStatus, jqxhr) {
-			ko.applyBindings(new Bedrijven(data, log));
+			var $select = $('#bedrijfBijPolis');
+			$.each(data, function(key, value) {
+			    $('<option>', { value : key }).text(value.naam).appendTo($select);
+			});
 		});
-    });
-
+	});
+	
+	if(subId != null){
+		log.debug("Ophalen Polis met id : " + subId);
+		$.get( "../dejonge/rest/medewerker/polis/lees", {"id" : subId}, function(data) {
+  			$('#polisId').val(data.id);
+       		$('#id').val(data.relatie);
+       		$('#premie').val(data.premie);
+			$('#verzekeringsMaatschappijen').val(data.maatschappij);
+			$('#soortVerzekering').val(data.soortVerzekering);
+			$('#polisNummer').val(data.polisNummer);
+			$('#ingangsDatumString').val(data.ingangsDatum);
+			$('#wijzigingsdatumString').val(data.wijzigingsDatum);
+			$('#prolongatiedatumString').val(data.prolongatieDatum);
+			$('#bedrijfBijPolis').val(data.bedrijf);
+			$('#betaalfrequentie').val(data.betaalfrequentie);
+	    });
+	}
+	
 	$('#opslaanPolis').click(function(){
     	verbergMeldingen();
       	var polis = {
+      		id : $('#polisId').val(),
            	relatie : $('#id').val(),
            	premie : $('#premie').val().replace(",", "."),
 			maatschappij : $('#verzekeringsMaatschappijen').val(),

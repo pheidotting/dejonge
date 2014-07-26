@@ -32,6 +32,24 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/polis")
 public class PolisController {// extends AbstractController {
+    @GET
+    @Path("/lees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonPolis lees(@QueryParam("id") String id) {
+        JsonPolis jsonPolis = new JsonPolis();
+
+        jsonPolis.setId(2L);
+        jsonPolis.setPolisNummer("polisNummer");
+        jsonPolis.setMaatschappij("Achmea");
+        jsonPolis.setSoort("Auto");
+        jsonPolis.setPremie("22");
+        jsonPolis.setBetaalfrequentie("Maand");
+        jsonPolis.setIngangsDatum("01-02-2014");
+        jsonPolis.setSoort("soort");
+        jsonPolis.setWijzigingsDatum("02-03-2014");
+
+        return jsonPolis;
+    }
 
     @GET
     @Path("/lijst")

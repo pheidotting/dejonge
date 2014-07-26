@@ -42,6 +42,7 @@
 	<option>Zorg</option>
 </select>
 <form enctype="multipart/form-data">
+	<input type="hidden" id="polisId" />
 	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" />
 	<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
 	<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
@@ -56,9 +57,7 @@
 			<option>Jaar</option>
 		</select>
 	</div>
-	<select id="bedrijfBijPolis" data-bind="foreach: bedrijven, visible: bedrijven().length > 0">
-		<option data-bind="text: naam, value: id"></option>
-	</select>
+	<select id="bedrijfBijPolis"></select>
 	<input type="file" id="file" name="file" />
 </form>
 <button id="opslaanPolis" class=" btn btn-primary" data-bind="click: $root.voegPolisToe">Opslaan</button>
