@@ -35,9 +35,6 @@ public class BedrijfController {
         Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
 
         Set<Bedrijf> bedrijven = new HashSet<>();
-        Bedrijf dummy = new Bedrijf();
-        dummy.setNaam("Kies (evt.) een Bedrijf uit de lijst");
-        bedrijven.add(dummy);
         for (Bedrijf bedrijf : bedrijfService.alleBedrijvenBijRelatie(relatie)) {
             bedrijven.add(bedrijf);
         }
