@@ -149,7 +149,7 @@ public class PolisService {
             Polis polis = null;
 
             if (opslaanPolis.getId() != null) {
-                polisRepository.lees(opslaanPolis.getId());
+                polis = polisRepository.lees(opslaanPolis.getId());
             }
 
             if (polis == null) {
