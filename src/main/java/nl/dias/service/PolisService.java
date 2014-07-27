@@ -146,7 +146,11 @@ public class PolisService {
         if (maatschappij == null) {
             messages = "Kies een verzekeringsmaatschappij";
         } else {
-            Polis polis = polisRepository.lees(opslaanPolis.getId());
+            Polis polis = null;
+
+            if (opslaanPolis.getId() != null) {
+                polisRepository.lees(opslaanPolis.getId());
+            }
 
             if (polis == null) {
                 polis = definieerPolisSoort(opslaanPolis.getSoort());
