@@ -88,9 +88,11 @@ function Polis(data, log, relatieId){
 			contentType: "application/json",
             data: ko.toJSON(polis),
             success: function(data) {
-            	$('progress').show();
-				var formData = new FormData($('form')[0]);
-				uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
+            	if(polis.bijlages().length > 0){
+	            	$('progress').show();
+					var formData = new FormData($('form')[0]);
+					uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
+            	}
         	},
 			error: function (data) {
 				plaatsFoutmelding(data);
