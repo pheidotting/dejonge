@@ -73,11 +73,11 @@ function Polis(data, log, relatieId){
     }
     
     self.bewerkPolis = function(polis){
-    	document.location.hash = "#beherenRelatie/3/polis/" + ko.utils.unwrapObservable(polis.id);
+    	document.location.hash = "#beherenRelatie/" + relatieId + "/polis/" + ko.utils.unwrapObservable(polis.id);
     }
     
     self.toevoegenBijlage = function(){
-    	
+    	self.bijlages.push(new Bijlage(''));
     }
     
     self.opslaan = function(polis){
@@ -92,6 +92,9 @@ function Polis(data, log, relatieId){
 	            	$('progress').show();
 					var formData = new FormData($('form')[0]);
 					uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
+            	}else{
+	            	plaatsMelding("De gegevens zijn opgeslagen");
+	            	document.location.hash = "#beherenRelatie/" + relatieId + "/polissen";
             	}
         	},
 			error: function (data) {

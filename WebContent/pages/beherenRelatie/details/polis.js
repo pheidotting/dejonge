@@ -1,5 +1,6 @@
 function go(log, relatieId, actie, subId){
 	$.getScript("pages/beherenRelatie/details/polissen.js");
+	$.getScript("pages/beherenRelatie/details/bijlages.js");
 
 	$.get( "../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen", {}, function(data) {
 		var $select = $('#verzekeringsMaatschappijen');

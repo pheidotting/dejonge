@@ -149,10 +149,12 @@ public class PolisService {
             Polis polis = null;
 
             if (opslaanPolis.getId() != null) {
+                LOGGER.debug("Polis opzoeken in database, id = " + opslaanPolis.getId());
                 polis = polisRepository.lees(opslaanPolis.getId());
             }
 
             if (polis == null) {
+                LOGGER.debug("Polis = null, daarom opmaken uit Request");
                 polis = definieerPolisSoort(opslaanPolis.getSoort());
             }
 
