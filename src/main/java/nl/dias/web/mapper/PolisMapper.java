@@ -35,7 +35,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         jsonPolis.setId(polis.getId());
         jsonPolis.setPolisNummer(polis.getPolisNummer());
         jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
-        jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
+        if (polis.getPremie() != null) {
+            jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
+        }
         jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
         jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toString("yyyy-MM-dd"));
         if (polis.getBetaalfrequentie() != null) {
