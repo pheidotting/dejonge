@@ -2,14 +2,15 @@ function go(log, relatieId, actie, subId){
 	$.getScript("pages/beherenRelatie/details/bijlages.js", function(data) {
 		$.get( "../dejonge/rest/medewerker/polis/lijst", {"relatieId" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
-	       	ko.applyBindings(new Polissen(data, log));
+	       	ko.applyBindings(new Polissen(data, log, relatieId));
 	    });
 	});
 }
 
-function Polis(data, log){
+function Polis(data, log, relatieId){
 	var self = this;
 
+	self.relatie = relatieId;
 	self.id = ko.observable(data.id);
 	self.omschrijving = ko.observable(data.omschrijving);
 	self.polisNummer = ko.observable(data.polisNummer);
@@ -94,11 +95,11 @@ function Polis(data, log){
 	}
 }
 
-function Polissen(data, log){
+function Polissen(data, log, relatieId){
 	var self = this;
 	
 	self.polissen = ko.observableArray();
 	$.each(data, function(i, item){
-		self.polissen.push(new Polis(item, log));
+		self.polissen.push(new Polis(item, log, relatieId));
 	})
 }

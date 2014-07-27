@@ -19,7 +19,7 @@ function go(log, relatieId, actie, subId){
 			if(subId != null){
 				log.debug("Ophalen Polis met id : " + subId);
 				$.get( "../dejonge/rest/medewerker/polis/lees", {"id" : subId}, function(data) {
-					ko.applyBindings(new Polis(data, log));
+					ko.applyBindings(new Polis(data, log, relatieId));
 			    });
 			}
 		});

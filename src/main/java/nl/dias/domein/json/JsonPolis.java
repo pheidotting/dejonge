@@ -212,6 +212,7 @@ public class JsonPolis {
         builder.append(", idDiv=").append(idDiv);
         builder.append(", idDivLink=").append(idDivLink);
         builder.append(", className=").append(className);
+        builder.append(", relatie=").append(relatie);
         builder.append("]");
         return builder.toString();
     }
