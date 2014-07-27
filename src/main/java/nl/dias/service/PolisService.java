@@ -129,16 +129,16 @@ public class PolisService {
         return polisRepository.allePolissenBijRelatie(relatie);
     }
 
-    public void opslaan(JsonPolis opslaanPolis) {
+    public void opslaan(JsonPolis jsonPolis) {
         // Eerst kijken of het polisnummer al voorkomt
-        if (zoekOpPolisNummer(opslaanPolis.getPolisNummer()) != null) {
+        if (zoekOpPolisNummer(jsonPolis.getPolisNummer()) != null) {
             throw new IllegalArgumentException("Het betreffende polisnummer komt al voor.");
         }
 
-        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
+        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij());
         LOGGER.debug("maatschappij gevonden : " + maatschappij);
 
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(opslaanPolis.getRelatie()));
+        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie()));
         LOGGER.debug("bij relatie : " + relatie);
 
         String messages = null;
@@ -148,48 +148,50 @@ public class PolisService {
         } else {
             Polis polis = null;
 
-            if (opslaanPolis.getId() != null) {
-                LOGGER.debug("Polis opzoeken in database, id = " + opslaanPolis.getId());
-                polis = polisRepository.lees(opslaanPolis.getId());
+            if (jsonPolis.getId() != null) {
+                LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
+                polis = polisRepository.lees(jsonPolis.getId());
+
+                LOGGER.debug(polis);
             }
 
             if (polis == null) {
                 LOGGER.debug("Polis = null, daarom opmaken uit Request");
-                polis = definieerPolisSoort(opslaanPolis.getSoort());
+                polis = definieerPolisSoort(jsonPolis.getSoort());
             }
 
             if (polis == null) {
                 messages = "Kies een soort verzekering";
             } else {
                 LOGGER.debug("polis aanmaken");
-                polis.setPolisNummer(opslaanPolis.getPolisNummer());
+                polis.setPolisNummer(jsonPolis.getPolisNummer());
                 try {
-                    polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatum()));
+                    polis.setIngangsDatum(stringNaarLocalDate(jsonPolis.getIngangsDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
                 }
                 try {
-                    polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatieDatum()));
+                    polis.setProlongatieDatum(stringNaarLocalDate(jsonPolis.getProlongatieDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
                 }
                 try {
-                    polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsDatum()));
+                    polis.setWijzigingsDatum(stringNaarLocalDate(jsonPolis.getWijzigingsDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
                 }
-                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(opslaanPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
+                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
                 polis.setMaatschappij(maatschappij);
 
                 relatie.getPolissen().add(polis);
                 polis.setRelatie(relatie);
 
-                if (opslaanPolis.getBedrijf() != null) {
-                    Long bedrijfId = Long.valueOf(opslaanPolis.getBedrijf());
+                if (jsonPolis.getBedrijf() != null) {
+                    Long bedrijfId = Long.valueOf(jsonPolis.getBedrijf());
                     if (bedrijfId != 0) {
                         Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(bedrijfId));
                         polis.setBedrijf(bedrijf);
@@ -198,8 +200,8 @@ public class PolisService {
                 }
 
                 try {
-                    LOGGER.debug("zet premiebedrag " + opslaanPolis.getPremie());
-                    polis.setPremie(new Bedrag(opslaanPolis.getPremie()));
+                    LOGGER.debug("zet premiebedrag " + jsonPolis.getPremie());
+                    polis.setPremie(new Bedrag(jsonPolis.getPremie()));
                 } catch (NumberFormatException e) {
                     LOGGER.debug(e.getMessage());
                 }
