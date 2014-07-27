@@ -76,6 +76,10 @@ function Polis(data, log, relatieId){
     	document.location.hash = "#beherenRelatie/3/polis/" + ko.utils.unwrapObservable(polis.id);
     }
     
+    self.toevoegenBijlage = function(){
+    	
+    }
+    
     self.opslaan = function(polis){
     	verbergMeldingen();
 		$.ajax({
