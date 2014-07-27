@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
@@ -72,7 +71,7 @@ public class PolisController {
     @Path("/opslaan")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(OpslaanPolis opslaanPolis) {
+    public Response opslaan(JsonPolis opslaanPolis) {
         try {
             polisService.opslaan(opslaanPolis);
         } catch (IllegalArgumentException e) {

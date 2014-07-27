@@ -11,7 +11,7 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.json.OpslaanPolis;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.AansprakelijkheidVerzekering;
 import nl.dias.domein.polis.AnnuleringsVerzekering;
 import nl.dias.domein.polis.AutoVerzekering;
@@ -129,7 +129,7 @@ public class PolisService {
         return polisRepository.allePolissenBijRelatie(relatie);
     }
 
-    public void opslaan(OpslaanPolis opslaanPolis) {
+    public void opslaan(JsonPolis opslaanPolis) {
         // Eerst kijken of het polisnummer al voorkomt
         if (zoekOpPolisNummer(opslaanPolis.getPolisNummer()) != null) {
             throw new IllegalArgumentException("Het betreffende polisnummer komt al voor.");
@@ -138,7 +138,7 @@ public class PolisService {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(opslaanPolis.getMaatschappij());
         LOGGER.debug("maatschappij gevonden : " + maatschappij);
 
-        Relatie relatie = (Relatie) gebruikerService.lees(opslaanPolis.getRelatie());
+        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(opslaanPolis.getRelatie()));
         LOGGER.debug("bij relatie : " + relatie);
 
         String messages = null;
@@ -146,7 +146,7 @@ public class PolisService {
         if (maatschappij == null) {
             messages = "Kies een verzekeringsmaatschappij";
         } else {
-            Polis polis = definieerPolisSoort(opslaanPolis.getSoortVerzekering());
+            Polis polis = definieerPolisSoort(opslaanPolis.getSoort());
 
             if (polis == null) {
                 messages = "Kies een soort verzekering";
@@ -154,19 +154,19 @@ public class PolisService {
                 LOGGER.debug("polis aanmaken");
                 polis.setPolisNummer(opslaanPolis.getPolisNummer());
                 try {
-                    polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatumString()));
+                    polis.setIngangsDatum(stringNaarLocalDate(opslaanPolis.getIngangsDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
                 }
                 try {
-                    polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatiedatumString()));
+                    polis.setProlongatieDatum(stringNaarLocalDate(opslaanPolis.getProlongatieDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
                 }
                 try {
-                    polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsdatumString()));
+                    polis.setWijzigingsDatum(stringNaarLocalDate(opslaanPolis.getWijzigingsDatum()));
                 } catch (IllegalArgumentException e1) {
                     LOGGER.debug("Fout bij parsen datum", e1);
                     messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";

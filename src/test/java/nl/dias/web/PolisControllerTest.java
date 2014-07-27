@@ -3,7 +3,7 @@ package nl.dias.web;
 import static org.junit.Assert.assertEquals;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.json.OpslaanPolis;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.MotorVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.GebruikerService;
@@ -49,9 +49,9 @@ public class PolisControllerTest extends EasyMockSupport {
 
         Relatie relatie = new Relatie();
 
-        OpslaanPolis opslaanPolis = new OpslaanPolis();
+        JsonPolis opslaanPolis = new JsonPolis();
         opslaanPolis.setBetaalfrequentie("Maandelijks");
-        opslaanPolis.setIngangsDatumString("2013-02-01");
+        opslaanPolis.setIngangsDatum("2013-02-01");
         opslaanPolis.setMaatschappij("naamVerzekeringsMaatschappij");
 
         // Polis polis = new AutoVerzekering();

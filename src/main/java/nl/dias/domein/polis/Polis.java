@@ -35,6 +35,7 @@ import nl.dias.domein.Schade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joda.time.LocalDate;
@@ -244,7 +245,17 @@ public abstract class Polis implements PersistenceObject, Serializable {
         Polis other = (Polis) obj;
 
         return new EqualsBuilder().append(bijlages, other.bijlages).append(id, other.id).append(ingangsDatum, other.ingangsDatum).append(ingangsDatumString, other.ingangsDatumString)
-                .append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).append(relatie, other.relatie)
-                .isEquals();
+                .append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).isEquals();
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", this.id).append("bedrijf", this.bedrijf).append("relatie", this.relatie).append("wijzigingsDatum", this.wijzigingsDatum)
+                .append("maatschappij", this.maatschappij).append("opmerkingen", this.opmerkingen).append("polisNummer", this.polisNummer).append("schades", this.schades)
+                .append("bijlages", this.bijlages).append("prolongatieDatum", this.prolongatieDatum).append("ingangsDatum", this.ingangsDatum).append("ingangsDatumString", this.ingangsDatumString)
+                .append("premie", this.premie).append("betaalfrequentie", this.betaalfrequentie).toString();
     }
 }

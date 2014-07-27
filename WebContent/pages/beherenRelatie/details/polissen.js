@@ -13,10 +13,22 @@ function Polis(data, log){
 	self.id = ko.observable(data.id);
 	self.omschrijving = ko.observable(data.omschrijving);
 	self.polisNummer = ko.observable(data.polisNummer);
-	self.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY"));
-	self.prolongatieDatum = ko.observable(moment(data.prolongatieDatum).format("DD-MM-YYYY"));
-	self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
-	self.maatschappij = ko.observable(data.maatschappij.naam);
+	if(data.ingangsDatum != undefined){
+		self.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY"));
+	}else{
+		self.ingangsDatum = '';
+	}
+	if(data.wijzigingsDatum != undefined){
+		self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
+	}else{
+		self.wijzigingsDatum = '';
+	}
+	if(data.prolongatieDatum != undefined){
+		self.prolongatieDatum = ko.observable(moment(data.prolongatieDatum).format("DD-MM-YYYY"));
+	}else{
+		self.prolongatieDatum = '';
+	}
+	self.maatschappij = ko.observable(data.maatschappij);
 	self.soort = ko.observable(data.soort);
 	self.premie = ko.observable(data.premie);
 	self.betaalfrequentie = ko.observable(data.betaalfrequentie);
@@ -62,7 +74,24 @@ function Polis(data, log){
     self.bewerkPolis = function(polis){
     	document.location.hash = "#beherenRelatie/3/polis/" + ko.utils.unwrapObservable(polis.id);
     }
-
+    
+    self.opslaan = function(polis){
+    	verbergMeldingen();
+		$.ajax({
+			type: "POST",
+			url: '../dejonge/rest/medewerker/polis/opslaan',
+			contentType: "application/json",
+            data: ko.toJSON(polis),
+            success: function(data) {
+            	$('progress').show();
+				var formData = new FormData($('form')[0]);
+				uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
+        	},
+			error: function (data) {
+				plaatsFoutmelding(data);
+			}
+    	});
+	}
 }
 
 function Polissen(data, log){

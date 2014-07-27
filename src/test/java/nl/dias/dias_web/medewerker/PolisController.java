@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.json.OpslaanPolis;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
 import nl.dias.domein.polis.Polis;
@@ -38,16 +37,16 @@ public class PolisController {// extends AbstractController {
     public JsonPolis lees(@QueryParam("id") String id) {
         JsonPolis jsonPolis = new JsonPolis();
 
-        jsonPolis.setId(2L);
-        jsonPolis.setPolisNummer("polisNummer");
-        jsonPolis.setMaatschappij("Achmea");
-        jsonPolis.setSoort("Auto");
-        jsonPolis.setPremie("22");
-        jsonPolis.setBetaalfrequentie("Maand");
-        jsonPolis.setIngangsDatum("01-02-2014");
-        jsonPolis.setSoort("soort");
-        jsonPolis.setWijzigingsDatum("02-03-2014");
-
+        if (id != null && !id.equals("") && !id.equals("0")) {
+            jsonPolis.setId(2L);
+            jsonPolis.setPolisNummer("polisNummer");
+            jsonPolis.setMaatschappij("Achmea");
+            jsonPolis.setSoort("Auto");
+            jsonPolis.setPremie("22");
+            jsonPolis.setBetaalfrequentie("Maand");
+            jsonPolis.setIngangsDatum("2014-02-01");
+            jsonPolis.setWijzigingsDatum("2014-03-02");
+        }
         return jsonPolis;
     }
 
@@ -63,18 +62,21 @@ public class PolisController {// extends AbstractController {
         polis1.setPolisNummer("polisNummer1");
         polis1.setProlongatieDatum("02-03-2014");
         polis1.setMaatschappij("maatschappij1");
+        polis1.setSoort("Auto");
         JsonPolis polis2 = new JsonPolis();
         polis2.setId(2L);
         polis2.setIngangsDatum("03-04-2014");
         polis2.setPolisNummer("polisNummer2");
         polis2.setProlongatieDatum("04-05-2014");
         polis2.setMaatschappij("maatschappij2");
+        polis2.setSoort("Camper");
         JsonPolis polis3 = new JsonPolis();
         polis3.setId(3L);
         polis3.setIngangsDatum("05-06-2014");
         polis3.setPolisNummer("polisNummer3");
         polis3.setProlongatieDatum("06-07-2014");
         polis3.setMaatschappij("maatschappij3");
+        polis3.setSoort("Fiets");
 
         lijst.add(polis1);
         lijst.add(polis2);
@@ -96,7 +98,8 @@ public class PolisController {// extends AbstractController {
     @Path("/opslaan")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(OpslaanPolis opslaanPolis) {
+    public Response opslaan(JsonPolis opslaanPolis) {
+        System.out.println(opslaanPolis);
         // return Response.status(500).entity(new
         // JsonFoutmelding("jadajada")).build();
         return Response.status(202).entity(new JsonFoutmelding()).build();

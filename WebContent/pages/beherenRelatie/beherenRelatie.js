@@ -15,27 +15,35 @@ function start(log, relatieId, actie, subId){
 			
 			//Navigatie
 			$("#beherenRelatie").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId;
 			});
 			$("#bedrijven").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
 			});
 			$("#bedrijf").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/bedrijf/0';
 			});
 			$("#polissen").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/polissen';
 			});
 			$("#polis").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/polis/0';
 			});
 			$("#schades").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/schades';
 			});
 			$("#schade").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/schade/0';
 			});
 			$("#bijlages").click(function(){
+		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/bijlages';
 			});
 		}

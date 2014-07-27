@@ -1,5 +1,5 @@
-<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen"></select>
-<select id="soortVerzekering" name="soortVerzekering">
+<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen" data-bind="value: maatschappij"></select>
+<select id="soortVerzekering" name="soortVerzekering" data-bind="value: soort">
 	<option value="">Kies een soort verzekering...</option>
 	<option>Aansprakelijkheid</option>
 	<option>Auto</option>
@@ -20,7 +20,7 @@
 	<option>Woonhuis</option>
 	<option>Zorg</option>
 </select>
-<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;">
+<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;" data-bind="value: soort">
 	<option value="">Kies een soort verzekering...</option>
 	<option>Aansprakelijkheid</option>
 	<option>Auto</option>
@@ -43,13 +43,13 @@
 </select>
 <form enctype="multipart/form-data">
 	<input type="hidden" id="polisId" />
-	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" />
-	<input class="form-control" type="text" id="premie" placeholder="Premie..."  />
-	<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." />
-	<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." />
-	<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." />
+	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" data-bind="value: polisNummer" />
+	<input class="form-control" type="text" id="premie" placeholder="Premie..."  data-bind="value: premie" />
+	<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." data-bind="value: ingangsDatum" />
+	<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." data-bind="value: wijzigingsDatum"/>
+	<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." data-bind="value: prolongatieDatum" />
 	<div id="div_betaalfrequentie">
-		<select id="betaalfrequentie">
+		<select id="betaalfrequentie" data-bind="value: betaalfrequentie">
 			<option value="">Betaalfrequentie...</option>
 			<option>Maand</option>
 			<option>Kwartaal</option>
@@ -60,5 +60,5 @@
 	<select id="bedrijfBijPolis"></select>
 	<input type="file" id="file" name="file" />
 </form>
-<button id="opslaanPolis" class=" btn btn-primary" data-bind="click: $root.voegPolisToe">Opslaan</button>
+<button id="opslaanPolis" class=" btn btn-primary" data-bind="click: opslaan">Opslaan</button>
 <progress style="display:none;"></progress>

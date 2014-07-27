@@ -17,7 +17,7 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.json.OpslaanPolis;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.CamperVerzekering;
@@ -181,16 +181,16 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testOpslaanOpslaanPolis() {
-        OpslaanPolis opslaanPolis = new OpslaanPolis();
-        opslaanPolis.setSoortVerzekering("Auto");
+        JsonPolis opslaanPolis = new JsonPolis();
+        opslaanPolis.setSoort("Auto");
         opslaanPolis.setPolisNummer("1234");
         opslaanPolis.setMaatschappij("maatschappij");
-        opslaanPolis.setRelatie(46L);
-        opslaanPolis.setIngangsDatumString("01-02-2014");
-        opslaanPolis.setProlongatiedatumString("02-03-2014");
-        opslaanPolis.setWijzigingsdatumString("03-04-2014");
+        opslaanPolis.setRelatie("46");
+        opslaanPolis.setIngangsDatum("01-02-2014");
+        opslaanPolis.setProlongatieDatum("02-03-2014");
+        opslaanPolis.setWijzigingsDatum("03-04-2014");
         opslaanPolis.setBetaalfrequentie("jaar");
-        opslaanPolis.setPremie(12.0);
+        opslaanPolis.setPremie("12");
 
         Kantoor kantoor = new Kantoor();
         expect(kantoorRepository.lees(1L)).andReturn(kantoor);
