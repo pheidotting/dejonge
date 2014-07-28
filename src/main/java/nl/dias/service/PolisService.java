@@ -210,9 +210,7 @@ public class PolisService {
 
             if (polis != null) {
                 LOGGER.debug("Opslaan polis : " + polis);
-                polisRepository.getEm().getTransaction().begin();
                 polisRepository.opslaan(polis);
-                polisRepository.getEm().getTransaction().commit();
 
                 relatie.getPolissen().add(polis);
                 gebruikerService.opslaan(relatie);
