@@ -32,10 +32,8 @@ import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class PolisServiceTest extends EasyMockSupport {
     private PolisService polisService;
 

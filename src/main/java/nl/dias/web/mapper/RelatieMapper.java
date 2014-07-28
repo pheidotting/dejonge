@@ -9,6 +9,7 @@ import nl.dias.domein.OnderlingeRelatie;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonRelatie;
 
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -21,6 +22,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
 
+    private final static Logger LOGGER = Logger.getLogger(RelatieMapper.class);
+
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
         Relatie relatie = new Relatie();
@@ -28,11 +31,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         try {
             relatie.setIdentificatie(jsonRelatie.getIdentificatie());
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error(e);
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         relatie.setVoornaam(jsonRelatie.getVoornaam());
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
