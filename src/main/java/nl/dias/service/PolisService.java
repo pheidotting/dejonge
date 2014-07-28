@@ -163,7 +163,8 @@ public class PolisService {
             if (polis == null) {
                 messages = "Kies een soort verzekering";
             } else {
-                LOGGER.debug("polis aanmaken");
+                LOGGER.debug("polis aanvullen met ingevoerde gegevens");
+                LOGGER.debug("zet polisnummer " + jsonPolis.getPolisNummer());
                 polis.setPolisNummer(jsonPolis.getPolisNummer());
                 try {
                     polis.setIngangsDatum(stringNaarLocalDate(jsonPolis.getIngangsDatum()));
@@ -209,7 +210,9 @@ public class PolisService {
 
             if (polis != null) {
                 LOGGER.debug("Opslaan polis : " + polis);
+                polisRepository.getEm().getTransaction().begin();
                 polisRepository.opslaan(polis);
+                polisRepository.getEm().getTransaction().commit();
 
                 relatie.getPolissen().add(polis);
                 gebruikerService.opslaan(relatie);
