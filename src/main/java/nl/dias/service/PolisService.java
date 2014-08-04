@@ -18,6 +18,7 @@ import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.BromSnorfietsVerzekering;
 import nl.dias.domein.polis.CamperVerzekering;
+import nl.dias.domein.polis.FietsVerzekering;
 import nl.dias.domein.polis.InboedelVerzekering;
 import nl.dias.domein.polis.LevensVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
@@ -259,6 +260,9 @@ public class PolisService {
         }
         if ("Brom-/Snorfiets".equals(soort)) {
             polis = new BromSnorfietsVerzekering();
+        }
+        if ("Fiets".equals(soort)) {
+            polis = new FietsVerzekering();
         }
         if ("Camper".equals(soort)) {
             polis = new CamperVerzekering();

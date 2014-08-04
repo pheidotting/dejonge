@@ -131,4 +131,16 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
     public void setSchadeMapper(SchadeMapper schadeMapper) {
         this.schadeMapper = schadeMapper;
     }
+
+    public void setPolisService(PolisService polisService) {
+        this.polisService = polisService;
+    }
+
+    public void setVerzekeringsMaatschappijService(VerzekeringsMaatschappijService verzekeringsMaatschappijService) {
+        this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
+    }
+
+    public void setGebruikerService(GebruikerService gebruikerService) {
+        this.gebruikerService = gebruikerService;
+    }
 }
