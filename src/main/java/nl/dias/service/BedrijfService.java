@@ -23,6 +23,10 @@ public class BedrijfService {
         return bedrijfRepository.lees(id);
     }
 
+    public void verwijder(Long id) {
+        bedrijfRepository.verwijder(lees(id));
+    }
+
     public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {
         return bedrijfRepository.alleBedrijvenBijRelatie(relatie);
     }

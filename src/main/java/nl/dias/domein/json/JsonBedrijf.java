@@ -16,6 +16,8 @@ public class JsonBedrijf {
     private String postcode;
     private String plaats;
     private String relatie;
+    private String idDiv;
+    private String idDivLink;
 
     public String getId() {
         return id;
@@ -95,6 +97,22 @@ public class JsonBedrijf {
 
     public void setRelatie(String relatie) {
         this.relatie = relatie;
+    }
+
+    public String getIdDiv() {
+        return idDiv;
+    }
+
+    public void setIdDiv(String idDiv) {
+        this.idDiv = idDiv;
+    }
+
+    public String getIdDivLink() {
+        return idDivLink;
+    }
+
+    public void setIdDivLink(String idDivLink) {
+        this.idDivLink = idDivLink;
     }
 
     @Override

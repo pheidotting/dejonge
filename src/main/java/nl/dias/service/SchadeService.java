@@ -46,6 +46,11 @@ public class SchadeService {
         return schadeRepository.zoekOpSchadeNummerMaatschappij(schadeNummer);
     }
 
+    public void verwijder(Long id) {
+        Schade schade = lees(id);
+        schadeRepository.verwijder(schade);
+    }
+
     public void slaBijlageOp(Long schadeId, String s3Identificatie) {
         LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId + " s3Identificatie " + s3Identificatie);
 
@@ -90,6 +95,10 @@ public class SchadeService {
 
     public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
         return schadeRepository.alleSchadesBijRelatie(relatie);
+    }
+
+    public Schade lees(Long id) {
+        return schadeRepository.lees(id);
     }
 
     public void setSchadeRepository(SchadeRepository schadeRepository) {

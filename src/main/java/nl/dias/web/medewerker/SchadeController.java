@@ -62,4 +62,27 @@ public class SchadeController {
 
         return schadeMapper.mapAllNaarJson(schades);
     }
+
+    @GET
+    @Path("/lees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonSchade lees(@QueryParam("id") String id) {
+        return schadeMapper.mapNaarJson(schadeService.lees(Long.valueOf(id)));
+    }
+
+    @GET
+    @Path("/verwijder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verwijder(@QueryParam("id") Long id) {
+        LOGGER.debug("verwijderen Schade met id " + id);
+        try {
+            schadeService.verwijder(id);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Fout bij verwijderen Schade", e);
+            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
+        return Response.status(202).entity(new JsonFoutmelding()).build();
+    }
+
 }

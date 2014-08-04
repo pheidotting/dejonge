@@ -21,16 +21,19 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
     @Override
     public Schade mapVanJson(JsonSchade json) {
-        String pattern = "dd-MM-yyyy HH:mm";
+        String patternDatumTijd = "dd-MM-yyyy HH:mm";
+        String patternDatum = "dd-MM-yyyy";
 
-        LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(pattern));
-        LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(pattern));
+        LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(patternDatumTijd));
+        LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(patternDatumTijd));
+        LocalDate datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
 
         Schade schade = new Schade();
 
-        schade.setDatumAfgehandeld(new LocalDate(json.getDatumAfgehandeld()));
-        schade.setDatumTijdMelding(new LocalDateTime(datumTijdMelding));
-        schade.setDatumTijdSchade(new LocalDateTime(datumTijdSchade));
+        schade.setId(json.getId());
+        schade.setDatumAfgehandeld(datumAfgehandeld);
+        schade.setDatumTijdMelding(datumTijdMelding);
+        schade.setDatumTijdSchade(datumTijdSchade);
         schade.setEigenRisico(new Bedrag(json.getEigenRisico()));
         schade.setLocatie(json.getLocatie());
         schade.setOmschrijving(json.getOmschrijving());
@@ -61,6 +64,7 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
             jsonSchade.setSoortSchade(schade.getSoortSchadeOngedefinieerd());
         }
         jsonSchade.setStatusSchade(schade.getStatusSchade().getStatus());
+        jsonSchade.setPolis(schade.getPolis().getId());
 
         return jsonSchade;
     }

@@ -1,11 +1,11 @@
 function go(log, relatieId, actie, subId){
 	$.get( "../dejonge/rest/medewerker/schade/lijst", {"relatieId" : relatieId}, function(data) {
 		log.debug("Gegevens opgehaald, applyBindings");
-       	ko.applyBindings(new Schades(data, log));
+       	ko.applyBindings(new Schades(data, log, relatieId));
     });
 }
 
-function Schade(data){
+function Schade(data, log, relatieId){
 	var self = this;
 	
     self.id = ko.observable(data.id);
@@ -32,22 +32,54 @@ function Schade(data){
 		if(data.opmerkingen != null){
 		$.each(data.opmerkingen, function(i, item){
 			self.opmerkingen.push(new Opmerking(item));
-		})
-		}
+		});
+	}
 
 	self.bijlages = ko.observableArray();
 	if(data.bijlages != null){
 		$.each(data.bijlages, function(i, item){
 			self.bijlages.push(new Bijlage(item));
-		})
+		});
 	}
+	
+	self.opslaan = function(schade){
+    	$.ajax({
+            url: '../dejonge/rest/medewerker/schade/opslaan',
+            type: 'POST',
+            data: ko.toJSON(schade) ,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
+    				var formData = new FormData($('#schadeMeldForm')[0]);
+    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
+    			}
+            	plaatsMelding("De gegevens zijn opgeslagen");
+//				$('#tabs').puitabview('select', 5);
+            },
+            error: function (data) {
+            	plaatsFoutmelding(data);
+            }
+        });
+	}
+    	
+    self.bewerkSchade = function(schade){
+    	document.location.hash = "#beherenRelatie/" + relatieId + "/schade/" + ko.utils.unwrapObservable(schade.id);
+    }
 }
 
-function Schades(data, log){
+function Schades(data, log, relatieId){
 	var self = this;
 	
 	self.schades = ko.observableArray();
 	$.each(data, function(i, item){
-		self.schades.push(new Schade(item, log));
-	})
+		self.schades.push(new Schade(item, log, relatieId));
+	});
+
+	self.verwijderPolis = function(schade){
+		var r=confirm("Weet je zeker dat je deze schade wilt verwijderen?");
+		if (r==true) {
+			self.schades.remove(schade);
+			$.get( "../dejonge/rest/medewerker/schade/verwijder", {"id" : ko.utils.unwrapObservable(schade.id)}, function( data ) {});
+		}
+    }
 }

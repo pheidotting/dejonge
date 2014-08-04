@@ -1,5 +1,6 @@
 package nl.dias.dias_web.hulp;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -23,8 +24,31 @@ public class Hulp {
     }
 
     public static void klikEnWacht(WebElement element, int timeout) {
-        element.click();
-        wachtFf(timeout);
+        try {
+            wachtFf(timeout);
+            wachtFf(timeout);
+            if (element.isDisplayed()) {
+                element.click();
+            }
+            wachtFf(timeout);
+            wachtFf(timeout);
+            if (element.isDisplayed()) {
+                element.click();
+            }
+            wachtFf(timeout);
+            wachtFf(timeout);
+            if (element.isDisplayed()) {
+                element.click();
+            }
+            wachtFf(timeout);
+            wachtFf(timeout);
+            if (element.isDisplayed()) {
+                element.click();
+            }
+            wachtFf(timeout);
+            wachtFf(timeout);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void naarAdres(WebDriver driver, String adres) {

@@ -8,9 +8,17 @@ import java.util.Set;
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonPolis;
+import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
+import nl.dias.service.GebruikerService;
+import nl.dias.service.PolisService;
+import nl.dias.service.VerzekeringsMaatschappijService;
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -22,10 +30,40 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
     private BijlageMapper bijlageMapper;
     @InjectParam
     private SchadeMapper schadeMapper;
+    @InjectParam
+    private PolisService polisService;
+    @InjectParam
+    private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
+    @InjectParam
+    private GebruikerService gebruikerService;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
-        return null;
+        String patternDatum = "dd-MM-yyyy";
+
+        LocalDate ingangsDatum = LocalDate.parse(jsonPolis.getIngangsDatum(), DateTimeFormat.forPattern(patternDatum));
+        LocalDate wijzigingsDatum = LocalDate.parse(jsonPolis.getWijzigingsDatum(), DateTimeFormat.forPattern(patternDatum));
+        LocalDate prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
+
+        Polis polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
+
+        polis.setId(jsonPolis.getId());
+        polis.setPolisNummer(jsonPolis.getPolisNummer());
+        polis.setIngangsDatum(ingangsDatum);
+        polis.setPremie(new Bedrag(jsonPolis.getPremie()));
+        polis.setWijzigingsDatum(wijzigingsDatum);
+        polis.setProlongatieDatum(prolongatieDatum);
+        polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
+
+        polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
+        polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
+
+        Polis p = polisService.lees(polis.getId());
+
+        polis.setSchades(p.getSchades());
+        polis.setOpmerkingen(p.getOpmerkingen());
+
+        return polis;
     }
 
     @Override
@@ -46,7 +84,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());
-        jsonPolis.setSoort(polis.getClass().getSimpleName());
+        jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
         }

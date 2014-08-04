@@ -24,6 +24,7 @@ public class JsonPolis {
     private String className;
     private List<JsonSchade> schades;
     private String relatie;
+    private String titel;
 
     public Long getId() {
         return id;
@@ -168,6 +169,14 @@ public class JsonPolis {
 
     public void setRelatie(String relatie) {
         this.relatie = relatie;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 
     @Override

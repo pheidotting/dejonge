@@ -1,9 +1,9 @@
 <h2>Bedrijf toevoegen</h2>
-<input type="text" id="naamBedrijf" placeholder="Naam..." /><br />
-<input type="text" id="kvkBedrijf" placeholder="Kvk..." /><br />
-<input type="text" id="straatBedrijf" placeholder="Straat..." /><br />
-<input type="text" id="huisnummerBedrijf" placeholder="Huisnummer..." /><br />
-<input type="text" id="toevoegingBedrijf" placeholder="Toevoeging..." /><br />
-<input type="text" id="postcodeBedrijf" placeholder="Postcode..." /><br />
-<input type="text" id="plaatsBedrijf" placeholder="Plaats..." /><br /><br />
-<button id="opslaanBedrijf" class="btn btn-primary" data-bind="click: $root.toevoegenBedrijf">Opslaan</button>
+<input type="text" id="naam" placeholder="Naam..." data-bind="value: naam" /><br />
+<input type="text" id="kvk" placeholder="Kvk..." data-bind="value: kvk" maxlength="8" /><br />
+<input type="text" id="straat" placeholder="Straat..." data-bind="value: straat" /><br />
+<input type="text" id="huisnummer" placeholder="Huisnummer..." data-bind="value: huisnummer" /><br />
+<input type="text" id="toevoeging" placeholder="Toevoeging..." data-bind="value: toevoeging" /><br />
+<input type="text" id="postcode" placeholder="Postcode..." data-bind="value: postcode" /><br />
+<input type="text" id="plaats" placeholder="Plaats..." data-bind="value: plaats" /><br /><br />
+<button class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>

@@ -251,9 +251,9 @@
 					<debug>true</debug>
 					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/GlassfishServer/glassfish3</glassfishDirectory>
 					<user>admin</user>
-					<adminPassword>a</adminPassword>
+					<adminPassword>admin</adminPassword>
 					<domain>
-						<name>domain1</name>
+						<name>lakedigital</name>
 						<host>localhost</host>
 						<adminPort>4848</adminPort>
 					</domain>
@@ -295,8 +295,8 @@
                     <user>admin</user>
                     <adminPassword>admin</adminPassword>
                     <domain>
-                        <name>domain1</name>
-                        <host>localhost</host>
+						<name>lakedigital</name>
+						<host>localhost</host>
                         <adminPort>4848</adminPort>
                     </domain>
                     <components>

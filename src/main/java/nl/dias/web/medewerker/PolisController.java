@@ -57,6 +57,7 @@ public class PolisController {
     @Path("/lijst")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {
+        LOGGER.debug("Ophalen alle polissen voor Relatie " + relatieId);
         Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
 
         Set<Polis> polissen = new HashSet<>();
@@ -71,9 +72,9 @@ public class PolisController {
     @Path("/opslaan")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonPolis opslaanPolis) {
+    public Response opslaan(JsonPolis jsonPolis) {
         try {
-            polisService.opslaan(opslaanPolis);
+            polisService.opslaan(polisMapper.mapVanJson(jsonPolis));
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();

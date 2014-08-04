@@ -130,11 +130,6 @@ public class PolisService {
     }
 
     public void opslaan(JsonPolis jsonPolis) {
-        // Eerst kijken of het polisnummer al voorkomt
-        if (zoekOpPolisNummer(jsonPolis.getPolisNummer()) != null) {
-            throw new IllegalArgumentException("Het betreffende polisnummer komt al voor.");
-        }
-
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij());
         LOGGER.debug("maatschappij gevonden : " + maatschappij);
 
@@ -156,6 +151,11 @@ public class PolisService {
             }
 
             if (polis == null) {
+                // Eerst kijken of het polisnummer al voorkomt
+                if (zoekOpPolisNummer(jsonPolis.getPolisNummer()) != null) {
+                    throw new IllegalArgumentException("Het betreffende polisnummer komt al voor.");
+                }
+
                 LOGGER.debug("Polis = null, daarom opmaken uit Request");
                 polis = definieerPolisSoort(jsonPolis.getSoort());
             }
@@ -186,7 +186,9 @@ public class PolisService {
                 }
                 polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
+                LOGGER.debug("Maatschappij zetten" + maatschappij);
                 polis.setMaatschappij(maatschappij);
+                LOGGER.debug("Maatschappij gezet");
 
                 relatie.getPolissen().add(polis);
                 polis.setRelatie(relatie);
@@ -210,6 +212,9 @@ public class PolisService {
 
             if (polis != null) {
                 LOGGER.debug("Opslaan polis : " + polis);
+                // polisRepository.getEm().getTransaction().begin();
+                // polisRepository.getEm().merge(polis.getMaatschappij());
+                // polisRepository.getEm().getTransaction().commit();
                 polisRepository.opslaan(polis);
 
                 relatie.getPolissen().add(polis);
@@ -240,7 +245,7 @@ public class PolisService {
         return ld;
     }
 
-    private Polis definieerPolisSoort(String soort) {
+    public Polis definieerPolisSoort(String soort) {
         Polis polis = null;
 
         if ("Aansprakelijkheid".equals(soort)) {
@@ -290,6 +295,9 @@ public class PolisService {
         }
         if ("Zorg".equals(soort)) {
             polis = new ZorgVerzekering();
+        }
+        if (polis == null) {
+            throw new IllegalArgumentException("Kies een soort verzekering");
         }
 
         return polis;

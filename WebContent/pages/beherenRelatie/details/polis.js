@@ -26,6 +26,8 @@ function go(log, relatieId, actie, subId){
 					polis.bijlages.removeAll();
 					ko.applyBindings(polis);
 			    });
+			}else{
+				ko.applyBindings(new Polis('', log, relatieId));
 			}
 		});
 	});

@@ -45,6 +45,10 @@
 		<class>nl.dias.domein.Telefoonnummer</class>
 		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
 		<class>nl.dias.service.envers.RevEntity</class>
+		<property name="eclipselink.logging.logger" value="ServerLogger"/>
+		<property name="eclipselink.logging.level.sql" value="FINE"/>
+		<property name="eclipselink.logging.parameters" value="true"/>
+		
 		<!-- 
 		<properties>
 			<property name="hibernate.ejb.event.post-insert"

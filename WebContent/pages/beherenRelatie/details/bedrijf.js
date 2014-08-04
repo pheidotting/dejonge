@@ -1,31 +1,15 @@
 function go(log, relatieId, actie, subId){
-	$.getScript("pages/beherenRelatie/details/bedrijven.js");
-	
-	$('#opslaanBedrijf').click(function(){
-		verbergMeldingen();
-      	var bedrijf = {
-	       	relatie : relatieId,
-	       	naam : $('#naamBedrijf').val(),
-	        kvk : $('#kvkBedrijf').val(),
-	       	straat : $('#straatBedrijf').val(),
-	       	huisnummer : $('#huisnummerBedrijf').val(),
-	       	toevoeging : $('#toevoegingBedrijf').val(),
-	       	postcode : $('#postcodeBedrijf').val(),
-	       	plaats : $('#plaatsBedrijf').val()
-      	}
-      	var json = JSON.stringify(bedrijf);
-		$.ajax({
-			type: "POST",
-			url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
-			contentType: "application/json",
-	        data: json,
-	        success: function (response) {
-	        	plaatsMelding("De gegevens zijn opgeslagen");
-	    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
-	        },
-	        error: function (data) {
-	        	plaatsFoutmelding(data);
-	        }
-		});
+	$.getScript("pages/beherenRelatie/details/bedrijven.js", function() {
+		if(subId != null && subId != "0"){
+			log.debug("Ophalen Bedrijf met id : " + subId);
+			log.debug("Relatie id " + relatieId);
+			$.get( "../dejonge/rest/medewerker/bedrijf/lees", {"id" : subId}, function(data) {
+				var bedrijf = new Bedrijf(data, log, relatieId);
+				ko.applyBindings(bedrijf);
+		    });
+		}else{
+			log.debug("aanmaken nieuw Bedrijf");
+			ko.applyBindings(new Bedrijf('', log, relatieId));
+		}
 	});
 }

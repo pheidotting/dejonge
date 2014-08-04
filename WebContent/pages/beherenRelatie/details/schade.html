@@ -2,49 +2,51 @@
 <form enctype="multipart/form-data" id="schadeMeldForm">
 <div class="form-group">
 	<label for="polisVoorSchademelding">Verzekering</label>
-	<select id="polisVoorSchademelding" data-bind="foreach: polissen, visible: polissen().length > 0">
-		<option id="polisVoorSchade" data-bind="text: soort, value: id"></option>
+	<select id="polisVoorSchademelding" data-bind="value: polis">
+		<option id="0">Kies een polis uit de lijst..</option>
 	</select>
 </div>
 <div class="form-group">
 	<label for="schadeNummerMaatschappij">Schadenummer Maatschappij</label>
-	<input class="form-control" type="text" id="schadeNummerMaatschappij" name="schadeNummerMaatschappij" />
+	<input class="form-control" type="text" id="schadeNummerMaatschappij" name="schadeNummerMaatschappij" data-bind="value: schadeNummerMaatschappij" />
 </div>
 <div class="form-group">
 	<label for="schadeNummerTussenpersoon">Schadenummer Tussenpersoon</label>
-	<input class="form-control" type="text" id="schadeNummerTussenpersoon" name="schadeNummerTussenpersoon" />
+	<input class="form-control" type="text" id="schadeNummerTussenpersoon" name="schadeNummerTussenpersoon" data-bind="value: schadeNummerTussenPersoon" />
 </div>
 <div class="form-group">
 	<label for="soortSchade">Soort schade</label>
-	<input class="form-control" type="text" id="soortSchade" name="soortSchade" />
+	<input class="form-control" type="text" id="soortSchade" name="soortSchade" data-bind="value: soortSchade" />
 </div>
 <div class="form-group">
 	<label for="locatieSchade">Locatie schade</label>
-	<input class="form-control" type="text" id="locatieSchade" name="locatieSchade" />
+	<input class="form-control" type="text" id="locatieSchade" name="locatieSchade" data-bind="value: locatie" />
 </div>
 <div class="form-group">
 	<label for="statusSchade">Status schade</label>
-	<select id="statusSchade" name="statusSchade"></select>
+	<select id="statusSchade" name="statusSchade" data-bind="value: statusSchade">
+		<option id="0">Kies een status uit de lijst..</option>
+	</select>
 </div>
 <div class="form-group">
 	<label for="datumTijdSchade">Datum tijd schade</label>
-	<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" />
+	<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdSchade" />
 </div>
 <div class="form-group">
 	<label for="datumTijdMelding">Datum tijd melding</label>
-	<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" />
+	<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdMelding" />
 </div>
 <div class="form-group">
 	<label for="datumAfgehandeld">Datum afgehandeld</label>
-	<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" />
+	<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" data-bind="value: datumAfgehandeld" />
 </div>
 <div class="form-group">
 	<label for="eigenRisico">Eigen risico</label>
-	<input class="form-control" type="text" id="eigenRisico" name="eigenRisico" />
+	<input class="form-control" type="text" id="eigenRisico" name="eigenRisico" data-bind="value: eigenRisico" />
 </div>
 <div class="form-group">
 	<label for="omschrijving">Omschrijving</label>
-	<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;"></textarea>
+	<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;" data-bind="value: omschrijving"></textarea>
 </div>
 <div class="form-group" id="uploadSchade1">
 	<label for="file">&nbsp;</label>
@@ -105,6 +107,6 @@
 </script>
 <div class="form-group">
 	<label for="schadeMeldingOpslaan">&nbsp;</label>
-	<button class="btn btn-primary" id="schadeMeldingOpslaan">Opslaan</button>
+	<button class="btn btn-primary" id="schadeMeldingOpslaan" data-bind="click: opslaan">Opslaan</button>
 </div>
 </form>

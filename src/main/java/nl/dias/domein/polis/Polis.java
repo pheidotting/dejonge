@@ -90,7 +90,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
+    @ManyToOne(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     @JoinColumn(name = "MAATSCHAPPIJ")
     private VerzekeringsMaatschappij maatschappij;
 

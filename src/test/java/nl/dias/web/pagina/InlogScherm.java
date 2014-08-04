@@ -1,6 +1,8 @@
 package nl.dias.web.pagina;
 
-import nl.dias.dias_web.hulp.Hulp;
+import static nl.dias.dias_web.hulp.Hulp.klikEnWacht;
+import static nl.dias.dias_web.hulp.Hulp.vulVeld;
+import static nl.dias.dias_web.hulp.Hulp.wachtFf;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,9 +16,10 @@ public class InlogScherm extends IndexPagina {
     private WebElement inlogButton;
 
     public void inloggen(String identificatie, String wachtwoord) {
-        Hulp.vulVeld(this.identificatie, identificatie);
-        Hulp.vulVeld(this.wachtwoord, wachtwoord);
-        Hulp.klikEnWacht(inlogButton);
+        vulVeld(this.identificatie, identificatie);
+        vulVeld(this.wachtwoord, wachtwoord);
+        klikEnWacht(inlogButton);
+        wachtFf();
     }
 
 }

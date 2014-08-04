@@ -63,7 +63,7 @@ public class BeherenRelatieIT {
     @Test
     public void test() {
         if (doorgaan()) {
-            Hulp.naarAdres(driver, "http://localhost:8080/dejonge/index.html#inloggen");
+            Hulp.naarAdres(driver, "http://46.17.3.242:57525/dejonge/index.html#inloggen");
 
             InlogScherm inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
             inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
@@ -101,7 +101,7 @@ public class BeherenRelatieIT {
         jsonRelatie.setVoornaam(stringGeneratieUtil.genereerVoornaam());
         LocalDate geboorteDatum = stringGeneratieUtil.genereerDatum();
         jsonRelatie.setGeboorteDatum(geboorteDatum.toString("dd-MM-yyyy"));
-        jsonRelatie.setOverlijdensdatum(stringGeneratieUtil.genereerDatum(geboorteDatum).toString("dd-MM-yyyy"));
+        jsonRelatie.setOverlijdensdatum((String) stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.genereerDatum(geboorteDatum).toString("dd-MM-yyyy")));
 
         jsonRelatie.setGeslacht((String) stringGeneratieUtil.kiesUitItems("Man", "Vrouw"));
         jsonRelatie.setBurgerlijkeStaat((String) stringGeneratieUtil.kiesUitItems("Gehuwd", "Ongehuwd"));
