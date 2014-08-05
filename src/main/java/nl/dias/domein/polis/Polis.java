@@ -35,15 +35,16 @@ import nl.dias.domein.Schade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
-@NamedQueries({ @NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"),
+@NamedQueries({ // @NamedQuery(name = "Polis.allesBijMaatschappij", query =
+        // "select p from Polis p where p.maatschappij = :maatschappij"),
         @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"),
         @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie") })
 public abstract class Polis implements PersistenceObject, Serializable {
@@ -227,8 +228,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(bijlages).append(id).append(ingangsDatum).append(ingangsDatumString).append(maatschappij).append(opmerkingen).append(polisNummer).append(premie)
-                .append(relatie).toHashCode();
+        return new HashCodeBuilder().append(bijlages).append(id).append(ingangsDatum).append(maatschappij).append(opmerkingen).append(polisNummer).append(premie).append(relatie).toHashCode();
     }
 
     @Override
@@ -244,8 +244,8 @@ public abstract class Polis implements PersistenceObject, Serializable {
         }
         Polis other = (Polis) obj;
 
-        return new EqualsBuilder().append(bijlages, other.bijlages).append(id, other.id).append(ingangsDatum, other.ingangsDatum).append(ingangsDatumString, other.ingangsDatumString)
-                .append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).isEquals();
+        return new EqualsBuilder().append(bijlages, other.bijlages).append(id, other.id).append(ingangsDatum, other.ingangsDatum).append(maatschappij, other.maatschappij)
+                .append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).isEquals();
     }
 
     /**
@@ -253,9 +253,8 @@ public abstract class Polis implements PersistenceObject, Serializable {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", this.id).append("bedrijf", this.bedrijf).append("relatie", this.relatie).append("wijzigingsDatum", this.wijzigingsDatum)
-                .append("maatschappij", this.maatschappij).append("opmerkingen", this.opmerkingen).append("polisNummer", this.polisNummer).append("schades", this.schades)
-                .append("bijlages", this.bijlages).append("prolongatieDatum", this.prolongatieDatum).append("ingangsDatum", this.ingangsDatum).append("ingangsDatumString", this.ingangsDatumString)
-                .append("premie", this.premie).append("betaalfrequentie", this.betaalfrequentie).toString();
+        return new ToStringBuilder(this).append("polisNummer", this.polisNummer).append("id", this.id).append("wijzigingsDatum", this.wijzigingsDatum).append("maatschappij", this.maatschappij)
+                .append("opmerkingen", this.opmerkingen).append("schades", this.schades).append("bijlages", this.bijlages).append("prolongatieDatum", this.prolongatieDatum)
+                .append("ingangsDatum", this.ingangsDatum).append("premie", this.premie).append("betaalfrequentie", this.betaalfrequentie).toString();
     }
 }

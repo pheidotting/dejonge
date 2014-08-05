@@ -63,6 +63,10 @@ public class PolisService {
 
     public void opslaan(Polis polis) {
         polisRepository.opslaan(polis);
+
+        gebruikerService.opslaan(polis.getRelatie());
+
+        LOGGER.debug(lees(polis.getId()));
     }
 
     public Polis lees(Long id) {
