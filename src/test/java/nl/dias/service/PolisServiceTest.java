@@ -86,9 +86,18 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testOpslaanPolis() {
-        AutoVerzekering polis = new AutoVerzekering();
+        AutoVerzekering polis = createMock(AutoVerzekering.class);
+        Relatie relatie = createMock(Relatie.class);
 
         polisRepository.opslaan(polis);
+        expectLastCall();
+
+        expect(polis.getRelatie()).andReturn(relatie);
+        expect(polis.getId()).andReturn(1L);
+
+        expect(polisRepository.lees(1L)).andReturn(polis);
+
+        gebruikerService.opslaan(relatie);
         expectLastCall();
 
         replayAll();
