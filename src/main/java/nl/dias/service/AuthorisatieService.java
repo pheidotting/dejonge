@@ -156,7 +156,7 @@ public class AuthorisatieService {
     public List<Cookie> getCookies(HttpServletRequest request) {
         List<Cookie> cookies = new ArrayList<Cookie>();
 
-        if (request != null) {
+        if (request != null && request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 LOGGER.debug(cookie.getDomain());
                 LOGGER.debug(cookie.getName());
