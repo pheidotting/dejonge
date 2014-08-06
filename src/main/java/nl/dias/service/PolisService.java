@@ -215,18 +215,11 @@ public class PolisService {
                 }
             }
 
-            if (polis != null) {
-                LOGGER.debug("Opslaan polis : " + polis);
-                // polisRepository.getEm().getTransaction().begin();
-                // polisRepository.getEm().merge(polis.getMaatschappij());
-                // polisRepository.getEm().getTransaction().commit();
-                polisRepository.opslaan(polis);
+            LOGGER.debug("Opslaan polis : " + polis);
+            polisRepository.opslaan(polis);
 
-                relatie.getPolissen().add(polis);
-                gebruikerService.opslaan(relatie);
-            } else {
-                LOGGER.error("lege polis..");
-            }
+            relatie.getPolissen().add(polis);
+            gebruikerService.opslaan(relatie);
         }
 
         if (messages == null) {

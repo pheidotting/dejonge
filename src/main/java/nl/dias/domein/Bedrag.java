@@ -15,7 +15,7 @@ public class Bedrag {
     }
 
     public Bedrag(String bedrag) {
-        this(Long.parseLong(bedrag));
+        this(Double.parseDouble(bedrag));
     }
 
     public Bedrag(Long bedrag) {
