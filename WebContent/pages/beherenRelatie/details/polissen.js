@@ -57,24 +57,24 @@ function Polis(data, log, relatieId){
 	if(data.bijlages != null){
 		$.each(data.bijlages, function(i, item){
 			self.bijlages.push(new Bijlage(item));
-		})
-	}
+		});
+	};
 	
     self.schadeMeldenBijPolis = function(polis){
 //		$('#tabs').puitabview('select', 6);
 		console.log(ko.utils.unwrapObservable(polis.id));
 		console.log($('#polisVoorSchademelding').val());
 //		$('#polisVoorSchademelding').val(ko.utils.unwrapObservable(polis.id));
-    }
+    };
     
     self.bewerkPolis = function(polis){
 		verbergMeldingen();
     	document.location.hash = "#beherenRelatie/" + relatieId + "/polis/" + ko.utils.unwrapObservable(polis.id);
-    }
+    };
     
     self.toevoegenBijlage = function(){
     	self.bijlages.push(new Bijlage(''));
-    }
+    };
     
     self.opslaan = function(polis){
     	verbergMeldingen();
@@ -106,7 +106,7 @@ function Polissen(data, log, relatieId){
 	self.polissen = ko.observableArray();
 	$.each(data, function(i, item){
 		self.polissen.push(new Polis(item, log, relatieId));
-	})
+	});
 	
     self.verwijderPolis = function(polis){
 		verbergMeldingen();

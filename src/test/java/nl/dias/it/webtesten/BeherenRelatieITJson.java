@@ -5,30 +5,27 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.dias_web.hulp.Hulp;
+import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
 import nl.dias.it.webtesten.util.StringGeneratieUtil;
-import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
-import nl.dias.web.pagina.InlogScherm;
-import nl.dias.web.pagina.LijstRelaties;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.server.SeleniumServer;
-import org.openqa.selenium.support.PageFactory;
 
-public class BeherenRelatieIT {
-    private SeleniumServer seleniumServer;
-    private WebDriver driver;
+import com.google.gson.Gson;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
+public class BeherenRelatieITJson {
     private StringGeneratieUtil stringGeneratieUtil;
+    private Gson gson;
+    private Client client;
 
     private boolean doorgaan() {
         boolean doorgaan = true;
@@ -44,49 +41,95 @@ public class BeherenRelatieIT {
     @Before
     public void setUp() throws Exception {
         if (doorgaan()) {
-            seleniumServer = new SeleniumServer();
-            seleniumServer.start();
-
-            driver = new FirefoxDriver();
             stringGeneratieUtil = new StringGeneratieUtil();
+
+            gson = new Gson();
+
+            client = Client.create();
         }
     }
 
-    @After
-    public void afsluiten() {
-        if (doorgaan()) {
-            driver.close();
-            seleniumServer.stop();
-        }
+    private void checkMelding(String verwacht, JsonFoutmelding melding) {
+        assertEquals(verwacht, melding.getFoutmelding());
+    }
+
+    private String stuurJson(String adres, String input) {
+        WebResource webResource = client.resource(adres);
+
+        ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+
+        return response.getEntity(String.class);
     }
 
     @Test
     public void test() {
         if (doorgaan()) {
-            Hulp.naarAdres(driver, "http://46.17.3.242:57525/dejonge/index.html#inloggen");
+            String output = stuurJson("http://46.17.3.242:57525/dejonge/rest/authorisatie/authorisatie/inloggen",
+                    "{\"identificatie\":\"gerben@dejongefinancieelconsult.nla\",\"wachtwoord\":\"\",\"onthouden\":\"false\"}");
+            JsonFoutmelding melding = gson.fromJson(output, JsonFoutmelding.class);
 
-            InlogScherm inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
-            assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.", inlogScherm.leesFoutmelding());
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "g");
-            assertEquals("Er is een fout opgetreden : Het ingevoerde wachtwoord is onjuist", inlogScherm.leesFoutmelding());
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "gerben");
+            checkMelding("gerben@dejongefinancieelconsult.nla werd niet gevonden.", melding);
 
-            Hulp.wachtFf();
+            output = stuurJson("http://46.17.3.242:57525/dejonge/rest/authorisatie/authorisatie/inloggen",
+                    "{\"identificatie\":\"gerben@dejongefinancieelconsult.nl\",\"wachtwoord\":\"onjuistwachtwoord\",\"onthouden\":\"false\"}");
+            melding = gson.fromJson(output, JsonFoutmelding.class);
 
-            LijstRelaties lijstRelaties = PageFactory.initElements(driver, LijstRelaties.class);
-            lijstRelaties.toevoegenNieuweRelatie();
+            checkMelding("Het ingevoerde wachtwoord is onjuist", melding);
 
-            BeherenRelatie beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
+            output = stuurJson("http://46.17.3.242:57525/dejonge/rest/authorisatie/authorisatie/inloggen",
+                    "{\"identificatie\":\"gerben@dejongefinancieelconsult.nl\",\"wachtwoord\":\"gerben\",\"onthouden\":\"false\"}");
+            melding = gson.fromJson(output, JsonFoutmelding.class);
+
+            checkMelding(null, melding);
 
             JsonRelatie jsonRelatie = maakJsonRelatie();
 
-            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer()
-                    .toString(), jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-                    jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie
-                            .getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+            output = stuurJson("http://46.17.3.242:57525/dejonge/rest/medewerker/gebruiker/opslaan", gson.toJson(jsonRelatie));
+            System.out.println(output);
+            melding = gson.fromJson(output, JsonFoutmelding.class);
 
-            assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
+            checkMelding(null, melding);
+
+            // Hulp.naarAdres(driver,
+            // "http://46.17.3.242:57525/dejonge/index.html#inloggen");
+            //
+            // InlogScherm inlogScherm = PageFactory.initElements(driver,
+            // InlogScherm.class);
+            // inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
+            // assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.",
+            // inlogScherm.leesFoutmelding());
+            // inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "g");
+            // assertEquals("Er is een fout opgetreden : Het ingevoerde wachtwoord is onjuist",
+            // inlogScherm.leesFoutmelding());
+            // inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl",
+            // "gerben");
+            //
+            // Hulp.wachtFf();
+            //
+            // LijstRelaties lijstRelaties = PageFactory.initElements(driver,
+            // LijstRelaties.class);
+            // lijstRelaties.toevoegenNieuweRelatie();
+            //
+            // BeherenRelatie beherenRelatieScherm =
+            // PageFactory.initElements(driver, BeherenRelatie.class);
+            //
+            // JsonRelatie jsonRelatie = maakJsonRelatie();
+            //
+            // beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(),
+            // jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(),
+            // jsonRelatie.getStraat(), jsonRelatie.getHuisnummer()
+            // .toString(), jsonRelatie.getToevoeging(),
+            // jsonRelatie.getPostcode(), jsonRelatie.getPlaats(),
+            // jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(),
+            // jsonRelatie.getGeboorteDatum(),
+            // jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(),
+            // jsonRelatie.getBurgerlijkeStaat(),
+            // allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie
+            // .getRekeningnummers()),
+            // allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+            //
+            // assertEquals("De gegevens zijn opgeslagen",
+            // beherenRelatieScherm.leesmelding());
 
         }
     }
@@ -101,7 +144,7 @@ public class BeherenRelatieIT {
         jsonRelatie.setVoornaam(stringGeneratieUtil.genereerVoornaam());
         LocalDate geboorteDatum = stringGeneratieUtil.genereerDatum();
         jsonRelatie.setGeboorteDatum(geboorteDatum.toString("dd-MM-yyyy"));
-        jsonRelatie.setOverlijdensdatum((String) stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.genereerDatum(geboorteDatum).toString("dd-MM-yyyy"))));
+        jsonRelatie.setOverlijdensdatum((String) stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.genereerDatum(geboorteDatum).toString("dd-MM-yyyy")));
 
         jsonRelatie.setGeslacht((String) stringGeneratieUtil.kiesUitItems("Man", "Vrouw"));
         jsonRelatie.setBurgerlijkeStaat((String) stringGeneratieUtil.kiesUitItems("Gehuwd", "Ongehuwd"));

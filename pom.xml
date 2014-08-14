@@ -80,6 +80,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
@@ -253,7 +258,7 @@
 					<user>admin</user>
 					<adminPassword>admin</adminPassword>
 					<domain>
-						<name>lakedigital</name>
+						<name>domain1</name>
 						<host>localhost</host>
 						<adminPort>4848</adminPort>
 					</domain>
@@ -295,7 +300,7 @@
                     <user>admin</user>
                     <adminPassword>admin</adminPassword>
                     <domain>
-						<name>lakedigital</name>
+						<name>domain1</name>
 						<host>localhost</host>
                         <adminPort>4848</adminPort>
                     </domain>

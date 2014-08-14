@@ -1,15 +1,6 @@
 <div class="form-group">
 	<label for="zakelijkeklant">Zakelijke klant</label>
 	<input class="form-control" type="checkbox" id="zakelijkeklant" name="zakelijkeklant" data-bind="checked: zakelijkeklant" />
-	<!--script>
-		$('#zakelijkeklant').change(function(){
-			if($('#zakelijkeklant').is(':checked')){
-				$('#tabs').puitabview('enable' , 1);
-			}else{
-				$('#tabs').puitabview('disable' , 1);
-			}
-		});
-	</script-->
 </div>
 <div class="form-group">
 	<h3>Persoonsgegevens</h3>
@@ -97,7 +88,7 @@
 </div>
 
 <div class="form-group">
-	<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" href="#" id="voegRekeningToe"></span>
+	<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" id="voegRekeningToe"></span>
 	<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
 		<div id="rekeningnummer">
 			<input class="form-control" type="hidden" id="rekeningid" name="rekeningid" data-bind="value: id" />
@@ -115,7 +106,7 @@
 </div>
 
 <div class="form-group">
-	<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" href="#" id="voegTelefoonNummerToe"></span>
+	<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" id="voegTelefoonNummerToe"></span>
 </div>
 <div id="telefoonnummers" data-bind="foreach: telefoonnummers, visible: telefoonnummers().length > 0">
 	<div id="telefoonnummer">
@@ -139,8 +130,7 @@
 	<label for="emailadres">E-mailadres</label>
 	<input class="form-control" type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" />
 </div>
-<div class="form-group">
-	<label for="opslaanrelatie">&nbsp;</label>
-	<button id="opslaanrelatie" name="opslaanrelatie" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
-	<button  id="verwijderen" class="btn btn-danger" data-bind="click: verwijderenRelatie">Verwijderen</button>
-</div>
+<form method="post">
+<button id="opslaanRelatie" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+</form>
+<!--button  id="verwijderen" class="btn btn-danger" data-bind="click: verwijderenRelatie">Verwijderen</button-->

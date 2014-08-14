@@ -1,71 +1,71 @@
 function Relatie(data, log) {
-    var self = this;
+    var _this = this;
     
-	this.identificatie = ko.observable(data.identificatie);
-	this.id = ko.observable(data.id);
-	this.voornaam = ko.observable(data.voornaam);
-	this.achternaam = ko.observable(data.achternaam);
-	this.tussenvoegsel = ko.observable(data.tussenvoegsel);
-	this.straat = ko.observable(data.straat);
-	this.huisnummer = ko.observable(data.huisnummer);
-	this.toevoeging = ko.observable(data.toevoeging);
-	this.postcode = ko.observable(data.postcode);
-	this.plaats = ko.observable(data.plaats);
-	this.bsn = ko.observable(data.bsn);
-	this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
-	if(this.zakelijkeKlant){
+	_this.identificatie = ko.observable(data.identificatie);
+	_this.id = ko.observable(data.id);
+	_this.voornaam = ko.observable(data.voornaam);
+	_this.achternaam = ko.observable(data.achternaam);
+	_this.tussenvoegsel = ko.observable(data.tussenvoegsel);
+	_this.straat = ko.observable(data.straat);
+	_this.huisnummer = ko.observable(data.huisnummer);
+	_this.toevoeging = ko.observable(data.toevoeging);
+	_this.postcode = ko.observable(data.postcode);
+	_this.plaats = ko.observable(data.plaats);
+	_this.bsn = ko.observable(data.bsn);
+	_this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
+	if(_this.zakelijkeKlant){
 //		$('#tabs').puitabview('enable' , 1);
 	}else{
 //		$('#tabs').puitabview('disable' , 1);
 	}
-	this.rekeningnummers = ko.observableArray();
+	_this.rekeningnummers = ko.observableArray();
 	if(data.rekeningnummers != null){
 		$.each(data.rekeningnummers, function(i, item) {
-			self.rekeningnummers.push(new RekeningNummer(item));
+			_this.rekeningnummers.push(new RekeningNummer(item));
 		});
 	}
-	this.telefoonnummers = ko.observableArray();
+	_this.telefoonnummers = ko.observableArray();
 	if(data.telefoonnummers != null){
 		$.each(data.telefoonnummers, function(i, item) {
-			self.telefoonnummers.push(new TelefoonNummer(item));
+			_this.telefoonnummers.push(new TelefoonNummer(item));
 		});
 	}
 
-	this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
-	this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
-	this.geslacht = ko.observable(data.geslacht);
-	this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
+	_this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
+	_this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
+	_this.geslacht = ko.observable(data.geslacht);
+	_this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
 
-//	this.onderlingeRelaties = ko.observableArray();
+//	_this.onderlingeRelaties = ko.observableArray();
 	/*		if(data.onderlingeRelaties != null){
 		$.each(data.onderlingeRelaties, function(i, item) {
-			self.onderlingeRelaties.push(new OnderlingeRelatie(item));
+			_this.onderlingeRelaties.push(new OnderlingeRelatie(item));
  		});
 	}
 	*/
-	this.voegRekeningToe = function() {
-        self.rekeningnummers.push(new RekeningNummer(""));
+	_this.voegRekeningToe = function() {
+        _this.rekeningnummers.push(new RekeningNummer(""));
     };
     
-    this.verwijderRekening = function(nummer){
-    	self.rekeningnummers.remove(nummer);
-    }
+    _this.verwijderRekening = function(nummer){
+    	_this.rekeningnummers.remove(nummer);
+    };
     
-    this.voegTelefoonNummerToe = function() {
-    	self.telefoonnummers.push(new TelefoonNummer(""));
-    }
+    _this.voegTelefoonNummerToe = function() {
+    	_this.telefoonnummers.push(new TelefoonNummer(""));
+    };
     
-    this.verwijderTelefoonNummer = function(telefoon) {
-    	self.telefoonnummers.remove(telefoon);
-    }
+    _this.verwijderTelefoonNummer = function(telefoon) {
+    	_this.telefoonnummers.remove(telefoon);
+    };
     
-    this.opslaan = function(){
+    _this.opslaan = function(relatie){
     	verbergMeldingen();
-    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
-    		this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+    		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
-    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
-    		this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+    		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
     	$.ajax({
             url: '../dejonge/rest/medewerker/gebruiker/opslaan',
@@ -80,54 +80,61 @@ function Relatie(data, log) {
             	plaatsFoutmelding(data);
             }
         });
-    	if(ko.utils.unwrapObservable(this.geboorteDatum) != null && ko.utils.unwrapObservable(this.geboorteDatum) != ''){
-	    	this.geboorteDatum(moment(ko.utils.unwrapObservable(this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+	    	_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
     	}
-    	if(ko.utils.unwrapObservable(this.overlijdensdatum) != null && ko.utils.unwrapObservable(this.overlijdensdatum) != ''){
-	    	this.overlijdensdatum(moment(ko.utils.unwrapObservable(this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+	    	_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 		}
-    }
+    };
     
-    this.verwijderenRelatie = function(obj){
+    _this.verwijderenRelatie = function(relatie){
+    	console.log(relatie);
 		$.ajax({
 			type: "GET",
 			url: '../dejonge/rest/medewerker/gebruiker/verwijderen',
 			dataType:'json',
 			data: {
-				id : ko.utils.unwrapObservable(obj.id)
+				id : ko.utils.unwrapObservable(relatie.id)
 			}
 		});
 		document.location.hash='#lijstRelaties';
-    }
+    };
 }
 
-function OnderlingeRelatie(data){
-	this.id = ko.observable(data.id);
-	this.idNaar = ko.observable(data.idNaar);
-	this.metWie = ko.observable(data.metWie);
-	this.soort = ko.observable(data.soort);
-}
+//function OnderlingeRelatie(data){
+//	var _this = this;
+//
+//	_this.id = ko.observable(data.id);
+//	_this.idNaar = ko.observable(data.idNaar);
+//	_this.metWie = ko.observable(data.metWie);
+//	_this.soort = ko.observable(data.soort);
+//}
 
 function RekeningNummer(data){
-	this.id = ko.observable(data.id);
-	this.rekeningnummer = ko.observable(data.rekeningnummer);
-	this.bic = ko.observable(data.bic);
+	var _this = this;
+
+	_this.id = ko.observable(data.id);
+	_this.rekeningnummer = ko.observable(data.rekeningnummer);
+	_this.bic = ko.observable(data.bic);
 }
 
 function TelefoonNummer(data){
-	this.id = ko.observable(data.id);
-	this.telefoonnummer = ko.observable(data.telefoonnummer);
-	this.soort = ko.observable(data.soort);
+	var _this = this;
+
+	_this.id = ko.observable(data.id);
+	_this.telefoonnummer = ko.observable(data.telefoonnummer);
+	_this.soort = ko.observable(data.soort);
 }
 
 function Bijlage(data){
-	var self = this;
+	var _this = this;
 
-	self.url = ko.computed(function() {
+	_this.url = ko.computed(function() {
         return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
 	}, this);
-	self.bestandsNaam = ko.observable(data.bestandsNaam);
-	self.soortBijlage = ko.observable(data.soortBijlage);
+	_this.bestandsNaam = ko.observable(data.bestandsNaam);
+	_this.soortBijlage = ko.observable(data.soortBijlage);
 }
 
 function go(log, relatieId, actie, subId){
