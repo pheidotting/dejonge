@@ -59,13 +59,15 @@ function Relatie(data, log) {
     };
     
     _this.opslaan = function(){
+    	log.debug("Opslaan Relatie");
     	verbergMeldingen();
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) !== null && ko.utils.unwrapObservable(_this.geboorteDatum) !== ''){
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
     		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) !== null && ko.utils.unwrapObservable(_this.overlijdensdatum) !== ''){
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
     		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
+    	log.debug(ko.toJSON(this));
     	$.ajax({
             url: '../dejonge/rest/medewerker/gebruiker/opslaan',
             type: 'POST',
@@ -79,10 +81,10 @@ function Relatie(data, log) {
             	plaatsFoutmelding(data);
             }
         });
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) !== null && ko.utils.unwrapObservable(_this.geboorteDatum) !== ''){
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
 	    	_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
     	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) !== null && ko.utils.unwrapObservable(_this.overlijdensdatum) !== ''){
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
 	    	_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 		}
     };

@@ -1,5 +1,5 @@
 function go(log, relatieId, actie, subId){
-	$.getScript("pages/beherenRelatie/details/bijlages.js", function(data) {
+	$.getScript("pages/beherenRelatie/details/bijlages.js", function() {
 		$.get( "../dejonge/rest/medewerker/polis/lijst", {"relatieId" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
 	       	ko.applyBindings(new Polissen(data, log, relatieId));
