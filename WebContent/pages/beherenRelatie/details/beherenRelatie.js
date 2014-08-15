@@ -1,6 +1,5 @@
 function Relatie(data, log) {
     var _this = this;
-    
 	_this.identificatie = ko.observable(data.identificatie);
 	_this.id = ko.observable(data.id);
 	_this.voornaam = ko.observable(data.voornaam);
@@ -14,9 +13,9 @@ function Relatie(data, log) {
 	_this.bsn = ko.observable(data.bsn);
 	_this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
 	if(_this.zakelijkeKlant){
-//		$('#tabs').puitabview('enable' , 1);
+		$('#bedrijven').show();
 	}else{
-//		$('#tabs').puitabview('disable' , 1);
+		$('#bedrijven').hide();
 	}
 	_this.rekeningnummers = ko.observableArray();
 	if(data.rekeningnummers != null){
@@ -59,12 +58,12 @@ function Relatie(data, log) {
     	_this.telefoonnummers.remove(telefoon);
     };
     
-    _this.opslaan = function(relatie){
+    _this.opslaan = function(){
     	verbergMeldingen();
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) !== null && ko.utils.unwrapObservable(_this.geboorteDatum) !== ''){
     		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) !== null && ko.utils.unwrapObservable(_this.overlijdensdatum) !== ''){
     		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
     	}
     	$.ajax({
@@ -80,10 +79,10 @@ function Relatie(data, log) {
             	plaatsFoutmelding(data);
             }
         });
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+    	if(ko.utils.unwrapObservable(_this.geboorteDatum) !== null && ko.utils.unwrapObservable(_this.geboorteDatum) !== ''){
 	    	_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
     	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) !== null && ko.utils.unwrapObservable(_this.overlijdensdatum) !== ''){
 	    	_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 		}
     };
