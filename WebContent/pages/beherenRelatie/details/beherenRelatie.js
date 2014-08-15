@@ -1,5 +1,5 @@
 function Relatie(data, log) {
-    var _this = this;
+var _this = this;
 	_this.identificatie = ko.observable(data.identificatie);
 	_this.id = ko.observable(data.id);
 	_this.voornaam = ko.observable(data.voornaam);
@@ -43,54 +43,54 @@ function Relatie(data, log) {
 	}
 	*/
 	_this.voegRekeningToe = function() {
-        _this.rekeningnummers.push(new RekeningNummer(""));
-    };
-    
-    _this.verwijderRekening = function(nummer){
-    	_this.rekeningnummers.remove(nummer);
-    };
-    
-    _this.voegTelefoonNummerToe = function() {
-    	_this.telefoonnummers.push(new TelefoonNummer(""));
-    };
-    
-    _this.verwijderTelefoonNummer = function(telefoon) {
-    	_this.telefoonnummers.remove(telefoon);
-    };
-    
-    _this.opslaan = function(){
-    	log.debug("Opslaan Relatie");
-    	verbergMeldingen();
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
-    		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
-    	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
-    		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
-    	}
-    	log.debug(ko.toJSON(this));
-    	$.ajax({
-            url: '../dejonge/rest/medewerker/gebruiker/opslaan',
-            type: 'POST',
-            data: ko.toJSON(this) ,
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
+_this.rekeningnummers.push(new RekeningNummer(""));
+};
+
+_this.verwijderRekening = function(nummer){
+	_this.rekeningnummers.remove(nummer);
+};
+
+_this.voegTelefoonNummerToe = function() {
+	_this.telefoonnummers.push(new TelefoonNummer(""));
+};
+
+_this.verwijderTelefoonNummer = function(telefoon) {
+	_this.telefoonnummers.remove(telefoon);
+};
+
+_this.opslaan = function(){
+	log.debug("Opslaan Relatie");
+	verbergMeldingen();
+	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	}
+	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+	}
+	log.debug(ko.toJSON(this));
+	$.ajax({
+url: '../dejonge/rest/medewerker/gebruiker/opslaan',
+type: 'POST',
+data: ko.toJSON(this) ,
+contentType: 'application/json; charset=utf-8',
+success: function (response) {
 				document.location.hash='#lijstRelaties';
-            	plaatsMelding("De gegevens zijn opgeslagen");
-            },
-            error: function (data) {
-            	plaatsFoutmelding(data);
-            }
-        });
-    	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
-	    	_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
-    	}
-    	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
-	    	_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+	plaatsMelding("De gegevens zijn opgeslagen");
+},
+error: function (data) {
+	plaatsFoutmelding(data);
+}
+});
+	if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+		_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+	}
+	if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+		_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
 		}
-    };
-    
-    _this.verwijderenRelatie = function(relatie){
-    	console.log(relatie);
+};
+
+_this.verwijderenRelatie = function(relatie){
+	console.log(relatie);
 		$.ajax({
 			type: "GET",
 			url: '../dejonge/rest/medewerker/gebruiker/verwijderen',
@@ -100,7 +100,7 @@ function Relatie(data, log) {
 			}
 		});
 		document.location.hash='#lijstRelaties';
-    };
+};
 }
 
 //function OnderlingeRelatie(data){
@@ -132,7 +132,7 @@ function Bijlage(data){
 	var _this = this;
 
 	_this.url = ko.computed(function() {
-        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
+return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
 	}, this);
 	_this.bestandsNaam = ko.observable(data.bestandsNaam);
 	_this.soortBijlage = ko.observable(data.soortBijlage);
@@ -143,8 +143,8 @@ function go(log, relatieId, actie, subId){
 	if(relatieId != 0 && relatieId != null){
 		$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
-	       	ko.applyBindings(new Relatie(data, log));
-	    });
+	   	ko.applyBindings(new Relatie(data, log));
+	});
 	}else{
 		log.debug("applyBindings op een nieuwe Relatie object");
 		ko.applyBindings(new Relatie('{"achternaam":""}', log));
