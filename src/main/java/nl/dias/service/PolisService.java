@@ -165,54 +165,50 @@ public class PolisService {
                 polis = definieerPolisSoort(jsonPolis.getSoort());
             }
 
-            if (polis == null) {
-                messages = "Kies een soort verzekering";
-            } else {
-                LOGGER.debug("polis aanvullen met ingevoerde gegevens");
-                LOGGER.debug("zet polisnummer " + jsonPolis.getPolisNummer());
-                polis.setPolisNummer(jsonPolis.getPolisNummer());
-                try {
-                    polis.setIngangsDatum(stringNaarLocalDate(jsonPolis.getIngangsDatum()));
-                } catch (IllegalArgumentException e1) {
-                    LOGGER.debug("Fout bij parsen datum", e1);
-                    messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
-                }
-                try {
-                    polis.setProlongatieDatum(stringNaarLocalDate(jsonPolis.getProlongatieDatum()));
-                } catch (IllegalArgumentException e1) {
-                    LOGGER.debug("Fout bij parsen datum", e1);
-                    messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
-                }
-                try {
-                    polis.setWijzigingsDatum(stringNaarLocalDate(jsonPolis.getWijzigingsDatum()));
-                } catch (IllegalArgumentException e1) {
-                    LOGGER.debug("Fout bij parsen datum", e1);
-                    messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
-                }
-                polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
+            LOGGER.debug("polis aanvullen met ingevoerde gegevens");
+            LOGGER.debug("zet polisnummer " + jsonPolis.getPolisNummer());
+            polis.setPolisNummer(jsonPolis.getPolisNummer());
+            try {
+                polis.setIngangsDatum(stringNaarLocalDate(jsonPolis.getIngangsDatum()));
+            } catch (IllegalArgumentException e1) {
+                LOGGER.debug("Fout bij parsen datum", e1);
+                messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
+            }
+            try {
+                polis.setProlongatieDatum(stringNaarLocalDate(jsonPolis.getProlongatieDatum()));
+            } catch (IllegalArgumentException e1) {
+                LOGGER.debug("Fout bij parsen datum", e1);
+                messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
+            }
+            try {
+                polis.setWijzigingsDatum(stringNaarLocalDate(jsonPolis.getWijzigingsDatum()));
+            } catch (IllegalArgumentException e1) {
+                LOGGER.debug("Fout bij parsen datum", e1);
+                messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
+            }
+            polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
-                LOGGER.debug("Maatschappij zetten" + maatschappij);
-                polis.setMaatschappij(maatschappij);
-                LOGGER.debug("Maatschappij gezet");
+            LOGGER.debug("Maatschappij zetten" + maatschappij);
+            polis.setMaatschappij(maatschappij);
+            LOGGER.debug("Maatschappij gezet");
 
-                relatie.getPolissen().add(polis);
-                polis.setRelatie(relatie);
+            relatie.getPolissen().add(polis);
+            polis.setRelatie(relatie);
 
-                if (jsonPolis.getBedrijf() != null) {
-                    Long bedrijfId = Long.valueOf(jsonPolis.getBedrijf());
-                    if (bedrijfId != 0) {
-                        Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(bedrijfId));
-                        polis.setBedrijf(bedrijf);
-                        bedrijf.getPolissen().add(polis);
-                    }
+            if (jsonPolis.getBedrijf() != null) {
+                Long bedrijfId = Long.valueOf(jsonPolis.getBedrijf());
+                if (bedrijfId != 0) {
+                    Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(bedrijfId));
+                    polis.setBedrijf(bedrijf);
+                    bedrijf.getPolissen().add(polis);
                 }
+            }
 
-                try {
-                    LOGGER.debug("zet premiebedrag " + jsonPolis.getPremie());
-                    polis.setPremie(new Bedrag(jsonPolis.getPremie()));
-                } catch (NumberFormatException e) {
-                    LOGGER.debug(e.getMessage());
-                }
+            try {
+                LOGGER.debug("zet premiebedrag " + jsonPolis.getPremie());
+                polis.setPremie(new Bedrag(jsonPolis.getPremie()));
+            } catch (NumberFormatException e) {
+                LOGGER.debug(e.getMessage());
             }
 
             LOGGER.debug("Opslaan polis : " + polis);
