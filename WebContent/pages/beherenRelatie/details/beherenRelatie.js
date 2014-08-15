@@ -147,6 +147,6 @@ function go(log, relatieId, actie, subId){
 	    });
 	}else{
 		log.debug("applyBindings op een nieuwe Relatie object");
-		ko.applyBindings(new Relatie('', log));
+		ko.applyBindings(new Relatie('{"achternaam":""}', log));
 	}
 }
