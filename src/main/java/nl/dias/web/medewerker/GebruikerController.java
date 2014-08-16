@@ -1,7 +1,6 @@
 package nl.dias.web.medewerker;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,8 +48,6 @@ public class GebruikerController {
     private AuthorisatieService authorisatieService;
     @Context
     private HttpServletRequest httpServletRequest;
-    @Context
-    private HttpServletResponse httpServletResponse;
 
     @GET
     @Path("/lees")
@@ -107,18 +104,12 @@ public class GebruikerController {
 
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
-            String sessie = new String();
+            String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
             }
 
             Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
-
-            LOGGER.debug(medewerker);
-            LOGGER.debug(medewerker.getKantoor());
-            LOGGER.debug(medewerker.getKantoor().getId());
-            LOGGER.debug(relatie);
-            LOGGER.debug(kantoorRepository);
 
             relatie.setKantoor(kantoorRepository.lees(medewerker.getKantoor().getId()));
 
