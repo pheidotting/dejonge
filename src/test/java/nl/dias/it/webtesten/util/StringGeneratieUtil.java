@@ -27,14 +27,25 @@ public class StringGeneratieUtil {
         voornamen.add("Ans");
         voornamen.add("Stephan");
         voornamen.add("Sanne");
+        voornamen.add("Jan");
+        voornamen.add("Henk");
+        voornamen.add("Geert");
+        voornamen.add("Harm");
+        voornamen.add("Bertus");
+        voornamen.add("Willem");
+        voornamen.add("Hendrik");
 
         achternamen.add("Heidotting");
         achternamen.add("Lette");
         achternamen.add("Muller");
+        achternamen.add("Jansen");
+        achternamen.add("Willemsen");
+        achternamen.add("Haverkamp");
 
         tussenvoegsels.add("");
         tussenvoegsels.add("");
         tussenvoegsels.add("van der");
+        tussenvoegsels.add("de");
 
         bsns.add("103127586");
         bsns.add("400544350");
@@ -98,9 +109,9 @@ public class StringGeneratieUtil {
 
     public String genereerEmailAdres() {
         StringBuilder sb = new StringBuilder();
-        sb.append(genereerVoornaam());
+        sb.append(genereerVoornaam().toLowerCase());
         sb.append("@");
-        sb.append(genereerAchternaam());
+        sb.append(genereerAchternaam().toLowerCase());
         sb.append(".nl");
         return sb.toString();
     }

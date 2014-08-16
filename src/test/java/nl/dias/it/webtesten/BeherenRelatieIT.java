@@ -69,11 +69,15 @@ public class BeherenRelatieIT {
 
             // fout bij inloggen, controleren op foute gebruikersnaam
             inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
+            //
             assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.", inlogScherm.leesFoutmelding());
 
             // Testen op fout wachtwoord
             inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "g");
+
             assertEquals("Er is een fout opgetreden : Het ingevoerde wachtwoord is onjuist", inlogScherm.leesFoutmelding());
+
+            // Nu echt inloggen
             inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "gerben");
 
             Hulp.wachtFf();
@@ -92,8 +96,7 @@ public class BeherenRelatieIT {
                     jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie
                             .getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
-            // assertEquals("De gegevens zijn opgeslagen",
-            // beherenRelatieScherm.leesmelding());
+            assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
 
         }
     }

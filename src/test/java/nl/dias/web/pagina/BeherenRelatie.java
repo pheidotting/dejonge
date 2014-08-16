@@ -80,46 +80,50 @@ public class BeherenRelatie extends IndexPagina {
         Hulp.wachtFf();
         Hulp.vulVeld(this.voornaam, voornaam);
         Hulp.vulVeld(this.achternaam, achternaam);
-        // Hulp.vulVeld(this.tussenvoegsel, tussenvoegsel);
-        // Hulp.vulVeld(this.straat, straat);
+        Hulp.vulVeld(this.tussenvoegsel, tussenvoegsel);
+        Hulp.vulVeld(this.straat, straat);
         Hulp.vulVeld(this.huisnummer, huisnummer);
-        // Hulp.vulVeld(this.toevoeging, toevoeging);
-        // Hulp.vulVeld(this.postcode, postcode);
-        // Hulp.vulVeld(this.plaats, plaats);
-        // Hulp.vulVeld(this.bsn, bsn);
-        // Hulp.vulVeld(this.emailadres, emailadres);
-        // Hulp.vulVeld(this.geboorteDatum, geboorteDatum);
-        // Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum);
-        // if (geslacht != null) {
-        // Hulp.selecteerUitSelectieBox(this.geslacht, geslacht);
-        // }
-        // if (burgerlijkeStaat != null) {
-        // Hulp.selecteerUitSelectieBox(this.burgerlijkeStaat,
-        // burgerlijkeStaat);
-        // }
-        // if (rekeningnummers != null) {
-        // for (BeherenRelatieRekeningnummer rekeningnummer : rekeningnummers) {
-        // Hulp.klikEnWacht(this.voegRekeningToe);
-        // Hulp.vulVeld(this.rekeningnummer.get(this.rekeningnummer.size() - 1),
-        // rekeningnummer.getRekeninnummer());
-        // Hulp.vulVeld(this.bic.get(this.bic.size() - 1),
-        // rekeningnummer.getBic());
-        // }
-        // }
-        // if (telefoonnummers != null) {
-        // for (BeherenRelatieTelefoonnummer telefoonnummer : telefoonnummers) {
-        // Hulp.klikEnWacht(this.voegTelefoonNummerToe);
-        // Hulp.vulVeld(this.telnummer.get(this.telnummer.size() - 1),
-        // telefoonnummer.getTelefoonnummer());
-        // Hulp.selecteerUitSelectieBox(this.soorttelnummer.get(this.soorttelnummer.size()
-        // - 1), telefoonnummer.getSoortTelefoonnummer());
-        // }
-        // }
+        Hulp.vulVeld(this.toevoeging, toevoeging);
+        Hulp.vulVeld(this.postcode, postcode);
+        Hulp.vulVeld(this.plaats, plaats);
+        Hulp.vulVeld(this.bsn, bsn);
+        Hulp.vulVeld(this.emailadres, emailadres);
+        Hulp.vulVeld(this.geboorteDatum, geboorteDatum);
+        Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum);
+        if (geslacht != null) {
+            Hulp.selecteerUitSelectieBox(this.geslacht, geslacht);
+        }
+        if (burgerlijkeStaat != null) {
+            Hulp.selecteerUitSelectieBox(this.burgerlijkeStaat, burgerlijkeStaat);
+        }
+        if (rekeningnummers != null) {
+            for (BeherenRelatieRekeningnummer rekeningnummer : rekeningnummers) {
+                Hulp.klikEnWacht(this.voegRekeningToe);
+                Hulp.vulVeld(this.rekeningnummer.get(this.rekeningnummer.size() - 1), rekeningnummer.getRekeninnummer());
+                Hulp.vulVeld(this.bic.get(this.bic.size() - 1), rekeningnummer.getBic());
+            }
+        }
+        if (telefoonnummers != null) {
+            for (BeherenRelatieTelefoonnummer telefoonnummer : telefoonnummers) {
+                Hulp.klikEnWacht(this.voegTelefoonNummerToe);
+                Hulp.vulVeld(this.telnummer.get(this.telnummer.size() - 1), telefoonnummer.getTelefoonnummer());
+                Hulp.selecteerUitSelectieBox(this.soorttelnummer.get(this.soorttelnummer.size() - 1), telefoonnummer.getSoortTelefoonnummer());
+            }
+        }
     }
 
     public void drukOpOpslaan() {
         Hulp.wachtFf();
         Hulp.klikEnWacht(opslaanrelatie);
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
+        Hulp.wachtFf();
         Hulp.wachtFf();
     }
 
