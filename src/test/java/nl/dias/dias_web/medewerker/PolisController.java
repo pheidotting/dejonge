@@ -37,7 +37,7 @@ public class PolisController {// extends AbstractController {
     public JsonPolis lees(@QueryParam("id") String id) {
         JsonPolis jsonPolis = new JsonPolis();
 
-        if (id != null && !id.equals("") && !id.equals("0")) {
+        if (id != null && !"".equals(id) && !"0".equals(id)) {
             jsonPolis.setId(2L);
             jsonPolis.setPolisNummer("polisNummer");
             jsonPolis.setMaatschappij("Achmea");
