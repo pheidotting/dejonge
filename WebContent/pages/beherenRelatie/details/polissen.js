@@ -82,7 +82,7 @@ function Polis(data, log, relatieId){
 			url: '../dejonge/rest/medewerker/polis/opslaan',
 			contentType: "application/json",
             data: ko.toJSON(polis),
-            success: function(data) {
+            success: function() {
             	if(polis.bijlages().length > 0){
 	            	$('progress').show();
 					var formData = new FormData($('form')[0]);
@@ -111,7 +111,7 @@ function Polissen(data, log, relatieId){
 		var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");
 		if (r==true) {
 			self.polissen.remove(polis);
-			$.get( "../dejonge/rest/medewerker/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function( data ) {});
+			$.get( "../dejonge/rest/medewerker/polis/verwijder", {"id" : ko.utils.unwrapObservable(polis.id)}, function() {});
 		}
     };
 }
