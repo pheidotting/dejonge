@@ -6,7 +6,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
@@ -19,6 +21,7 @@ import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.easymock.EasyMockSupport;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -201,5 +204,96 @@ public class GebruikerServiceTest extends EasyMockSupport {
         assertEquals(sessie2, service.zoekSessieOp("cookieCode2", relatie.getSessies()));
         assertEquals(sessie3, service.zoekSessieOp("cookieCode3", relatie.getSessies()));
         assertNull(service.zoekSessieOp("cookieCode", relatie.getSessies()));
+    }
+
+    @Test
+    public void testZoekOpCookieCode() throws NietGevondenException {
+        Medewerker medewerker = new Medewerker();
+        String cookieCode = "cookieCode";
+
+        expect(repository.zoekOpCookieCode(cookieCode)).andReturn(medewerker);
+
+        replayAll();
+
+        assertEquals(medewerker, service.zoekOpCookieCode(cookieCode));
+    }
+
+    @Test
+    public void testZoekOpCookieCodeNietGevondenException() throws NietGevondenException {
+        String cookieCode = "cookieCode";
+
+        expect(repository.zoekOpCookieCode(cookieCode)).andThrow(new NietGevondenException("wie"));
+
+        replayAll();
+
+        service.zoekOpCookieCode(cookieCode);
+    }
+
+    @Test
+    public void refresh() {
+        Sessie sessie = new Sessie();
+
+        repository.refresh(sessie);
+        expectLastCall();
+
+        replayAll();
+
+        service.refresh(sessie);
+    }
+
+    @Test
+    public void opslaan() {
+        Sessie sessie = new Sessie();
+
+        repository.opslaan(sessie);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(sessie);
+    }
+
+    @Test
+    public void verwijder() {
+        Sessie sessie = new Sessie();
+
+        repository.verwijder(sessie);
+        expectLastCall();
+
+        replayAll();
+
+        service.verwijder(sessie);
+    }
+
+    @Test
+    public void verwijderVerlopenSessies() {
+        Long id = 46L;
+        Medewerker medewerker = createMock(Medewerker.class);
+
+        expect(medewerker.getId()).andReturn(id);
+
+        expect(repository.lees(id)).andReturn(medewerker);
+
+        Sessie sessie1 = createMock(Sessie.class);
+        Sessie sessie2 = createMock(Sessie.class);
+        Sessie sessie3 = createMock(Sessie.class);
+
+        Set<Sessie> sessies = new HashSet<>();
+        sessies.add(sessie1);
+        sessies.add(sessie2);
+        sessies.add(sessie3);
+
+        expect(sessie1.getDatumLaatstGebruikt()).andReturn(new LocalDate().minusDays(2));
+        expect(sessie2.getDatumLaatstGebruikt()).andReturn(new LocalDate().minusDays(3));
+        expect(sessie3.getDatumLaatstGebruikt()).andReturn(new LocalDate().minusDays(4));
+
+        expect(medewerker.getSessies()).andReturn(sessies).times(2);
+
+        repository.opslaan(medewerker);
+        expectLastCall();
+
+        replayAll();
+
+        service.verwijderVerlopenSessies(medewerker);
     }
 }
