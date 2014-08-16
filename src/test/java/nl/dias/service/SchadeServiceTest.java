@@ -7,7 +7,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.polis.Polis;
@@ -131,4 +134,95 @@ public class SchadeServiceTest extends EasyMockSupport {
         verifyAll();
     }
 
+    @Test
+    public void testGetStatussen() {
+        StatusSchade statusSchade = new StatusSchade();
+        String zoekTerm = "zoekStatus";
+
+        expect(schadeRepository.getStatussen(zoekTerm)).andReturn(statusSchade);
+
+        replayAll();
+
+        assertEquals(statusSchade, service.getStatussen(zoekTerm));
+
+        verifyAll();
+    }
+
+    @Test
+    public void testGetStatussenString() {
+        List<StatusSchade> statussenSchade = new ArrayList<>();
+
+        expect(schadeRepository.getStatussen()).andReturn(statussenSchade);
+
+        replayAll();
+
+        assertEquals(statussenSchade, service.getStatussen());
+
+        verifyAll();
+    }
+
+    @Test
+    public void testZoekOpSchadeNummerMaatschappij() {
+        Schade schade = new Schade();
+        String schadeNummerMaatschappij = "schadeNummerMaatschappij";
+
+        expect(schadeRepository.zoekOpSchadeNummerMaatschappij(schadeNummerMaatschappij)).andReturn(schade);
+
+        replayAll();
+
+        assertEquals(schade, service.zoekOpSchadeNummerMaatschappij(schadeNummerMaatschappij));
+
+        verifyAll();
+    }
+
+    @Test
+    public void testVerwijder() {
+        Schade schade = new Schade();
+        Long id = 46L;
+
+        expect(schadeRepository.lees(id)).andReturn(schade);
+        schadeRepository.verwijder(schade);
+        expectLastCall();
+
+        replayAll();
+
+        service.verwijder(id);
+
+        verifyAll();
+    }
+
+    @Test
+    public void testSlaBijlageOp() {
+        Long schadeId = 58L;
+        String s3Identificatie = "s3";
+        Schade schade = new Schade();
+        Bijlage bijlage = new Bijlage();
+        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
+        bijlage.setS3Identificatie(s3Identificatie);
+
+        expect(schadeRepository.lees(schadeId)).andReturn(schade);
+
+        schadeRepository.opslaanBijlage(bijlage);
+        expectLastCall();
+
+        replayAll();
+
+        service.slaBijlageOp(schadeId, s3Identificatie);
+
+        verifyAll();
+    }
+
+    @Test
+    public void testAlleSchadesBijRelatie() {
+        List<Schade> lijst = new ArrayList<>();
+        Relatie relatie = new Relatie();
+
+        expect(schadeRepository.alleSchadesBijRelatie(relatie)).andReturn(lijst);
+
+        replayAll();
+
+        service.alleSchadesBijRelatie(relatie);
+
+        verifyAll();
+    }
 }
