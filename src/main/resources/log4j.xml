@@ -26,11 +26,11 @@
     </appender>
     
 	<logger name="nl.dias">
-		<level value="trace" />
+		<level value="debug" />
 	</logger>
 
 	<root>
-		<priority value="trace"></priority>
+		<priority value="debug"></priority>
 		<appender-ref ref="diasLog" />
 		<appender-ref ref="diasLogFile" />
 	</root>

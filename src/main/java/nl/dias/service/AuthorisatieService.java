@@ -124,7 +124,7 @@ public class AuthorisatieService {
                 }
             }
         } catch (NietGevondenException e) {
-            LOGGER.error("Geen ingelogde gebruiker gevonden", e);
+            LOGGER.trace("Geen ingelogde gebruiker gevonden", e);
         }
 
         return gebruiker;

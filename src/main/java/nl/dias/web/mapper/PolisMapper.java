@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
@@ -49,14 +50,13 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         polis.setId(jsonPolis.getId());
         polis.setPolisNummer(jsonPolis.getPolisNummer());
         polis.setIngangsDatum(ingangsDatum);
-        // polis.setPremie(new Bedrag(jsonPolis.getPremie().replace(",", ".")));
+        polis.setPremie(new Bedrag(jsonPolis.getPremie().replace(",", ".")));
         polis.setWijzigingsDatum(wijzigingsDatum);
         polis.setProlongatieDatum(prolongatieDatum);
         polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
         polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
-        // polis.setRelatie((Relatie)
-        // gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
+        polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
 
         Polis p = polisService.lees(polis.getId());
 
