@@ -27,26 +27,7 @@ public class Hulp {
         try {
             wachtFf(timeout);
             wachtFf(timeout);
-            if (element.isDisplayed()) {
-                element.click();
-            }
-            wachtFf(timeout);
-            wachtFf(timeout);
-            if (element.isDisplayed()) {
-                element.click();
-            }
-            wachtFf(timeout);
-            wachtFf(timeout);
-            if (element.isDisplayed()) {
-                element.click();
-            }
-            wachtFf(timeout);
-            wachtFf(timeout);
-            if (element.isDisplayed()) {
-                element.click();
-            }
-            wachtFf(timeout);
-            wachtFf(timeout);
+            element.click();
         } catch (NoSuchElementException e) {
         }
     }
