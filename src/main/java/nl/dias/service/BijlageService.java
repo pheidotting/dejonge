@@ -92,4 +92,12 @@ public class BijlageService {
             }
         }
     }
+
+    public void setArchiefService(ArchiefService archiefService) {
+        this.archiefService = archiefService;
+    }
+
+    public void setBijlageRepository(BijlageRepository bijlageRepository) {
+        this.bijlageRepository = bijlageRepository;
+    }
 }
