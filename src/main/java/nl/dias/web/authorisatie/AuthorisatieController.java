@@ -19,7 +19,6 @@ import nl.dias.domein.json.IngelogdeGebruiker;
 import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.service.AuthorisatieService;
-import nl.dias.service.GebruikerService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 
@@ -34,11 +33,8 @@ public class AuthorisatieController {
     private HttpServletRequest httpServletRequest;
     @Context
     private HttpServletResponse httpServletResponse;
-
     @InjectParam
     private AuthorisatieService authorisatieService;
-    @InjectParam
-    private GebruikerService gebruikerService;
 
     @POST
     @Path("/inloggen")
@@ -76,6 +72,7 @@ public class AuthorisatieController {
         if (gebruiker != null) {
             ingelogdeGebruiker.setGebruikersnaam(gebruiker.getNaam());
             if (gebruiker instanceof Beheerder) {
+                // Nog te doen :)
             } else if (gebruiker instanceof Medewerker) {
                 ingelogdeGebruiker.setKantoor(((Medewerker) gebruiker).getKantoor().getNaam());
             } else if (gebruiker instanceof Relatie) {
@@ -104,7 +101,7 @@ public class AuthorisatieController {
     }
 
     private Gebruiker getGebruiker() {
-        String sessie = new String();
+        String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
         }
