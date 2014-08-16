@@ -140,13 +140,13 @@ function Bijlage(data){
 
 function go(log, relatieId, actie, subId){
 	log.debug("Ophalen gegevens Relatie met id " + relatieId);
-	if(relatieId != 0 && relatieId != null){
+//	if(relatieId != 0 && relatieId != null){
 		$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
-	   	ko.applyBindings(new Relatie(data, log));
-	});
-	}else{
-		log.debug("applyBindings op een nieuwe Relatie object");
-		ko.applyBindings(new Relatie('{"achternaam":""}', log));
-	}
+		   	ko.applyBindings(new Relatie(data, log));
+		});
+//	}else{
+//		log.debug("applyBindings op een nieuwe Relatie object");
+//		ko.applyBindings(new Relatie('{"achternaam":""}', log));
+//	}
 }
