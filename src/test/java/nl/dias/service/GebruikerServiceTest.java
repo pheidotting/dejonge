@@ -3,6 +3,7 @@ package nl.dias.service;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
@@ -135,5 +137,69 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         assertEquals(medewerker, service.zoek("e"));
+    }
+
+    @Test
+    public void testZoekOpSessieEnIpAdres() throws NietGevondenException {
+        String sessie = "sessie";
+        String ipadres = "ipadres";
+
+        Medewerker medewerker = new Medewerker();
+
+        expect(repository.zoekOpSessieEnIpadres(sessie, ipadres)).andReturn(medewerker);
+
+        replayAll();
+
+        assertEquals(medewerker, service.zoekOpSessieEnIpAdres(sessie, ipadres));
+    }
+
+    @Test
+    public void testZoekSessieOpOpSessieEnIpadres() {
+        Sessie sessie1 = new Sessie();
+        Sessie sessie2 = new Sessie();
+        Sessie sessie3 = new Sessie();
+
+        sessie1.setSessie("sessie1");
+        sessie1.setIpadres("ipadres1");
+        sessie2.setSessie("sessie2");
+        sessie2.setIpadres("ipadres2");
+        sessie3.setSessie("sessie3");
+        sessie3.setIpadres("ipadres3");
+
+        Relatie relatie = new Relatie();
+        relatie.getSessies().add(sessie1);
+        relatie.getSessies().add(sessie2);
+        relatie.getSessies().add(sessie3);
+
+        replayAll();
+
+        assertEquals(sessie1, service.zoekSessieOp("sessie1", "ipadres1", relatie.getSessies()));
+        assertEquals(sessie2, service.zoekSessieOp("sessie2", "ipadres2", relatie.getSessies()));
+        assertEquals(sessie3, service.zoekSessieOp("sessie3", "ipadres3", relatie.getSessies()));
+        assertNull(service.zoekSessieOp("sessie", "ipadres1", relatie.getSessies()));
+        assertNull(service.zoekSessieOp("sessie1", "ipadres", relatie.getSessies()));
+    }
+
+    @Test
+    public void testZoekSessieOpCookie() {
+        Sessie sessie1 = new Sessie();
+        Sessie sessie2 = new Sessie();
+        Sessie sessie3 = new Sessie();
+
+        sessie1.setCookieCode("cookieCode1");
+        sessie2.setCookieCode("cookieCode2");
+        sessie3.setCookieCode("cookieCode3");
+
+        Relatie relatie = new Relatie();
+        relatie.getSessies().add(sessie1);
+        relatie.getSessies().add(sessie2);
+        relatie.getSessies().add(sessie3);
+
+        replayAll();
+
+        assertEquals(sessie1, service.zoekSessieOp("cookieCode1", relatie.getSessies()));
+        assertEquals(sessie2, service.zoekSessieOp("cookieCode2", relatie.getSessies()));
+        assertEquals(sessie3, service.zoekSessieOp("cookieCode3", relatie.getSessies()));
+        assertNull(service.zoekSessieOp("cookieCode", relatie.getSessies()));
     }
 }
