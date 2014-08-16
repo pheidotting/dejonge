@@ -7,7 +7,7 @@ function go(log, relatieId, actie, subId){
 
 function Bedrijven(data, log, relatieId){
 	var _this = this;
-	
+
 	_this.bedrijven = ko.observableArray();
 	$.each(data, function(i, item) {
 		_this.bedrijven.push(new Bedrijf(item, log, relatieId));
@@ -18,7 +18,7 @@ function Bedrijven(data, log, relatieId){
 		var r=confirm("Weet je zeker dat je dit bedrijf wilt verwijderen?");
 		if (r==true) {
 			_this.bedrijven.remove(bedrijf);
-			$.get( "../dejonge/rest/medewerker/bedrijf/verwijder", {"id" : ko.utils.unwrapObservable(bedrijf.id)}, function( data ) {});
+			$.get( "../dejonge/rest/medewerker/bedrijf/verwijder", {"id" : ko.utils.unwrapObservable(bedrijf.id)}, function() {});
 		}
     };
 }
@@ -62,7 +62,7 @@ function Bedrijf(data, log, relatieId){
 				url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
 				contentType: "application/json",
 		        data: ko.toJSON(bedrijf),
-		        success: function (response) {
+		        success: function () {
 		        	plaatsMelding("De gegevens zijn opgeslagen");
 		    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
 		        },
