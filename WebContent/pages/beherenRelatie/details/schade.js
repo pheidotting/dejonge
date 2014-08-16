@@ -7,7 +7,7 @@ function go(log, relatieId, actie, subId){
 		var $select = $('#polisVoorSchademelding');
 		$.each(data, function(key, value) {
 			var polisTitel = value.soort + " (" + value.polisNummer + ")";
-			
+
 		    $('<option>', { value : value.id }).text(polisTitel).appendTo($select);
 		});
 
@@ -30,16 +30,15 @@ function go(log, relatieId, actie, subId){
 			}
 		});
 	});
-	
-	
+
 	var soortenSchade = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		remote: '../dejonge/rest/medewerker/overig/soortenSchade?query=%QUERY'
 	});
-	
+
 	soortenSchade.initialize();
-	
+
 	$('#soortSchade').typeahead({
 		hint: true,
 		highlight: true,

@@ -17,9 +17,9 @@ function Bijlage(data){
 
 function Bijlages(data, log){
 	var self = this;
-	
+
 	self.bijlages = ko.observableArray();
 	$.each(data, function(i, item){
 		self.bijlages.push(new Bijlage(item, log));
-	})
+	});
 }

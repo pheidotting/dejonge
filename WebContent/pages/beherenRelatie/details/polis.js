@@ -7,7 +7,7 @@ function go(log, relatieId, actie, subId){
 		$.each(data, function(key, value) {
 		    $('<option>').text(value).appendTo($select);
 		});
-	
+
 		$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 			$.getScript("pages/beherenRelatie/details/bedrijven.js", function(dataX, textStatus, jqxhr) {
 				var $select = $('#bedrijfBijPolis');
@@ -16,7 +16,7 @@ function go(log, relatieId, actie, subId){
 				    $('<option>', { value : key }).text(value.naam).appendTo($select);
 				});
 			});
-	
+
 			if(subId != null && subId != "0"){
 				$('#soortVerzekering').prop('disabled', true);
 				$('#soortVerzekeringAlles').prop('disabled', true);

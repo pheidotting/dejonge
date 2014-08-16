@@ -88,7 +88,7 @@
 </div>
 
 <div class="form-group">
-	<b>Rekeninggegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" id="voegRekeningToe"></span>
+	<strong>Rekeninggegevens</strong>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegRekeningToe" id="voegRekeningToe"></span>
 	<div id="rekeningnummers" data-bind="foreach: rekeningnummers, visible: rekeningnummers().length > 0">
 		<div id="rekeningnummer">
 			<input class="form-control" type="hidden" id="rekeningid" name="rekeningid" data-bind="value: id" />
@@ -100,13 +100,13 @@
 				<label for="bic">Bic</label>
 				<input class="form-control" type="text" id="bic" name="bic" data-bind="value: bic" />
 			</div>
-			<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening" name="verwijderRekening"></span>
+			<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderRekening"></span>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<b>Telefoongegevens</b>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" id="voegTelefoonNummerToe"></span>
+	<strong>Telefoongegevens</strong>&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegTelefoonNummerToe" id="voegTelefoonNummerToe"></span>
 </div>
 <div id="telefoonnummers" data-bind="foreach: telefoonnummers, visible: telefoonnummers().length > 0">
 	<div id="telefoonnummer">
@@ -123,7 +123,7 @@
 				<option value="Werk">Zakelijk</option>
 			</select>
 		</div>
-		<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderTelefoonNummer" name="verwijderTelefoonNummer"></span>
+		<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderTelefoonNummer"></span>
 	</div>
 </div>
 <div class="form-group">
@@ -131,4 +131,4 @@
 	<input class="form-control" type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" />
 </div>
 <button id="opslaanRelatie" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
-<!--button  id="verwijderen" class="btn btn-danger" data-bind="click: verwijderenRelatie">Verwijderen</button-->
+<button  id="verwijderen" class="btn btn-danger" data-bind="click: verwijderenRelatie">Verwijderen</button>
