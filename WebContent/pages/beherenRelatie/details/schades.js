@@ -41,14 +41,14 @@ function Schade(data, log, relatieId){
 			self.bijlages.push(new Bijlage(item));
 		});
 	}
-	
+
 	self.opslaan = function(schade){
     	$.ajax({
             url: '../dejonge/rest/medewerker/schade/opslaan',
             type: 'POST',
             data: ko.toJSON(schade) ,
             contentType: 'application/json; charset=utf-8',
-            success: function (response) {
+            success: function () {
     			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
     				var formData = new FormData($('#schadeMeldForm')[0]);
     				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
@@ -78,7 +78,7 @@ function Schades(data, log, relatieId){
 		var r=confirm("Weet je zeker dat je deze schade wilt verwijderen?");
 		if (r==true) {
 			self.schades.remove(schade);
-			$.get( "../dejonge/rest/medewerker/schade/verwijder", {"id" : ko.utils.unwrapObservable(schade.id)}, function( data ) {});
+			$.get( "../dejonge/rest/medewerker/schade/verwijder", {"id" : ko.utils.unwrapObservable(schade.id)}, function() {});
 		}
     };
 }
