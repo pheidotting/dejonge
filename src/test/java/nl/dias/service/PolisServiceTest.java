@@ -97,6 +97,8 @@ public class PolisServiceTest extends EasyMockSupport {
 
         expect(polisRepository.lees(1L)).andReturn(polis);
 
+        expect(relatie.getPolissen()).andReturn(new HashSet<Polis>());
+
         gebruikerService.opslaan(relatie);
         expectLastCall();
 
