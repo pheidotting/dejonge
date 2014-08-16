@@ -1,5 +1,5 @@
 function Relatie(data, log) {
-var _this = this;
+	var _this = this;
 	_this.identificatie = ko.observable(data.identificatie);
 	_this.id = ko.observable(data.id);
 	_this.voornaam = ko.observable(data.voornaam);
@@ -90,7 +90,7 @@ var _this = this;
 	};
 
 	_this.verwijderenRelatie = function(relatie){
-		console.log(relatie);
+		log.debug("Verwijderen relatie");
 		$.ajax({
 			type: "GET",
 			url: '../dejonge/rest/medewerker/gebruiker/verwijderen',
@@ -103,14 +103,14 @@ var _this = this;
 	};
 }
 
-//function OnderlingeRelatie(data){
-//	var _this = this;
-//
-//	_this.id = ko.observable(data.id);
-//	_this.idNaar = ko.observable(data.idNaar);
-//	_this.metWie = ko.observable(data.metWie);
-//	_this.soort = ko.observable(data.soort);
-//}
+function OnderlingeRelatie(data){
+	var _this = this;
+
+	_this.id = ko.observable(data.id);
+	_this.idNaar = ko.observable(data.idNaar);
+	_this.metWie = ko.observable(data.metWie);
+	_this.soort = ko.observable(data.soort);
+}
 
 function RekeningNummer(data){
 	var _this = this;
@@ -140,13 +140,9 @@ function Bijlage(data){
 
 function go(log, relatieId, actie, subId){
 	log.debug("Ophalen gegevens Relatie met id " + relatieId);
-//	if(relatieId != 0 && relatieId != null){
-		$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
-			log.debug("Gegevens opgehaald, applyBindings");
-		   	ko.applyBindings(new Relatie(data, log));
-		});
-//	}else{
-//		log.debug("applyBindings op een nieuwe Relatie object");
-//		ko.applyBindings(new Relatie('{"achternaam":""}', log));
-//	}
+
+	$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
+		log.debug("Gegevens opgehaald, applyBindings");
+	   	ko.applyBindings(new Relatie(data, log));
+	});
 }
