@@ -5,7 +5,7 @@ function go(log, relatieId, actie, subId){
 	$.get( "../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen", {}, function(data) {
 		var $select = $('#verzekeringsMaatschappijen');
 		$.each(data, function(key, value) {
-		    $('<option>').text(value).appendTo($select);
+		    $('<option>', { value : value }).text(value).appendTo($select);
 		});
 
 		$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
