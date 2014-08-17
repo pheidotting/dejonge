@@ -42,6 +42,7 @@
 		self.adres = ko.observable(data.adresOpgemaakt);
 
 		self.naarDetailScherm = function(relatie){
+			verbergMeldingen();
 			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
 		}
 	}
