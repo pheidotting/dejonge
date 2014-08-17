@@ -39,8 +39,12 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
         relatie.setAchternaam(jsonRelatie.getAchternaam());
         relatie.getAdres().setStraat(jsonRelatie.getStraat());
-        relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
-        relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
+        if (jsonRelatie.getOverlijdensdatum() != null && !jsonRelatie.getOverlijdensdatum().equals("")) {
+            relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
+        }
+        if (jsonRelatie.getGeboorteDatum() != null && !jsonRelatie.getGeboorteDatum().equals("")) {
+            relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
+        }
         try {
             relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
         } catch (NumberFormatException nfe) {
