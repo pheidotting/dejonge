@@ -151,8 +151,7 @@ public class GebruikerController {
     @GET
     @Path("/verwijderen")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response verwijderen(Long id) {
+    public Response verwijderen(@QueryParam("id") Long id) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
 
         gebruikerService.verwijder(id);
