@@ -32,7 +32,7 @@ function Bedrijf(data, log, relatieId){
 	_this.naam = ko.observable(data.naam);
 	_this.kvk = ko.observable(data.kvk);
 	_this.straat = ko.observable(data.straat);
-	_this.huisnummer = ko.observable(data.huisnummer).extend({min: 1});
+	_this.huisnummer = ko.observable(data.huisnummer);
 	_this.toevoeging = ko.observable(data.toevoeging);
 	_this.postcode = ko.observable(data.postcode);
 	_this.plaats = ko.observable(data.plaats);
@@ -50,26 +50,20 @@ function Bedrijf(data, log, relatieId){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/bedrijf/" + ko.utils.unwrapObservable(bedrijf.id);
     };
 
-	_this.isValid = function(){
-		return _this.huisnummer.isValid();
-	};
-
 	_this.opslaan = function(bedrijf){
 		verbergMeldingen();
-		if(_this.isValid()){
-			$.ajax({
-				type: "POST",
-				url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
-				contentType: "application/json",
-		        data: ko.toJSON(bedrijf),
-		        success: function () {
-		        	plaatsMelding("De gegevens zijn opgeslagen");
-		    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
-		        },
-		        error: function (data) {
-		        	plaatsFoutmelding(data);
-		        }
-			});
-		}
+		$.ajax({
+			type: "POST",
+			url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
+			contentType: "application/json",
+	        data: ko.toJSON(bedrijf),
+	        success: function () {
+	        	plaatsMelding("De gegevens zijn opgeslagen");
+	    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
+	        },
+	        error: function (data) {
+	        	plaatsFoutmelding(data);
+	        }
+		});
 	};
 }
