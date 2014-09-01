@@ -12,7 +12,7 @@ public class Hulp {
     }
 
     public static void vulVeld(WebElement element, String waarde) {
-        if (waarde != null) {
+        if (waarde != null && !waarde.equals("")) {
             element.clear();
             element.sendKeys(waarde);
             wachtFf();
@@ -59,7 +59,15 @@ public class Hulp {
 
     public static void selecteerUitSelectieBox(WebElement element, String waarde) {
         Select select = new Select(element);
-        select.selectByValue(waarde);
+        try {
+            select.selectByValue(waarde);
+        } catch (NoSuchElementException e) {
+            select.selectByVisibleText(waarde);
+        }
         wachtFf();
+    }
+
+    public static boolean controleerVeld(WebElement element, String verwacht) {
+        return getText(element).equals(verwacht);
     }
 }

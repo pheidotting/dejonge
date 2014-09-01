@@ -18,8 +18,8 @@ public class InlogScherm extends IndexPagina {
     public void inloggen(String identificatie, String wachtwoord) {
         vulVeld(this.identificatie, identificatie);
         vulVeld(this.wachtwoord, wachtwoord);
+        wachtFf();
         klikEnWacht(inlogButton);
         wachtFf();
     }
-
 }

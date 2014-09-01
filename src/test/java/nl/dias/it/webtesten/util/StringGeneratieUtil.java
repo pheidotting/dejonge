@@ -23,7 +23,7 @@ public class StringGeneratieUtil {
         voornamen.add("Sabine");
         voornamen.add("Bennie");
         voornamen.add("Bertha");
-        voornamen.add("Harryy");
+        voornamen.add("Harry");
         voornamen.add("Ans");
         voornamen.add("Stephan");
         voornamen.add("Sanne");

@@ -1,21 +1,30 @@
 package nl.dias.it.webtesten;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
+import nl.dias.domein.json.JsonBedrijf;
+import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.domein.json.JsonTelefoonnummer;
+import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.it.webtesten.util.StringGeneratieUtil;
+import nl.dias.web.pagina.BedrijfBewerken;
 import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 import nl.dias.web.pagina.InlogScherm;
 import nl.dias.web.pagina.LijstRelaties;
+import nl.dias.web.pagina.PaginaMetMenuBalk.MenuItem;
+import nl.dias.web.pagina.PolisBewerken;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +38,8 @@ public class BeherenRelatieIT {
     private SeleniumServer seleniumServer;
     private WebDriver driver;
     private StringGeneratieUtil stringGeneratieUtil;
+
+    private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
 
     private boolean doorgaan() {
         boolean doorgaan = true;
@@ -63,13 +74,18 @@ public class BeherenRelatieIT {
     @Test
     public void test() {
         if (doorgaan()) {
-            Hulp.naarAdres(driver, "http://46.17.3.242:57525/dejonge/index.html#inloggen");
+            Hulp.naarAdres(driver, BASIS_URL + "inloggen");
 
             InlogScherm inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
 
             // fout bij inloggen, controleren op foute gebruikersnaam
             inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
-            //
+
+            if (StringUtils.isEmpty(inlogScherm.leesmelding()) && StringUtils.isEmpty(inlogScherm.leesFoutmelding())) {
+                driver.navigate().refresh();
+                inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
+            }
+
             assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.", inlogScherm.leesFoutmelding());
 
             // Testen op fout wachtwoord
@@ -96,9 +112,88 @@ public class BeherenRelatieIT {
                     jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie
                             .getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
-            assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
+            checkOpgeslagenMelding(beherenRelatieScherm);
 
+            // Opgeslagen Relatie weer aanklikken op overzichtsscherm
+            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelatie));
+
+            Hulp.wachtFf(2000);
+
+            // Checken of velden correct worden weergegeven (en dus of ze
+            // correct zijn opgeslagen)
+            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
+
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS);
+
+            JsonPolis polis = maakJsonPolis(null);
+
+            PolisBewerken polisScherm = PageFactory.initElements(driver, PolisBewerken.class);
+            assertFalse(polisScherm.isBedrijfBijPolisZichtbaar());
+
+            polisScherm.vulVeldenEnDrukOpOpslaan(polis);
+            checkOpgeslagenMelding(beherenRelatieScherm);
+
+            assertTrue(driver.getCurrentUrl().endsWith("/polissen"));
+            checkOpgeslagenMelding(beherenRelatieScherm);
+
+            // We gaan een bedrijf invoeren
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEDRIJF);
+            BedrijfBewerken bedrijfScherm = PageFactory.initElements(driver, BedrijfBewerken.class);
+            JsonBedrijf jsonBedrijf = maakJsonBedrijf();
+
+            bedrijfScherm.vulVeldenEnDrukOpOpslaan(jsonBedrijf);
+
+            checkOpgeslagenMelding(beherenRelatieScherm);
+            assertTrue(driver.getCurrentUrl().endsWith("/bedrijven"));
+
+            // En een polis invoeren bij dit bedrijf
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS);
+            assertTrue(polisScherm.isBedrijfBijPolisZichtbaar());
+            JsonPolis polis2 = maakJsonPolis(jsonBedrijf.getNaam());
+            polisScherm.vulVeldenEnDrukOpOpslaan(polis2);
+
+            // Als afsluiter de Relatie verwijderen
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE);
+            beherenRelatieScherm.drukOpVerwijderen();
+            Hulp.wachtFf();
         }
+    }
+
+    private void checkOpgeslagenMelding(BeherenRelatie beherenRelatieScherm) {
+        assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
+    }
+
+    private JsonBedrijf maakJsonBedrijf() {
+        JsonBedrijf bedrijf = new JsonBedrijf();
+
+        bedrijf.setHuisnummer(((Integer) stringGeneratieUtil.randomGetal(200)).toString());
+        bedrijf.setKvk(((Integer) stringGeneratieUtil.randomGetal(99999999)).toString());
+        bedrijf.setNaam(stringGeneratieUtil.genereerAchternaam());
+        bedrijf.setPlaats(stringGeneratieUtil.genereerPlaatsnaam());
+        bedrijf.setPostcode(stringGeneratieUtil.genereerPostcode());
+        bedrijf.setStraat(stringGeneratieUtil.genereerStraatnaam());
+        bedrijf.setToevoeging(stringGeneratieUtil.genereerToevoeging());
+
+        return bedrijf;
+    }
+
+    private JsonPolis maakJsonPolis(String bedrijf) {
+        JsonPolis jsonPolis = new JsonPolis();
+
+        if (bedrijf != null) {
+            jsonPolis.setBedrijf(bedrijf);
+        }
+        jsonPolis.setBetaalfrequentie((String) stringGeneratieUtil.kiesUitItems(Betaalfrequentie.J.getOmschrijving(), Betaalfrequentie.K.getOmschrijving(), Betaalfrequentie.M.getOmschrijving(),
+                Betaalfrequentie.H.getOmschrijving()));
+        jsonPolis.setIngangsDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
+        jsonPolis.setMaatschappij("Aegon");
+        jsonPolis.setPolisNummer(((Integer) stringGeneratieUtil.randomGetal(1000000)).toString());
+        jsonPolis.setPremie(((Integer) stringGeneratieUtil.randomGetal(1000)).toString());
+        jsonPolis.setProlongatieDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
+        jsonPolis.setSoort("Fiets");
+        jsonPolis.setWijzigingsDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
+
+        return jsonPolis;
     }
 
     private JsonRelatie maakJsonRelatie() {

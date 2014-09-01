@@ -3,11 +3,12 @@ package nl.dias.web.pagina;
 import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
+import nl.dias.domein.json.JsonRelatie;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class BeherenRelatie extends IndexPagina {
+public class BeherenRelatie extends PaginaMetMenuBalk {
     @FindBy(id = "voornaam")
     private WebElement voornaam;
     @FindBy(id = "achternaam")
@@ -107,9 +108,81 @@ public class BeherenRelatie extends IndexPagina {
             for (BeherenRelatieTelefoonnummer telefoonnummer : telefoonnummers) {
                 Hulp.klikEnWacht(this.voegTelefoonNummerToe);
                 Hulp.vulVeld(this.telnummer.get(this.telnummer.size() - 1), telefoonnummer.getTelefoonnummer());
-                Hulp.selecteerUitSelectieBox(this.soorttelnummer.get(this.soorttelnummer.size() - 1), telefoonnummer.getSoortTelefoonnummer());
+                Hulp.selecteerUitSelectieBox(this.soorttelnummer.get(this.soorttelnummer.size() - 1), telefoonnummer.getSoortTelefoonnummer().toUpperCase());
             }
         }
+    }
+
+    public String checkVelden(JsonRelatie jsonRelatie) {
+        StringBuilder sb = new StringBuilder();
+
+        if (!Hulp.controleerVeld(this.voornaam, jsonRelatie.getVoornaam())) {
+            sb.append("|").append(Hulp.getText(this.voornaam)).append(",").append(jsonRelatie.getVoornaam()).append(";").append("voornaam");
+        }
+        if (!Hulp.controleerVeld(this.achternaam, jsonRelatie.getAchternaam())) {
+            sb.append("|").append(Hulp.getText(this.achternaam)).append(",").append(jsonRelatie.getAchternaam()).append(";").append("achternaam");
+        }
+        if (!Hulp.controleerVeld(this.tussenvoegsel, jsonRelatie.getTussenvoegsel())) {
+            sb.append("|").append(Hulp.getText(this.tussenvoegsel)).append(",").append(jsonRelatie.getTussenvoegsel()).append(";").append("tussenvoegsel");
+        }
+        if (!Hulp.controleerVeld(this.straat, jsonRelatie.getStraat())) {
+            sb.append("|").append(Hulp.getText(this.straat)).append(",").append(jsonRelatie.getStraat()).append(";").append("straat");
+        }
+        if (!Hulp.controleerVeld(this.huisnummer, jsonRelatie.getHuisnummer())) {
+            sb.append("|").append(Hulp.getText(this.huisnummer)).append(",").append(jsonRelatie.getHuisnummer()).append(";").append("huisnummer");
+        }
+        if (!Hulp.controleerVeld(this.toevoeging, jsonRelatie.getToevoeging())) {
+            sb.append("|").append(Hulp.getText(this.toevoeging)).append(",").append(jsonRelatie.getToevoeging()).append(";").append("toevoeging");
+        }
+        if (!Hulp.controleerVeld(this.postcode, jsonRelatie.getPostcode())) {
+            sb.append("|").append(Hulp.getText(this.postcode)).append(",").append(jsonRelatie.getPostcode()).append(";").append("postcode");
+        }
+        if (!Hulp.controleerVeld(this.plaats, jsonRelatie.getPlaats())) {
+            sb.append("|").append(Hulp.getText(this.plaats)).append(",").append(jsonRelatie.getPlaats()).append(";").append("plaats");
+        }
+        if (!Hulp.controleerVeld(this.bsn, jsonRelatie.getBsn())) {
+            sb.append("|").append(Hulp.getText(this.bsn)).append(",").append(jsonRelatie.getBsn()).append(";").append("bsn");
+        }
+        if (!Hulp.controleerVeld(this.emailadres, jsonRelatie.getIdentificatie())) {
+            sb.append("|").append(Hulp.getText(this.emailadres)).append(",").append(jsonRelatie.getIdentificatie()).append(";").append("emailadres");
+        }
+        if (!Hulp.controleerVeld(this.geboorteDatum, jsonRelatie.getGeboorteDatum())) {
+            sb.append("|").append(Hulp.getText(this.geboorteDatum)).append(",").append(jsonRelatie.getGeboorteDatum()).append(";").append("geboorteDatum");
+        }
+        if (!Hulp.controleerVeld(this.overlijdensdatum, jsonRelatie.getOverlijdensdatum())) {
+            sb.append("|").append(Hulp.getText(this.overlijdensdatum)).append(",").append(jsonRelatie.getOverlijdensdatum()).append(";").append("overlijdensdatum");
+        }
+        if (!Hulp.controleerVeld(this.geslacht, jsonRelatie.getGeslacht())) {
+            sb.append("|").append(Hulp.getText(this.geslacht)).append(",").append(jsonRelatie.getGeslacht()).append(";").append("geslacht");
+        }
+        if (!Hulp.controleerVeld(this.burgerlijkeStaat, jsonRelatie.getBurgerlijkeStaat())) {
+            sb.append("|").append(Hulp.getText(this.burgerlijkeStaat)).append(",").append(jsonRelatie.getBurgerlijkeStaat()).append(";").append("burgerlijkeStaat");
+        }
+        if (!Hulp.controleerVeld(this.geslacht, jsonRelatie.getGeslacht())) {
+            sb.append("|").append(Hulp.getText(this.geslacht)).append(",").append(jsonRelatie.getGeslacht()).append(";").append("geslacht");
+        }
+
+        for (int i = 0; i < jsonRelatie.getRekeningnummers().size(); i++) {
+            if (!Hulp.controleerVeld(this.rekeningnummer.get(i), jsonRelatie.getRekeningnummers().get(i).getRekeningnummer())) {
+                sb.append("|").append(Hulp.getText(this.rekeningnummer.get(i))).append(",").append(jsonRelatie.getRekeningnummers().get(i).getRekeningnummer()).append(";")
+                        .append("rekeningnummer" + i);
+            }
+            if (!Hulp.controleerVeld(this.bic.get(i), jsonRelatie.getRekeningnummers().get(i).getBic())) {
+                sb.append("|").append(Hulp.getText(this.bic.get(i))).append(",").append(jsonRelatie.getRekeningnummers().get(i).getBic()).append(";").append("bic" + i);
+            }
+        }
+
+        for (int i = 0; i < jsonRelatie.getTelefoonnummers().size(); i++) {
+            if (!Hulp.controleerVeld(this.telnummer.get(i), jsonRelatie.getTelefoonnummers().get(i).getTelefoonnummer())) {
+                sb.append("|").append(Hulp.getText(this.telnummer.get(i))).append(",").append(jsonRelatie.getTelefoonnummers().get(i).getTelefoonnummer()).append(";").append("telnummer" + i);
+            }
+            if (!Hulp.controleerVeld(this.soorttelnummer.get(i), jsonRelatie.getTelefoonnummers().get(i).getSoort().toUpperCase())) {
+                sb.append("|").append(Hulp.getText(this.soorttelnummer.get(i))).append(",").append(jsonRelatie.getTelefoonnummers().get(i).getSoort().toUpperCase()).append(";")
+                        .append("soorttelnummer" + i);
+            }
+        }
+
+        return sb.toString();
     }
 
     public void drukOpOpslaan() {

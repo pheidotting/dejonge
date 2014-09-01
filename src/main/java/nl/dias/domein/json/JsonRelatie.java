@@ -129,6 +129,23 @@ public class JsonRelatie {
     }
 
     public String getAdresOpgemaakt() {
+        if (adresOpgemaakt == null) {
+            StringBuilder sb = new StringBuilder();
+            if (getStraat() != null) {
+                sb.append(getStraat() + " ");
+            }
+            if (getHuisnummer() != null) {
+                sb.append(getHuisnummer() + " ");
+            }
+            if (getToevoeging() != null && !getToevoeging().equals("")) {
+                sb.append(getToevoeging() + " ");
+            }
+            if (getPlaats() != null) {
+                sb.append(", " + getPlaats());
+            }
+            adresOpgemaakt = sb.toString();
+
+        }
         return adresOpgemaakt;
     }
 

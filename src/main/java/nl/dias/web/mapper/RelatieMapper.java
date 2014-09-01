@@ -88,7 +88,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (jsonRelatie.getHuisnummer() != null) {
             sb.append(jsonRelatie.getHuisnummer() + " ");
         }
-        if (jsonRelatie.getToevoeging() != null) {
+        if (jsonRelatie.getToevoeging() != null && !jsonRelatie.getToevoeging().equals("")) {
             sb.append(jsonRelatie.getToevoeging() + " ");
         }
         if (jsonRelatie.getPlaats() != null) {

@@ -60,7 +60,72 @@ public class LijstRelaties {
         return ok;
     }
 
+    public boolean zoekRelatieOpEnKlikDezeAan(JsonRelatie jsonRelatie) {
+        return zoekRelatieOpEnKlikDezeAan(jsonRelatie, false);
+    }
+
+    public boolean zoekRelatieOpEnKlikDezeAan(JsonRelatie jsonRelatie, boolean recursief) {
+        Integer gevondenIndex = null;
+        boolean gevonden = false;
+
+        System.out.println(jsonRelatie.getAchternaam());
+        System.out.println(jsonRelatie.getTussenvoegsel());
+        System.out.println(jsonRelatie.getVoornaam());
+        for (int i = 0; i < voornaam.size(); i++) {
+            if (recordKomtOvereen(jsonRelatie, i)) {
+                gevondenIndex = i;
+                break;
+            }
+        }
+        if (gevondenIndex != null) {
+            voornaam.get(gevondenIndex).click();
+            Hulp.wachtFf();
+            gevonden = true;
+        }
+        if (!gevonden && !recursief) {
+            gevonden = zoekRelatieOpEnKlikDezeAan(jsonRelatie, true);
+        }
+        return gevonden;
+    }
+
     public void toevoegenNieuweRelatie() {
         Hulp.klikEnWacht(toevoegenNieuweRelatie);
     }
+
+    private boolean recordKomtOvereen(JsonRelatie jsonRelatie, int index) {
+        boolean komtOvereen = true;
+
+        Hulp.wachtFf(3000);
+
+        String voornaam = this.voornaam.get(index).getText();
+        String tussenvoegsel = this.tussenvoegsel.get(index).getText();
+        String achternaam = this.achternaam.get(index).getText();
+        String geboortedatum = this.geboortedatum.get(index).getText();
+        String adres = this.adres.get(index).getText();
+
+        System.out.println(voornaam + " | " + jsonRelatie.getVoornaam());
+        System.out.println(tussenvoegsel + " | " + jsonRelatie.getTussenvoegsel());
+        System.out.println(achternaam + " | " + jsonRelatie.getAchternaam());
+        System.out.println(geboortedatum + " | " + jsonRelatie.getGeboorteDatum());
+        System.out.println(adres + " | " + jsonRelatie.getAdresOpgemaakt());
+
+        if (!jsonRelatie.getVoornaam().equals(voornaam)) {
+            komtOvereen = false;
+        }
+        if (!jsonRelatie.getTussenvoegsel().equals(tussenvoegsel)) {
+            komtOvereen = false;
+        }
+        if (!jsonRelatie.getAchternaam().equals(achternaam)) {
+            komtOvereen = false;
+        }
+        if (!jsonRelatie.getGeboorteDatum().equals(geboortedatum)) {
+            komtOvereen = false;
+        }
+        if (!jsonRelatie.getAdresOpgemaakt().equals(adres)) {
+            komtOvereen = false;
+        }
+
+        return komtOvereen;
+    }
+
 }
