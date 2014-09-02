@@ -14,7 +14,7 @@ function go(log, relatieId, actie, subId){
 		$.get( "../dejonge/rest/medewerker/overig/lijstStatusSchade", function(data) {
 			var $select = $('#statusSchade');
 			$.each(data, function(key, value) {
-			    $('<option>').text(value).appendTo($select);
+			    $('<option>', { value : value }).text(value).appendTo($select);
 			});
 			if(subId != null && subId != "0"){
 				log.debug("ophalen Schade met id " + subId);
