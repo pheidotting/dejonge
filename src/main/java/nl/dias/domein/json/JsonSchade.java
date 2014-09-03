@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class JsonSchade {
     private Long id;
-    private Long polis;
+    private String polis;
     private String schadeNummerMaatschappij;
     private String schadeNummerTussenPersoon;
     private String soortSchade;
@@ -32,11 +32,11 @@ public class JsonSchade {
         this.id = id;
     }
 
-    public Long getPolis() {
+    public String getPolis() {
         return polis;
     }
 
-    public void setPolis(Long polis) {
+    public void setPolis(String polis) {
         this.polis = polis;
     }
 

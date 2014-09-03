@@ -64,7 +64,7 @@ public class SchadeService {
         schadeRepository.opslaanBijlage(bijlage);
     }
 
-    public void opslaan(Schade schadeIn, String soortSchade, Long polisId, String statusSchade) {
+    public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
 
         Schade schade = schadeIn;
@@ -86,7 +86,7 @@ public class SchadeService {
         }
 
         LOGGER.debug("Polis opzoeken, id : " + polisId);
-        Polis polis = polisService.lees(polisId);
+        Polis polis = polisService.lees(Long.valueOf(polisId));
         schade.setPolis(polis);
 
         LOGGER.debug("Schade opslaan");

@@ -278,7 +278,7 @@ public class PolisService {
         if ("Ongevallen".equals(soort)) {
             polis = new OngevallenVerzekering();
         }
-        if ("Pleziervaartuigen".equals(soort)) {
+        if ("Pleziervaartuig".equals(soort)) {
             polis = new PleziervaartuigVerzekering();
         }
         if ("Rechtsbijstand".equals(soort)) {

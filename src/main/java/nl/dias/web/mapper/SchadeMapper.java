@@ -64,7 +64,9 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
             jsonSchade.setSoortSchade(schade.getSoortSchadeOngedefinieerd());
         }
         jsonSchade.setStatusSchade(schade.getStatusSchade().getStatus());
-        jsonSchade.setPolis(schade.getPolis().getId());
+        if (schade.getPolis() != null && schade.getPolis().getId() != null) {
+            jsonSchade.setPolis(schade.getPolis().getId().toString());
+        }
 
         return jsonSchade;
     }
