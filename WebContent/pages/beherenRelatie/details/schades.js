@@ -54,6 +54,7 @@ function Schade(data, log, relatieId){
     				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
     			}
             	plaatsMelding("De gegevens zijn opgeslagen");
+            	document.location.hash = "#beherenRelatie/" + relatieId + "/schades";
             },
             error: function (data) {
             	plaatsFoutmelding(data);
