@@ -69,7 +69,7 @@ public class SchadeServiceTest extends EasyMockSupport {
     @Test
     public void opslaanMetEnum() {
         String soortSchadeString = "soortSchade";
-        Long polisId = 46L;
+        String polisId = "46";
         String statusSchadeString = "statusSchade";
 
         Schade schade = createMock(Schade.class);
@@ -87,7 +87,7 @@ public class SchadeServiceTest extends EasyMockSupport {
         schade.setStatusSchade(statusSchade);
         expectLastCall();
 
-        expect(polisService.lees(polisId)).andReturn(polis);
+        expect(polisService.lees(Long.valueOf(polisId))).andReturn(polis);
         schade.setPolis(polis);
         expectLastCall();
 
@@ -104,7 +104,7 @@ public class SchadeServiceTest extends EasyMockSupport {
     @Test
     public void opslaanZonderEnum() {
         String soortSchadeString = "soortSchade";
-        Long polisId = 46L;
+        String polisId = "46";
         String statusSchadeString = "statusSchade";
 
         Schade schade = createMock(Schade.class);
@@ -120,7 +120,7 @@ public class SchadeServiceTest extends EasyMockSupport {
         schade.setStatusSchade(statusSchade);
         expectLastCall();
 
-        expect(polisService.lees(polisId)).andReturn(polis);
+        expect(polisService.lees(Long.valueOf(polisId))).andReturn(polis);
         schade.setPolis(polis);
         expectLastCall();
 

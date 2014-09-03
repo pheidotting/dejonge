@@ -66,7 +66,7 @@ public class SchadeMapperTest extends EasyMockSupport {
         jsonSchade.setEigenRisico("100.0");
         jsonSchade.setLocatie("Ergens tussen de weg en de straat");
         jsonSchade.setOmschrijving("Tja, toen was het ineens boem!");
-        jsonSchade.setPolis(1L);
+        jsonSchade.setPolis("1");
         jsonSchade.setSchadeNummerMaatschappij("schadeNummerMaatschappij");
         jsonSchade.setSchadeNummerTussenPersoon("schadeNummerTussenPersoon");
         jsonSchade.setSoortSchade("Diefstal");
