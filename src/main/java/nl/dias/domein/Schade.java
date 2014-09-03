@@ -40,8 +40,8 @@ public class Schade implements PersistenceObject, Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne
     @JoinColumn(name = "POLIS", nullable = true)
+    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
     private Polis polis;
 
     @Column(length = 25, name = "SCHADENUMMERMAATSCHAPPIJ", nullable = false)
