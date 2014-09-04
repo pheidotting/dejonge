@@ -78,8 +78,8 @@ public abstract class Onderwerp implements Serializable {
     }
 
     public String getSalt() throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        if (this.salt == null || this.salt.equals("")) {
-            if (this.identificatie != null && !this.identificatie.equals("")) {
+        if (this.salt == null || "".equals(this.salt)) {
+            if (this.identificatie != null && !"".equals(this.identificatie)) {
                 this.salt = hash(this.identificatie);
             } else {
                 String zout = UUID.randomUUID().toString();
