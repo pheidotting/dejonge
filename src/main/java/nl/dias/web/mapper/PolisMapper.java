@@ -58,7 +58,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
         polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
 
-        if (polis.getId() != null && !polis.getId().equals("")) {
+        if (polis.getId() != null && polis.getId() != 0) {
             Polis p = polisService.lees(polis.getId());
 
             polis.setSchades(p.getSchades());
