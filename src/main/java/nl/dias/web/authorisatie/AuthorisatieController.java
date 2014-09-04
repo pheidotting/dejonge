@@ -102,7 +102,7 @@ public class AuthorisatieController {
 
     private Gebruiker getGebruiker() {
         String sessie = null;
-        if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
+        if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
         }
 
