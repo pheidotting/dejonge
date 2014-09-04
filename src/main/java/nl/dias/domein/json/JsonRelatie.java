@@ -137,7 +137,7 @@ public class JsonRelatie {
             if (getHuisnummer() != null) {
                 sb.append(getHuisnummer() + " ");
             }
-            if (getToevoeging() != null && !getToevoeging().equals("")) {
+            if (getToevoeging() != null && !"".equals(getToevoeging())) {
                 sb.append(getToevoeging() + " ");
             }
             if (getPlaats() != null) {
