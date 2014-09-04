@@ -39,10 +39,10 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
         relatie.setAchternaam(jsonRelatie.getAchternaam());
         relatie.getAdres().setStraat(jsonRelatie.getStraat());
-        if (jsonRelatie.getOverlijdensdatum() != null && !jsonRelatie.getOverlijdensdatum().equals("")) {
+        if (jsonRelatie.getOverlijdensdatum() != null && !"".equals(jsonRelatie.getOverlijdensdatum())) {
             relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
         }
-        if (jsonRelatie.getGeboorteDatum() != null && !jsonRelatie.getGeboorteDatum().equals("")) {
+        if (jsonRelatie.getGeboorteDatum() != null && !"".equals(jsonRelatie.getGeboorteDatum())) {
             relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
         }
         try {
@@ -88,7 +88,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (jsonRelatie.getHuisnummer() != null) {
             sb.append(jsonRelatie.getHuisnummer() + " ");
         }
-        if (jsonRelatie.getToevoeging() != null && !jsonRelatie.getToevoeging().equals("")) {
+        if (jsonRelatie.getToevoeging() != null && !"".equals(jsonRelatie.getToevoeging())) {
             sb.append(jsonRelatie.getToevoeging() + " ");
         }
         if (jsonRelatie.getPlaats() != null) {
