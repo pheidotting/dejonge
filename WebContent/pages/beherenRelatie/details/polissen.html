@@ -6,13 +6,13 @@
 					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: titel" name="titelPolis"></a>
 					&nbsp;&nbsp;&nbsp;
 					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" name="dropdown">
 							Kies een actie <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
 							<li>
 								<span class="glyphicon glyphicon-pencil" style="cursor:pointer;" data-bind="click: bewerkPolis"></span>
-								<span style="cursor:pointer;" data-bind="click: bewerkPolis">Bewerken</span>
+								<span style="cursor:pointer;" data-bind="click: bewerkPolis" name="bewerkPolis">Bewerken</span>
 							</li>
 							<!--li>
 								<span class="glyphicon glyphicon-thumbs-down" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
@@ -21,7 +21,7 @@
 							<li class="divider"></li>
 							<li>
 								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
-								<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis">Verwijderen</span>
+								<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis" name="verwijderPolis">Verwijderen</span>
 							</li>
 						</ul>
 					</div>
@@ -39,7 +39,7 @@
 					</div>
 					<div data-bind="if: wijzigingsDatum">
 						<span class="polisLabel">Wijzigingsdatum :</span>
-						<span name="ingangsDatum" data-bind="text: wijzigingsDatum"></span>
+						<span name="wijzigingsDatum" data-bind="text: wijzigingsDatum"></span>
 					</div>
 					<div data-bind="if: prolongatieDatum">
 						<span class="polisLabel">Prolongatie :</span>
@@ -47,7 +47,7 @@
 					</div>
 					<div data-bind="if: maatschappij">
 						<span class="polisLabel">Maatschappij :</span>
-						<span name="premie" data-bind="text: maatschappij"></span>
+						<span name="maatschappij" data-bind="text: maatschappij"></span>
 					</div>
 					<div data-bind="if: premie">
 						<span class="polisLabel">Premie :</span>
@@ -59,7 +59,7 @@
 					</div>
 					<div data-bind="if: bedrijf">
 						<span class="polisLabel">Bedrijf :</span>
-						<span name="betaalfrequentie" data-bind="text: bedrijf"></span>
+						<span name="bedrijf" data-bind="text: bedrijf"></span>
 					</div>
 						
 					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
