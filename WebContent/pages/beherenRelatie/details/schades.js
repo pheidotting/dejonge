@@ -22,7 +22,7 @@ function Schade(data, log, relatieId){
     self.omschrijving = ko.observable(data.omschrijving);
     
     self.titel = ko.computed(function() {
-    	return self.soortSchade + " (" + self.schadeNummerMaatschappij + ")"
+    	return data.soortSchade + " (" + data.schadeNummerMaatschappij + ")"
     }, this);
 
 	self.idDiv = ko.computed(function() {
