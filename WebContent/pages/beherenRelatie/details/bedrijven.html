@@ -4,7 +4,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4">
-					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: naam"></a>
+					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: naam" name="naam"></a>
 					&nbsp;&nbsp;&nbsp;
 					<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -13,7 +13,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li>
 								<span class="glyphicon glyphicon-pencil" style="cursor:pointer;" data-bind="click: bewerkBedrijf"></span>
-								<span style="cursor:pointer;" data-bind="click: bewerkBedrijf">Bewerken</span>
+								<span style="cursor:pointer;" data-bind="click: bewerkBedrijf" name="bewerkBedrijf">Bewerken</span>
 							</li>
 							<!--li>
 								<span class="glyphicon glyphicon-thumbs-down" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
@@ -22,7 +22,7 @@
 							<li class="divider"></li>
 							<li>
 								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderBedrijf"></span>
-								<span style="cursor:pointer;" data-bind="click: $root.verwijderBedrijf">Verwijderen</span>
+								<span style="cursor:pointer;" data-bind="click: $root.verwijderBedrijf" name="verwijderBedrijf">Verwijderen</span>
 							</li>
 						</ul>
 					</div>
@@ -31,27 +31,27 @@
 			<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
 			<div data-bind="if: kvk">
 				<span class="polisLabel">Kvk :</span>
-				<span data-bind="text: kvk"></span>
+				<span data-bind="text: kvk" name="kvk"></span>
 			</div>
 			<div data-bind="if: straat">
 				<span class="polisLabel">Straat :</span>
-				<span data-bind="text: straat"></span>
+				<span data-bind="text: straat" name="straat"></span>
 			</div>
 			<div data-bind="if: huisnummer">
 				<span class="polisLabel">Huisnummer :</span>
-				<span data-bind="text: huisnummer"></span>
+				<span data-bind="text: huisnummer" name="huisnummer"></span>
 			</div>
 			<div data-bind="if: toevoeging">
 				<span class="polisLabel">Toevoeging :</span>
-				<span data-bind="text: toevoeging"></span>
+				<span data-bind="text: toevoeging" name="toevoeging"></span>
 			</div>
 			<div data-bind="if: postcode">
 				<span class="polisLabel">Postcode :</span>
-				<span data-bind="text: postcode"></span>
+				<span data-bind="text: postcode" name="postcode"></span>
 			</div>
 			<div data-bind="if: plaats">
 				<span class="polisLabel">Plaats :</span>
-				<span data-bind="text: plaats"></span>
+				<span data-bind="text: plaats" name="plaats"></span>
 			</div>
 		</div>
 	</div>
