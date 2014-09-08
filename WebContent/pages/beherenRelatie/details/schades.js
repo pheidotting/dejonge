@@ -20,6 +20,10 @@ function Schade(data, log, relatieId){
     self.datumAfgehandeld = ko.observable(data.datumAfgehandeld);
     self.eigenRisico = ko.observable(data.eigenRisico);
     self.omschrijving = ko.observable(data.omschrijving);
+    
+    self.titel = ko.computed(function() {
+    	return self.soortSchade + " (" + self.schadeNummerMaatschappij + ")"
+    }, this);
 
 	self.idDiv = ko.computed(function() {
         return "collapsableSchade" + data.id;
