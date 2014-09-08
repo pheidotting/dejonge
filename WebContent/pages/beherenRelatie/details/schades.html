@@ -3,7 +3,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4>
-					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: titel"></a>
+					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: titel" name="titel"></a>
 					&nbsp;&nbsp;&nbsp;
 					<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -12,7 +12,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li>
 								<span class="glyphicon glyphicon-pencil" style="cursor:pointer;" data-bind="click: bewerkSchade"></span>
-								<span style="cursor:pointer;" data-bind="click: bewerkSchade">Bewerken</span>
+								<span style="cursor:pointer;" data-bind="click: bewerkSchade" name="bewerkSchade">Bewerken</span>
 							</li>
 							<!--li>
 								<span class="glyphicon glyphicon-thumbs-down" style="cursor:pointer;" data-bind="click: $root.schadeMeldenBijPolis"></span>
@@ -21,7 +21,7 @@
 							<li class="divider"></li>
 							<li>
 								<span class="glyphicon glyphicon-trash" style="cursor:pointer;" data-bind="click: $root.verwijderPolis"></span>
-								<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis">Verwijderen</span>
+								<span style="cursor:pointer;" data-bind="click: $root.verwijderPolis" name="verwijderPolis">Verwijderen</span>
 							</li>
 						</ul>
 					</div>
@@ -31,43 +31,43 @@
 				<div class="panel-body">
 					<div data-bind="if: soortSchade">
 						<span class="schadeLabel">Soort schade :</span>
-						<span data-bind="text: soortSchade"></span>
+						<span data-bind="text: soortSchade" name="soortSchade"></span>
 					</div>
 					<div data-bind="if: schadeNummerTussenPersoon">
 						<span class="schadeLabel">Schadenummer Maatschappij :</span>
-						<span data-bind="text: schadeNummerMaatschappij"></span>
+						<span data-bind="text: schadeNummerMaatschappij" name="schadeNummerMaatschappij"></span>
 					</div>
 					<div data-bind="if: schadeNummerTussenPersoon">
 						<span class="schadeLabel">Schadenummer Tussenpersoon :</span>
-						<span data-bind="text: schadeNummerTussenPersoon"></span>
+						<span data-bind="text: schadeNummerTussenPersoon" name="schadeNummerTussenPersoon"></span>
 					</div>
 					<div data-bind="if: locatie">
 						<span class="schadeLabel">Locatie :</span>
-						<span data-bind="text: locatie"></span>
+						<span data-bind="text: locatie" name="locatie"></span>
 					</div>
 					<div data-bind="if: statusSchade">
 						<span class="schadeLabel">Status schade :</span>
-						<span data-bind="text: statusSchade"></span>
+						<span data-bind="text: statusSchade" name="statusSchade"></span>
 					</div>
 					<div data-bind="if: datumTijdMelding">
 						<span class="schadeLabel">Datum/Tijd schade :</span>
-						<span data-bind="text: datumTijdSchade"></span>
+						<span data-bind="text: datumTijdSchade" name="datumTijdSchade"></span>
 					</div>
 					<div data-bind="if: datumTijdMelding">
 						<span class="schadeLabel">Datum/Tijd melding :</span>
-						<span data-bind="text: datumTijdMelding"></span>
+						<span data-bind="text: datumTijdMelding" name="datumTijdMelding"></span>
 					</div>
 					<div data-bind="if: eigenRisico">
 						<span class="schadeLabel">Datum afgehandeld :</span>
-						<span data-bind="text: datumAfgehandeld"></span>
+						<span data-bind="text: datumAfgehandeld" name="datumAfgehandeld"></span>
 					</div>
 					<div data-bind="if: eigenRisico">
 						<span class="schadeLabel">Eigen risico :</span>
-						<span data-bind="text: eigenRisico"></span>
+						<span data-bind="text: eigenRisico" name="eigenRisico"></span>
 					</div>
 					<div data-bind="if: omschrijving">
 						<span class="schadeLabel">Omschrijving :</span>
-						<span data-bind="text: omschrijving"></span>
+						<span data-bind="text: omschrijving" name="omschrijving"></span>
 					</div>
 
 					<div id="opmerkingenBijSchade" data-bind="foreach: opmerkingen, visible: opmerkingen().length > 0">
