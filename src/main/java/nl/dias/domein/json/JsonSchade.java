@@ -23,6 +23,7 @@ public class JsonSchade {
     private List<JsonBijlage> bijlages;
     private String idDiv;
     private String idDivLink;
+    private String titel;
 
     public Long getId() {
         return id;
@@ -156,6 +157,14 @@ public class JsonSchade {
 
     public void setIdDivLink(String idDivLink) {
         this.idDivLink = idDivLink;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 
     /**
