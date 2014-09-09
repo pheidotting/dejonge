@@ -95,7 +95,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         return jsonPolis;
     }
 
-    private String zetBedragOm(Bedrag bedrag) {
+    public static String zetBedragOm(Bedrag bedrag) {
         String waarde = null;
         String[] x = bedrag.getBedrag().toString().split("\\.");
         if (x[1].length() == 1) {

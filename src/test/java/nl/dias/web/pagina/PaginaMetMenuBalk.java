@@ -2,6 +2,7 @@ package nl.dias.web.pagina;
 
 import nl.dias.dias_web.hulp.Hulp;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -27,34 +28,45 @@ public class PaginaMetMenuBalk extends IndexPagina {
         BEHERENRELATIE, BEDRIJVEN, BEDRIJF, POLISSEN, POLIS, SCHADES, SCHADE, BIJLAGES;
     }
 
-    public void klikMenuItemAan(MenuItem menuItem) {
-        switch (menuItem) {
-        case BEDRIJF:
-            Hulp.klikEnWacht(bedrijf);
-            break;
-        case BEDRIJVEN:
-            Hulp.klikEnWacht(bedrijven);
-            break;
-        case BEHERENRELATIE:
-            Hulp.klikEnWacht(beherenRelatie);
-            break;
-        case POLISSEN:
-            Hulp.klikEnWacht(polissen);
-            break;
-        case POLIS:
-            Hulp.klikEnWacht(polis);
-            break;
-        case SCHADES:
-            Hulp.klikEnWacht(schades);
-            break;
-        case SCHADE:
-            Hulp.klikEnWacht(schade);
-            break;
-        case BIJLAGES:
-            Hulp.klikEnWacht(bijlages);
-            break;
-        default:
-            break;
-        }
+    public void klikMenuItemAan(MenuItem menuItem, WebDriver driver) {
+        String vorigeUrl = driver.getCurrentUrl();
+        do {
+            switch (menuItem) {
+            case BEDRIJF:
+                Hulp.klikEnWacht(bedrijf);
+                Hulp.wachtFf();
+                break;
+            case BEDRIJVEN:
+                Hulp.klikEnWacht(bedrijven);
+                Hulp.wachtFf();
+                break;
+            case BEHERENRELATIE:
+                Hulp.klikEnWacht(beherenRelatie);
+                Hulp.wachtFf();
+                break;
+            case POLISSEN:
+                Hulp.klikEnWacht(polissen);
+                Hulp.wachtFf();
+                break;
+            case POLIS:
+                Hulp.klikEnWacht(polis);
+                Hulp.wachtFf();
+                break;
+            case SCHADES:
+                Hulp.klikEnWacht(schades);
+                Hulp.wachtFf();
+                break;
+            case SCHADE:
+                Hulp.klikEnWacht(schade);
+                Hulp.wachtFf();
+                break;
+            case BIJLAGES:
+                Hulp.klikEnWacht(bijlages);
+                Hulp.wachtFf();
+                break;
+            default:
+                break;
+            }
+        } while (vorigeUrl.equals(driver.getCurrentUrl()));
     }
 }

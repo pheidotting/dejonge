@@ -12,10 +12,12 @@ import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.json.JsonTelefoonnummer;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.it.webtesten.util.StringGeneratieUtil;
 import nl.dias.web.pagina.BedrijfBewerken;
+import nl.dias.web.pagina.BedrijvenOverzicht;
 import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
@@ -23,11 +25,15 @@ import nl.dias.web.pagina.InlogScherm;
 import nl.dias.web.pagina.LijstRelaties;
 import nl.dias.web.pagina.PaginaMetMenuBalk.MenuItem;
 import nl.dias.web.pagina.PolisBewerken;
+import nl.dias.web.pagina.PolisOverzicht;
+import nl.dias.web.pagina.SchadeBewerken;
+import nl.dias.web.pagina.SchadeOverzicht;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -40,6 +46,9 @@ public class BeherenRelatieIT {
     private StringGeneratieUtil stringGeneratieUtil;
 
     private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
+
+    // private final String BASIS_URL =
+    // "http://localhost:8080/dejonge/index.html#";
 
     private boolean doorgaan() {
         boolean doorgaan = true;
@@ -106,13 +115,29 @@ public class BeherenRelatieIT {
             BeherenRelatie beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
 
             JsonRelatie jsonRelatie = maakJsonRelatie();
+            String huisnummer = jsonRelatie.getHuisnummer();
 
-            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer()
-                    .toString(), jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-                    jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie
-                            .getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+            jsonRelatie.setHuisnummer("a");
+
+            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer(),
+                    jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
+                    jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(),
+                    allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+
+            checkFoutmelding(beherenRelatieScherm, "Er is een fout opgetreden : Huisnummer mag alleen cijfers bevatten");
+
+            jsonRelatie.setHuisnummer(huisnummer);
+
+            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, null, jsonRelatie.getHuisnummer(), null, null, null, null, null, null, null, null, null, null, null);
 
             checkOpgeslagenMelding(beherenRelatieScherm);
+
+            // JsonRelatie jsonRelatie = new JsonRelatie();
+            // jsonRelatie.setAchternaam("Jansen");
+            // jsonRelatie.setTussenvoegsel("");
+            // jsonRelatie.setVoornaam("Patrick");
+            // jsonRelatie.setGeboorteDatum("05-11-1970");
+            // jsonRelatie.setAdresOpgemaakt("Langestraat 75 , Groningen");
 
             // Opgeslagen Relatie weer aanklikken op overzichtsscherm
             assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelatie));
@@ -123,7 +148,7 @@ public class BeherenRelatieIT {
             // correct zijn opgeslagen)
             assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
 
-            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS);
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS, driver);
 
             JsonPolis polis = maakJsonPolis(null);
 
@@ -136,8 +161,18 @@ public class BeherenRelatieIT {
             assertTrue(driver.getCurrentUrl().endsWith("/polissen"));
             checkOpgeslagenMelding(beherenRelatieScherm);
 
+            // beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
+            PolisOverzicht polissen = PageFactory.initElements(driver, PolisOverzicht.class);
+            assertEquals("", polissen.controleerPolis(polis));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // B E D R I J F
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
             // We gaan een bedrijf invoeren
-            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEDRIJF);
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEDRIJF, driver);
             BedrijfBewerken bedrijfScherm = PageFactory.initElements(driver, BedrijfBewerken.class);
             JsonBedrijf jsonBedrijf = maakJsonBedrijf();
 
@@ -146,21 +181,143 @@ public class BeherenRelatieIT {
             checkOpgeslagenMelding(beherenRelatieScherm);
             assertTrue(driver.getCurrentUrl().endsWith("/bedrijven"));
 
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // B E D R I J F C O N T R O L E R EN
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+            BedrijvenOverzicht bedrijvenOverzicht = PageFactory.initElements(driver, BedrijvenOverzicht.class);
+            assertEquals("", bedrijvenOverzicht.controleerBedrijf(jsonBedrijf));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // P O L I S
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
             // En een polis invoeren bij dit bedrijf
-            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS);
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS, driver);
             assertTrue(polisScherm.isBedrijfBijPolisZichtbaar());
             JsonPolis polis2 = maakJsonPolis(jsonBedrijf.getNaam());
             polisScherm.vulVeldenEnDrukOpOpslaan(polis2);
 
+            // JsonPolis polis = new JsonPolis();
+            // polis.setTitel("Annulerings (511973)");
+            // JsonPolis polis2 = new JsonPolis();
+            // polis2.setTitel("Fiets (65050)");
+            // JsonPolis polis3 = new JsonPolis();
+            // polis3.setTitel("Fiets (650501)");
+            //
+            // assertEquals(1, polissen.zoekPolis(polis));
+            // assertEquals(2, polissen.zoekPolis(polis2));
+            // assertEquals(-1, polissen.zoekPolis(polis3));
+            polissen = PageFactory.initElements(driver, PolisOverzicht.class);
+            assertEquals("", polissen.controleerPolis(polis));
+            assertEquals("", polissen.controleerPolis(polis2));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // S C H A D E
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            // Schade invoeren
+            JsonSchade schade = maakJsonSchade();
+            schade.setPolis(polis.getSoort() + " (" + polis.getPolisNummer() + ")");
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.SCHADE, driver);
+            SchadeBewerken schadeScherm = PageFactory.initElements(driver, SchadeBewerken.class);
+            schadeScherm.vulVeldenEnDrukOpOpslaan(schade);
+            checkOpgeslagenMelding(beherenRelatieScherm);
+            assertTrue(driver.getCurrentUrl().endsWith("/schades"));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // S C H A D E C O N T R O L E R E N
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            SchadeOverzicht schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
+            schadeOverzicht.controleerSchade(schade);
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // P O L I S W I J Z I G E N
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
+            polissen = PageFactory.initElements(driver, PolisOverzicht.class);
+            assertEquals("", polissen.controleerPolis(polis));
+            assertEquals("", polissen.controleerPolis(polis2));
+
+            polissen.bewerkPolis(polissen.zoekPolis(polis));
+
+            polisScherm = PageFactory.initElements(driver, PolisBewerken.class);
+            String betaalfrequentie = polis.getBetaalfrequentie();
+            String nieuweBetaalFrequentie = null;
+
+            do {
+                nieuweBetaalFrequentie = (String) stringGeneratieUtil.kiesUitItems(Betaalfrequentie.J.getOmschrijving(), Betaalfrequentie.K.getOmschrijving(), Betaalfrequentie.M.getOmschrijving(),
+                        Betaalfrequentie.H.getOmschrijving());
+            } while (betaalfrequentie.equals(nieuweBetaalFrequentie));
+            polis.setBetaalfrequentie(nieuweBetaalFrequentie);
+            polisScherm.vulVeldenEnDrukOpOpslaan(polis);
+
+            polissen = PageFactory.initElements(driver, PolisOverzicht.class);
+            assertEquals("", polissen.controleerPolis(polis));
+            assertEquals("", polissen.controleerPolis(polis2));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // A F S L U I T E N , R E L A T I E V E R W I J D E R E N
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
             // Als afsluiter de Relatie verwijderen
-            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE);
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE, driver);
             beherenRelatieScherm.drukOpVerwijderen();
             Hulp.wachtFf();
+
+            beherenRelatieScherm.uitloggen();
         }
     }
 
     private void checkOpgeslagenMelding(BeherenRelatie beherenRelatieScherm) {
-        assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
+        String melding = beherenRelatieScherm.leesmelding();
+        if (melding == null || melding.equals("")) {
+            Hulp.wachtFf(5000);
+            melding = beherenRelatieScherm.leesmelding();
+        }
+        try {
+            assertEquals("De gegevens zijn opgeslagen", beherenRelatieScherm.leesmelding());
+        } catch (ComparisonFailure cf) {
+            if (beherenRelatieScherm.leesFoutmelding().equals("")) {
+                throw new ComparisonFailure("Fout", "Goedmelding : De gegevens zijn opgeslagen", null);
+            } else {
+                throw new ComparisonFailure("Fout", "Goedmelding : De gegevens zijn opgeslagen", "Foutmelding : " + beherenRelatieScherm.leesFoutmelding());
+            }
+        }
+    }
+
+    private void checkFoutmelding(BeherenRelatie beherenRelatieScherm, String verwacht) {
+        assertEquals(verwacht, beherenRelatieScherm.leesFoutmelding());
+    }
+
+    private JsonSchade maakJsonSchade() {
+        JsonSchade jsonSchade = new JsonSchade();
+
+        jsonSchade.setDatumAfgehandeld(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
+        jsonSchade.setDatumTijdMelding(stringGeneratieUtil.genereerDatumTijd().toString("dd-MM-yyyy HH:mm"));
+        jsonSchade.setDatumTijdSchade(stringGeneratieUtil.genereerDatumTijd().toString("dd-MM-yyyy HH:mm"));
+        jsonSchade.setEigenRisico(((Integer) stringGeneratieUtil.randomGetal(999)).toString());
+        jsonSchade.setLocatie(stringGeneratieUtil.genereerPlaatsnaam());
+        jsonSchade.setOmschrijving("Omschrijving");
+        jsonSchade.setSchadeNummerMaatschappij(((Integer) stringGeneratieUtil.randomGetal(9999999)).toString());
+        jsonSchade.setSchadeNummerTussenPersoon(((Integer) stringGeneratieUtil.randomGetal(9999999)).toString());
+        jsonSchade.setSoortSchade((String) stringGeneratieUtil.kiesUitItems("Aanrijding met wild", "Aanrijding schuldschade", "Aanrijding verhaalschade", "Aansprakelijkheidschade", "Diefstalschade",
+                "Inbraak zonder braakschade", "Inbraak met braakschade", "Rechtsbijstanddekking soc/werk", "Ruitbreuk", "Stormschade", "Vandalismeschade"));
+        jsonSchade.setStatusSchade((String) stringGeneratieUtil.kiesUitItems("In behandeling maatschappij", "Afgehandeld maatschappij", "In behandeling tussenpersoon", "Afgehandeld tussenpersoon"));
+
+        return jsonSchade;
     }
 
     private JsonBedrijf maakJsonBedrijf() {
@@ -168,7 +325,7 @@ public class BeherenRelatieIT {
 
         bedrijf.setHuisnummer(((Integer) stringGeneratieUtil.randomGetal(200)).toString());
         bedrijf.setKvk(((Integer) stringGeneratieUtil.randomGetal(99999999)).toString());
-        bedrijf.setNaam(stringGeneratieUtil.genereerAchternaam());
+        bedrijf.setNaam(stringGeneratieUtil.genereerAchternaam() + " B.V.");
         bedrijf.setPlaats(stringGeneratieUtil.genereerPlaatsnaam());
         bedrijf.setPostcode(stringGeneratieUtil.genereerPostcode());
         bedrijf.setStraat(stringGeneratieUtil.genereerStraatnaam());
@@ -186,12 +343,24 @@ public class BeherenRelatieIT {
         jsonPolis.setBetaalfrequentie((String) stringGeneratieUtil.kiesUitItems(Betaalfrequentie.J.getOmschrijving(), Betaalfrequentie.K.getOmschrijving(), Betaalfrequentie.M.getOmschrijving(),
                 Betaalfrequentie.H.getOmschrijving()));
         jsonPolis.setIngangsDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
-        jsonPolis.setMaatschappij("Aegon");
+        jsonPolis.setMaatschappij((String) stringGeneratieUtil.kiesUitItems("Achmea", "Aegon", "Agis", "Allianz Nederland", "AllSecur", "Amersfoortse (de)", "ASR Verzekeringen", "Avero Achmea",
+                "Crisper", "Delta Lloyd", "Ditzo", "Generali", "Goudse (de)", "Kilometerverzekering (de)", "Klaverblad", "Kruidvat", "London Verzekeringen", "Nationale Nederlanden", "OHRA",
+                "Polis Direct", "SNS Bank", "Turien & Co", "Unive", "Verzekeruzelf.nl", "Zelf.nl", "Unigarant", "Voogd en Voogd", "VKG", "DAS", "Europeesche", "Erasmus", "Monuta", "Onderlinge",
+                "Reaal"));
         jsonPolis.setPolisNummer(((Integer) stringGeneratieUtil.randomGetal(1000000)).toString());
         jsonPolis.setPremie(((Integer) stringGeneratieUtil.randomGetal(1000)).toString());
         jsonPolis.setProlongatieDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
-        jsonPolis.setSoort("Fiets");
+        // jsonPolis.setSoort((String)
+        // stringGeneratieUtil.kiesUitItems("Aansprakelijkheid", "Auto",
+        // "Brom-/Snorfiets", "Camper", "Annulerings", "Reis", "Fiets",
+        // "Inboedel", "Leven",
+        // "Mobiele apparatuur", "Motor", "Ongevallen", "Pleziervaartuig",
+        // "Recreatie", "Rechtsbijstand", "Reis", "Woonhuis", "Zorg"));
+        jsonPolis.setSoort((String) stringGeneratieUtil.kiesUitItems("Aansprakelijkheid", "Auto", "Brom-/Snorfiets", "Camper", "Reis", "Fiets", "Inboedel", "Motor", "Ongevallen", "Pleziervaartuig",
+                "Recreatie", "Rechtsbijstand", "Reis", "Woonhuis", "Zorg"));
         jsonPolis.setWijzigingsDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
+
+        jsonPolis.setTitel(jsonPolis.getSoort() + " (" + jsonPolis.getPolisNummer() + ")");
 
         return jsonPolis;
     }

@@ -21,5 +21,7 @@ public class InlogScherm extends IndexPagina {
         wachtFf();
         klikEnWacht(inlogButton);
         wachtFf();
+        wachtFf();
+        wachtFf();
     }
 }

@@ -13,9 +13,11 @@ public class Hulp {
 
     public static void vulVeld(WebElement element, String waarde) {
         if (waarde != null && !waarde.equals("")) {
-            element.clear();
-            element.sendKeys(waarde);
-            wachtFf();
+            do {
+                element.clear();
+                element.sendKeys(waarde);
+                wachtFf();
+            } while (!Hulp.getText(element).equals(waarde));
         }
     }
 
@@ -68,6 +70,22 @@ public class Hulp {
     }
 
     public static boolean controleerVeld(WebElement element, String verwacht) {
-        return getText(element).equals(verwacht);
+        boolean ok = false;
+
+        try {
+            ok = getText(element).equals(verwacht);
+            if (!ok) {
+                Hulp.wachtFf();
+                ok = getText(element).equals(verwacht);
+            }
+        } catch (NullPointerException e) {
+            ok = element.getText().equals(verwacht);
+            if (!ok) {
+                Hulp.wachtFf();
+                ok = element.getText().equals(verwacht);
+            }
+        }
+
+        return ok;
     }
 }

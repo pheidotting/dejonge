@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 public class StringGeneratieUtil {
     private final List<String> voornamen = new ArrayList<>();
@@ -152,11 +153,25 @@ public class StringGeneratieUtil {
         return genereerDatum(null);
     }
 
+    public LocalDateTime genereerDatumTijd() {
+        return genereerDatumTijd(null);
+    }
+
     public LocalDate genereerDatum(LocalDate ligtNa) {
         LocalDate datum = new LocalDate().minusDays(randomGetal(20000));
         if (ligtNa != null) {
             while (datum.isBefore(ligtNa)) {
                 datum = new LocalDate().minusDays(randomGetal(20000));
+            }
+        }
+        return datum;
+    }
+
+    public LocalDateTime genereerDatumTijd(LocalDate ligtNa) {
+        LocalDateTime datum = new LocalDateTime().minusDays(randomGetal(20000));
+        if (ligtNa != null) {
+            while (datum.isBefore(ligtNa)) {
+                datum = new LocalDateTime().minusDays(randomGetal(20000));
             }
         }
         return datum;
