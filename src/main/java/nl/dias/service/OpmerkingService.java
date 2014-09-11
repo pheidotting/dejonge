@@ -43,4 +43,16 @@ public class OpmerkingService {
         this.opmerkingRepository = opmerkingRepository;
     }
 
+    public void setAuthorisatieService(AuthorisatieService authorisatieService) {
+        this.authorisatieService = authorisatieService;
+    }
+
+    public void setSchadeService(SchadeService schadeService) {
+        this.schadeService = schadeService;
+    }
+
+    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
+    }
+
 }
