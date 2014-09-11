@@ -11,17 +11,23 @@ import java.util.Set;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonOpmerking;
+import nl.dias.service.SchadeService;
 
+import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OpmerkingMapperTest {
+public class OpmerkingMapperTest extends EasyMockSupport {
     private OpmerkingMapper mapper;
+    private SchadeService schadeService;
 
     @Before
     public void setUp() throws Exception {
         mapper = new OpmerkingMapper();
+
+        schadeService = createMock(SchadeService.class);
+        mapper.setSchadeService(schadeService);
     }
 
     @Test
@@ -71,8 +77,9 @@ public class OpmerkingMapperTest {
 
         jsonOpmerking.setId(1L);
         jsonOpmerking.setOpmerking("opmerking");
-        jsonOpmerking.setTijd("03-05-2014");
+        jsonOpmerking.setTijd("03-05-2014 07:05");
         jsonOpmerking.setMedewerker("voornaam achternaam");
+        jsonOpmerking.setSchade("2");
 
         return jsonOpmerking;
     }

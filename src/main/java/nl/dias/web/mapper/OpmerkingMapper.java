@@ -35,4 +35,9 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
 
         return jsonOpmerking;
     }
+
+    public void setSchadeService(SchadeService schadeService) {
+        this.schadeService = schadeService;
+    }
+
 }
