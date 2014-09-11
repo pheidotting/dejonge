@@ -46,9 +46,12 @@ public class PolisController {
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonPolis lees(@QueryParam("id") String id) {
-        if (id != null && !"".equals(id) && !"0".equals("0")) {
+        LOGGER.debug("ophalen Polise met id " + id);
+        if (id != null && !"".equals(id) && !"0".equals(id)) {
+            LOGGER.debug("ophalen Polis");
             return polisMapper.mapNaarJson(polisService.lees(Long.valueOf(id)));
         } else {
+            LOGGER.debug("Nieuwe Polis tonen");
             return new JsonPolis();
         }
     }

@@ -17,6 +17,7 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
@@ -24,6 +25,8 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
+    private final static Logger LOGGER = Logger.getLogger(PolisService.class);
+
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
@@ -70,6 +73,8 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
 
     @Override
     public JsonPolis mapNaarJson(Polis polis) {
+        LOGGER.debug("Mappen Polis " + polis);
+
         JsonPolis jsonPolis = new JsonPolis();
 
         jsonPolis.setId(polis.getId());
