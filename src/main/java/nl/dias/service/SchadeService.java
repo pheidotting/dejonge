@@ -64,6 +64,10 @@ public class SchadeService {
         schadeRepository.opslaanBijlage(bijlage);
     }
 
+    public void opslaan(Schade schade) {
+        schadeRepository.opslaan(schade);
+    }
+
     public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
 

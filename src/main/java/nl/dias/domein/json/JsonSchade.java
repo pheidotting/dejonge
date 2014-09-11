@@ -216,6 +216,8 @@ public class JsonSchade {
         builder.append(eigenRisico);
         builder.append(", omschrijving=");
         builder.append(omschrijving);
+        builder.append(", opmerkingen=");
+        builder.append(opmerkingen);
         builder.append("]");
         return builder.toString();
     }

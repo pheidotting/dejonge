@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-public class JsonOpmerking implements Serializable {
+public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private static final long serialVersionUID = -2035670222129537280L;
 
     private Long id;
     private String tijd;
     private String opmerking;
     private String medewerker;
+    private String schade;
 
     public Long getId() {
         return id;
@@ -42,6 +43,14 @@ public class JsonOpmerking implements Serializable {
 
     public void setMedewerker(String medewerker) {
         this.medewerker = medewerker;
+    }
+
+    public String getSchade() {
+        return schade;
+    }
+
+    public void setSchade(String schade) {
+        this.schade = schade;
     }
 
     @Override
@@ -77,5 +86,10 @@ public class JsonOpmerking implements Serializable {
         builder.append(opmerking);
         builder.append("]");
         return builder.toString();
+    }
+
+    @Override
+    public int compareTo(JsonOpmerking o) {
+        return tijd.compareTo(o.tijd) * -1;
     }
 }

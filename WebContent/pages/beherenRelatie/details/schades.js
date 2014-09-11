@@ -69,6 +69,19 @@ function Schade(data, log, relatieId){
     self.bewerkSchade = function(schade){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/schade/" + ko.utils.unwrapObservable(schade.id);
     };
+    
+    self.plaatsOpmerking = function(schade){
+    	document.location.hash = "#beherenRelatie/" + relatieId + "/opmerking/s" + ko.utils.unwrapObservable(schade.id);
+    };
+}
+
+function Opmerking(data){
+	var self = this;
+	
+	self.id = ko.observable(data.id);
+	self.opmerking = ko.observable(data.opmerking);
+	self.medewerker = ko.observable(data.medewerker);
+	self.tijd = ko.observable(data.tijd);
 }
 
 function Schades(data, log, relatieId){

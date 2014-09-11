@@ -1,11 +1,16 @@
 package nl.dias.web.mapper;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
+import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonSchade;
 
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -14,6 +19,8 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
+    private final static Logger LOGGER = Logger.getLogger(SchadeMapper.class);
+
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
@@ -55,7 +62,11 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         jsonSchade.setId(schade.getId());
         jsonSchade.setLocatie(schade.getLocatie());
         jsonSchade.setOmschrijving(schade.getOmschrijving());
-        jsonSchade.setOpmerkingen(opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen()));
+
+        List<JsonOpmerking> opmerkingen = opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen());
+        Collections.sort(opmerkingen);
+
+        jsonSchade.setOpmerkingen(opmerkingen);
         jsonSchade.setSchadeNummerMaatschappij(schade.getSchadeNummerMaatschappij());
         jsonSchade.setSchadeNummerTussenPersoon(schade.getSchadeNummerTussenPersoon());
         if (schade.getSoortSchade() != null) {
@@ -67,6 +78,8 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         if (schade.getPolis() != null && schade.getPolis().getId() != null) {
             jsonSchade.setPolis(schade.getPolis().getId().toString());
         }
+
+        LOGGER.debug(jsonSchade);
 
         return jsonSchade;
     }
