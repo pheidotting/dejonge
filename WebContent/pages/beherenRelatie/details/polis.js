@@ -27,6 +27,7 @@ function go(log, relatieId, actie, subId){
 				$('#soortVerzekeringAlles').prop('disabled', true);
 				log.debug("Ophalen Polis met id : " + subId);
 				$.get( "../dejonge/rest/medewerker/polis/lees", {"id" : subId}, function(data) {
+					log.debug(JSON.stringify(data));
 					var polis = new Polis(data, log, relatieId);
 					polis.bijlages.removeAll();
 					ko.applyBindings(polis);
