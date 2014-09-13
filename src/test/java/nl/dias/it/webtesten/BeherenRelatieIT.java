@@ -9,6 +9,7 @@ import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.domein.json.JsonBedrijf;
+import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.json.JsonRekeningNummer;
 import nl.dias.domein.json.JsonRelatie;
@@ -23,6 +24,7 @@ import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
 import nl.dias.web.pagina.InlogScherm;
 import nl.dias.web.pagina.LijstRelaties;
+import nl.dias.web.pagina.OpmerkingBewerken;
 import nl.dias.web.pagina.PaginaMetMenuBalk.MenuItem;
 import nl.dias.web.pagina.PolisBewerken;
 import nl.dias.web.pagina.PolisOverzicht;
@@ -163,7 +165,7 @@ public class BeherenRelatieIT {
 
             // beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
             PolisOverzicht polissen = PageFactory.initElements(driver, PolisOverzicht.class);
-            assertEquals("", polissen.controleerPolis(polis));
+            assertEquals("", polissen.controleerPolissen(polis));
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
@@ -213,8 +215,7 @@ public class BeherenRelatieIT {
             // assertEquals(2, polissen.zoekPolis(polis2));
             // assertEquals(-1, polissen.zoekPolis(polis3));
             polissen = PageFactory.initElements(driver, PolisOverzicht.class);
-            assertEquals("", polissen.controleerPolis(polis));
-            assertEquals("", polissen.controleerPolis(polis2));
+            assertEquals("", polissen.controleerPolissen(polis, polis2));
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
@@ -236,7 +237,7 @@ public class BeherenRelatieIT {
             //
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             SchadeOverzicht schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
-            schadeOverzicht.controleerSchade(schade);
+            schadeOverzicht.controleerSchades(schade);
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
@@ -246,8 +247,7 @@ public class BeherenRelatieIT {
 
             beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
             polissen = PageFactory.initElements(driver, PolisOverzicht.class);
-            assertEquals("", polissen.controleerPolis(polis));
-            assertEquals("", polissen.controleerPolis(polis2));
+            assertEquals("", polissen.controleerPolissen(polis, polis2));
 
             polissen.bewerkPolis(polissen.zoekPolis(polis));
 
@@ -263,8 +263,27 @@ public class BeherenRelatieIT {
             polisScherm.vulVeldenEnDrukOpOpslaan(polis);
 
             polissen = PageFactory.initElements(driver, PolisOverzicht.class);
-            assertEquals("", polissen.controleerPolis(polis));
-            assertEquals("", polissen.controleerPolis(polis2));
+            assertEquals("", polissen.controleerPolissen(polis, polis2));
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // O P M E R K I N G P L A A T S E N B I J S C H A D E
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.SCHADES, driver);
+            schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
+            Hulp.wachtFf();
+            schadeOverzicht.opmerkingBijSchade(schade);
+            Hulp.wachtFf(2000);
+
+            OpmerkingBewerken opmerkingBewerken = PageFactory.initElements(driver, OpmerkingBewerken.class);
+            JsonOpmerking jsonOpmerking = maakJsonOpmerking();
+            opmerkingBewerken.vulVeldenEnDrukOpOpslaan(jsonOpmerking);
+            checkOpgeslagenMelding(beherenRelatieScherm);
+
+            schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
+            schadeOverzicht.controleerSchades(schade);
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
@@ -300,6 +319,13 @@ public class BeherenRelatieIT {
 
     private void checkFoutmelding(BeherenRelatie beherenRelatieScherm, String verwacht) {
         assertEquals(verwacht, beherenRelatieScherm.leesFoutmelding());
+    }
+
+    private JsonOpmerking maakJsonOpmerking() {
+        JsonOpmerking opmerking = new JsonOpmerking();
+        opmerking.setOpmerking("abcdefghijklmnopqrstuvwxyz");
+
+        return opmerking;
     }
 
     private JsonSchade maakJsonSchade() {
@@ -356,8 +382,8 @@ public class BeherenRelatieIT {
         // "Inboedel", "Leven",
         // "Mobiele apparatuur", "Motor", "Ongevallen", "Pleziervaartuig",
         // "Recreatie", "Rechtsbijstand", "Reis", "Woonhuis", "Zorg"));
-        jsonPolis.setSoort((String) stringGeneratieUtil.kiesUitItems("Aansprakelijkheid", "Auto", "Brom-/Snorfiets", "Camper", "Reis", "Fiets", "Inboedel", "Motor", "Ongevallen", "Pleziervaartuig",
-                "Recreatie", "Rechtsbijstand", "Reis", "Woonhuis", "Zorg"));
+        jsonPolis.setSoort((String) stringGeneratieUtil.kiesUitItems("Aansprakelijkheid", "Auto", "Camper", "Reis", "Fiets", "Inboedel", "Motor", "Ongevallen", "Pleziervaartuig", "Recreatie",
+                "Rechtsbijstand", "Reis", "Woonhuis", "Zorg"));
         jsonPolis.setWijzigingsDatum(stringGeneratieUtil.genereerDatum().toString("dd-MM-yyyy"));
 
         jsonPolis.setTitel(jsonPolis.getSoort() + " (" + jsonPolis.getPolisNummer() + ")");
@@ -370,9 +396,9 @@ public class BeherenRelatieIT {
 
         jsonRelatie.setAchternaam(stringGeneratieUtil.genereerAchternaam());
         jsonRelatie.setBsn(stringGeneratieUtil.genereerBsn());
-        jsonRelatie.setIdentificatie(stringGeneratieUtil.genereerEmailAdres());
         jsonRelatie.setTussenvoegsel(stringGeneratieUtil.genereerTussenvoegsel());
         jsonRelatie.setVoornaam(stringGeneratieUtil.genereerVoornaam());
+        jsonRelatie.setIdentificatie(stringGeneratieUtil.genereerEmailAdres(jsonRelatie.getVoornaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getAchternaam()));
         LocalDate geboorteDatum = stringGeneratieUtil.genereerDatum();
         jsonRelatie.setGeboorteDatum(geboorteDatum.toString("dd-MM-yyyy"));
         jsonRelatie.setOverlijdensdatum((String) stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.kiesUitItems("", stringGeneratieUtil.genereerDatum(geboorteDatum).toString("dd-MM-yyyy"))));

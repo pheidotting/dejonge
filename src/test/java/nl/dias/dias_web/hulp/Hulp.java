@@ -12,7 +12,7 @@ public class Hulp {
     }
 
     public static void vulVeld(WebElement element, String waarde) {
-        if (waarde != null && !waarde.equals("")) {
+        if (waarde != null && !waarde.equals("") && !waarde.equals(element.getText()) && !waarde.equals(getText(element))) {
             do {
                 element.clear();
                 element.sendKeys(waarde);

@@ -97,4 +97,16 @@ public class PolisOverzicht {
         Hulp.klikEnWacht(titel.get(nummer));
         return sb.toString();
     }
+
+    public String controleerPolissen(JsonPolis... polissen) {
+        StringBuilder sb = new StringBuilder();
+        if (polissen.length != titel.size()) {
+            sb.append("aantal komt niet overeen");
+        }
+
+        for (JsonPolis p : polissen) {
+            sb.append(controleerPolis(p));
+        }
+        return sb.toString();
+    }
 }

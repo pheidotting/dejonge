@@ -108,13 +108,16 @@ public class StringGeneratieUtil {
         return kiesRandom(tussenvoegsels);
     }
 
-    public String genereerEmailAdres() {
+    public String genereerEmailAdres(String voornaam, String tussenvoegsel, String achternaam) {
         StringBuilder sb = new StringBuilder();
-        sb.append(genereerVoornaam().toLowerCase());
+        sb.append(voornaam);
         sb.append("@");
-        sb.append(genereerAchternaam().toLowerCase());
+        if ("".equals(tussenvoegsel)) {
+            sb.append(tussenvoegsel);
+        }
+        sb.append(achternaam);
         sb.append(".nl");
-        return sb.toString();
+        return sb.toString().toLowerCase();
     }
 
     public String genereerBsn() {

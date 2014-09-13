@@ -11,6 +11,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class SchadeOverzicht {
+    @FindBy(name = "dropdown")
+    private List<WebElement> dropdown;
+    @FindBy(name = "plaatsOpmerking")
+    private List<WebElement> plaatsOpmerking;
     @FindBy(name = "titel")
     private List<WebElement> titel;
     @FindBy(name = "schadeNummerMaatschappij")
@@ -31,6 +35,8 @@ public class SchadeOverzicht {
     private List<WebElement> eigenRisico;
     @FindBy(name = "omschrijving")
     private List<WebElement> omschrijving;
+    @FindBy(name = "opmerking")
+    private List<WebElement> opmerking;
 
     public int zoekSchade(JsonSchade jsonSchade) {
         int gevonden = 0;
@@ -45,6 +51,8 @@ public class SchadeOverzicht {
         }
         if (!werdGevonden) {
             gevonden = -1;
+        } else {
+            --gevonden;
         }
         return gevonden;
     }
@@ -55,7 +63,6 @@ public class SchadeOverzicht {
         if (nummer == -1) {
             return jsonSchade.getSoortSchade() + " (" + jsonSchade.getSchadeNummerMaatschappij() + ")" + " niet gevonden";
         }
-        --nummer;
         Hulp.klikEnWacht(titel.get(nummer));
         if (!Hulp.controleerVeld(this.schadeNummerMaatschappij.get(nummer), (jsonSchade.getSchadeNummerMaatschappij()))) {
             sb.append("|").append(Hulp.getText(this.schadeNummerMaatschappij.get(nummer))).append(",").append((jsonSchade.getSchadeNummerMaatschappij())).append(";")
@@ -87,6 +94,32 @@ public class SchadeOverzicht {
             sb.append("|").append(Hulp.getText(this.omschrijving.get(nummer))).append(",").append((jsonSchade.getOmschrijving())).append(";").append("omschrijving");
         }
         Hulp.klikEnWacht(titel.get(nummer));
+        return sb.toString();
+    }
+
+    public void opmerkingBijSchade(JsonSchade jsonSchade) {
+        int nummer = zoekSchade(jsonSchade);
+        Hulp.klikEnWacht(dropdown.get(nummer));
+        Hulp.klikEnWacht(plaatsOpmerking.get(nummer));
+    }
+
+    public String controleerSchades(JsonSchade... schades) {
+        StringBuilder sb = new StringBuilder();
+        int aantalOpmerkingen = 0;
+
+        if (schades.length != titel.size()) {
+            sb.append("aantal komt niet overeen");
+        }
+
+        for (JsonSchade s : schades) {
+            sb.append(controleerSchade(s));
+            aantalOpmerkingen = aantalOpmerkingen + s.getOpmerkingen().size();
+        }
+
+        if (aantalOpmerkingen != opmerking.size()) {
+            sb.append("aantal opmerkingen komt niet overeen, verwacht : " + aantalOpmerkingen + ", maar was : " + opmerking.size());
+        }
+
         return sb.toString();
     }
 }
