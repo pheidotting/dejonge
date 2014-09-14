@@ -88,16 +88,16 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
 
         jsonPolis.setId(polis.getId());
         jsonPolis.setPolisNummer(polis.getPolisNummer());
-        if (jsonPolis.getIngangsDatum() != null) {
-            jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
-        }
         if (polis.getPremie() != null) {
             jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
         }
-        if (jsonPolis.getWijzigingsDatum() != null) {
+        if (polis.getIngangsDatum() != null && !"".equals(polis.getIngangsDatum())) {
+            jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
+        }
+        if (polis.getWijzigingsDatum() != null && !"".equals(polis.getWijzigingsDatum())) {
             jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
         }
-        if (jsonPolis.getProlongatieDatum() != null) {
+        if (polis.getProlongatieDatum() != null && !"".equals(polis.getProlongatieDatum())) {
             jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toString("yyyy-MM-dd"));
         }
         if (polis.getBetaalfrequentie() != null) {
