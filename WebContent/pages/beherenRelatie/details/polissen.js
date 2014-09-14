@@ -71,10 +71,6 @@ function Polis(data, log, relatieId){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/polis/" + ko.utils.unwrapObservable(polis.id);
     };
 
-    self.toevoegenBijlage = function(){
-    	self.bijlages.push(new Bijlage(''));
-    };
-
     self.opslaan = function(polis){
     	verbergMeldingen();
 		$.ajax({
@@ -83,14 +79,12 @@ function Polis(data, log, relatieId){
 			contentType: "application/json",
             data: ko.toJSON(polis),
             success: function() {
-            	if(polis.bijlages().length > 0){
-	            	$('progress').show();
-					var formData = new FormData($('form')[0]);
-					uploadBestand(formData, '../dejonge/rest/medewerker/polis/upload');
-            	}else{
-	            	plaatsMelding("De gegevens zijn opgeslagen");
-	            	document.location.hash = "#beherenRelatie/" + relatieId + "/polissen";
-            	}
+    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
+    				var formData = new FormData($('#polisForm')[0]);
+    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadPolis' + int + 'File');
+    			}
+            	plaatsMelding("De gegevens zijn opgeslagen");
+            	document.location.hash = "#beherenRelatie/" + relatieId + "/polissen";
         	},
 			error: function (data) {
 				plaatsFoutmelding(data);

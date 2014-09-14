@@ -1,8 +1,10 @@
 function go(log, relatieId, actie, subId){
-	$.get( "../dejonge/rest/medewerker/schade/lijst", {"relatieId" : relatieId}, function(data) {
-		log.debug("Gegevens opgehaald, applyBindings");
-       	ko.applyBindings(new Schades(data, log, relatieId));
-    });
+	$.getScript("pages/beherenRelatie/details/bijlages.js", function() {
+		$.get( "../dejonge/rest/medewerker/schade/lijst", {"relatieId" : relatieId}, function(data) {
+			log.debug("Gegevens opgehaald, applyBindings");
+	       	ko.applyBindings(new Schades(data, log, relatieId));
+		});
+	});
 }
 
 function Schade(data, log, relatieId){

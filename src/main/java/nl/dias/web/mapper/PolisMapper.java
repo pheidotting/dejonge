@@ -44,9 +44,18 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
     public Polis mapVanJson(JsonPolis jsonPolis) {
         String patternDatum = "dd-MM-yyyy";
 
-        LocalDate ingangsDatum = LocalDate.parse(jsonPolis.getIngangsDatum(), DateTimeFormat.forPattern(patternDatum));
-        LocalDate wijzigingsDatum = LocalDate.parse(jsonPolis.getWijzigingsDatum(), DateTimeFormat.forPattern(patternDatum));
-        LocalDate prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
+        LocalDate ingangsDatum = null;
+        if (!"".equals(jsonPolis.getIngangsDatum())) {
+            ingangsDatum = LocalDate.parse(jsonPolis.getIngangsDatum(), DateTimeFormat.forPattern(patternDatum));
+        }
+        LocalDate wijzigingsDatum = null;
+        if (!"".equals(jsonPolis.getWijzigingsDatum())) {
+            wijzigingsDatum = LocalDate.parse(jsonPolis.getWijzigingsDatum(), DateTimeFormat.forPattern(patternDatum));
+        }
+        LocalDate prolongatieDatum = null;
+        if (!"".equals(jsonPolis.getProlongatieDatum())) {
+            prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
+        }
 
         Polis polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
 
@@ -79,15 +88,22 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
 
         jsonPolis.setId(polis.getId());
         jsonPolis.setPolisNummer(polis.getPolisNummer());
-        jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
+        if (jsonPolis.getIngangsDatum() != null) {
+            jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
+        }
         if (polis.getPremie() != null) {
             jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
         }
-        jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
-        jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toString("yyyy-MM-dd"));
+        if (jsonPolis.getWijzigingsDatum() != null) {
+            jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
+        }
+        if (jsonPolis.getProlongatieDatum() != null) {
+            jsonPolis.setProlongatieDatum(polis.getProlongatieDatum().toString("yyyy-MM-dd"));
+        }
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
+        LOGGER.debug(polis.getBijlages());
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());

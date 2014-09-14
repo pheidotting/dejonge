@@ -121,11 +121,18 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public LocalDate getIngangsDatum() {
+        if (ingangsDatum == null) {
+            return null;
+        }
         return new LocalDate(ingangsDatum);
     }
 
     public void setIngangsDatum(LocalDate ingangsDatum) {
-        this.ingangsDatum = ingangsDatum.toDateMidnight().toDate();
+        if (ingangsDatum == null) {
+            this.ingangsDatum = null;
+        } else {
+            this.ingangsDatum = ingangsDatum.toDateMidnight().toDate();
+        }
     }
 
     public String getIngangsDatumString() {
@@ -183,19 +190,33 @@ public abstract class Polis implements PersistenceObject, Serializable {
     }
 
     public LocalDate getWijzigingsDatum() {
+        if (wijzigingsDatum == null) {
+            return null;
+        }
         return new LocalDate(wijzigingsDatum);
     }
 
     public void setWijzigingsDatum(LocalDate wijzigingsDatum) {
-        this.wijzigingsDatum = wijzigingsDatum.toDateMidnight().toDate();
+        if (wijzigingsDatum == null) {
+            this.wijzigingsDatum = null;
+        } else {
+            this.wijzigingsDatum = wijzigingsDatum.toDateMidnight().toDate();
+        }
     }
 
     public LocalDate getProlongatieDatum() {
+        if (prolongatieDatum == null) {
+            return null;
+        }
         return new LocalDate(prolongatieDatum);
     }
 
     public void setProlongatieDatum(LocalDate prolongatieDatum) {
-        this.prolongatieDatum = prolongatieDatum.toDateMidnight().toDate();
+        if (prolongatieDatum == null) {
+            this.prolongatieDatum = null;
+        } else {
+            this.prolongatieDatum = prolongatieDatum.toDateMidnight().toDate();
+        }
     }
 
     public Betaalfrequentie getBetaalfrequentie() {

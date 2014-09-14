@@ -9,7 +9,6 @@ function go(log, relatieId, actie, subId){
 		});
 
 		$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
-			log.debug("data lengte : " + data.length);
 			if(data.length > 0){
 				$.getScript("pages/beherenRelatie/details/bedrijven.js", function(dataX, textStatus, jqxhr) {
 					var $select = $('#bedrijfBijPolis');

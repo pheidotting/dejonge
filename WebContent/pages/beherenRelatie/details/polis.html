@@ -41,7 +41,7 @@
 	<option value="Woonhuis">Woonhuis</option>
 	<option value="Zorg">Zorg</option>
 </select>
-<form enctype="multipart/form-data">
+<form enctype="multipart/form-data" id="polisForm">
 	<input type="hidden" id="polisId" />
 	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" data-bind="value: polisNummer" />
 	<input class="form-control" type="text" id="premie" placeholder="Premie..."  data-bind="value: premie" />
@@ -58,7 +58,63 @@
 		</select>
 	</div>
 	<select id="bedrijfBijPolis"></select>
-	<input type="file" id="file" name="file" data-bind="click: toevoegenBijlage" />
+	<div class="form-group" id="uploadPolis1">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis1File" name="uploadPolis1File" onchange="nieuwePolisUpload(1);" />
+		<progress id="filePolis1Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis2" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis2File" name="uploadPolis2File" onchange="nieuwePolisUpload(2);" />
+		<progress id="filePolis2Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis3" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis3File" name="uploadPolis3File" onchange="nieuwePolisUpload(3);" />
+		<progress id="filePolis3Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis4" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis4File" name="uploadPolis4File" onchange="nieuwePolisUpload(4);" />
+		<progress id="filePolis4Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis5" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis5File" name="uploadPolis5File" onchange="nieuwePolisUpload(5);" />
+		<progress id="filePolis5Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis6" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis6File" name="uploadPolis6File" onchange="nieuwePolisUpload(6);" />
+		<progress id="filePolis6Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis7" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis7File" name="uploadPolis7File" onchange="nieuwePolisUpload(7);" />
+		<progress id="filePolis7Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis8" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis8File" name="uploadPolis8File" onchange="nieuwePolisUpload(8);" />
+		<progress id="filePolis8Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis9" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis9File" name="uploadPolis9File" onchange="nieuwePolisUpload(9);" />
+		<progress id="filePolis9Progress" style="display:none;"></progress>
+	</div>
+	<div class="form-group" id="uploadPolis10" style="display:none;">
+		<label for="file">&nbsp;</label>
+		<input type="file" id="uploadPolis10File" name="uploadPolis10File" onchange="nieuwePolisUpload(10);" />
+		<progress id="filePolis10Progress" style="display:none;"></progress>
+	</div>
+	<input type="hidden" id="hoeveelFiles" />
+	<script>
+		function nieuwePolisUpload(nummer){
+			$('#hoeveelFiles').val(nummer);
+			$('#uploadPolis' + ++nummer).show();
+		}
+	</script>
 </form>
 <button id="opslaanPolis" class=" btn btn-primary" data-bind="click: opslaan">Opslaan</button>
 <progress style="display:none;"></progress>

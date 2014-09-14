@@ -98,10 +98,110 @@ public class BijlageController {
     }
 
     @POST
-    @Path("/upload")
+    @Path("/uploadPolis1File")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
+    public Response uploadPolis1File(@FormDataParam("uploadPolis1File") InputStream uploadedInputStream, @FormDataParam("uploadPolis1File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
 
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis2File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis2File(@FormDataParam("uploadPolis2File") InputStream uploadedInputStream, @FormDataParam("uploadPolis2File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis3File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis3File(@FormDataParam("uploadPolis3File") InputStream uploadedInputStream, @FormDataParam("uploadPolis3File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis4File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis4File(@FormDataParam("uploadPolis4File") InputStream uploadedInputStream, @FormDataParam("uploadPolis4File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis5File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis5File(@FormDataParam("uploadPolis5File") InputStream uploadedInputStream, @FormDataParam("uploadPolis5File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis6File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis6File(@FormDataParam("uploadPolis6File") InputStream uploadedInputStream, @FormDataParam("uploadPolis6File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis7File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis7File(@FormDataParam("uploadPolis7File") InputStream uploadedInputStream, @FormDataParam("uploadPolis7File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis8File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis8File(@FormDataParam("uploadPolis8File") InputStream uploadedInputStream, @FormDataParam("uploadPolis8File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis9File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis9File(@FormDataParam("uploadPolis9File") InputStream uploadedInputStream, @FormDataParam("uploadPolis9File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
+        uploaden(uploadedInputStream, fileDetail, polisNummer, null);
+
+        return Response.status(200).entity("").build();
+    }
+
+    @POST
+    @Path("/uploadPolis10File")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPolis10File(@FormDataParam("uploadPolis10File") InputStream uploadedInputStream, @FormDataParam("uploadPolis10File") FormDataContentDisposition fileDetail,
+            @FormDataParam("polisNummer") String polisNummer) {
+        LOGGER.debug("uploaden bestand 1");
         uploaden(uploadedInputStream, fileDetail, polisNummer, null);
 
         return Response.status(200).entity("").build();
