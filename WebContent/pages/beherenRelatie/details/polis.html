@@ -1,63 +1,87 @@
-<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen" data-bind="value: maatschappij"></select>
-<select id="soortVerzekering" name="soortVerzekering" data-bind="value: soort">
-	<option value="">Kies een soort verzekering...</option>
-	<option value="Aansprakelijkheid">Aansprakelijkheid</option>
-	<option value="Auto">Auto</option>
-	<option value="Brom-/Snorfiets">Brom-/Snorfiets</option>
-	<option value="Camper">Camper</option>
-	<option value="Annulerings">Annulerings</option>
-	<option value="Reis">Reis</option>
-	<option value="Fiets">Fiets</option>
-	<option value="Inboedel">Inboedel</option>
-	<option value="Leven">Leven</option>
-	<option value="Mobiele apparatuur">Mobiele apparatuur</option>
-	<option value="Motor">Motor</option>
-	<option value="Ongevallen">Ongevallen</option>
-	<option value="Pleziervaartuig">Pleziervaartuig</option>
-	<option value="Recreatie">Recreatie</option>
-	<option value="Rechtsbijstand">Rechtsbijstand</option>
-	<option value="Reis">Reis</option>
-	<option value="Woonhuis">Woonhuis</option>
-	<option value="Zorg">Zorg</option>
-</select>
-<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;" data-bind="value: soort">
-	<option value="">Kies een soort verzekering...</option>
-	<option value="Aansprakelijkheid">Aansprakelijkheid</option>
-	<option value="Auto">Auto</option>
-	<option value="Brom-/Snorfiets">Brom-/Snorfiets</option>
-	<option value="Camper">Camper</option>
-	<option value="Annulerings">Annulerings</option>
-	<option value="Reis">Reis</option>
-	<option value="Fiets">Fiets</option>
-	<option value="Inboedel">Inboedel</option>
-	<option value="Leven">Leven</option>
-	<option value="Mobiele apparatuur">Mobiele apparatuur</option>
-	<option value="Motor">Motor</option>
-	<option value="Ongevallen">Ongevallen</option>
-	<option value="Pleziervaartuig">Pleziervaartuig</option>
-	<option value="Recreatie">Recreatie</option>
-	<option value="Rechtsbijstand">Rechtsbijstand</option>
-	<option value="Reis">Reis</option>
-	<option value="Woonhuis">Woonhuis</option>
-	<option value="Zorg">Zorg</option>
-</select>
+<div class="form-group">
+	<label for="naam">Maatschappij en Soort</label>
+	<select id="verzekeringsMaatschappijen" name="verzekeringsMaatschappijen" data-bind="value: maatschappij"></select>
+	<select id="soortVerzekering" name="soortVerzekering" data-bind="value: soort">
+		<option value="">Kies een soort verzekering...</option>
+		<option value="Aansprakelijkheid">Aansprakelijkheid</option>
+		<option value="Auto">Auto</option>
+		<option value="Brom-/Snorfiets">Brom-/Snorfiets</option>
+		<option value="Camper">Camper</option>
+		<option value="Annulerings">Annulerings</option>
+		<option value="Reis">Reis</option>
+		<option value="Fiets">Fiets</option>
+		<option value="Inboedel">Inboedel</option>
+		<option value="Leven">Leven</option>
+		<option value="Mobiele apparatuur">Mobiele apparatuur</option>
+		<option value="Motor">Motor</option>
+		<option value="Ongevallen">Ongevallen</option>
+		<option value="Pleziervaartuig">Pleziervaartuig</option>
+		<option value="Recreatie">Recreatie</option>
+		<option value="Rechtsbijstand">Rechtsbijstand</option>
+		<option value="Reis">Reis</option>
+		<option value="Woonhuis">Woonhuis</option>
+		<option value="Zorg">Zorg</option>
+	</select>
+	<select id="soortVerzekeringAlles" name="soortVerzekeringAlles" style="display:none;" data-bind="value: soort">
+		<option value="">Kies een soort verzekering...</option>
+		<option value="Aansprakelijkheid">Aansprakelijkheid</option>
+		<option value="Auto">Auto</option>
+		<option value="Brom-/Snorfiets">Brom-/Snorfiets</option>
+		<option value="Camper">Camper</option>
+		<option value="Annulerings">Annulerings</option>
+		<option value="Reis">Reis</option>
+		<option value="Fiets">Fiets</option>
+		<option value="Inboedel">Inboedel</option>
+		<option value="Leven">Leven</option>
+		<option value="Mobiele apparatuur">Mobiele apparatuur</option>
+		<option value="Motor">Motor</option>
+		<option value="Ongevallen">Ongevallen</option>
+		<option value="Pleziervaartuig">Pleziervaartuig</option>
+		<option value="Recreatie">Recreatie</option>
+		<option value="Rechtsbijstand">Rechtsbijstand</option>
+		<option value="Reis">Reis</option>
+		<option value="Woonhuis">Woonhuis</option>
+		<option value="Zorg">Zorg</option>
+	</select>
+</div>
 <form enctype="multipart/form-data" id="polisForm">
 	<input type="hidden" id="polisId" />
-	<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" data-bind="value: polisNummer" />
-	<input class="form-control" type="text" id="premie" placeholder="Premie..."  data-bind="value: premie" />
-	<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." data-bind="value: ingangsDatum" />
-	<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." data-bind="value: wijzigingsDatum"/>
-	<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." data-bind="value: prolongatieDatum" />
-	<div id="div_betaalfrequentie">
-		<select id="betaalfrequentie" data-bind="value: betaalfrequentie">
-			<option value="">Betaalfrequentie...</option>
-			<option value="Maand">Maand</option>
-			<option value="Kwartaal">Kwartaal</option>
-			<option value="Half jaar">Half jaar</option>
-			<option value="Jaar">Jaar</option>
-		</select>
+	<div class="form-group">
+		<label for="naam">Polisnummer</label>
+		<input class="form-control" type="text" id="polisNummer" name="polisNummer" placeholder="Polisnummer..." maxlength="25" data-bind="value: polisNummer" />
 	</div>
-	<select id="bedrijfBijPolis"></select>
+	<div class="form-group">
+		<label for="naam">Premie</label>
+		<input class="form-control" type="text" id="premie" placeholder="Premie..."  data-bind="value: premie" />
+	</div>
+	<div class="form-group">
+		<label for="naam">Ingangsdatum</label>
+		<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." data-bind="value: ingangsDatum" />
+	</div>
+	<div class="form-group">
+		<label for="naam">Wijzigingsdatum</label>
+		<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." data-bind="value: wijzigingsDatum"/>
+	</div>
+	<div class="form-group">
+		<label for="naam">Prolongatiedatum</label>
+		<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." data-bind="value: prolongatieDatum" />
+	</div>
+	<div class="form-group">
+		<label for="naam">Betaalfrequente</label>
+		<div id="div_betaalfrequentie">
+			<select id="betaalfrequentie" data-bind="value: betaalfrequentie">
+				<option value="">Betaalfrequentie...</option>
+				<option value="Maand">Maand</option>
+				<option value="Kwartaal">Kwartaal</option>
+				<option value="Half jaar">Half jaar</option>
+				<option value="Jaar">Jaar</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="naam">Bedrijf (evt.)</label>
+		<select id="bedrijfBijPolis"></select>
+	</div>
 	<div class="form-group" id="uploadPolis1">
 		<label for="file">&nbsp;</label>
 		<input type="file" id="uploadPolis1File" name="uploadPolis1File" onchange="nieuwePolisUpload(1);" />
@@ -116,5 +140,7 @@
 		}
 	</script>
 </form>
-<button id="opslaanPolis" class=" btn btn-primary" data-bind="click: opslaan">Opslaan</button>
-<progress style="display:none;"></progress>
+<div class="form-group">
+	<label for="opslaanPolis">&nbsp;</label>
+	<button id="opslaanPolis" class=" btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+</div>
