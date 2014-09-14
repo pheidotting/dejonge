@@ -15,6 +15,8 @@ public class SchadeOverzicht {
     private List<WebElement> dropdown;
     @FindBy(name = "plaatsOpmerking")
     private List<WebElement> plaatsOpmerking;
+    @FindBy(name = "bewerkSchade")
+    private List<WebElement> bewerkSchade;
     @FindBy(name = "titel")
     private List<WebElement> titel;
     @FindBy(name = "schadeNummerMaatschappij")
@@ -101,6 +103,12 @@ public class SchadeOverzicht {
         int nummer = zoekSchade(jsonSchade);
         Hulp.klikEnWacht(dropdown.get(nummer));
         Hulp.klikEnWacht(plaatsOpmerking.get(nummer));
+    }
+
+    public void bewerkSchade(JsonSchade jsonSchade) {
+        int nummer = zoekSchade(jsonSchade);
+        Hulp.klikEnWacht(dropdown.get(nummer));
+        Hulp.klikEnWacht(bewerkSchade.get(nummer));
     }
 
     public String controleerSchades(JsonSchade... schades) {

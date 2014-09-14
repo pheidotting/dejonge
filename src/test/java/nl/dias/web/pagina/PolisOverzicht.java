@@ -71,14 +71,20 @@ public class PolisOverzicht {
         if (!Hulp.controleerVeld(this.polisnummer.get(nummer), (jsonPolis.getPolisNummer()))) {
             sb.append("|").append(Hulp.getText(this.polisnummer.get(nummer))).append(",").append((jsonPolis.getPolisNummer())).append(";").append("polisnummer");
         }
-        if (!Hulp.controleerVeld(this.ingangsdatum.get(nummer), (jsonPolis.getIngangsDatum()))) {
-            sb.append("|").append(Hulp.getText(this.ingangsdatum.get(nummer))).append(",").append((jsonPolis.getIngangsDatum())).append(";").append("ingangsdatum");
+        if (!"".equals(jsonPolis.getIngangsDatum())) {
+            if (!Hulp.controleerVeld(this.ingangsdatum.get(nummer), (jsonPolis.getIngangsDatum()))) {
+                sb.append("|").append(Hulp.getText(this.ingangsdatum.get(nummer))).append(",").append((jsonPolis.getIngangsDatum())).append(";").append("ingangsdatum");
+            }
         }
-        if (!Hulp.controleerVeld(this.wijzigingsdatum.get(nummer), (jsonPolis.getWijzigingsDatum()))) {
-            sb.append("|").append(Hulp.getText(this.wijzigingsdatum.get(nummer))).append(",").append((jsonPolis.getWijzigingsDatum())).append(";").append("wijzigingsdatum");
+        if (!"".equals(jsonPolis.getWijzigingsDatum())) {
+            if (!Hulp.controleerVeld(this.wijzigingsdatum.get(nummer), (jsonPolis.getWijzigingsDatum()))) {
+                sb.append("|").append(Hulp.getText(this.wijzigingsdatum.get(nummer))).append(",").append((jsonPolis.getWijzigingsDatum())).append(";").append("wijzigingsdatum");
+            }
         }
-        if (!Hulp.controleerVeld(this.prolongatieDatum.get(nummer), (jsonPolis.getProlongatieDatum()))) {
-            sb.append("|").append(Hulp.getText(this.prolongatieDatum.get(nummer))).append(",").append((jsonPolis.getProlongatieDatum())).append(";").append("prolongatieDatum");
+        if ("".equals(jsonPolis.getProlongatieDatum())) {
+            if (!Hulp.controleerVeld(this.prolongatieDatum.get(nummer), (jsonPolis.getProlongatieDatum()))) {
+                sb.append("|").append(Hulp.getText(this.prolongatieDatum.get(nummer))).append(",").append((jsonPolis.getProlongatieDatum())).append(";").append("prolongatieDatum");
+            }
         }
         if (!Hulp.controleerVeld(this.maatschappij.get(nummer), (jsonPolis.getMaatschappij()))) {
             sb.append("|").append(Hulp.getText(this.maatschappij.get(nummer))).append(",").append((jsonPolis.getMaatschappij())).append(";").append("maatschappij");

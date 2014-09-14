@@ -151,6 +151,7 @@ public class BeherenRelatieIT {
             assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
 
             beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS, driver);
+            Hulp.wachtFf();
 
             JsonPolis polis = maakJsonPolis(null);
 
@@ -204,16 +205,6 @@ public class BeherenRelatieIT {
             JsonPolis polis2 = maakJsonPolis(jsonBedrijf.getNaam());
             polisScherm.vulVeldenEnDrukOpOpslaan(polis2);
 
-            // JsonPolis polis = new JsonPolis();
-            // polis.setTitel("Annulerings (511973)");
-            // JsonPolis polis2 = new JsonPolis();
-            // polis2.setTitel("Fiets (65050)");
-            // JsonPolis polis3 = new JsonPolis();
-            // polis3.setTitel("Fiets (650501)");
-            //
-            // assertEquals(1, polissen.zoekPolis(polis));
-            // assertEquals(2, polissen.zoekPolis(polis2));
-            // assertEquals(-1, polissen.zoekPolis(polis3));
             polissen = PageFactory.initElements(driver, PolisOverzicht.class);
             assertEquals("", polissen.controleerPolissen(polis, polis2));
 
@@ -284,6 +275,50 @@ public class BeherenRelatieIT {
 
             schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
             schadeOverzicht.controleerSchades(schade);
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // S C H A D E W I J Z I G E N
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            String nieuweStatus = null;
+            do {
+                nieuweStatus = (String) stringGeneratieUtil.kiesUitItems("In behandeling maatschappij", "Afgehandeld maatschappij", "In behandeling tussenpersoon", "Afgehandeld tussenpersoon");
+            } while (nieuweStatus.equals(schade.getStatusSchade()));
+            schade.setStatusSchade(nieuweStatus);
+            schadeOverzicht.bewerkSchade(schade);
+
+            schadeScherm = PageFactory.initElements(driver, SchadeBewerken.class);
+            schadeScherm.vulVeldenEnDrukOpOpslaan(schade);
+            checkOpgeslagenMelding(beherenRelatieScherm);
+
+            schadeOverzicht = PageFactory.initElements(driver, SchadeOverzicht.class);
+            schadeOverzicht.controleerSchades(schade);
+
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            //
+            // R E L A T I E W I J Z I G E N
+            //
+            // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+            String nieuweStraat = null;
+            do {
+                nieuweStraat = stringGeneratieUtil.genereerStraatnaam();
+            } while (nieuweStraat.equals(jsonRelatie.getStraat()));
+            jsonRelatie.setStraat(nieuweStraat);
+            jsonRelatie.setAdresOpgemaakt(null);
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE, driver);
+            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, nieuweStraat, null, null, null, null, null, null, null, null, null, null, null, null);
+            checkOpgeslagenMelding(beherenRelatieScherm);
+
+            // Opgeslagen Relatie weer aanklikken op overzichtsscherm
+            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelatie));
+
+            Hulp.wachtFf(2000);
+
+            // Checken of velden correct worden weergegeven (en dus of ze
+            // correct zijn opgeslagen)
+            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
+            beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
