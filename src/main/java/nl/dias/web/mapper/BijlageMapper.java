@@ -25,15 +25,26 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
     }
 
     @Override
-    public JsonBijlage mapNaarJson(Bijlage object) {
-        ArchiefBestand archiefBestand = archiefService.ophalen(object.getS3Identificatie(), true);
+    public JsonBijlage mapNaarJson(Bijlage bijlage) {
+        ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), true);
 
         JsonBijlage json = new JsonBijlage();
-        json.setId(object.getId().toString());
-        json.setSoortBijlage(object.getSoortBijlage().getOmschrijving());
+        json.setId(bijlage.getId().toString());
+        json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
         if (archiefBestand != null) {
             json.setBestandsNaam(archiefBestand.getBestandsnaam());
         }
+
+        String parentId = null;
+        switch (bijlage.getSoortBijlage()) {
+        case POLIS:
+            parentId = bijlage.getPolis().getPolisNummer();
+            break;
+        case SCHADE:
+            parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
+            break;
+        }
+        json.setParentId(parentId);
 
         return json;
     }

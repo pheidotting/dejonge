@@ -14,6 +14,10 @@ function Bijlage(data){
 	}, this);
 	self.bestandsNaam = ko.observable(data.bestandsNaam);
 	self.soortBijlage = ko.observable(data.soortBijlage);
+	self.parentId = ko.observable(data.parentId);
+	self.tonen = ko.computed(function() {
+		return ko.utils.unwrapObservable(self.soortBijlage) + " (" + ko.utils.unwrapObservable(self.parentId) + ")";
+	},this);
 }
 
 function Bijlages(data, log){
