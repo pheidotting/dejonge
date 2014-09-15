@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
@@ -203,6 +204,9 @@ public class PolisServiceTest extends EasyMockSupport {
         opslaanPolis.setBetaalfrequentie("jaar");
         opslaanPolis.setPremie("12");
 
+        Bedrijf bedrijf = createMock(Bedrijf.class);
+        opslaanPolis.setBedrijf("46");
+
         Kantoor kantoor = new Kantoor();
         expect(kantoorRepository.lees(1L)).andReturn(kantoor);
 
@@ -223,6 +227,9 @@ public class PolisServiceTest extends EasyMockSupport {
         polis.setWijzigingsDatum(new LocalDate(2014, 4, 3));
         polis.setBetaalfrequentie(Betaalfrequentie.J);
         polis.setPremie(new Bedrag("12"));
+
+        expect(bedrijfService.lees(46L)).andReturn(bedrijf);
+        expect(bedrijf.getPolissen()).andReturn(new HashSet<Polis>());
 
         polisRepository.opslaan(polis);
         expectLastCall();
