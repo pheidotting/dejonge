@@ -57,6 +57,15 @@ public class BijlageController {
     private BijlageMapper bijlageMapper;
 
     @GET
+    @Path("/verwijder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verwijder(@QueryParam("bijlageId") String bijlageId) {
+        bijlageService.verwijderBijlage(Long.valueOf(bijlageId));
+        return Response.ok().build();
+    }
+
+    @GET
     @Path("/lijst")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonBijlage> lijst(@QueryParam("relatieId") String relatieId) {

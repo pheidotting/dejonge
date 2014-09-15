@@ -128,16 +128,6 @@ function TelefoonNummer(data){
 	_this.soort = ko.observable(data.soort);
 }
 
-function Bijlage(data){
-	var _this = this;
-
-	_this.url = ko.computed(function() {
-		return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
-	}, this);
-	_this.bestandsNaam = ko.observable(data.bestandsNaam);
-	_this.soortBijlage = ko.observable(data.soortBijlage);
-}
-
 function go(log, relatieId, actie, subId){
 	log.debug("Ophalen gegevens Relatie met id " + relatieId);
 

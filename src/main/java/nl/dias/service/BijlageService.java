@@ -32,6 +32,14 @@ public class BijlageService {
         return bijlageRepository.alleBijlagesBijRelatie(relatie);
     }
 
+    public void verwijderBijlage(Long id) {
+        Bijlage bijlage = bijlageRepository.lees(id);
+
+        archiefService.setBucketName("dias");
+        archiefService.verwijderen(bijlage.getS3Identificatie());
+        bijlageRepository.verwijder(bijlage);
+    }
+
     public String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
         String[] exp = fileDetail.getFileName().split("//.");
         String extensie = exp[exp.length - 1];
