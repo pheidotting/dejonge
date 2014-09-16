@@ -79,3 +79,9 @@ input[type="checkbox"] {
     color: #555;
     cursor: default;
 }
+
+.validationMessage{
+	color:#FF0000;
+	font-weight:bold;
+	padding-left:200px;
+}

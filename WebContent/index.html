@@ -123,12 +123,15 @@
 			$('#alertDanger').show();
 			$('#alertDanger').html("Er is een fout opgetreden : " + foutmelding.foutmelding);
  		}
+		var refreshIntervalId;
  		plaatsMelding = function(melding){
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').show();
 			$('#alertSucces').html(melding);
- 		}
+			refreshIntervalId = setInterval(verbergMeldingen, 10000);
+		}
  		verbergMeldingen = function(){
+			clearInterval(refreshIntervalId); 		
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').hide();
 			$('#alertDanger').hide();
