@@ -2,6 +2,7 @@ function go(log, relatieId, actie, subId){
 	$.getScript("pages/beherenRelatie/details/bijlages.js", function() {
 		$.get( "../dejonge/rest/medewerker/polis/lijst", {"relatieId" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
+			ko.validation.registerExtenders();
 	       	ko.applyBindings(new Polissen(data, log, relatieId));
 	    });
 	});
@@ -71,10 +72,6 @@ function Polis(data, log, relatieId){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/polis/" + ko.utils.unwrapObservable(polis.id);
     };
 
-    self.isValid = function(){
-    	return self.polisNummer.isValid() && self.ingangsDatum.isValid();
-    }
-    
     self.opslaan = function(polis){
     	var result = ko.validation.group(polis, {deep: true});
     	if(!polis.isValid()){
