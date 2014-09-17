@@ -31,6 +31,7 @@ public class JsonRelatie {
     private String burgerlijkeStaat;
     private List<Long> onderlingeRelaties;
     private boolean zakelijkeKlant;
+    private List<String> errors;
 
     public String getGeboorteDatum() {
         return geboorteDatum;
@@ -245,6 +246,14 @@ public class JsonRelatie {
 
     public void setZakelijkeKlant(boolean zakelijkeKlant) {
         this.zakelijkeKlant = zakelijkeKlant;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     @Override

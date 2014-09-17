@@ -1,12 +1,12 @@
 function Relatie(data, log) {
 	var _this = this;
-	_this.identificatie = ko.observable(data.identificatie);
+	_this.identificatie = ko.observable(data.identificatie).extend({required: true, email: true});
 	_this.id = ko.observable(data.id);
-	_this.voornaam = ko.observable(data.voornaam);
-	_this.achternaam = ko.observable(data.achternaam);
+	_this.voornaam = ko.observable(data.voornaam).extend({required: true});
+	_this.achternaam = ko.observable(data.achternaam).extend({required: true});
 	_this.tussenvoegsel = ko.observable(data.tussenvoegsel);
 	_this.straat = ko.observable(data.straat);
-	_this.huisnummer = ko.observable(data.huisnummer);
+	_this.huisnummer = ko.observable(data.huisnummer).extend({ number: true });
 	_this.toevoeging = ko.observable(data.toevoeging);
 	_this.postcode = ko.observable(data.postcode);
 	_this.plaats = ko.observable(data.plaats);
@@ -60,33 +60,38 @@ function Relatie(data, log) {
 	
 	_this.opslaan = function(){
 		log.debug("Opslaan Relatie");
-		verbergMeldingen();
-		if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
-			_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
-		}
-		if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
-			_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
-		}
-		log.debug(ko.toJSON(this));
-		$.ajax({
-			url: '../dejonge/rest/medewerker/gebruiker/opslaan',
-			type: 'POST',
-			data: ko.toJSON(this) ,
-			contentType: 'application/json; charset=utf-8',
-			success: function (response) {
-				document.location.hash='#lijstRelaties';
-				plaatsMelding("De gegevens zijn opgeslagen");
-			},
-			error: function (data) {
-				plaatsFoutmelding(data);
+    	var result = ko.validation.group(_this, {deep: true});
+    	if(!_this.isValid()){
+    		result.showAllMessages(true);
+    	}else{
+			verbergMeldingen();
+			if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+				_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
 			}
-		});
-		if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
-			_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
-		}
-		if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
-			_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
-		}
+			if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+				_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "DD-MM-YYYY").format("YYYY-MM-DD"));
+			}
+			log.debug(ko.toJSON(this));
+			$.ajax({
+				url: '../dejonge/rest/medewerker/gebruiker/opslaan',
+				type: 'POST',
+				data: ko.toJSON(this) ,
+				contentType: 'application/json; charset=utf-8',
+				success: function (response) {
+					document.location.hash='#lijstRelaties';
+					plaatsMelding("De gegevens zijn opgeslagen");
+				},
+				error: function (data) {
+					plaatsFoutmelding(data);
+				}
+			});
+			if(ko.utils.unwrapObservable(_this.geboorteDatum) != null && ko.utils.unwrapObservable(_this.geboorteDatum) != ''){
+				_this.geboorteDatum(moment(ko.utils.unwrapObservable(_this.geboorteDatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+			}
+			if(ko.utils.unwrapObservable(_this.overlijdensdatum) != null && ko.utils.unwrapObservable(_this.overlijdensdatum) != ''){
+				_this.overlijdensdatum(moment(ko.utils.unwrapObservable(_this.overlijdensdatum), "YYYY-MM-DD").format("DD-MM-YYYY"));
+			}
+    	}
 	};
 
 	_this.verwijderenRelatie = function(relatie){
@@ -133,6 +138,7 @@ function go(log, relatieId, actie, subId){
 
 	$.get( "../dejonge/rest/medewerker/gebruiker/lees", {"id" : relatieId}, function(data) {
 		log.debug("Gegevens opgehaald, applyBindings");
+		ko.validation.registerExtenders();
 	   	ko.applyBindings(new Relatie(data, log));
 	});
 }
