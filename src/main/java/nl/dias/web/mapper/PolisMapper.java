@@ -45,15 +45,15 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         String patternDatum = "dd-MM-yyyy";
 
         LocalDate ingangsDatum = null;
-        if (!"".equals(jsonPolis.getIngangsDatum())) {
+        if (jsonPolis.getIngangsDatum() != null && !"".equals(jsonPolis.getIngangsDatum())) {
             ingangsDatum = LocalDate.parse(jsonPolis.getIngangsDatum(), DateTimeFormat.forPattern(patternDatum));
         }
         LocalDate wijzigingsDatum = null;
-        if (!"".equals(jsonPolis.getWijzigingsDatum())) {
+        if (jsonPolis.getWijzigingsDatum() != null && !"".equals(jsonPolis.getWijzigingsDatum())) {
             wijzigingsDatum = LocalDate.parse(jsonPolis.getWijzigingsDatum(), DateTimeFormat.forPattern(patternDatum));
         }
         LocalDate prolongatieDatum = null;
-        if (!"".equals(jsonPolis.getProlongatieDatum())) {
+        if (jsonPolis.getProlongatieDatum() != null && !"".equals(jsonPolis.getProlongatieDatum())) {
             prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
         }
 
