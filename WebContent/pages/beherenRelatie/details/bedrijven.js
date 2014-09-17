@@ -1,6 +1,7 @@
 function go(log, relatieId, actie, subId){
 	$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 		log.debug("Gegevens opgehaald, applyBindings");
+		ko.validation.registerExtenders();
        	ko.applyBindings(new Bedrijven(data, log, relatieId));
     });
 }
@@ -29,10 +30,10 @@ function Bedrijf(data, log, relatieId){
 	_this = this;
 
 	_this.id = ko.observable(data.id);
-	_this.naam = ko.observable(data.naam);
+	_this.naam = ko.observable(data.naam).extend({required: true});
 	_this.kvk = ko.observable(data.kvk);
 	_this.straat = ko.observable(data.straat);
-	_this.huisnummer = ko.observable(data.huisnummer);
+	_this.huisnummer = ko.observable(data.huisnummer).extend({ number: true });
 	_this.toevoeging = ko.observable(data.toevoeging);
 	_this.postcode = ko.observable(data.postcode);
 	_this.plaats = ko.observable(data.plaats);
@@ -51,19 +52,24 @@ function Bedrijf(data, log, relatieId){
     };
 
 	_this.opslaan = function(bedrijf){
-		verbergMeldingen();
-		$.ajax({
-			type: "POST",
-			url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
-			contentType: "application/json",
-	        data: ko.toJSON(bedrijf),
-	        success: function () {
-	        	plaatsMelding("De gegevens zijn opgeslagen");
-	    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
-	        },
-	        error: function (data) {
-	        	plaatsFoutmelding(data);
-	        }
-		});
+    	var result = ko.validation.group(bedrijf, {deep: true});
+    	if(!bedrijf.isValid()){
+    		result.showAllMessages(true);
+    	}else{
+			verbergMeldingen();
+			$.ajax({
+				type: "POST",
+				url: '../dejonge/rest/medewerker/gebruiker/opslaanBedrijf',
+				contentType: "application/json",
+		        data: ko.toJSON(bedrijf),
+		        success: function () {
+		        	plaatsMelding("De gegevens zijn opgeslagen");
+		    		document.location.hash='#beherenRelatie/' + relatieId + '/bedrijven';
+		        },
+		        error: function (data) {
+		        	plaatsFoutmelding(data);
+		        }
+			});
+		}
 	};
 }

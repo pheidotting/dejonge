@@ -18,6 +18,7 @@ public class JsonBedrijf {
     private String relatie;
     private String idDiv;
     private String idDivLink;
+    private List<String> errors;
 
     public String getId() {
         return id;
@@ -113,6 +114,14 @@ public class JsonBedrijf {
 
     public void setIdDivLink(String idDivLink) {
         this.idDivLink = idDivLink;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     @Override
