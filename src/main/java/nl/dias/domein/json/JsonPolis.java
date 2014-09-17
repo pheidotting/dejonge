@@ -25,6 +25,7 @@ public class JsonPolis {
     private List<JsonSchade> schades;
     private String relatie;
     private String titel;
+    private List<String> errors;
 
     public Long getId() {
         return id;
@@ -177,6 +178,14 @@ public class JsonPolis {
 
     public void setTitel(String titel) {
         this.titel = titel;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     @Override
