@@ -78,7 +78,7 @@ function Schade(data, log, relatieId){
     self.omschrijving = ko.observable(data.omschrijving);
     
     self.titel = ko.computed(function() {
-    	return data.soortSchade + " (" + data.schadeNummerMaatschappij + ")"
+    	return data.soortSchade + " (" + data.schadeNummerMaatschappij + ")";
     }, this);
 
 	self.idDiv = ko.computed(function() {
@@ -130,7 +130,7 @@ function Schade(data, log, relatieId){
     self.bewerkSchade = function(schade){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/schade/" + ko.utils.unwrapObservable(schade.id);
     };
-    
+   
     self.plaatsOpmerking = function(schade){
     	document.location.hash = "#beherenRelatie/" + relatieId + "/opmerking/s" + ko.utils.unwrapObservable(schade.id);
     };
@@ -138,7 +138,7 @@ function Schade(data, log, relatieId){
 
 function Opmerking(data){
 	var self = this;
-	
+
 	self.id = ko.observable(data.id);
 	self.opmerking = ko.observable(data.opmerking);
 	self.medewerker = ko.observable(data.medewerker);
