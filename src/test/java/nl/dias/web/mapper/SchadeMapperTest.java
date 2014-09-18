@@ -73,11 +73,28 @@ public class SchadeMapperTest extends EasyMockSupport {
         jsonSchade.setStatusSchade("statusSchade");
         jsonSchade.getBijlages();
         jsonSchade.getOpmerkingen();
+        jsonSchade.setPolis("1");
 
     }
 
     @Test
     public void testMapVanJsonJsonSchade() {
+
+        replayAll();
+
+        Schade schadeUit = mapper.mapVanJson(jsonSchade);
+
+        assertEquals(schade.getId(), schade.getId());
+        assertEquals(schade.getDatumAfgehandeld(), schade.getDatumAfgehandeld());
+        assertEquals(schade.getDatumTijdMelding(), schade.getDatumTijdMelding());
+        assertEquals(schade.getDatumTijdSchade(), schade.getDatumTijdSchade());
+        assertEquals(schade.getEigenRisico(), schade.getEigenRisico());
+        assertEquals(schade.getLocatie(), schade.getLocatie());
+        assertEquals(schade.getOmschrijving(), schade.getOmschrijving());
+        assertEquals(schade.getSchadeNummerMaatschappij(), schade.getSchadeNummerMaatschappij());
+        assertEquals(schade.getSchadeNummerTussenPersoon(), schade.getSchadeNummerTussenPersoon());
+
+        verifyAll();
     }
 
     @Test
