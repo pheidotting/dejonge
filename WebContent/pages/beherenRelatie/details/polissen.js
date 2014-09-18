@@ -101,7 +101,7 @@ function Polis(data, log, relatieId){
 
 function Polissen(data, log, relatieId){
 	var self = this;
-	
+
 	self.polissen = ko.observableArray();
 	$.each(data, function(i, item){
 		self.polissen.push(new Polis(item, log, relatieId));
