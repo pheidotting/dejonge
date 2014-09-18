@@ -2,6 +2,7 @@ function go(log, relatieId, actie, subId){
 	$.getScript("pages/beherenRelatie/details/bijlages.js", function() {
 		$.get( "../dejonge/rest/medewerker/schade/lijst", {"relatieId" : relatieId}, function(data) {
 			log.debug("Gegevens opgehaald, applyBindings");
+			ko.validation.registerExtenders();
 	       	ko.applyBindings(new Schades(data, log, relatieId));
 		});
 	});
@@ -11,16 +12,60 @@ function Schade(data, log, relatieId){
 	var self = this;
 
     self.id = ko.observable(data.id);
-    self.polis = ko.observable(data.polis);
-    self.schadeNummerMaatschappij = ko.observable(data.schadeNummerMaatschappij);
+    self.polis = ko.observable(data.polis).extend({validation: {
+        validator: function (val) {
+        	if(ko.utils.unwrapObservable(self.polis) == "Kies een polis uit de lijst.."){
+				if(self.schadeNummerMaatschappij.isValid()){
+        			return false;
+        		}else{
+        			return true;
+        		}
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Dit veld is verplicht.'
+    }});
+    self.schadeNummerMaatschappij = ko.observable(data.schadeNummerMaatschappij).extend({required: true});
     self.schadeNummerTussenPersoon = ko.observable(data.schadeNummerTussenPersoon);
-    self.soortSchade = ko.observable(data.soortSchade);
+    self.soortSchade = ko.observable(data.soortSchade).extend({required: true});
     self.locatie = ko.observable(data.locatie);
-    self.statusSchade = ko.observable(data.statusSchade);
-    self.datumTijdSchade = ko.observable(data.datumTijdSchade);
-    self.datumTijdMelding = ko.observable(data.datumTijdMelding);
-    self.datumAfgehandeld = ko.observable(data.datumAfgehandeld);
-    self.eigenRisico = ko.observable(data.eigenRisico);
+    self.statusSchade = ko.observable(data.statusSchade).extend({validation: {
+        validator: function (val) {
+        	if(ko.utils.unwrapObservable(self.statusSchade) == "Kies een status uit de lijst.."){
+				if(self.schadeNummerMaatschappij.isValid()){
+        			return false;
+        		}else{
+        			return true;
+        		}
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Dit veld is verplicht.'
+    }});
+    self.datumTijdSchade = ko.observable(data.datumTijdSchade).extend({required: true, validation: {
+        validator: function (val) {
+        	if(moment(ko.utils.unwrapObservable(self.datumTijdSchade), "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
+    			return false;
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Juiste invoerformaat is : dd-mm-eejj uu:mm'
+    }});
+    self.datumTijdMelding = ko.observable(data.datumTijdMelding).extend({required: true, validation: {
+        validator: function (val) {
+        	if(moment(ko.utils.unwrapObservable(self.datumTijdMelding), "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
+    			return false;
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Juiste invoerformaat is : dd-mm-eejj uu:mm'
+    }});
+    self.datumAfgehandeld = ko.observable(data.datumAfgehandeld).extend({date: true});;
+    self.eigenRisico = ko.observable(data.eigenRisico).extend({number: true});
     self.omschrijving = ko.observable(data.omschrijving);
     
     self.titel = ko.computed(function() {
@@ -49,23 +94,28 @@ function Schade(data, log, relatieId){
 	}
 
 	self.opslaan = function(schade){
-    	$.ajax({
-            url: '../dejonge/rest/medewerker/schade/opslaan',
-            type: 'POST',
-            data: ko.toJSON(schade) ,
-            contentType: 'application/json; charset=utf-8',
-            success: function () {
-    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
-    				var formData = new FormData($('#schadeMeldForm')[0]);
-    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
-    			}
-            	plaatsMelding("De gegevens zijn opgeslagen");
-            	document.location.hash = "#beherenRelatie/" + relatieId + "/schades";
-            },
-            error: function (data) {
-            	plaatsFoutmelding(data);
-            }
-        });
+    	var result = ko.validation.group(schade, {deep: true});
+    	if(!schade.isValid()){
+    		result.showAllMessages(true);
+    	}else{
+	    	$.ajax({
+	            url: '../dejonge/rest/medewerker/schade/opslaan',
+	            type: 'POST',
+	            data: ko.toJSON(schade) ,
+	            contentType: 'application/json; charset=utf-8',
+	            success: function () {
+	    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
+	    				var formData = new FormData($('#schadeMeldForm')[0]);
+	    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadSchade' + int + 'File');
+	    			}
+	            	plaatsMelding("De gegevens zijn opgeslagen");
+	            	document.location.hash = "#beherenRelatie/" + relatieId + "/schades";
+	            },
+	            error: function (data) {
+	            	plaatsFoutmelding(data);
+	            }
+	        });
+    	}
 	};
 
     self.bewerkSchade = function(schade){

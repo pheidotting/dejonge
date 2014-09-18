@@ -24,6 +24,7 @@ public class JsonSchade {
     private String idDiv;
     private String idDivLink;
     private String titel;
+    private List<String> errors;
 
     public Long getId() {
         return id;
@@ -165,6 +166,14 @@ public class JsonSchade {
 
     public void setTitel(String titel) {
         this.titel = titel;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     /**
