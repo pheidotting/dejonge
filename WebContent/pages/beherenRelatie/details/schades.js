@@ -64,7 +64,16 @@ function Schade(data, log, relatieId){
         },
         message: 'Juiste invoerformaat is : dd-mm-eejj uu:mm'
     }});
-    self.datumAfgehandeld = ko.observable(data.datumAfgehandeld).extend({date: true});;
+    self.datumAfgehandeld = ko.observable(data.datumAfgehandeld).extend({validation: {
+        validator: function (val) {
+        	if(moment(ko.utils.unwrapObservable(self.datumTijdMelding), "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
+    			return false;
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Juiste invoerformaat is : dd-mm-eejj'
+    }});;
     self.eigenRisico = ko.observable(data.eigenRisico).extend({number: true});
     self.omschrijving = ko.observable(data.omschrijving);
     
