@@ -25,6 +25,7 @@ import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
@@ -244,5 +245,21 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
         return new HashCodeBuilder(761314323, 831310645).appendSuper(super.hashCode()).append(this.soortSchade).append(this.datumTijdMelding).append(this.locatie)
                 .append(this.schadeNummerMaatschappij).append(this.datumTijdSchade).append(this.statusSchade).append(this.id).append(this.soortSchadeOngedefinieerd).append(this.opmerkingen)
                 .append(this.schadeNummerTussenPersoon).append(this.eigenRisico).append(this.omschrijving).append(this.datumAfgehandeld).toHashCode();
+    }
+
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Schade)) {
+            return false;
+        }
+        Schade rhs = (Schade) object;
+        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.soortSchade, rhs.soortSchade).append(this.datumTijdMelding, rhs.datumTijdMelding).append(this.locatie, rhs.locatie)
+                .append(this.polis, rhs.polis).append(this.schadeNummerMaatschappij, rhs.schadeNummerMaatschappij).append(this.datumTijdSchade, rhs.datumTijdSchade)
+                .append(this.statusSchade, rhs.statusSchade).append(this.id, rhs.id).append(this.soortSchadeOngedefinieerd, rhs.soortSchadeOngedefinieerd).append(this.opmerkingen, rhs.opmerkingen)
+                .append(this.bijlages, rhs.bijlages).append(this.schadeNummerTussenPersoon, rhs.schadeNummerTussenPersoon).append(this.eigenRisico, rhs.eigenRisico)
+                .append(this.omschrijving, rhs.omschrijving).append(this.datumAfgehandeld, rhs.datumAfgehandeld).isEquals();
     }
 }
