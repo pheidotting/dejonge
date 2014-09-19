@@ -46,7 +46,7 @@ function Schade(data, log, relatieId){
     }});
     self.datumTijdSchade = ko.observable(data.datumTijdSchade).extend({required: true, validation: {
         validator: function (val) {
-        	if(moment(ko.utils.unwrapObservable(self.datumTijdSchade), "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
+        	if(moment(val, "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
     			return false;
     		}else{
     			return true;
@@ -56,7 +56,7 @@ function Schade(data, log, relatieId){
     }});
     self.datumTijdMelding = ko.observable(data.datumTijdMelding).extend({required: true, validation: {
         validator: function (val) {
-        	if(moment(ko.utils.unwrapObservable(self.datumTijdMelding), "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
+        	if(moment(val, "DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm") == "Invalid date"){
     			return false;
     		}else{
     			return true;
@@ -66,7 +66,7 @@ function Schade(data, log, relatieId){
     }});
     self.datumAfgehandeld = ko.observable(data.datumAfgehandeld).extend({validation: {
         validator: function (val) {
-        	if(moment(ko.utils.unwrapObservable(self.datumTijdMelding), "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
+        	if(moment(val, "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
     			return false;
     		}else{
     			return true;
