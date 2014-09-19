@@ -107,6 +107,7 @@ function Schade(data, log, relatieId){
     	if(!schade.isValid()){
     		result.showAllMessages(true);
     	}else{
+    		log.debug("Versturen : " + ko.toJSON(schade));
 	    	$.ajax({
 	            url: '../dejonge/rest/medewerker/schade/opslaan',
 	            type: 'POST',
