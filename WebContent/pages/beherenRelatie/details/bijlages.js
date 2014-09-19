@@ -30,7 +30,7 @@ function Bijlages(data, log){
 	
 	self.verwijderBijlage = function(bijlage){
 		verbergMeldingen();
-		var r=confirm("Weet je zeker dat je dit bedrijf wilt verwijderen?");
+		var r=confirm("Weet je zeker dat je deze bijlage wilt verwijderen?");
 		if (r==true) {
 			self.bijlages.remove(bijlage);
 			$.get( "../dejonge/rest/medewerker/bijlage/verwijder", {"bijlageId" : ko.utils.unwrapObservable(bijlage.id)}, function() {});
