@@ -46,4 +46,12 @@ public class OpmerkingController {
     public JsonOpmerking nieuw() {
         return new JsonOpmerking();
     }
+
+    public void setOpmerkingService(OpmerkingService opmerkingService) {
+        this.opmerkingService = opmerkingService;
+    }
+
+    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
+        this.opmerkingMapper = opmerkingMapper;
+    }
 }
