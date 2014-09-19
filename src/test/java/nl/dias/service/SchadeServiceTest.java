@@ -5,9 +5,11 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Opmerking;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortBijlage;
@@ -91,6 +93,12 @@ public class SchadeServiceTest extends EasyMockSupport {
         schade.setPolis(polis);
         expectLastCall();
 
+        expect(schade.getId()).andReturn(58L);
+        expect(schadeRepository.lees(58L)).andReturn(schade);
+        expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
+        schade.setOpmerkingen(new HashSet<Opmerking>());
+        expectLastCall();
+
         schadeRepository.opslaan(schade);
         expectLastCall();
 
@@ -122,6 +130,12 @@ public class SchadeServiceTest extends EasyMockSupport {
 
         expect(polisService.lees(Long.valueOf(polisId))).andReturn(polis);
         schade.setPolis(polis);
+        expectLastCall();
+
+        expect(schade.getId()).andReturn(58L);
+        expect(schadeRepository.lees(58L)).andReturn(schade);
+        expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
+        schade.setOpmerkingen(new HashSet<Opmerking>());
         expectLastCall();
 
         schadeRepository.opslaan(schade);
