@@ -71,4 +71,15 @@ public class BedrijfController {
         return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
+    public void setBedrijfService(BedrijfService bedrijfService) {
+        this.bedrijfService = bedrijfService;
+    }
+
+    public void setGebruikerService(GebruikerService gebruikerService) {
+        this.gebruikerService = gebruikerService;
+    }
+
+    public void setBedrijfMapper(BedrijfMapper bedrijfMapper) {
+        this.bedrijfMapper = bedrijfMapper;
+    }
 }
