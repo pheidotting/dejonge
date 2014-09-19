@@ -5,18 +5,13 @@ function Relatie(data, log) {
 	_this.voornaam = ko.observable(data.voornaam).extend({required: true});
 	_this.achternaam = ko.observable(data.achternaam).extend({required: true});
 	_this.tussenvoegsel = ko.observable(data.tussenvoegsel);
-	_this.straat = ko.observable(data.straat);
-	_this.huisnummer = ko.observable(data.huisnummer).extend({ number: true });
+	_this.straat = ko.observable(data.straat).extend({ required: true });
+	_this.huisnummer = ko.observable(data.huisnummer).extend({ number: true, required: true });
 	_this.toevoeging = ko.observable(data.toevoeging);
 	_this.postcode = ko.observable(data.postcode);
 	_this.plaats = ko.observable(data.plaats);
 	_this.bsn = ko.observable(data.bsn);
 	_this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
-	if(_this.zakelijkeKlant){
-		$('#bedrijven').show();
-	}else{
-		$('#bedrijven').hide();
-	}
 	_this.rekeningnummers = ko.observableArray();
 	if(data.rekeningnummers != null){
 		$.each(data.rekeningnummers, function(i, item) {
@@ -30,7 +25,16 @@ function Relatie(data, log) {
 		});
 	}
 
-	_this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt);
+	_this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt).extend({validation: {
+        validator: function (val) {
+        	if(moment(val, "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
+    			return false;
+    		}else{
+    			return true;
+    		}
+        },
+        message: 'Juiste invoerformaat is : dd-mm-eejj'
+    }});;
 	_this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 	_this.geslacht = ko.observable(data.geslacht);
 	_this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
