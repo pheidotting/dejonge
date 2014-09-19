@@ -20,10 +20,10 @@ public class StatusSchade implements PersistenceObject {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "STATUS", length = 250, nullable = false)
+    @Column(name = "STATUS", length = 250, nullable = false, unique = true)
     private String status;
 
-    @Column(name = "INGEBRUIK", unique = true)
+    @Column(name = "INGEBRUIK")
     private boolean ingebruik;
 
     public StatusSchade() {

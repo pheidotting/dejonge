@@ -24,6 +24,8 @@ import javax.persistence.TemporalType;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -32,7 +34,7 @@ import org.joda.time.LocalDateTime;
 @Table(name = "SCHADE")
 @NamedQueries({ @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
         @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie") })
-public class Schade implements PersistenceObject, Serializable {
+public class Schade implements Comparable, PersistenceObject, Serializable {
     private static final long serialVersionUID = -8340805705038811388L;
 
     @Id
@@ -215,9 +217,32 @@ public class Schade implements PersistenceObject, Serializable {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("soortSchade", this.soortSchade).append("datumTijdMelding", this.datumTijdMelding).append("locatie", this.locatie).append("polis", this.polis.getId())
+        return new ToStringBuilder(this).append("soortSchade", this.soortSchade).append("datumTijdMelding", this.datumTijdMelding).append("locatie", this.locatie)
                 .append("schadeNummerMaatschappij", this.schadeNummerMaatschappij).append("datumTijdSchade", this.datumTijdSchade).append("statusSchade", this.statusSchade).append("id", this.id)
                 .append("soortSchadeOngedefinieerd", this.soortSchadeOngedefinieerd).append("opmerkingen", this.opmerkingen).append("schadeNummerTussenPersoon", this.schadeNummerTussenPersoon)
                 .append("eigenRisico", this.eigenRisico).append("omschrijving", this.omschrijving).append("datumAfgehandeld", this.datumAfgehandeld).toString();
+    }
+
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    @Override
+    public int compareTo(Object object) {
+        Schade myClass = (Schade) object;
+        return new CompareToBuilder().append(this.soortSchade, myClass.soortSchade).append(this.datumTijdMelding, myClass.datumTijdMelding).append(this.locatie, myClass.locatie)
+                .append(this.schadeNummerMaatschappij, myClass.schadeNummerMaatschappij).append(this.datumTijdSchade, myClass.datumTijdSchade).append(this.statusSchade, myClass.statusSchade)
+                .append(this.id, myClass.id).append(this.soortSchadeOngedefinieerd, myClass.soortSchadeOngedefinieerd).append(this.opmerkingen, myClass.opmerkingen)
+                .append(this.schadeNummerTussenPersoon, myClass.schadeNummerTussenPersoon).append(this.eigenRisico, myClass.eigenRisico).append(this.omschrijving, myClass.omschrijving)
+                .append(this.datumAfgehandeld, myClass.datumAfgehandeld).toComparison();
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(761314323, 831310645).appendSuper(super.hashCode()).append(this.soortSchade).append(this.datumTijdMelding).append(this.locatie)
+                .append(this.schadeNummerMaatschappij).append(this.datumTijdSchade).append(this.statusSchade).append(this.id).append(this.soortSchadeOngedefinieerd).append(this.opmerkingen)
+                .append(this.schadeNummerTussenPersoon).append(this.eigenRisico).append(this.omschrijving).append(this.datumAfgehandeld).toHashCode();
     }
 }
