@@ -94,12 +94,12 @@ public class SchadeService {
         Polis polis = polisService.lees(Long.valueOf(polisId));
         schade.setPolis(polis);
 
+        LOGGER.debug("Schade opslaan");
+        schadeRepository.opslaan(schade);
+
         LOGGER.debug("Opmerkingen bij de schade zoeken en er weer bij plaatsen");
         Schade schadeOorspronkelijk = schadeRepository.lees(schade.getId());
         schade.setOpmerkingen(schadeOorspronkelijk.getOpmerkingen());
-
-        LOGGER.debug("Schade opslaan");
-        schadeRepository.opslaan(schade);
     }
 
     public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
