@@ -91,7 +91,7 @@ define([ "commons/3rdparty/log",
 	    	if(!hypotheek.isValid()){
 	    		result.showAllMessages(true);
 	    	}else{
-	    		log.debug("Versturen : " + ko.toJSON(hypotheek));
+	    		logger.debug("Versturen : " + ko.toJSON(hypotheek));
 		    	$.ajax({
 		            url: '../dejonge/rest/medewerker/hypotheek/opslaan',
 		            type: 'POST',
