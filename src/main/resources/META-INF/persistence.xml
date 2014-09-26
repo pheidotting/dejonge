@@ -15,6 +15,7 @@
 		<class>nl.dias.domein.Beheerder</class>
 		<class>nl.dias.domein.Bijlage</class>
 		<class>nl.dias.domein.Gebruiker</class>
+		<class>nl.dias.domein.Hypotheek</class>
 		<class>nl.dias.domein.Kantoor</class>
 		<class>nl.dias.domein.Medewerker</class>
 		<class>nl.dias.domein.OnderlingeRelatie</class>
@@ -41,6 +42,7 @@
 		<class>nl.dias.domein.Relatie</class>
 		<class>nl.dias.domein.Schade</class>
 		<class>nl.dias.domein.Sessie</class>
+		<class>nl.dias.domein.SoortHypotheek</class>
 		<class>nl.dias.domein.SoortSchade</class>
 		<class>nl.dias.domein.StatusSchade</class>
 		<class>nl.dias.domein.Telefoonnummer</class>
