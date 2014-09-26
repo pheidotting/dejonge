@@ -9,7 +9,12 @@ function start(log, relatieId, actie, subId){
 
 			//Onderliggende pagina aanroepen
 			$.getScript("pages/beherenRelatie/details/" + actie + ".js", function(){
-				go(log, relatieId, actie, subId);
+				if(actie != "hypotheek" && actie != "hypotheken"){
+					go(log, relatieId, actie, subId);
+				}
+				_relatieId = relatieId;
+				_subId = subId;
+
 			});
 			$('#details').load("pages/beherenRelatie/details/" + actie + ".html");
 
@@ -41,6 +46,14 @@ function start(log, relatieId, actie, subId){
 			$("#schade").click(function(){
 		    	verbergMeldingen();
 				document.location.hash='#beherenRelatie/' + relatieId + '/schade/0';
+			});
+			$("#hypotheken").click(function(){
+				verbergMeldingen();
+				document.location.hash='#beherenRelatie/' + relatieId + '/hypotheken';
+			});
+			$("#hypotheek").click(function(){
+				verbergMeldingen();
+				document.location.hash='#beherenRelatie/' + relatieId + '/hypotheek/0';
 			});
 			$("#bijlages").click(function(){
 		    	verbergMeldingen();

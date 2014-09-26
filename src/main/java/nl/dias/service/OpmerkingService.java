@@ -4,6 +4,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
+import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Schade;
@@ -19,6 +20,8 @@ public class OpmerkingService {
     private AuthorisatieService authorisatieService;
     @InjectParam
     private SchadeService schadeService;
+    @InjectParam
+    private HypotheekService hypotheekService;
     @Context
     private HttpServletRequest httpServletRequest;
 
@@ -33,10 +36,19 @@ public class OpmerkingService {
         opmerking.setMedewerker(medewerker);
         opmerkingRepository.opslaan(opmerking);
 
-        Schade schade = schadeService.lees(opmerking.getSchade().getId());
-        schade.getOpmerkingen().add(opmerking);
+        if (opmerking.getSchade() != null) {
+            Schade schade = schadeService.lees(opmerking.getSchade().getId());
+            schade.getOpmerkingen().add(opmerking);
 
-        schadeService.opslaan(schade);
+            schadeService.opslaan(schade);
+        }
+
+        if (opmerking.getHypotheek() != null) {
+            Hypotheek hypotheek = hypotheekService.lees(opmerking.getHypotheek().getId());
+            hypotheek.getOpmerkingen().add(opmerking);
+
+            hypotheekService.opslaan(hypotheek);
+        }
     }
 
     public void setOpmerkingRepository(OpmerkingRepository opmerkingRepository) {
@@ -49,6 +61,10 @@ public class OpmerkingService {
 
     public void setSchadeService(SchadeService schadeService) {
         this.schadeService = schadeService;
+    }
+
+    public void setHypotheekService(HypotheekService hypotheekService) {
+        this.hypotheekService = hypotheekService;
     }
 
     public void setHttpServletRequest(HttpServletRequest httpServletRequest) {

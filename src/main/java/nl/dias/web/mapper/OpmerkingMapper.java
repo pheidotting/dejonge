@@ -4,6 +4,7 @@ import javax.inject.Named;
 
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonOpmerking;
+import nl.dias.service.HypotheekService;
 import nl.dias.service.SchadeService;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -12,6 +13,8 @@ import com.sun.jersey.api.core.InjectParam;
 public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     @InjectParam
     private SchadeService schadeService;
+    @InjectParam
+    private HypotheekService hypotheekService;
 
     @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
@@ -19,7 +22,14 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
 
         opmerking.setId(jsonOpmerking.getId());
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
-        opmerking.setSchade(schadeService.lees(Long.valueOf(jsonOpmerking.getSchade())));
+        try {
+            opmerking.setSchade(schadeService.lees(Long.valueOf(jsonOpmerking.getSchade())));
+        } catch (NumberFormatException nfe) {
+        }
+        try {
+            opmerking.setHypotheek(hypotheekService.lees(Long.valueOf(jsonOpmerking.getHypotheek())));
+        } catch (NumberFormatException nfe) {
+        }
 
         return opmerking;
     }

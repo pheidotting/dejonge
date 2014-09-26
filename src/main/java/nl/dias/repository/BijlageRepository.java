@@ -31,6 +31,10 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
         query.setParameter("relatie", relatie);
         bijlages.addAll(query.getResultList());
 
+        query = getEm().createNamedQuery("Bijlage.allesVanRelatieHypotheek", Bijlage.class);
+        query.setParameter("relatie", relatie);
+        bijlages.addAll(query.getResultList());
+
         return bijlages;
     }
 }

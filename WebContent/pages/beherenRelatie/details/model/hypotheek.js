@@ -1,0 +1,160 @@
+define([ "commons/3rdparty/log",
+         "commons/validation",
+         "commons/opmaak"],
+//         "commons/3rdparty/knockout",
+//         "commons/3rdparty/knockoutValidation/knockout.validation.min"],
+         function(logger, validation, opmaak) {
+	
+//	var logger = log.getLogger("hypotheek.js");
+
+	return function hypotheek(data) {
+		_this = this;
+
+		_this.bedrag = function(bedrag){
+			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
+		}
+		
+		_this.id = ko.observable(data.id);
+		_this.relatie = ko.observable(_relatieId);
+		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
+		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
+		_this.rente = ko.observable(data.rente).extend({required: true, number: true});
+		_this.marktWaarde = ko.observable(data.marktWaarde).extend({number: true});
+		_this.onderpand = ko.observable(data.onderpand);
+		_this.koopsom = ko.observable(data.koopsom).extend({number: true});
+		_this.vrijeVerkoopWaarde = ko.observable(data.vrijeVerkoopWaarde).extend({number: true});
+		_this.taxatieDatum = ko.observable(data.taxatieDatum);
+		_this.wozWaarde = ko.observable(data.wozWaarde).extend({number: true});
+		_this.waardeVoorVerbouwing = ko.observable(data.waardeVoorVerbouwing).extend({number: true});
+		_this.waardeNaVerbouwing = ko.observable(data.waardeNaVerbouwing).extend({number: true});
+		_this.ingangsDatum = ko.observable(data.ingangsDatum).extend({required: true, validation: {
+	        validator: function (val) {
+	        	return validation.valideerDatum(val);
+	        },
+	        message: 'Juiste invoerformaat is : dd-mm-eejj'
+	    }});
+		_this.eindDatum = ko.observable(data.eindDatum).extend({validation: {
+	        validator: function (val) {
+	        	return validation.valideerDatum(val);
+	        },
+	        message: 'Juiste invoerformaat is : dd-mm-eejj'
+	    }});;
+		_this.duur = ko.observable(data.duur).extend({number: true});
+		_this.ingangsDatumRenteVastePeriode = ko.observable(data.ingangsDatumRenteVastePeriode).extend({validation: {
+	        validator: function (val) {
+	        	return validation.valideerDatum(val);
+	        },
+	        message: 'Juiste invoerformaat is : dd-mm-eejj'
+	    }});
+		_this.eindDatumRenteVastePeriode = ko.observable(data.eindDatumRenteVastePeriode).extend({validation: {
+	        validator: function (val) {
+	        	return validation.valideerDatum(val);
+	        },
+	        message: 'Juiste invoerformaat is : dd-mm-eejj'
+	    }});
+		_this.duurRenteVastePeriode = ko.observable(data.duurRenteVastePeriode).extend({number: true});
+		_this.omschrijving = ko.observable(data.omschrijving);
+		_this.idDiv = ko.computed(function() {
+	        return "collapsable" + data.id;
+		}, this);
+		_this.idDivLink = ko.computed(function() {
+	        return "#collapsable" + data.id;
+		}, this);
+		_this.className = ko.computed(function() {
+			var datum = moment(data.ingangsDatum);
+			var tijd = moment(datum).fromNow();
+			if(tijd.substr(tijd.length - 3) == "ago"){
+				return "panel-title";
+			}else{
+				return "polisNietActief panel-title";
+			}
+		}, this);
+		_this.titel = ko.computed(function() {
+			return data.hypotheekVorm;
+		}, this);
+	    _this.opmerkingen = ko.observableArray();
+		if(data.opmerkingen != null){
+		$.each(data.opmerkingen, function(i, item){
+			_this.opmerkingen.push(new Opmerking(item));
+		});
+		self.bijlages = ko.observableArray();
+		if(data.bijlages != null){
+			$.each(data.bijlages, function(i, item){
+				logger.debug(item);
+				self.bijlages.push(new Bijlage(item));
+			});
+		}
+	}
+		
+		_this.opslaan = function(hypotheek){
+	    	var result = ko.validation.group(hypotheek, {deep: true});
+	    	if(!hypotheek.isValid()){
+	    		result.showAllMessages(true);
+	    	}else{
+	    		log.debug("Versturen : " + ko.toJSON(hypotheek));
+		    	$.ajax({
+		            url: '../dejonge/rest/medewerker/hypotheek/opslaan',
+		            type: 'POST',
+		            data: ko.toJSON(hypotheek) ,
+		            contentType: 'application/json; charset=utf-8',
+		            success: function (data) {
+		            	_this.id(data.foutmelding);
+		    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
+		    				var formData = new FormData($('#hypotheekForm')[0]);
+		    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadHypotheek' + int + 'File');
+		    			}
+		            	plaatsMelding("De gegevens zijn opgeslagen");
+		            	document.location.hash = "#beherenRelatie/" + _relatieId + "/hypotheken";
+		            },
+		            error: function (data) {
+		            	plaatsFoutmelding(data);
+		            }
+		        });
+	    	}
+		};
+
+	    self.bewerkHypotheek = function(hypotheek){
+			verbergMeldingen();
+	    	document.location.hash = "#beherenRelatie/" + relatieId + "/hypotheek/" + ko.utils.unwrapObservable(hypotheek.id);
+	    };
+
+		_this.berekenEinddatumLening = function(hypotheek){
+			if(ko.utils.unwrapObservable(_this.duur()) != null && ko.utils.unwrapObservable(_this.duur()) != "" && ko.utils.unwrapObservable(_this.ingangsDatum()) != null && ko.utils.unwrapObservable(_this.ingangsDatum()) != ""){
+				var duur = parseInt(ko.utils.unwrapObservable(_this.duur()));
+				_this.eindDatum(moment(_this.ingangsDatum(), "DD-MM-YYYY").add(duur, 'y').format("DD-MM-YYYY"));
+			}
+		}
+
+		_this.berekenEinddatumRenteVastePeriode = function(hypotheek){
+			if(ko.utils.unwrapObservable(_this.duurRenteVastePeriode()) != null && ko.utils.unwrapObservable(_this.duurRenteVastePeriode()) != "" && ko.utils.unwrapObservable(_this.ingangsDatumRenteVastePeriode()) != null && ko.utils.unwrapObservable(_this.ingangsDatumRenteVastePeriode()) != ""){
+				var duur = parseInt(ko.utils.unwrapObservable(_this.duurRenteVastePeriode()));
+				_this.eindDatumRenteVastePeriode(moment(_this.ingangsDatumRenteVastePeriode(), "DD-MM-YYYY").add(duur, 'y').format("DD-MM-YYYY"));
+			}
+		}
+
+	};
+
+	function Opmerking(data){
+		var self = this;
+
+		self.id = ko.observable(data.id);
+		self.opmerking = ko.observable(data.opmerking);
+		self.medewerker = ko.observable(data.medewerker);
+		self.tijd = ko.observable(data.tijd);
+	}
+	
+	function Bijlage(data){
+		var self = this;
+
+		self.id = ko.observable(data.id);
+		self.url = ko.computed(function() {
+	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
+		}, this);
+		self.bestandsNaam = ko.observable(data.bestandsNaam);
+		self.soortBijlage = ko.observable(data.soortBijlage);
+		self.parentId = ko.observable(data.parentId);
+		self.tonen = ko.computed(function() {
+			return ko.utils.unwrapObservable(self.soortBijlage) + " (" + ko.utils.unwrapObservable(self.parentId) + ")";
+		},this);
+	}
+});

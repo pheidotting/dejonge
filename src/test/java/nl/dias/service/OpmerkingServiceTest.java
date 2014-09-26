@@ -8,6 +8,7 @@ import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Schade;
@@ -23,6 +24,7 @@ public class OpmerkingServiceTest extends EasyMockSupport {
     private OpmerkingRepository repository;
     private AuthorisatieService authorisatieService;
     private SchadeService schadeService;
+    private HypotheekService hypotheekService;
     private HttpServletRequest httpServletRequest;
 
     @Before
@@ -40,6 +42,9 @@ public class OpmerkingServiceTest extends EasyMockSupport {
 
         httpServletRequest = createMock(HttpServletRequest.class);
         service.setHttpServletRequest(httpServletRequest);
+
+        hypotheekService = createMock(HypotheekService.class);
+        service.setHypotheekService(hypotheekService);
     }
 
     @After
@@ -53,6 +58,7 @@ public class OpmerkingServiceTest extends EasyMockSupport {
         HttpSession httpSession = createMock(HttpSession.class);
         Medewerker medewerker = createMock(Medewerker.class);
         Schade schade = createMock(Schade.class);
+        Hypotheek hypotheek = createMock(Hypotheek.class);
 
         expect(httpServletRequest.getSession()).andReturn(httpSession).times(3);
 
@@ -63,16 +69,24 @@ public class OpmerkingServiceTest extends EasyMockSupport {
         opmerking.setMedewerker(medewerker);
         expectLastCall();
 
-        expect(opmerking.getSchade()).andReturn(schade);
+        expect(opmerking.getSchade()).andReturn(schade).times(2);
         expect(schade.getId()).andReturn(46L);
+        expect(opmerking.getHypotheek()).andReturn(hypotheek).times(2);
+        expect(hypotheek.getId()).andReturn(58L);
 
         expect(schadeService.lees(46L)).andReturn(schade);
         expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
+
+        expect(hypotheekService.lees(58L)).andReturn(hypotheek);
+        expect(hypotheek.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
 
         repository.opslaan(opmerking);
         expectLastCall();
 
         schadeService.opslaan(schade);
+        expectLastCall();
+
+        hypotheekService.opslaan(hypotheek);
         expectLastCall();
 
         replayAll();

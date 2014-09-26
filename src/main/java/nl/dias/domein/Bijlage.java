@@ -25,7 +25,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Table(name = "BIJLAGE")
 @NamedQueries({ @NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"),
         @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie") })
+        @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"),
+        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie") })
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
 
@@ -37,6 +38,10 @@ public class Bijlage implements PersistenceObject, Serializable {
     @ManyToOne
     @JoinColumn(name = "POLIS", nullable = true)
     private Polis polis;
+
+    @ManyToOne
+    @JoinColumn(name = "HYPOTHEEK", nullable = true)
+    private Hypotheek hypotheek;
 
     @ManyToOne
     @JoinColumn(name = "SCHADE", nullable = true)
@@ -65,6 +70,14 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setPolis(Polis polis) {
         this.polis = polis;
+    }
+
+    public Hypotheek getHypotheek() {
+        return hypotheek;
+    }
+
+    public void setHypotheek(Hypotheek hypotheek) {
+        this.hypotheek = hypotheek;
     }
 
     public Schade getSchade() {

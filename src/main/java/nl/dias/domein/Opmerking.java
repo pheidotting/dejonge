@@ -56,6 +56,10 @@ public class Opmerking implements PersistenceObject, Serializable {
     @JoinColumn(name = "SCHADE")
     private Schade schade;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "HYPOTHEEK")
+    private Hypotheek hypotheek;
+
     @Column(columnDefinition = "TEXT", name = "OPMERKING")
     private String opmerking;
 
@@ -127,6 +131,14 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     public void setSchade(Schade schade) {
         this.schade = schade;
+    }
+
+    public Hypotheek getHypotheek() {
+        return hypotheek;
+    }
+
+    public void setHypotheek(Hypotheek hypotheek) {
+        this.hypotheek = hypotheek;
     }
 
     @Override

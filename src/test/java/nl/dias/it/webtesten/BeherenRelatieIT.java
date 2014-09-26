@@ -117,20 +117,23 @@ public class BeherenRelatieIT {
             BeherenRelatie beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
 
             JsonRelatie jsonRelatie = maakJsonRelatie();
-            String huisnummer = jsonRelatie.getHuisnummer();
+            // String huisnummer = jsonRelatie.getHuisnummer();
 
-            jsonRelatie.setHuisnummer("a");
+            // jsonRelatie.setHuisnummer("a");
 
             beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer(),
                     jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
                     jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(),
                     allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
-            checkFoutmelding(beherenRelatieScherm, "Er is een fout opgetreden : Huisnummer mag alleen cijfers bevatten");
-
-            jsonRelatie.setHuisnummer(huisnummer);
-
-            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, null, jsonRelatie.getHuisnummer(), null, null, null, null, null, null, null, null, null, null, null);
+            // checkFoutmelding(beherenRelatieScherm,
+            // "Er is een fout opgetreden : Huisnummer mag alleen cijfers bevatten");
+            //
+            // jsonRelatie.setHuisnummer(huisnummer);
+            //
+            // beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null,
+            // null, jsonRelatie.getHuisnummer(), null, null, null, null, null,
+            // null, null, null, null, null, null);
 
             checkOpgeslagenMelding(beherenRelatieScherm);
 
@@ -286,6 +289,7 @@ public class BeherenRelatieIT {
                 nieuweStatus = (String) stringGeneratieUtil.kiesUitItems("In behandeling maatschappij", "Afgehandeld maatschappij", "In behandeling tussenpersoon", "Afgehandeld tussenpersoon");
             } while (nieuweStatus.equals(schade.getStatusSchade()));
             schade.setStatusSchade(nieuweStatus);
+            Hulp.wachtFf();
             schadeOverzicht.bewerkSchade(schade);
 
             schadeScherm = PageFactory.initElements(driver, SchadeBewerken.class);

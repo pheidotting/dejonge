@@ -28,8 +28,8 @@ public class PolisBewerken {
     private WebElement betaalfrequentie;
     @FindBy(id = "bedrijfBijPolis")
     private WebElement bedrijfBijPolis;
-    @FindBy(id = "file")
-    private WebElement file;
+    @FindBy(id = "uploadPolis1File")
+    private WebElement uploadPolis1File;
     @FindBy(id = "opslaanPolis")
     private WebElement opslaanPolis;
 
