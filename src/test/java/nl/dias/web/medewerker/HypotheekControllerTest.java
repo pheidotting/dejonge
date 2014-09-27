@@ -114,7 +114,10 @@ public class HypotheekControllerTest extends EasyMockSupport {
         Hypotheek hypotheek = createMock(Hypotheek.class);
         JsonHypotheek jsonHypotheek = createMock(JsonHypotheek.class);
 
-        expect(hypotheekMapper.mapVanJson(jsonHypotheek)).andReturn(hypotheek);
+        expect(jsonHypotheek.getId()).andReturn(2L);
+        expect(hypotheekService.lees(2L)).andReturn(hypotheek);
+
+        expect(hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek)).andReturn(hypotheek);
         expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
         expect(jsonHypotheek.getRelatie()).andReturn(1L);
         hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L);
