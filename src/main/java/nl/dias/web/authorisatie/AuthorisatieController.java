@@ -74,13 +74,9 @@ public class AuthorisatieController {
             if (gebruiker instanceof Beheerder) {
                 // Nog te doen :)
             } else if (gebruiker instanceof Medewerker) {
-                if (((Medewerker) gebruiker).getKantoor() != null) {
-                    ingelogdeGebruiker.setKantoor(((Medewerker) gebruiker).getKantoor().getNaam());
-                }
+                ingelogdeGebruiker.setKantoor(((Medewerker) gebruiker).getKantoor().getNaam());
             } else if (gebruiker instanceof Relatie) {
-                if (((Relatie) gebruiker).getKantoor() != null) {
-                    ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
-                }
+                ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
             }
 
             return Response.status(200).entity(ingelogdeGebruiker).build();
