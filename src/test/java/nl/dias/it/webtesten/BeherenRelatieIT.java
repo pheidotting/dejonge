@@ -46,6 +46,10 @@ public class BeherenRelatieIT {
     private SeleniumServer seleniumServer;
     private WebDriver driver;
     private StringGeneratieUtil stringGeneratieUtil;
+    // schermen
+    private InlogScherm inlogScherm;
+    // testgegevens
+    private List<JsonRelatie> jsonRelaties;
 
     private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
 
@@ -72,6 +76,8 @@ public class BeherenRelatieIT {
             driver = new FirefoxDriver();
             stringGeneratieUtil = new StringGeneratieUtil();
         }
+
+        jsonRelaties = new ArrayList<>();
     }
 
     @After
@@ -82,32 +88,36 @@ public class BeherenRelatieIT {
         }
     }
 
+    private void inloggen() {
+
+        // fout bij inloggen, controleren op foute gebruikersnaam
+        inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
+
+        if (StringUtils.isEmpty(inlogScherm.leesmelding()) && StringUtils.isEmpty(inlogScherm.leesFoutmelding())) {
+            driver.navigate().refresh();
+            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
+        }
+
+        assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.", inlogScherm.leesFoutmelding());
+
+        // Testen op fout wachtwoord
+        inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "g");
+
+        assertEquals("Er is een fout opgetreden : Het ingevoerde wachtwoord is onjuist", inlogScherm.leesFoutmelding());
+
+        // Nu echt inloggen
+        inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "gerben");
+
+        Hulp.wachtFf();
+    }
+
     @Test
     public void test() {
         if (doorgaan()) {
             Hulp.naarAdres(driver, BASIS_URL + "inloggen");
 
-            InlogScherm inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
-
-            // fout bij inloggen, controleren op foute gebruikersnaam
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
-
-            if (StringUtils.isEmpty(inlogScherm.leesmelding()) && StringUtils.isEmpty(inlogScherm.leesFoutmelding())) {
-                driver.navigate().refresh();
-                inlogScherm.inloggen("gerben@dejongefinancieelconsult.nla", "");
-            }
-
-            assertEquals("Er is een fout opgetreden : gerben@dejongefinancieelconsult.nla werd niet gevonden.", inlogScherm.leesFoutmelding());
-
-            // Testen op fout wachtwoord
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "g");
-
-            assertEquals("Er is een fout opgetreden : Het ingevoerde wachtwoord is onjuist", inlogScherm.leesFoutmelding());
-
-            // Nu echt inloggen
-            inlogScherm.inloggen("gerben@dejongefinancieelconsult.nl", "gerben");
-
-            Hulp.wachtFf();
+            inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
+            inloggen();
 
             LijstRelaties lijstRelaties = PageFactory.initElements(driver, LijstRelaties.class);
             Hulp.wachtFf();
@@ -222,6 +232,7 @@ public class BeherenRelatieIT {
             beherenRelatieScherm.klikMenuItemAan(MenuItem.SCHADE, driver);
             SchadeBewerken schadeScherm = PageFactory.initElements(driver, SchadeBewerken.class);
             schadeScherm.vulVeldenEnDrukOpOpslaan(schade);
+            Hulp.wachtFf();
             checkOpgeslagenMelding(beherenRelatieScherm);
             assertTrue(driver.getCurrentUrl().endsWith("/schades"));
 

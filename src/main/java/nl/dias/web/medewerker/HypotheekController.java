@@ -85,12 +85,23 @@ public class HypotheekController {
     public Response opslaan(JsonHypotheek jsonHypotheek) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
 
-        Hypotheek hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek);
+        Hypotheek hypotheek = hypotheekService.lees(jsonHypotheek.getId());
+
+        hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
         hypotheekService.opslaan(hypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie());
 
         LOGGER.debug("Opgeslagen");
         return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();
+    }
+
+    @GET
+    @Path("/leesHypotheekVorm")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String leesHypotheekVorm(@QueryParam("id") Long id) {
+        SoortHypotheek soortHypotheek = hypotheekService.leesSoortHypotheek(id);
+
+        return soortHypotheek.getOmschrijving();
     }
 
     public void setHypotheekService(HypotheekService hypotheekService) {

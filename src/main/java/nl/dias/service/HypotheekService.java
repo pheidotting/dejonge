@@ -42,6 +42,10 @@ public class HypotheekService {
         return hypotheekRepository.lees(id);
     }
 
+    public SoortHypotheek leesSoortHypotheek(Long id) {
+        return hypotheekRepository.leesSoortHypotheek(id);
+    }
+
     public List<SoortHypotheek> alleSoortenHypotheekInGebruik() {
         return hypotheekRepository.alleSoortenHypotheekInGebruik();
     }

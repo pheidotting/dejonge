@@ -10,10 +10,13 @@ import nl.dias.domein.Hypotheek;
 import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 
+import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class HypotheekRepository extends AbstractRepository<Hypotheek> {
+    private final static Logger LOGGER = Logger.getLogger(HypotheekRepository.class);
+
     public HypotheekRepository() {
         super(Hypotheek.class);
         zetPersistenceContext("dias");
@@ -25,6 +28,7 @@ public class HypotheekRepository extends AbstractRepository<Hypotheek> {
     }
 
     public List<SoortHypotheek> alleSoortenHypotheekInGebruik() {
+        LOGGER.debug("Ophalen alleSoortenHypotheekInGebruik");
         TypedQuery<SoortHypotheek> query = getEm().createNamedQuery("SoortHypotheek.allesInGebruik", SoortHypotheek.class);
         return query.getResultList();
     }

@@ -23,6 +23,10 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
     @Override
     public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek) {
+        return null;
+    }
+
+    public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek, Hypotheek hypotheek) {
         String patternDatum = "dd-MM-yyyy";
 
         LocalDate eindDatum = null;
@@ -46,7 +50,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
             taxatieDatum = LocalDate.parse(jsonHypotheek.getTaxatieDatum(), DateTimeFormat.forPattern(patternDatum));
         }
 
-        Hypotheek hypotheek = new Hypotheek();
+        // Hypotheek hypotheek = new Hypotheek();
 
         hypotheek.setId(jsonHypotheek.getId());
         hypotheek.setDuur(jsonHypotheek.getDuur());
@@ -96,7 +100,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         jsonHypotheek.setEindDatum(hypotheek.getEindDatum().toString(DATUM_FORMAAT));
         jsonHypotheek.setEindDatumRenteVastePeriode(hypotheek.getEindDatumRenteVastePeriode().toString(DATUM_FORMAAT));
         jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
-        jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getOmschrijving());
+        jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
         jsonHypotheek.setIngangsDatum(hypotheek.getIngangsDatum().toString(DATUM_FORMAAT));
         jsonHypotheek.setIngangsDatumRenteVastePeriode(hypotheek.getIngangsDatumRenteVastePeriode().toString(DATUM_FORMAAT));
         if (hypotheek.getKoopsom() != null) {

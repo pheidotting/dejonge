@@ -28,6 +28,9 @@
 	<logger name="nl.dias.service.AuthorisatieService">
 		<level value="info" />
 	</logger>
+	<logger name="javax.persistence">
+		<level value="trace" />
+	</logger>
 	<logger name="nl.dias.web.filter">
 		<level value="info" />
 	</logger>

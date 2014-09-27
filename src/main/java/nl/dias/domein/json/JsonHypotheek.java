@@ -30,10 +30,12 @@ public class JsonHypotheek {
     private List<String> errors;
     private List<JsonOpmerking> opmerkingen;
     private List<JsonBijlage> bijlages;
+    // moet vanuit de schermkant
     private String idDiv;
     private String idDivLink;
     private String className;
     private String titel;
+    private List<String> soortenHypotheek;
 
     public Long getId() {
         return id;
@@ -249,6 +251,14 @@ public class JsonHypotheek {
 
     public void setTitel(String titel) {
         this.titel = titel;
+    }
+
+    public List<String> getSoortenHypotheek() {
+        return soortenHypotheek;
+    }
+
+    public void setSoortenHypotheek(List<String> soortenHypotheek) {
+        this.soortenHypotheek = soortenHypotheek;
     }
 
     /**

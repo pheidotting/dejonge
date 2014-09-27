@@ -325,12 +325,13 @@ public class Hypotheek implements PersistenceObject {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("taxatieDatum", this.taxatieDatum).append("eindDatum", this.eindDatum).append("koopsom", this.koopsom).append("relatie", this.relatie)
-                .append("hypotheekBedrag", this.hypotheekBedrag).append("rente", this.rente).append("hypotheekVorm", this.hypotheekVorm).append("duur", this.duur)
-                .append("waardeVoorVerbouwing", this.waardeVoorVerbouwing).append("id", this.id).append("onderpand", this.onderpand).append("duurRenteVastePeriode", this.duurRenteVastePeriode)
-                .append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde).append("ingangsDatum", this.ingangsDatum).append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode)
-                .append("waardeNaVerbouwing", this.waardeNaVerbouwing).append("marktWaarde", this.marktWaarde).append("wozWaarde", this.wozWaarde).append("omschrijving", this.omschrijving)
-                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode).toString();
+        return new ToStringBuilder(this).append("taxatieDatum", this.taxatieDatum + "\n").append("eindDatum", this.eindDatum + "\n").append("koopsom", this.koopsom + "\n")
+                .append("hypotheekBedrag", this.hypotheekBedrag + "\n").append("rente", this.rente + "\n").append("hypotheekVorm", this.hypotheekVorm + "\n").append("duur", this.duur + "\n")
+                .append("waardeVoorVerbouwing", this.waardeVoorVerbouwing + "\n").append("id", this.id + "\n").append("onderpand", this.onderpand + "\n")
+                .append("duurRenteVastePeriode", this.duurRenteVastePeriode + "\n").append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde + "\n").append("ingangsDatum", this.ingangsDatum + "\n")
+                .append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode + "\n").append("waardeNaVerbouwing", this.waardeNaVerbouwing + "\n")
+                .append("marktWaarde", this.marktWaarde + "\n").append("wozWaarde", this.wozWaarde + "\n").append("omschrijving", this.omschrijving + "\n")
+                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").toString();
     }
 
 }

@@ -7,8 +7,30 @@ define([ "commons/3rdparty/log",
 	
 //	var logger = log.getLogger("hypotheek.js");
 
+	
+	
 	return function hypotheek(data) {
 		_this = this;
+		
+		_this.soortenHypotheek = ko.observableArray();
+
+		_this.soorten = function(){
+			return $.ajax({
+				type: "GET",
+				async: false,
+				url: '../dejonge/rest/medewerker/hypotheek/alleSoortenHypotheek',	
+				dataType:'json',
+				success: function (data) {
+					$.each(data, function(i, item) {
+						_this.soortenHypotheek.push(new SoortHypotheek(item));
+					});
+					
+					return data;
+				}
+			});
+		}
+		_this.soorten();
+		
 
 		_this.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
@@ -70,7 +92,14 @@ define([ "commons/3rdparty/log",
 			}
 		}, this);
 		_this.titel = ko.computed(function() {
-			return data.hypotheekVorm;
+			var omschrijving = '';
+			$.each(_this.soortenHypotheek(), function(i, soort){
+				if(data.hypotheekVorm == soort.id()){
+					omschrijving = soort.omschrijving();
+				}
+				
+			});
+			return omschrijving;
 		}, this);
 	    _this.opmerkingen = ko.observableArray();
 		if(data.opmerkingen != null){
@@ -80,7 +109,6 @@ define([ "commons/3rdparty/log",
 		self.bijlages = ko.observableArray();
 		if(data.bijlages != null){
 			$.each(data.bijlages, function(i, item){
-				logger.debug(item);
 				self.bijlages.push(new Bijlage(item));
 			});
 		}
@@ -115,7 +143,7 @@ define([ "commons/3rdparty/log",
 
 	    self.bewerkHypotheek = function(hypotheek){
 			verbergMeldingen();
-	    	document.location.hash = "#beherenRelatie/" + relatieId + "/hypotheek/" + ko.utils.unwrapObservable(hypotheek.id);
+	    	document.location.hash = "#beherenRelatie/" + _relatieId + "/hypotheek/" + ko.utils.unwrapObservable(hypotheek.id);
 	    };
 
 		_this.berekenEinddatumLening = function(hypotheek){
@@ -134,6 +162,13 @@ define([ "commons/3rdparty/log",
 
 	};
 
+	function SoortHypotheek(data){
+		var _this = this;
+		
+		_this.id = ko.observable(data.id);
+		_this.omschrijving = ko.observable(data.omschrijving);
+	}
+	
 	function Opmerking(data){
 		var self = this;
 
