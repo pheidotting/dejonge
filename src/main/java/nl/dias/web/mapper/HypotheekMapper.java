@@ -23,7 +23,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
     @Override
     public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek) {
-        return null;
+        return mapVanJson(jsonHypotheek, new Hypotheek());
     }
 
     public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek, Hypotheek hypotheek) {
