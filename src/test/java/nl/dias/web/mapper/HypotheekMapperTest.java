@@ -32,6 +32,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
 
         SoortHypotheek soortHypotheek = new SoortHypotheek();
         soortHypotheek.setOmschrijving("soortHypotheek");
+        soortHypotheek.setId(2L);
 
         Relatie relatie = new Relatie();
         relatie.setId(46L);
@@ -64,7 +65,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         jsonHypotheek.setEindDatum("01-02-2014");
         jsonHypotheek.setEindDatumRenteVastePeriode("03-02-2014");
         jsonHypotheek.setHypotheekBedrag("4325.56");
-        jsonHypotheek.setHypotheekVorm("soortHypotheek");
+        jsonHypotheek.setHypotheekVorm("2");
         jsonHypotheek.setId(3L);
         jsonHypotheek.setIngangsDatum("04-03-2014");
         jsonHypotheek.setIngangsDatumRenteVastePeriode("05-04-2014");
