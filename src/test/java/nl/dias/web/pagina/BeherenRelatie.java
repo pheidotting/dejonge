@@ -1,5 +1,6 @@
 package nl.dias.web.pagina;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
@@ -66,6 +67,24 @@ public class BeherenRelatie extends PaginaMetMenuBalk {
     private List<WebElement> soorttelnummer;
     @FindBy(name = "verwijderTelefoonNummer")
     private List<WebElement> verwijderTelefoonNummer;
+
+    // Validatie
+    @FindBy(className = "validationMessage")
+    private List<WebElement> validatieFouten;
+
+    public int aantalFouten() {
+        return getValidatieFouten().size();
+    }
+
+    public List<WebElement> getValidatieFouten() {
+        List<WebElement> lijst = new ArrayList<>();
+        for (WebElement e : validatieFouten) {
+            if (e.isDisplayed()) {
+                lijst.add(e);
+            }
+        }
+        return lijst;
+    }
 
     public void vulVeldenEnDrukOpOpslaan(String voornaam, String achternaam, String tussenvoegsel, String straat, String huisnummer, String toevoeging, String postcode, String plaats, String bsn,
             String emailadres, String geboorteDatum, String overlijdensdatum, String geslacht, String burgerlijkeStaat, List<BeherenRelatieRekeningnummer> rekeningnummers,

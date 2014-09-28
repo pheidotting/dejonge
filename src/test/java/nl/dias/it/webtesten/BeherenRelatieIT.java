@@ -49,6 +49,8 @@ public class BeherenRelatieIT {
     private StringGeneratieUtil stringGeneratieUtil;
     // schermen
     private InlogScherm inlogScherm;
+    private LijstRelaties lijstRelaties;
+    private BeherenRelatie beherenRelatieScherm;
     // testgegevens
     private List<JsonRelatie> jsonRelaties;
 
@@ -113,6 +115,32 @@ public class BeherenRelatieIT {
         Hulp.wachtOpElement(lijstRelaties.getToevoegenNieuweRelatie());
     }
 
+    public void opvoerenRelatie() {
+        lijstRelaties = PageFactory.initElements(driver, LijstRelaties.class);
+        Hulp.wachtFf();
+        lijstRelaties.toevoegenNieuweRelatie();
+        Hulp.wachtFf();
+
+        beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
+        beherenRelatieScherm.drukOpOpslaan();
+        // aantal 'vul dit veld in' meldingen checken
+        assertEquals(6, beherenRelatieScherm.aantalFouten());
+
+        JsonRelatie jsonRelatie = maakJsonRelatie();
+        jsonRelaties.add(jsonRelatie);
+
+        beherenRelatieScherm.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), null, jsonRelatie.getStraat(), "a", null, null, null, null, jsonRelatie.getIdentificatie(),
+                jsonRelatie.getGeboorteDatum(), null, jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), null, null);
+
+        assertEquals(1, beherenRelatieScherm.aantalFouten());
+        assertEquals("Vul een getal in.", beherenRelatieScherm.getValidatieFouten().get(0).getText());
+        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, jsonRelatie.getTussenvoegsel(), null, jsonRelatie.getHuisnummer(), jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(),
+                jsonRelatie.getPlaats(), jsonRelatie.getBsn(), null, null, jsonRelatie.getOverlijdensdatum(), null, null,
+                allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+
+        checkOpgeslagenMelding(beherenRelatieScherm);
+    }
+
     @Test
     public void test() {
         if (doorgaan()) {
@@ -121,51 +149,16 @@ public class BeherenRelatieIT {
             inlogScherm = PageFactory.initElements(driver, InlogScherm.class);
             inloggen();
 
-            LijstRelaties lijstRelaties = PageFactory.initElements(driver, LijstRelaties.class);
-            Hulp.wachtFf();
-            lijstRelaties.toevoegenNieuweRelatie();
-            Hulp.wachtFf();
-
-            BeherenRelatie beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
-
-            JsonRelatie jsonRelatie = maakJsonRelatie();
-            // String huisnummer = jsonRelatie.getHuisnummer();
-
-            // jsonRelatie.setHuisnummer("a");
-
-            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer(),
-                    jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-                    jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(),
-                    allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
-
-            // checkFoutmelding(beherenRelatieScherm,
-            // "Er is een fout opgetreden : Huisnummer mag alleen cijfers bevatten");
-            //
-            // jsonRelatie.setHuisnummer(huisnummer);
-            //
-            // beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null,
-            // null, jsonRelatie.getHuisnummer(), null, null, null, null, null,
-            // null, null, null, null, null, null);
-            if (true) {
-                return;
-            }
-            checkOpgeslagenMelding(beherenRelatieScherm);
-
-            // JsonRelatie jsonRelatie = new JsonRelatie();
-            // jsonRelatie.setAchternaam("Jansen");
-            // jsonRelatie.setTussenvoegsel("");
-            // jsonRelatie.setVoornaam("Patrick");
-            // jsonRelatie.setGeboorteDatum("05-11-1970");
-            // jsonRelatie.setAdresOpgemaakt("Langestraat 75 , Groningen");
+            opvoerenRelatie();
 
             // Opgeslagen Relatie weer aanklikken op overzichtsscherm
-            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelatie));
+            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelaties.get(0)));
 
             Hulp.wachtFf(2000);
 
             // Checken of velden correct worden weergegeven (en dus of ze
             // correct zijn opgeslagen)
-            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
+            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelaties.get(0)));
 
             beherenRelatieScherm.klikMenuItemAan(MenuItem.POLIS, driver);
             Hulp.wachtFf();
@@ -322,21 +315,21 @@ public class BeherenRelatieIT {
             String nieuweStraat = null;
             do {
                 nieuweStraat = stringGeneratieUtil.genereerStraatnaam();
-            } while (nieuweStraat.equals(jsonRelatie.getStraat()));
-            jsonRelatie.setStraat(nieuweStraat);
-            jsonRelatie.setAdresOpgemaakt(null);
+            } while (nieuweStraat.equals(jsonRelaties.get(0).getStraat()));
+            jsonRelaties.get(0).setStraat(nieuweStraat);
+            jsonRelaties.get(0).setAdresOpgemaakt(null);
             beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE, driver);
             beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, nieuweStraat, null, null, null, null, null, null, null, null, null, null, null, null);
             checkOpgeslagenMelding(beherenRelatieScherm);
 
             // Opgeslagen Relatie weer aanklikken op overzichtsscherm
-            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelatie));
+            assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(jsonRelaties.get(0)));
 
             Hulp.wachtFf(2000);
 
             // Checken of velden correct worden weergegeven (en dus of ze
             // correct zijn opgeslagen)
-            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelatie));
+            assertEquals("", beherenRelatieScherm.checkVelden(jsonRelaties.get(0)));
             beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
