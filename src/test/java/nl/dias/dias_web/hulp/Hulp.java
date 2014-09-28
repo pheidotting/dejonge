@@ -1,5 +1,6 @@
 package nl.dias.dias_web.hulp;
 
+import org.joda.time.LocalDateTime;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,20 @@ public class Hulp {
     private Hulp() {
     }
 
+    public static boolean doeCheckMetTimeOut(boolean check) {
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        while (!check && LocalDateTime.now().isBefore(timeOut)) {
+            wachtFf();
+            return true;
+        }
+        return false;
+    }
+
     public static void vulVeld(WebElement element, String waarde) {
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        while (!element.isDisplayed() && LocalDateTime.now().isBefore(timeOut)) {
+            wachtFf();
+        }
         if (waarde != null && !waarde.equals("") && !waarde.equals(element.getText()) && !waarde.equals(getText(element))) {
             do {
                 element.clear();
@@ -25,12 +39,28 @@ public class Hulp {
         Hulp.klikEnWacht(element, timeout);
     }
 
+    public static void wachtOpElement(WebElement element) {
+        doeCheckMetTimeOut(element.isDisplayed());
+        if (!element.isDisplayed()) {
+            throw new NoSuchElementException(element + " niet gevonden");
+        }
+    }
+
     public static void klikEnWacht(WebElement element, int timeout) {
+        wachtFf(timeout);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
         try {
-            wachtFf(timeout);
-            wachtFf(timeout);
+            while (!element.isDisplayed() && LocalDateTime.now().isBefore(timeOut)) {
+                // doeCheckMetTimeOut(element.isDisplayed());
+                wachtFf(timeout);
+            }
             element.click();
         } catch (NoSuchElementException e) {
+            try {
+                element.click();
+            } catch (NoSuchElementException e1) {
+                // doeCheckMetTimeOut(element.isDisplayed());
+            }
         }
     }
 
@@ -61,6 +91,7 @@ public class Hulp {
 
     public static void selecteerUitSelectieBox(WebElement element, String waarde) {
         Select select = new Select(element);
+        doeCheckMetTimeOut(element.isDisplayed());
         try {
             select.selectByValue(waarde);
         } catch (NoSuchElementException e) {

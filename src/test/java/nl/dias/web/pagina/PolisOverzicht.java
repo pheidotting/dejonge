@@ -7,6 +7,7 @@ import nl.dias.domein.Bedrag;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.web.mapper.PolisMapper;
 
+import org.joda.time.LocalDateTime;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -106,10 +107,12 @@ public class PolisOverzicht {
 
     public String controleerPolissen(JsonPolis... polissen) {
         StringBuilder sb = new StringBuilder();
-        if (polissen.length != titel.size()) {
-            sb.append("aantal komt niet overeen");
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        while (polissen.length != titel.size() && LocalDateTime.now().isBefore(timeOut)) {
+            if (polissen.length != titel.size()) {
+                sb.append("aantal komt niet overeen");
+            }
         }
-
         for (JsonPolis p : polissen) {
             sb.append(controleerPolis(p));
         }

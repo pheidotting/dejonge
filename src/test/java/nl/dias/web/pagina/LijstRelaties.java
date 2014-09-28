@@ -23,6 +23,10 @@ public class LijstRelaties {
     @FindBy(id = "toevoegenNieuweRelatie")
     private WebElement toevoegenNieuweRelatie;
 
+    public WebElement getToevoegenNieuweRelatie() {
+        return toevoegenNieuweRelatie;
+    }
+
     public boolean checkVelden(JsonLijstRelaties jsonLijstRelaties) {
         boolean ok = true;
 

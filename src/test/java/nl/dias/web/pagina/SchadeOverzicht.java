@@ -101,12 +101,18 @@ public class SchadeOverzicht {
 
     public void opmerkingBijSchade(JsonSchade jsonSchade) {
         int nummer = zoekSchade(jsonSchade);
+
+        Hulp.doeCheckMetTimeOut(nummer < dropdown.size());
+
         Hulp.klikEnWacht(dropdown.get(nummer));
         Hulp.klikEnWacht(plaatsOpmerking.get(nummer));
     }
 
     public void bewerkSchade(JsonSchade jsonSchade) {
         int nummer = zoekSchade(jsonSchade);
+
+        Hulp.doeCheckMetTimeOut(nummer < dropdown.size());
+
         Hulp.klikEnWacht(dropdown.get(nummer));
         Hulp.klikEnWacht(bewerkSchade.get(nummer));
     }
