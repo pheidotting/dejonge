@@ -1,5 +1,18 @@
 function start(log, relatieId, actie, subId){
+	
+	
 	$('#content').load('pages/beherenRelatie/template.html', function(response, status, xhr) {
+		if(relatieId == undefined || relatieId == null || relatieId == 0){
+			$('#bedrijven').hide();
+			$('#bedrijf').hide();
+			$('#polissen').hide();
+			$('#polis').hide();
+			$('#schades').hide();
+			$('#schade').hide();
+			$('#hypotheken').hide();
+			$('#hypotheek').hide();
+			$('#bijlages').hide();
+		}
 		if (status == "success") {
 			//Op basis van actie de actieve tab bepalen
 			if(actie == undefined){
