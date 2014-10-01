@@ -61,6 +61,10 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @Temporal(TemporalType.DATE)
     private Date ingangsDatum;
 
+    @Column(name = "EINDDATUM")
+    @Temporal(TemporalType.DATE)
+    private Date eindDatum;
+
     @AttributeOverride(name = "bedrag", column = @Column(name = "PREMIE"))
     private Bedrag premie;
 
@@ -133,6 +137,20 @@ public abstract class Polis implements PersistenceObject, Serializable {
         } else {
             this.ingangsDatum = ingangsDatum.toDateMidnight().toDate();
         }
+    }
+
+    public LocalDate getEindDatum() {
+        if (eindDatum == null) {
+            return null;
+        }
+        return new LocalDate(eindDatum);
+    }
+
+    public void setEindDatum(LocalDate eindDatum) {
+        if (eindDatum == null) {
+            eindDatum = null;
+        }
+        this.eindDatum = eindDatum.toDate();
     }
 
     public String getIngangsDatumString() {

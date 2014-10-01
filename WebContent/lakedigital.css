@@ -22,6 +22,10 @@ input {
 	color: #CCCCCC;
 }
 
+.polisBeeindigd {
+	color: #CCCC00;
+}
+
 .panel-heading {
 	padding: 10px 15px 30px;
 }

@@ -94,6 +94,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (polis.getIngangsDatum() != null && !"".equals(polis.getIngangsDatum())) {
             jsonPolis.setIngangsDatum(polis.getIngangsDatum().toString("yyyy-MM-dd"));
         }
+        if (polis.getEindDatum() != null && !"".equals(polis.getEindDatum())) {
+            jsonPolis.setEindDatum(polis.getEindDatum().toString("yyyy-MM-dd"));
+        }
         if (polis.getWijzigingsDatum() != null && !"".equals(polis.getWijzigingsDatum())) {
             jsonPolis.setWijzigingsDatum(polis.getWijzigingsDatum().toString("yyyy-MM-dd"));
         }

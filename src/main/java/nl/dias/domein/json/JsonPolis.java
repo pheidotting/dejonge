@@ -10,6 +10,7 @@ public class JsonPolis {
     private Long id;
     private String polisNummer;
     private String ingangsDatum;
+    private String eindDatum;
     private String premie;
     private String wijzigingsDatum;
     private String prolongatieDatum;
@@ -49,6 +50,14 @@ public class JsonPolis {
 
     public void setIngangsDatum(String ingangsDatum) {
         this.ingangsDatum = ingangsDatum;
+    }
+
+    public String getEindDatum() {
+        return eindDatum;
+    }
+
+    public void setEindDatum(String eindDatum) {
+        this.eindDatum = eindDatum;
     }
 
     public String getPremie() {

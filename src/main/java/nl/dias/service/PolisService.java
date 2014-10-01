@@ -61,6 +61,13 @@ public class PolisService {
         return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
     }
 
+    public void beeindigen(Long id) {
+        Polis polis = polisRepository.lees(id);
+
+        polis.setEindDatum(new LocalDate());
+        polisRepository.opslaan(polis);
+    }
+
     public void opslaan(Polis polis) {
         polisRepository.opslaan(polis);
 

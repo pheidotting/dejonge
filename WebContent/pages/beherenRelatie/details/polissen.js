@@ -20,6 +20,11 @@ function Polis(data, log, relatieId){
 	}else{
 		self.ingangsDatum = ko.observable().extend({required: true});
 	}
+	if(data.eindDatum != undefined){
+		self.eindDatum = ko.observable(moment(data.eindDatum).format("DD-MM-YYYY"));
+	}else{
+		self.eindDatum = ko.observable();
+	}
 	if(data.wijzigingsDatum != undefined){
 		self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
 	}else{
@@ -45,9 +50,17 @@ function Polis(data, log, relatieId){
 		var datum = moment(data.ingangsDatum);
 		var tijd = moment(datum).fromNow();
 		if(tijd.substr(tijd.length - 3) == "ago"){
-			return "panel-title";
 		}else{
 			return "polisNietActief panel-title";
+		}
+		if(data.eindDatum){
+			datum = moment(data.eindDatum);
+			tijd = moment(datum).fromNow();
+			if(tijd.substr(tijd.length - 3) == "ago"){
+				return "polisBeeindigd panel-title";
+			}else{
+				return "panel-title";
+			}
 		}
 	}, this);
 	self.titel = ko.computed(function () {
@@ -61,16 +74,19 @@ function Polis(data, log, relatieId){
 	};
 
     self.schadeMeldenBijPolis = function(polis){
-//		$('#tabs').puitabview('select', 6);
 		log.debug(ko.utils.unwrapObservable(polis.id));
 		log.debug($('#polisVoorSchademelding').val());
-//		$('#polisVoorSchademelding').val(ko.utils.unwrapObservable(polis.id));
     };
 
     self.bewerkPolis = function(polis){
 		verbergMeldingen();
     	document.location.hash = "#beherenRelatie/" + relatieId + "/polis/" + ko.utils.unwrapObservable(polis.id);
     };
+    
+    self.beeindigPolis = function(polis){
+		$.get('../dejonge/rest/medewerker/polis/beeindigen', {"id" : polis.id()});
+		self.eindDatum(moment().format("DD-MM-YYYY"));
+    }
 
     self.opslaan = function(polis){
     	var result = ko.validation.group(polis, {deep: true});
@@ -106,6 +122,7 @@ function Polissen(data, log, relatieId){
 	$.each(data, function(i, item){
 		self.polissen.push(new Polis(item, log, relatieId));
 	});
+	
     self.verwijderPolis = function(polis){
 		verbergMeldingen();
 		var r=confirm("Weet je zeker dat je deze polis wilt verwijderen?");

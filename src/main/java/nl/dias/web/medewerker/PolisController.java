@@ -46,7 +46,7 @@ public class PolisController {
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonPolis lees(@QueryParam("id") String id) {
-        LOGGER.debug("ophalen Polise met id " + id);
+        LOGGER.debug("ophalen Polis met id " + id);
         if (id != null && !"".equals(id) && !"0".equals(id)) {
             LOGGER.debug("ophalen Polis");
             return polisMapper.mapNaarJson(polisService.lees(Long.valueOf(id)));
@@ -54,6 +54,14 @@ public class PolisController {
             LOGGER.debug("Nieuwe Polis tonen");
             return new JsonPolis();
         }
+    }
+
+    @GET
+    @Path("/beeindigen")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void beeindigen(@QueryParam("id") Long id) {
+        LOGGER.debug("beeindigen Polis met id " + id);
+        polisService.beeindigen(id);
     }
 
     @GET
