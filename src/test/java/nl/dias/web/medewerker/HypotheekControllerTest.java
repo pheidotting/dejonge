@@ -114,10 +114,30 @@ public class HypotheekControllerTest extends EasyMockSupport {
         Hypotheek hypotheek = createMock(Hypotheek.class);
         JsonHypotheek jsonHypotheek = createMock(JsonHypotheek.class);
 
-        expect(jsonHypotheek.getId()).andReturn(2L);
+        expect(jsonHypotheek.getId()).andReturn(2L).times(3);
         expect(hypotheekService.lees(2L)).andReturn(hypotheek);
 
         expect(hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek)).andReturn(hypotheek);
+        expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
+        expect(jsonHypotheek.getRelatie()).andReturn(1L);
+        hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L);
+        expectLastCall();
+
+        expect(hypotheek.getId()).andReturn(46L);
+
+        replayAll();
+
+        assertEquals(200, controller.opslaan(jsonHypotheek).getStatus());
+    }
+
+    @Test
+    public void testOpslaanMetNulJson() {
+        Hypotheek hypotheek = createMock(Hypotheek.class);
+        JsonHypotheek jsonHypotheek = createMock(JsonHypotheek.class);
+
+        expect(jsonHypotheek.getId()).andReturn(null);
+
+        expect(hypotheekMapper.mapVanJson(jsonHypotheek, new Hypotheek())).andReturn(hypotheek);
         expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
         expect(jsonHypotheek.getRelatie()).andReturn(1L);
         hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L);
