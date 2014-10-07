@@ -85,7 +85,10 @@ public class HypotheekController {
     public Response opslaan(JsonHypotheek jsonHypotheek) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
 
-        Hypotheek hypotheek = hypotheekService.lees(jsonHypotheek.getId());
+        Hypotheek hypotheek = new Hypotheek();
+        if (jsonHypotheek.getId() != null && jsonHypotheek.getId() != 0) {
+            hypotheek = hypotheekService.lees(jsonHypotheek.getId());
+        }
 
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
