@@ -81,7 +81,7 @@ public class HypotheekRepositoryTest {
         hypotheekRepository.getEm().getTransaction().commit();
 
         assertEquals(4, hypotheekRepository.alles().size());
-        assertEquals(3, hypotheekRepository.allesVanRelatie(relatie).size());
+        assertEquals(1, hypotheekRepository.allesVanRelatie(relatie).size());
         assertEquals(1, hypotheekRepository.allesVanRelatie(relatie2).size());
 
         Relatie r = (Relatie) hypotheekRepository.getEm().find(Gebruiker.class, relatie.getId());
