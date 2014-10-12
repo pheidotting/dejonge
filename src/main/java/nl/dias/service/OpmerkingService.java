@@ -44,7 +44,7 @@ public class OpmerkingService {
         }
 
         if (opmerking.getHypotheek() != null) {
-            Hypotheek hypotheek = hypotheekService.lees(opmerking.getHypotheek().getId());
+            Hypotheek hypotheek = hypotheekService.leesHypotheek(opmerking.getHypotheek().getId());
             hypotheek.getOpmerkingen().add(opmerking);
 
             hypotheekService.opslaan(hypotheek);

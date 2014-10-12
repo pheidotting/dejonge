@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,20 +32,22 @@ import org.joda.time.LocalDate;
 @Entity
 @Table(name = "HYPOTHEEK")
 @NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie") })
-public class Hypotheek implements PersistenceObject {
+public class Hypotheek implements PersistenceObject, Serializable {
+    private static final long serialVersionUID = -8709743283669873667L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    protected Long id;
 
     @JoinColumn(name = "RELATIE")
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
-    private Relatie relatie;
+    protected Relatie relatie;
 
     @JoinColumn(name = "SOORT", nullable = false)
     @ManyToOne
     private SoortHypotheek hypotheekVorm;
-    @Column(name = "OMSCHRIJVING", length = 1000, nullable = false)
+    @Column(name = "OMSCHRIJVING", length = 1000, nullable = true)
     private String omschrijving;
     @AttributeOverride(name = "bedrag", column = @Column(name = "HYPOTHEEKBEDRAG"))
     private Bedrag hypotheekBedrag;
@@ -52,8 +55,8 @@ public class Hypotheek implements PersistenceObject {
     private Integer rente;
     @AttributeOverride(name = "bedrag", column = @Column(name = "MARKTWAARDE"))
     private Bedrag marktWaarde;
-    @AttributeOverride(name = "bedrag", column = @Column(name = "ONDERPAND"))
-    private Bedrag onderpand;
+    @Column(name = "ONDERPAND")
+    private String onderpand;
     @AttributeOverride(name = "bedrag", column = @Column(name = "KOOPSOM"))
     private Bedrag koopsom;
     @AttributeOverride(name = "bedrag", column = @Column(name = "VRIJEVERKOOPWAARDE"))
@@ -83,10 +86,18 @@ public class Hypotheek implements PersistenceObject {
     private Date eindDatumRenteVastePeriode;
     @Column(name = "DUURRENTEVASTEPERIODE")
     private Long duurRenteVastePeriode;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", orphanRemoval = true, targetEntity = Opmerking.class)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", orphanRemoval = true, targetEntity = Bijlage.class)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
+    @Column(name = "LENINGNUMMER", length = 50)
+    private String leningNummer;
+    @ManyToOne
+    @JoinColumn(name = "BANK", nullable = true)
+    private Bank bank;
+    @ManyToOne
+    @JoinColumn(name = "PAKKET")
+    private HypotheekPakket hypotheekPakket;
 
     @Override
     public Long getId() {
@@ -138,11 +149,11 @@ public class Hypotheek implements PersistenceObject {
         this.marktWaarde = marktWaarde;
     }
 
-    public Bedrag getOnderpand() {
+    public String getOnderpand() {
         return onderpand;
     }
 
-    public void setOnderpand(Bedrag onderpand) {
+    public void setOnderpand(String onderpand) {
         this.onderpand = onderpand;
     }
 
@@ -290,6 +301,30 @@ public class Hypotheek implements PersistenceObject {
 
     public void setBijlages(Set<Bijlage> bijlages) {
         this.bijlages = bijlages;
+    }
+
+    public String getLeningNummer() {
+        return leningNummer;
+    }
+
+    public void setLeningNummer(String leningNummer) {
+        this.leningNummer = leningNummer;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public HypotheekPakket getHypotheekPakket() {
+        return hypotheekPakket;
+    }
+
+    public void setHypotheekPakket(HypotheekPakket hypotheekPakket) {
+        this.hypotheekPakket = hypotheekPakket;
     }
 
     /**

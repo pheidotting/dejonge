@@ -14,12 +14,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonHypotheek;
+import nl.dias.domein.json.JsonHypotheekPakket;
 import nl.dias.domein.json.JsonSoortHypotheek;
 import nl.dias.service.HypotheekService;
 import nl.dias.web.mapper.HypotheekMapper;
+import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
 
 import org.apache.log4j.Logger;
@@ -36,6 +39,8 @@ public class HypotheekController {
     private SoortHypotheekMapper soortHypotheekMapper;
     @InjectParam
     private HypotheekMapper hypotheekMapper;
+    @InjectParam
+    private HypotheekPakketMapper hypotheekPakketMapper;
 
     @GET
     @Path("/lees")
@@ -46,7 +51,7 @@ public class HypotheekController {
         if (id == null || id.equals("") || id.equals("0")) {
             jsonHypotheek = new JsonHypotheek();
         } else {
-            jsonHypotheek = hypotheekMapper.mapNaarJson(hypotheekService.lees(Long.valueOf(id)));
+            jsonHypotheek = hypotheekMapper.mapNaarJson(hypotheekService.leesHypotheek(Long.valueOf(id)));
         }
 
         return jsonHypotheek;
@@ -66,12 +71,25 @@ public class HypotheekController {
     }
 
     @GET
-    @Path("/lijst")
+    @Path("/lijstHypotheekPakketten")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JsonHypotheek> alles() {
+    public List<JsonHypotheekPakket> alleHypotheekPakketten(Long relatieId) {
+        Set<HypotheekPakket> hypotheekPakketten = new HashSet<>();
+
+        for (HypotheekPakket hypotheekPakket : hypotheekService.allePakketenVanRelatie(relatieId)) {
+            hypotheekPakketten.add(hypotheekPakket);
+        }
+
+        return hypotheekPakketMapper.mapAllNaarJson(hypotheekPakketten);
+    }
+
+    @GET
+    @Path("/lijstHypotheken")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonHypotheek> alleHypotheken(Long relatieId) {
         Set<Hypotheek> hypotheken = new HashSet<>();
 
-        for (Hypotheek soort : hypotheekService.alles()) {
+        for (Hypotheek soort : hypotheekService.allesVanRelatie(relatieId)) {
             hypotheken.add(soort);
         }
 
@@ -87,7 +105,7 @@ public class HypotheekController {
 
         Hypotheek hypotheek = new Hypotheek();
         if (jsonHypotheek.getId() != null && jsonHypotheek.getId() != 0) {
-            hypotheek = hypotheekService.lees(jsonHypotheek.getId());
+            hypotheek = hypotheekService.leesHypotheek(jsonHypotheek.getId());
         }
 
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
@@ -117,5 +135,9 @@ public class HypotheekController {
 
     public void setHypotheekMapper(HypotheekMapper hypotheekMapper) {
         this.hypotheekMapper = hypotheekMapper;
+    }
+
+    public void setHypotheekPakketMapper(HypotheekPakketMapper hypotheekPakketMapper) {
+        this.hypotheekPakketMapper = hypotheekPakketMapper;
     }
 }

@@ -16,75 +16,73 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HypotheekRepositoryTest {
-    private HypotheekRepository hypotheekRepository;
+public class HypotheekPakketRepositoryTest {
+    private HypotheekPakketRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        hypotheekRepository = new HypotheekRepository();
-        hypotheekRepository.setPersistenceContext("unittest");
+        repository = new HypotheekPakketRepository();
+        repository.setPersistenceContext("unittest");
     }
 
     @Test
     public void test() {
         Relatie relatie = new Relatie();
-        Relatie relatie2 = new Relatie();
         SoortHypotheek soortHypotheek = new SoortHypotheek();
         soortHypotheek.setOmschrijving("jadajada");
 
         Bank bank = new Bank();
         bank.setNaam("naamBank");
 
-        hypotheekRepository.getEm().getTransaction().begin();
-        hypotheekRepository.getEm().persist(soortHypotheek);
-        hypotheekRepository.getEm().persist(bank);
-        hypotheekRepository.getEm().persist(relatie);
-        hypotheekRepository.getEm().persist(relatie2);
-        hypotheekRepository.getEm().getTransaction().commit();
+        repository.getEm().getTransaction().begin();
+        repository.getEm().persist(soortHypotheek);
+        repository.getEm().persist(bank);
+        repository.getEm().persist(relatie);
+        repository.getEm().getTransaction().commit();
 
         Hypotheek hypotheek1 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer1");
         Hypotheek hypotheek2 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer2");
         Hypotheek hypotheek3 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer3");
-        Hypotheek hypotheek4 = maakHypotheek(soortHypotheek, bank, relatie2, "leningNummer4");
 
         relatie.getHypotheken().add(hypotheek1);
         relatie.getHypotheken().add(hypotheek2);
         relatie.getHypotheken().add(hypotheek3);
-        relatie2.getHypotheken().add(hypotheek4);
 
-        hypotheekRepository.opslaan(hypotheek1);
-        hypotheekRepository.opslaan(hypotheek2);
-        hypotheekRepository.opslaan(hypotheek4);
+        repository.getEm().getTransaction().begin();
+        repository.getEm().persist(hypotheek1);
+        repository.getEm().persist(hypotheek2);
+        repository.getEm().getTransaction().commit();
 
         HypotheekPakket pakket = new HypotheekPakket();
         pakket.setRelatie(relatie);
         relatie.getHypotheekPakketten().add(pakket);
         pakket.getHypotheken().add(hypotheek2);
         pakket.getHypotheken().add(hypotheek3);
-        hypotheekRepository.getEm().getTransaction().begin();
-        hypotheekRepository.getEm().persist(pakket);
-        hypotheekRepository.getEm().getTransaction().commit();
+        repository.getEm().getTransaction().begin();
+        repository.getEm().persist(pakket);
+        repository.getEm().getTransaction().commit();
 
-        hypotheekRepository.opslaan(hypotheek3);
+        repository.getEm().getTransaction().begin();
+        repository.getEm().persist(hypotheek3);
+        repository.getEm().getTransaction().commit();
 
         hypotheek2.setHypotheekPakket(pakket);
         pakket.getHypotheken().add(hypotheek2);
         hypotheek3.setHypotheekPakket(pakket);
         pakket.getHypotheken().add(hypotheek3);
 
-        hypotheekRepository.getEm().getTransaction().begin();
-        hypotheekRepository.getEm().merge(hypotheek1);
-        hypotheekRepository.getEm().merge(hypotheek2);
-        hypotheekRepository.getEm().merge(hypotheek3);
-        hypotheekRepository.getEm().merge(pakket);
-        hypotheekRepository.getEm().merge(relatie);
-        hypotheekRepository.getEm().getTransaction().commit();
+        repository.getEm().getTransaction().begin();
+        repository.getEm().merge(hypotheek1);
+        repository.getEm().merge(hypotheek2);
+        repository.getEm().merge(hypotheek3);
+        repository.getEm().merge(pakket);
+        repository.getEm().merge(relatie);
+        repository.getEm().getTransaction().commit();
 
-        assertEquals(4, hypotheekRepository.alles().size());
-        assertEquals(3, hypotheekRepository.allesVanRelatie(relatie).size());
-        assertEquals(1, hypotheekRepository.allesVanRelatie(relatie2).size());
+        assertEquals(1, repository.alles().size());
+        assertEquals(1, repository.allesVanRelatie(relatie).size());
 
-        Relatie r = (Relatie) hypotheekRepository.getEm().find(Gebruiker.class, relatie.getId());
+        Relatie r = (Relatie) repository.getEm().find(Gebruiker.class, relatie.getId());
         assertEquals(1, r.getHypotheken().size());
         Set<HypotheekPakket> hps = r.getHypotheekPakketten();
         assertEquals(1, hps.size());
@@ -118,5 +116,4 @@ public class HypotheekRepositoryTest {
 
         return hypotheek;
     }
-
 }

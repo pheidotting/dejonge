@@ -1,11 +1,18 @@
 package nl.dias.web.mapper;
 
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+
+import nl.dias.domein.Bank;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
+import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonHypotheek;
+import nl.dias.domein.json.JsonOpmerking;
 
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
@@ -34,6 +41,9 @@ public class HypotheekMapperTest extends EasyMockSupport {
         soortHypotheek.setOmschrijving("soortHypotheek");
         soortHypotheek.setId(2L);
 
+        Bank bank = new Bank();
+        bank.setNaam("naamBank");
+
         Relatie relatie = new Relatie();
         relatie.setId(46L);
 
@@ -50,7 +60,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setKoopsom(new Bedrag("123.45"));
         hypotheek.setMarktWaarde(new Bedrag("234.56"));
         hypotheek.setOmschrijving("omschrijving");
-        hypotheek.setOnderpand(new Bedrag("345.67"));
+        hypotheek.setOnderpand("Onderpand");
         hypotheek.setRelatie(relatie);
         hypotheek.setRente(3);
         hypotheek.setTaxatieDatum(new LocalDate(2014, 5, 6));
@@ -58,6 +68,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setWaardeNaVerbouwing(new Bedrag(567.89));
         hypotheek.setWaardeVoorVerbouwing(new Bedrag(789.01));
         hypotheek.setWozWaarde(new Bedrag(678.90));
+        hypotheek.setBank(bank);
 
         jsonHypotheek = new JsonHypotheek();
         jsonHypotheek.setDuur(1L);
@@ -72,7 +83,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         jsonHypotheek.setKoopsom("123.45");
         jsonHypotheek.setMarktWaarde("234.56");
         jsonHypotheek.setOmschrijving("omschrijving");
-        jsonHypotheek.setOnderpand("345.67");
+        jsonHypotheek.setOnderpand("Onderpand");
         jsonHypotheek.setRelatie(46L);
         jsonHypotheek.setRente("3");
         jsonHypotheek.setTaxatieDatum("06-05-2014");
@@ -80,10 +91,14 @@ public class HypotheekMapperTest extends EasyMockSupport {
         jsonHypotheek.setWaardeNaVerbouwing("567.89");
         jsonHypotheek.setWaardeVoorVerbouwing("789.01");
         jsonHypotheek.setWozWaarde("678.9");
+        jsonHypotheek.setOpmerkingen(new ArrayList<JsonOpmerking>());
+        jsonHypotheek.setBijlages(new ArrayList<JsonBijlage>());
+        jsonHypotheek.setBank("naamBank");
     }
 
     @After
     public void tearDown() throws Exception {
+        // verifyAll();
     }
 
     @Test
@@ -99,6 +114,11 @@ public class HypotheekMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapNaarJson() {
+        expect(opmerkingMapper.mapAllNaarJson(hypotheek.getOpmerkingen())).andReturn(new ArrayList<JsonOpmerking>());
+        expect(bijlageMapper.mapAllNaarJson(hypotheek.getBijlages())).andReturn(new ArrayList<JsonBijlage>());
+
+        replayAll();
+
         assertEquals(jsonHypotheek, mapper.mapNaarJson(hypotheek));
     }
 

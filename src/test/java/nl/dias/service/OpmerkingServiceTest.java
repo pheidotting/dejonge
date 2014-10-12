@@ -77,7 +77,7 @@ public class OpmerkingServiceTest extends EasyMockSupport {
         expect(schadeService.lees(46L)).andReturn(schade);
         expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
 
-        expect(hypotheekService.lees(58L)).andReturn(hypotheek);
+        expect(hypotheekService.leesHypotheek(58L)).andReturn(hypotheek);
         expect(hypotheek.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
 
         repository.opslaan(opmerking);

@@ -6,9 +6,11 @@ import javax.inject.Named;
 
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.SoortHypotheek;
+import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 
 import org.apache.log4j.Logger;
@@ -21,6 +23,8 @@ public class HypotheekService {
 
     @InjectParam
     private HypotheekRepository hypotheekRepository;
+    @InjectParam
+    private HypotheekPakketRepository hypotheekPakketRepository;
     @InjectParam
     private GebruikerService gebruikerService;
 
@@ -38,8 +42,12 @@ public class HypotheekService {
         hypotheekRepository.opslaan(hypotheek);
     }
 
-    public Hypotheek lees(Long id) {
+    public Hypotheek leesHypotheek(Long id) {
         return hypotheekRepository.lees(id);
+    }
+
+    public HypotheekPakket leesHypotheekPakket(Long id) {
+        return hypotheekPakketRepository.lees(id);
     }
 
     public SoortHypotheek leesSoortHypotheek(Long id) {
@@ -50,15 +58,23 @@ public class HypotheekService {
         return hypotheekRepository.alleSoortenHypotheekInGebruik();
     }
 
-    public List<Hypotheek> alles() {
-        return hypotheekRepository.alles();
+    public List<Hypotheek> allesVanRelatie(Long relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
+
+        return hypotheekRepository.allesVanRelatie(relatie);
+    }
+
+    public List<HypotheekPakket> allePakketenVanRelatie(Long relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
+
+        return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
 
     public void slaBijlageOp(Long hypotheekId, String s3Identificatie) {
         LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
-        bijlage.setHypotheek(lees(hypotheekId));
+        bijlage.setHypotheek(leesHypotheek(hypotheekId));
         bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
         bijlage.setS3Identificatie(s3Identificatie);
 
@@ -73,5 +89,9 @@ public class HypotheekService {
 
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
+    }
+
+    public void setHypotheekPakketRepository(HypotheekPakketRepository hypotheekPakketRepository) {
+        this.hypotheekPakketRepository = hypotheekPakketRepository;
     }
 }

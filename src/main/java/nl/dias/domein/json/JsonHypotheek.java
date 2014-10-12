@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class JsonHypotheek {
+public class JsonHypotheek implements Comparable<JsonHypotheek> {
     private Long id;
     private Long relatie;
     private String hypotheekVorm;
@@ -30,6 +30,8 @@ public class JsonHypotheek {
     private List<String> errors;
     private List<JsonOpmerking> opmerkingen;
     private List<JsonBijlage> bijlages;
+    private String leningNummer;
+    private String bank;
     // moet vanuit de schermkant
     private String idDiv;
     private String idDivLink;
@@ -261,6 +263,22 @@ public class JsonHypotheek {
         this.soortenHypotheek = soortenHypotheek;
     }
 
+    public String getLeningNummer() {
+        return leningNummer;
+    }
+
+    public void setLeningNummer(String leningNummer) {
+        this.leningNummer = leningNummer;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
     /**
      * @see java.lang.Object#equals(Object)
      */
@@ -270,12 +288,13 @@ public class JsonHypotheek {
             return false;
         }
         JsonHypotheek rhs = (JsonHypotheek) object;
-        return new EqualsBuilder().append(this.taxatieDatum, rhs.taxatieDatum).append(this.eindDatum, rhs.eindDatum).append(this.koopsom, rhs.koopsom).append(this.relatie, rhs.relatie)
+        return new EqualsBuilder().append(this.taxatieDatum, rhs.taxatieDatum).append(this.koopsom, rhs.koopsom).append(this.relatie, rhs.relatie)
+                .append(this.waardeVoorVerbouwing, rhs.waardeVoorVerbouwing).append(this.id, rhs.id).append(this.vrijeVerkoopWaarde, rhs.vrijeVerkoopWaarde)
+                .append(this.duurRenteVastePeriode, rhs.duurRenteVastePeriode).append(this.leningNummer, rhs.leningNummer).append(this.bank, rhs.bank).append(this.ingangsDatum, rhs.ingangsDatum)
+                .append(this.marktWaarde, rhs.marktWaarde).append(this.waardeNaVerbouwing, rhs.waardeNaVerbouwing).append(this.omschrijving, rhs.omschrijving).append(this.eindDatum, rhs.eindDatum)
                 .append(this.hypotheekBedrag, rhs.hypotheekBedrag).append(this.rente, rhs.rente).append(this.hypotheekVorm, rhs.hypotheekVorm).append(this.duur, rhs.duur)
-                .append(this.waardeVoorVerbouwing, rhs.waardeVoorVerbouwing).append(this.id, rhs.id).append(this.onderpand, rhs.onderpand).append(this.errors, rhs.errors)
-                .append(this.duurRenteVastePeriode, rhs.duurRenteVastePeriode).append(this.vrijeVerkoopWaarde, rhs.vrijeVerkoopWaarde).append(this.ingangsDatum, rhs.ingangsDatum)
-                .append(this.ingangsDatumRenteVastePeriode, rhs.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing, rhs.waardeNaVerbouwing).append(this.marktWaarde, rhs.marktWaarde)
-                .append(this.wozWaarde, rhs.wozWaarde).append(this.omschrijving, rhs.omschrijving).append(this.eindDatumRenteVastePeriode, rhs.eindDatumRenteVastePeriode).isEquals();
+                .append(this.onderpand, rhs.onderpand).append(this.ingangsDatumRenteVastePeriode, rhs.ingangsDatumRenteVastePeriode).append(this.wozWaarde, rhs.wozWaarde)
+                .append(this.eindDatumRenteVastePeriode, rhs.eindDatumRenteVastePeriode).isEquals();
     }
 
     /**
@@ -283,10 +302,10 @@ public class JsonHypotheek {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.taxatieDatum).append(this.eindDatum).append(this.koopsom).append(this.relatie).append(this.hypotheekBedrag).append(this.rente)
-                .append(this.hypotheekVorm).append(this.duur).append(this.waardeVoorVerbouwing).append(this.id).append(this.onderpand).append(this.errors).append(this.duurRenteVastePeriode)
-                .append(this.vrijeVerkoopWaarde).append(this.ingangsDatum).append(this.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing).append(this.marktWaarde).append(this.wozWaarde)
-                .append(this.omschrijving).append(this.eindDatumRenteVastePeriode).toHashCode();
+        return new HashCodeBuilder().append(this.taxatieDatum).append(this.koopsom).append(this.relatie).append(this.waardeVoorVerbouwing).append(this.id).append(this.vrijeVerkoopWaarde)
+                .append(this.duurRenteVastePeriode).append(this.leningNummer).append(this.bank).append(this.ingangsDatum).append(this.marktWaarde).append(this.waardeNaVerbouwing)
+                .append(this.omschrijving).append(this.eindDatum).append(this.hypotheekBedrag).append(this.rente).append(this.hypotheekVorm).append(this.duur).append(this.onderpand)
+                .append(this.ingangsDatumRenteVastePeriode).append(this.wozWaarde).append(this.eindDatumRenteVastePeriode).toHashCode();
     }
 
     /**
@@ -294,12 +313,18 @@ public class JsonHypotheek {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("taxatieDatum", this.taxatieDatum).append("eindDatum", this.eindDatum).append("koopsom", this.koopsom).append("relatie", this.relatie)
-                .append("hypotheekBedrag", this.hypotheekBedrag).append("rente", this.rente).append("hypotheekVorm", this.hypotheekVorm).append("duur", this.duur)
-                .append("waardeVoorVerbouwing", this.waardeVoorVerbouwing).append("id", this.id).append("onderpand", this.onderpand).append("errors", this.errors)
-                .append("duurRenteVastePeriode", this.duurRenteVastePeriode).append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde).append("ingangsDatum", this.ingangsDatum)
-                .append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode).append("waardeNaVerbouwing", this.waardeNaVerbouwing).append("marktWaarde", this.marktWaarde)
-                .append("wozWaarde", this.wozWaarde).append("omschrijving", this.omschrijving).append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode).toString();
+        return new ToStringBuilder(this).append("\ntaxatieDatum", this.taxatieDatum).append("koopsom", this.koopsom).append("relatie", this.relatie)
+                .append("waardeVoorVerbouwing", this.waardeVoorVerbouwing).append("id", this.id).append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde)
+                .append("duurRenteVastePeriode", this.duurRenteVastePeriode).append("leningNummer", this.leningNummer).append("bijlages", this.bijlages).append("bank", this.bank)
+                .append("ingangsDatum", this.ingangsDatum).append("marktWaarde", this.marktWaarde).append("waardeNaVerbouwing", this.waardeNaVerbouwing).append("omschrijving", this.omschrijving)
+                .append("eindDatum", this.eindDatum).append("hypotheekBedrag", this.hypotheekBedrag).append("rente", this.rente).append("hypotheekVorm", this.hypotheekVorm).append("duur", this.duur)
+                .append("onderpand", this.onderpand).append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode).append("wozWaarde", this.wozWaarde)
+                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode).toString();
+    }
+
+    @Override
+    public int compareTo(JsonHypotheek o) {
+        return leningNummer.compareTo(o.leningNummer);
     }
 
 }

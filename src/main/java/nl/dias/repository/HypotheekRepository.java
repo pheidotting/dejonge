@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 
@@ -35,6 +36,13 @@ public class HypotheekRepository extends AbstractRepository<Hypotheek> {
 
     public SoortHypotheek leesSoortHypotheek(Long id) {
         return getEm().find(SoortHypotheek.class, id);
+    }
+
+    public List<Hypotheek> allesVanRelatie(Relatie relatie) {
+        TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatie", Hypotheek.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
     }
 
     @Transactional

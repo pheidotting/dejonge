@@ -70,7 +70,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         }
         hypotheek.setOmschrijving(jsonHypotheek.getOmschrijving());
         if (StringUtils.isNotBlank(jsonHypotheek.getOnderpand())) {
-            hypotheek.setOnderpand(new Bedrag(jsonHypotheek.getOnderpand()));
+            hypotheek.setOnderpand(jsonHypotheek.getOnderpand());
         }
         hypotheek.setRente(Integer.valueOf(jsonHypotheek.getRente()));
         hypotheek.setTaxatieDatum(taxatieDatum);
@@ -111,7 +111,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         }
         jsonHypotheek.setOmschrijving(hypotheek.getOmschrijving());
         if (hypotheek.getOnderpand() != null) {
-            jsonHypotheek.setOnderpand(hypotheek.getOnderpand().getBedrag().toString());
+            jsonHypotheek.setOnderpand(hypotheek.getOnderpand());
         }
         jsonHypotheek.setRelatie(hypotheek.getRelatie().getId());
         jsonHypotheek.setRente(hypotheek.getRente().toString());
@@ -131,9 +131,37 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
         jsonHypotheek.setOpmerkingen(opmerkingMapper.mapAllNaarJson(hypotheek.getOpmerkingen()));
         jsonHypotheek.setBijlages(bijlageMapper.mapAllNaarJson(hypotheek.getBijlages()));
+        jsonHypotheek.setLeningNummer(hypotheek.getLeningNummer());
+        if (hypotheek.getBank() != null) {
+            jsonHypotheek.setBank(hypotheek.getBank().getNaam());
+        }
 
         return jsonHypotheek;
     }
+
+    // private JsonGekoppeldeHypotheek bepaalTitel(Hypotheek hypotheek) {
+    // JsonGekoppeldeHypotheek gekoppeldeHypotheek = new
+    // JsonGekoppeldeHypotheek();
+    //
+    // gekoppeldeHypotheek.setBank(hypotheek.getBank().getNaam());
+    // gekoppeldeHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
+    // gekoppeldeHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getOmschrijving());
+    // gekoppeldeHypotheek.setLeningNummer(hypotheek.getLeningNummer());
+    // gekoppeldeHypotheek.setRente(hypotheek.getRente().toString());
+    //
+    // return gekoppeldeHypotheek;
+    // }
+    //
+    // private List<JsonHypotheek> getGekoppeldAan(Hypotheek hypotheek) {
+    // List<JsonHypotheek> gekoppeldAan = new ArrayList<>();
+    //
+    // gekoppeldAan.add(mapNaarJson(hypotheek));
+    // for (Hypotheek h : hypotheek.getGekoppeldAan()) {
+    // gekoppeldAan.addAll(getGekoppeldAan(h));
+    // }
+    //
+    // return gekoppeldAan;
+    // }
 
     public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
         this.opmerkingMapper = opmerkingMapper;

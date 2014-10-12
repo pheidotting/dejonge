@@ -90,8 +90,11 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Bedrijf.class, mappedBy = "relatie")
     private Set<Bedrijf> bedrijven;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Hypotheek.class, mappedBy = "relatie")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Hypotheek.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<Hypotheek> hypotheken;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
+    private Set<HypotheekPakket> hypotheekPakketten;
 
     @JsonProperty(value = "zakelijkeKlant")
     public boolean isZakelijk() {
@@ -269,6 +272,17 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
 
     public void setHypotheken(Set<Hypotheek> hypotheken) {
         this.hypotheken = hypotheken;
+    }
+
+    public Set<HypotheekPakket> getHypotheekPakketten() {
+        if (hypotheekPakketten == null) {
+            hypotheekPakketten = new HashSet<HypotheekPakket>();
+        }
+        return hypotheekPakketten;
+    }
+
+    public void setHypotheekPakketten(Set<HypotheekPakket> hypotheekPakketten) {
+        this.hypotheekPakketten = hypotheekPakketten;
     }
 
     /**

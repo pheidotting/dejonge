@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
+import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 
 import org.easymock.EasyMockSupport;
@@ -21,6 +23,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
     private HypotheekService service;
     private HypotheekRepository repository;
     private GebruikerService gebruikerService;
+    private HypotheekPakketRepository hypotheekPakketRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -31,6 +34,9 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         gebruikerService = createMock(GebruikerService.class);
         service.setGebruikerService(gebruikerService);
+
+        hypotheekPakketRepository = createMock(HypotheekPakketRepository.class);
+        service.setHypotheekPakketRepository(hypotheekPakketRepository);
     }
 
     @After
@@ -63,7 +69,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testLees() {
+    public void testLeesHypotheek() {
         Long id = 46L;
         Hypotheek hypotheek = createMock(Hypotheek.class);
 
@@ -71,7 +77,19 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        assertEquals(hypotheek, service.lees(id));
+        assertEquals(hypotheek, service.leesHypotheek(id));
+    }
+
+    @Test
+    public void testLeesHypotheekPakket() {
+        Long id = 46L;
+        HypotheekPakket hypotheekPakket = createMock(HypotheekPakket.class);
+
+        expect(hypotheekPakketRepository.lees(id)).andReturn(hypotheekPakket);
+
+        replayAll();
+
+        assertEquals(hypotheekPakket, service.leesHypotheekPakket(id));
     }
 
     @Test
@@ -86,14 +104,35 @@ public class HypotheekServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void alles() {
+    public void allesVanRelatie() {
+        Long relatieId = 58L;
+
         List<Hypotheek> lijst = new ArrayList<Hypotheek>();
 
-        expect(repository.alles()).andReturn(lijst);
+        Relatie relatie = createMock(Relatie.class);
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+
+        expect(repository.allesVanRelatie(relatie)).andReturn(lijst);
 
         replayAll();
 
-        assertEquals(lijst, service.alles());
+        assertEquals(lijst, service.allesVanRelatie(relatieId));
+    }
+
+    @Test
+    public void allePakketenVanRelatie() {
+        Long relatieId = 58L;
+
+        List<HypotheekPakket> lijst = new ArrayList<HypotheekPakket>();
+
+        Relatie relatie = createMock(Relatie.class);
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+
+        expect(hypotheekPakketRepository.allesVanRelatie(relatie)).andReturn(lijst);
+
+        replayAll();
+
+        assertEquals(lijst, service.allePakketenVanRelatie(relatieId));
     }
 
 }

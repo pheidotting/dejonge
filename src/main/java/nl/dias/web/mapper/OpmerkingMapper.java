@@ -27,7 +27,7 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         } catch (NumberFormatException nfe) {
         }
         try {
-            opmerking.setHypotheek(hypotheekService.lees(Long.valueOf(jsonOpmerking.getHypotheek())));
+            opmerking.setHypotheek(hypotheekService.leesHypotheek(Long.valueOf(jsonOpmerking.getHypotheek())));
         } catch (NumberFormatException nfe) {
         }
 

@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Set;
 
 import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
 import nl.dias.domein.json.JsonHypotheek;
+import nl.dias.domein.json.JsonHypotheekPakket;
 import nl.dias.domein.json.JsonSoortHypotheek;
 import nl.dias.service.HypotheekService;
 import nl.dias.web.mapper.HypotheekMapper;
+import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
 
 import org.easymock.EasyMockSupport;
@@ -26,6 +29,7 @@ public class HypotheekControllerTest extends EasyMockSupport {
     private HypotheekService hypotheekService;
     private SoortHypotheekMapper soortHypotheekMapper;
     private HypotheekMapper hypotheekMapper;
+    private HypotheekPakketMapper hypotheekPakketMapper;
     private HypotheekController controller;
 
     @Before
@@ -40,6 +44,9 @@ public class HypotheekControllerTest extends EasyMockSupport {
 
         hypotheekMapper = createMock(HypotheekMapper.class);
         controller.setHypotheekMapper(hypotheekMapper);
+
+        hypotheekPakketMapper = createMock(HypotheekPakketMapper.class);
+        controller.setHypotheekPakketMapper(hypotheekPakketMapper);
     }
 
     @After
@@ -73,7 +80,7 @@ public class HypotheekControllerTest extends EasyMockSupport {
         JsonHypotheek jsonHypotheek = createMock(JsonHypotheek.class);
         Hypotheek hypotheek = createMock(Hypotheek.class);
 
-        expect(hypotheekService.lees(1L)).andReturn(hypotheek);
+        expect(hypotheekService.leesHypotheek(1L)).andReturn(hypotheek);
         expect(hypotheekMapper.mapNaarJson(hypotheek)).andReturn(jsonHypotheek);
 
         replayAll();
@@ -96,17 +103,33 @@ public class HypotheekControllerTest extends EasyMockSupport {
     }
 
     @Test
-    public void testAlles() {
+    public void testAlleHypotheken() {
+        Long relatieId = 58L;
         List<Hypotheek> hypotheken = new ArrayList<>();
         List<JsonHypotheek> jsonHypotheken = new ArrayList<>();
         Set<Hypotheek> hypothekenSet = new HashSet<>();
 
-        expect(hypotheekService.alles()).andReturn(hypotheken);
+        expect(hypotheekService.allesVanRelatie(relatieId)).andReturn(hypotheken);
         expect(hypotheekMapper.mapAllNaarJson(hypothekenSet)).andReturn(jsonHypotheken);
 
         replayAll();
 
-        assertEquals(jsonHypotheken, controller.alles());
+        assertEquals(jsonHypotheken, controller.alleHypotheken(relatieId));
+    }
+
+    @Test
+    public void testAlleHypotheekPakketten() {
+        Long relatieId = 58L;
+        List<HypotheekPakket> hypotheekPakketten = new ArrayList<>();
+        List<JsonHypotheekPakket> jsonHypotheekPakketten = new ArrayList<>();
+        Set<HypotheekPakket> hypotheekPakketSet = new HashSet<>();
+
+        expect(hypotheekService.allePakketenVanRelatie(relatieId)).andReturn(hypotheekPakketten);
+        expect(hypotheekPakketMapper.mapAllNaarJson(hypotheekPakketSet)).andReturn(jsonHypotheekPakketten);
+
+        replayAll();
+
+        assertEquals(jsonHypotheekPakketten, controller.alleHypotheekPakketten(relatieId));
     }
 
     @Test
@@ -115,7 +138,7 @@ public class HypotheekControllerTest extends EasyMockSupport {
         JsonHypotheek jsonHypotheek = createMock(JsonHypotheek.class);
 
         expect(jsonHypotheek.getId()).andReturn(2L).times(3);
-        expect(hypotheekService.lees(2L)).andReturn(hypotheek);
+        expect(hypotheekService.leesHypotheek(2L)).andReturn(hypotheek);
 
         expect(hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek)).andReturn(hypotheek);
         expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
