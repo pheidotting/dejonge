@@ -17,6 +17,7 @@
 		<class>nl.dias.domein.Bijlage</class>
 		<class>nl.dias.domein.Gebruiker</class>
 		<class>nl.dias.domein.Hypotheek</class>
+		<class>nl.dias.domein.HypotheekPakket</class>
 		<class>nl.dias.domein.Kantoor</class>
 		<class>nl.dias.domein.Medewerker</class>
 		<class>nl.dias.domein.OnderlingeRelatie</class>
