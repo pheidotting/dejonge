@@ -9,13 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nl.dias.domein.Bank;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
+import nl.dias.domein.json.JsonBank;
 import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.domein.json.JsonHypotheekPakket;
 import nl.dias.domein.json.JsonSoortHypotheek;
+import nl.dias.service.BankService;
 import nl.dias.service.HypotheekService;
+import nl.dias.web.mapper.BankMapper;
 import nl.dias.web.mapper.HypotheekMapper;
 import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
@@ -30,6 +34,8 @@ public class HypotheekControllerTest extends EasyMockSupport {
     private SoortHypotheekMapper soortHypotheekMapper;
     private HypotheekMapper hypotheekMapper;
     private HypotheekPakketMapper hypotheekPakketMapper;
+    private BankService bankService;
+    private BankMapper bankMapper;
     private HypotheekController controller;
 
     @Before
@@ -47,6 +53,12 @@ public class HypotheekControllerTest extends EasyMockSupport {
 
         hypotheekPakketMapper = createMock(HypotheekPakketMapper.class);
         controller.setHypotheekPakketMapper(hypotheekPakketMapper);
+
+        bankService = createMock(BankService.class);
+        controller.setBankService(bankService);
+
+        bankMapper = createMock(BankMapper.class);
+        controller.setBankMapper(bankMapper);
     }
 
     @After
@@ -173,6 +185,19 @@ public class HypotheekControllerTest extends EasyMockSupport {
         assertEquals(200, controller.opslaan(jsonHypotheek).getStatus());
     }
 
+    @Test
+    public void alleBanken() {
+        List<Bank> bankenList = new ArrayList<Bank>();
+        Set<Bank> bankenSet = new HashSet<Bank>();
+        List<JsonBank> jsonBanken = new ArrayList<JsonBank>();
+
+        expect(bankService.alles()).andReturn(bankenList);
+        expect(bankMapper.mapAllNaarJson(bankenSet)).andReturn(jsonBanken);
+
+        replayAll();
+
+        assertEquals(jsonBanken, controller.alleBanken());
+    }
     // @Test
     // public void testOpslaanMetException() {
     // Hypotheek hypotheek = createMock(Hypotheek.class);
