@@ -5,10 +5,6 @@ define([ "commons/3rdparty/log",
 //         "commons/3rdparty/knockoutValidation/knockout.validation.min"],
          function(logger, validation, opmaak) {
 	
-//	var logger = log.getLogger("hypotheek.js");
-
-	
-	
 	return function hypotheek(data) {
 		_this = this;
 		
@@ -30,13 +26,13 @@ define([ "commons/3rdparty/log",
 			});
 		}
 		_this.soorten();
-		
 
 		_this.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		}
 		
 		_this.id = ko.observable(data.id);
+		_this.bank = ko.observable(data.bank);
 		_this.relatie = ko.observable(_relatieId);
 		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
 		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
@@ -75,6 +71,7 @@ define([ "commons/3rdparty/log",
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
 	    }});
 		_this.duurRenteVastePeriode = ko.observable(data.duurRenteVastePeriode).extend({number: true});
+		_this.leningNummer = ko.observable(data.leningNummer);
 		_this.omschrijving = ko.observable(data.omschrijving);
 		_this.idDiv = ko.computed(function() {
 	        return "collapsable" + data.id;
@@ -82,6 +79,9 @@ define([ "commons/3rdparty/log",
 		_this.idDivLink = ko.computed(function() {
 	        return "#collapsable" + data.id;
 		}, this);
+		_this.maakRenteOp = function(rente) {
+			return rente() + '%';
+		};
 		_this.className = ko.computed(function() {
 			var datum = moment(data.ingangsDatum);
 			var tijd = moment(datum).fromNow();
@@ -91,28 +91,42 @@ define([ "commons/3rdparty/log",
 				return "polisNietActief panel-title";
 			}
 		}, this);
-		_this.titel = ko.computed(function() {
-			var omschrijving = '';
+		_this.hypotheekVormOpgemaakt = ko.computed(function() {
+			var hypVorm;
+			
 			$.each(_this.soortenHypotheek(), function(i, soort){
 				if(data.hypotheekVorm == soort.id()){
-					omschrijving = soort.omschrijving();
+					hypVorm = soort.omschrijving();
+				}
+			});
+			
+			return hypVorm;
+		}, this);
+		_this.titel = ko.computed(function() {
+			var hypVorm;
+			
+			$.each(_this.soortenHypotheek(), function(i, soort){
+				if(data.hypotheekVorm == soort.id()){
+					hypVorm = soort.omschrijving();
 				}
 				
 			});
+			var omschrijving = data.leningNummer + " - " + hypVorm + " - " + data.bank + " - " + data.rente + "% - " + _this.bedrag(data.hypotheekBedrag);
+			
 			return omschrijving;
 		}, this);
 	    _this.opmerkingen = ko.observableArray();
 		if(data.opmerkingen != null){
-		$.each(data.opmerkingen, function(i, item){
-			_this.opmerkingen.push(new Opmerking(item));
-		});
-		self.bijlages = ko.observableArray();
+			$.each(data.opmerkingen, function(i, item){
+				_this.opmerkingen.push(new Opmerking(item));
+			});
+		}
+		_this.bijlages = ko.observableArray();
 		if(data.bijlages != null){
 			$.each(data.bijlages, function(i, item){
 				self.bijlages.push(new Bijlage(item));
 			});
 		}
-	}
 		
 		_this.opslaan = function(hypotheek){
 	    	var result = ko.validation.group(hypotheek, {deep: true});

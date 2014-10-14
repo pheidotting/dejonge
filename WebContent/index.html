@@ -88,6 +88,10 @@
 				});
 			});
 
+			diasRoute.route('GET', '#taken', function(context) {
+				$.getScript("pages/taken/taken.js");
+			});
+
 			diasRoute.route('GET', '#beherenRelatie/:id/:actie/:subId', function(context) {
 				id = this.params['id'];
 				actie = this.params['actie'];

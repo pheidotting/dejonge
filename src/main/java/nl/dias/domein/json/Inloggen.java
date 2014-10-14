@@ -1,5 +1,8 @@
 package nl.dias.domein.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -8,6 +11,7 @@ public class Inloggen {
     private String identificatie;
     private String wachtwoord;
     private String onthouden;
+    private List<String> errors;
 
     public String getIdentificatie() {
         return identificatie;
@@ -27,6 +31,17 @@ public class Inloggen {
 
     public boolean isOnthouden() {
         return onthouden.equals("true");
+    }
+
+    public List<String> getErrors() {
+        if (errors == null) {
+            errors = new ArrayList<String>();
+        }
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     public void setOnthouden(String onthouden) {

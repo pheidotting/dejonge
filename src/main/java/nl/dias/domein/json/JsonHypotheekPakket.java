@@ -8,7 +8,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class JsonHypotheekPakket {
+    private Long id;
     private List<JsonHypotheek> hypotheken;
+    private String totaalBedrag;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public List<JsonHypotheek> getHypotheken() {
         if (hypotheken == null) {
@@ -19,6 +29,14 @@ public class JsonHypotheekPakket {
 
     public void setHypotheken(List<JsonHypotheek> hypotheken) {
         this.hypotheken = hypotheken;
+    }
+
+    public String getTotaalBedrag() {
+        return totaalBedrag;
+    }
+
+    public void setTotaalBedrag(String totaalBedrag) {
+        this.totaalBedrag = totaalBedrag;
     }
 
     /**

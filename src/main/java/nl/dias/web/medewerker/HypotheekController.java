@@ -73,7 +73,7 @@ public class HypotheekController {
     @GET
     @Path("/lijstHypotheekPakketten")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JsonHypotheekPakket> alleHypotheekPakketten(Long relatieId) {
+    public List<JsonHypotheekPakket> alleHypotheekPakketten(@QueryParam("relatieId") Long relatieId) {
         Set<HypotheekPakket> hypotheekPakketten = new HashSet<>();
 
         for (HypotheekPakket hypotheekPakket : hypotheekService.allePakketenVanRelatie(relatieId)) {
@@ -86,7 +86,7 @@ public class HypotheekController {
     @GET
     @Path("/lijstHypotheken")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JsonHypotheek> alleHypotheken(Long relatieId) {
+    public List<JsonHypotheek> alleHypotheken(@QueryParam("relatieId") Long relatieId) {
         Set<Hypotheek> hypotheken = new HashSet<>();
 
         for (Hypotheek soort : hypotheekService.allesVanRelatie(relatieId)) {
