@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.json.JsonHypotheek;
@@ -43,6 +44,7 @@ public class HypotheekPakketMapperTest extends EasyMockSupport {
     @Test
     public void testMapNaarJsonHypotheekPakket() {
         expect(hypotheekMapper.mapAllNaarJson(hypotheekPakket.getHypotheken())).andReturn(jsonHypotheekPakket.getHypotheken());
+        expect(hypotheek.getHypotheekBedrag()).andReturn(new Bedrag(123.0));
 
         replayAll();
 
