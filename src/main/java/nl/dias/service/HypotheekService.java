@@ -54,6 +54,9 @@ public class HypotheekService {
                 pakket = new HypotheekPakket();
                 pakket.getHypotheken().add(gekoppeldeHypotheek);
                 hypotheekPakketRepository.opslaan(pakket);
+
+                gekoppeldeHypotheek.setHypotheekPakket(pakket);
+                hypotheekRepository.opslaan(gekoppeldeHypotheek);
             } else {
                 pakket = gekoppeldeHypotheek.getHypotheekPakket();
             }
