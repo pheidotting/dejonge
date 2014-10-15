@@ -134,7 +134,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         jsonHypotheek.setLeningNummer(hypotheek.getLeningNummer());
         if (hypotheek.getBank() != null) {
             jsonHypotheek.setBank(hypotheek.getBank().getNaam());
-            jsonHypotheek.setBankId(hypotheek.getBank().getId().toString());
+            jsonHypotheek.setBankId(hypotheek.getBank().getId());
         }
 
         return jsonHypotheek;
