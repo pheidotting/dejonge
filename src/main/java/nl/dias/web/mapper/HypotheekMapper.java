@@ -86,6 +86,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (StringUtils.isNotBlank(jsonHypotheek.getWozWaarde())) {
             hypotheek.setWozWaarde(new Bedrag(jsonHypotheek.getWozWaarde()));
         }
+        hypotheek.setLeningNummer(jsonHypotheek.getLeningNummer());
 
         return hypotheek;
     }
