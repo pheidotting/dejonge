@@ -18,6 +18,10 @@ public class BankService {
         return bankRepository.alles();
     }
 
+    public Bank lees(Long id) {
+        return bankRepository.lees(id);
+    }
+
     public void setBankRepository(BankRepository bankRepository) {
         this.bankRepository = bankRepository;
     }

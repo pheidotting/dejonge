@@ -42,4 +42,16 @@ public class BankServiceTest extends EasyMockSupport {
         assertEquals(lijst, service.alles());
     }
 
+    @Test
+    public void lees() {
+        Bank bank = createMock(Bank.class);
+        Long bankId = 58L;
+
+        expect(bankRepository.lees(bankId)).andReturn(bank);
+
+        replayAll();
+
+        assertEquals(bank, service.lees(bankId));
+    }
+
 }
