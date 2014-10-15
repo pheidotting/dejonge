@@ -144,7 +144,7 @@ public class HypotheekController {
 
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
-        hypotheekService.opslaan(hypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie());
+        hypotheekService.opslaan(hypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek());
 
         LOGGER.debug("Opgeslagen");
         return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();

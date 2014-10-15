@@ -5,7 +5,9 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
@@ -65,7 +67,81 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.opslaan(hypotheek, hypotheekVorm, relatieId);
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, null);
+    }
+
+    @Test
+    public void testOpslaanMetGekoppeldeHypotheekNieuw() {
+        String hypotheekVorm = "2";
+        Long relatieId = 58L;
+        Long gekoppeldeHypotheekId = 46L;
+        Hypotheek gekoppeldeHypotheek = createMock(Hypotheek.class);
+        HypotheekPakket pakket = createMock(HypotheekPakket.class);
+        Relatie relatie = createMock(Relatie.class);
+        SoortHypotheek soortHypotheek = createMock(SoortHypotheek.class);
+
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+        expect(repository.leesSoortHypotheek(Long.valueOf(hypotheekVorm))).andReturn(soortHypotheek);
+
+        Hypotheek hypotheek = createMock(Hypotheek.class);
+        hypotheek.setRelatie(relatie);
+        expectLastCall();
+        hypotheek.setHypotheekVorm(soortHypotheek);
+        expectLastCall();
+        hypotheek.setHypotheekPakket(pakket);
+        expectLastCall();
+
+        expect(repository.lees(gekoppeldeHypotheekId)).andReturn(gekoppeldeHypotheek);
+        expect(gekoppeldeHypotheek.getHypotheekPakket()).andReturn(pakket).times(2);
+        expect(pakket.getHypotheken()).andReturn(new HashSet<Hypotheek>());
+
+        hypotheekPakketRepository.opslaan(pakket);
+        expectLastCall();
+
+        repository.opslaan(hypotheek);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId);
+    }
+
+    @Test
+    public void testOpslaanMetGekoppeldeHypotheekAlGekoppeld() {
+        String hypotheekVorm = "2";
+        Long relatieId = 58L;
+        Long gekoppeldeHypotheekId = 46L;
+        Hypotheek gekoppeldeHypotheek = createMock(Hypotheek.class);
+        HypotheekPakket pakket = createMock(HypotheekPakket.class);
+        Relatie relatie = createMock(Relatie.class);
+        SoortHypotheek soortHypotheek = createMock(SoortHypotheek.class);
+
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+        expect(repository.leesSoortHypotheek(Long.valueOf(hypotheekVorm))).andReturn(soortHypotheek);
+
+        Hypotheek hypotheek = createMock(Hypotheek.class);
+        hypotheek.setRelatie(relatie);
+        expectLastCall();
+        hypotheek.setHypotheekVorm(soortHypotheek);
+        expectLastCall();
+        hypotheek.setHypotheekPakket(pakket);
+        expectLastCall();
+
+        expect(repository.lees(gekoppeldeHypotheekId)).andReturn(gekoppeldeHypotheek);
+        expect(gekoppeldeHypotheek.getHypotheekPakket()).andReturn(pakket).times(2);
+        Set<Hypotheek> hypotheken = new HashSet<Hypotheek>();
+        hypotheken.add(gekoppeldeHypotheek);
+        expect(pakket.getHypotheken()).andReturn(hypotheken);
+
+        hypotheekPakketRepository.opslaan(pakket);
+        expectLastCall();
+
+        repository.opslaan(hypotheek);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId);
     }
 
     @Test

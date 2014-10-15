@@ -32,12 +32,29 @@ public class HypotheekService {
         hypotheekRepository.opslaan(hypotheek);
     }
 
-    public void opslaan(Hypotheek hypotheek, String hypotheekVorm, Long relatieId) {
+    public void opslaan(Hypotheek hypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
 
         hypotheek.setRelatie(relatie);
         hypotheek.setHypotheekVorm(soortHypotheek);
+
+        if (gekoppeldeHypotheekId != null) {
+            Hypotheek gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
+
+            HypotheekPakket pakket = null;
+
+            if (gekoppeldeHypotheek.getHypotheekPakket() == null) {
+                pakket = new HypotheekPakket();
+                pakket.getHypotheken().add(gekoppeldeHypotheek);
+            } else {
+                pakket = gekoppeldeHypotheek.getHypotheekPakket();
+            }
+            pakket.getHypotheken().add(hypotheek);
+            hypotheek.setHypotheekPakket(pakket);
+
+            hypotheekPakketRepository.opslaan(pakket);
+        }
 
         hypotheekRepository.opslaan(hypotheek);
     }
