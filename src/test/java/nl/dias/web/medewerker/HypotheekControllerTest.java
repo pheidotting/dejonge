@@ -170,7 +170,9 @@ public class HypotheekControllerTest extends EasyMockSupport {
         expect(hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek)).andReturn(hypotheek);
         expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
         expect(jsonHypotheek.getRelatie()).andReturn(1L);
-        hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L);
+        expect(jsonHypotheek.getBankId()).andReturn(2L);
+        expect(jsonHypotheek.getGekoppeldeHypotheek()).andReturn(null);
+        hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L, null, 2L);
         expectLastCall();
 
         expect(hypotheek.getId()).andReturn(46L);
@@ -190,7 +192,9 @@ public class HypotheekControllerTest extends EasyMockSupport {
         expect(hypotheekMapper.mapVanJson(jsonHypotheek, new Hypotheek())).andReturn(hypotheek);
         expect(jsonHypotheek.getHypotheekVorm()).andReturn("hypotheekVorm");
         expect(jsonHypotheek.getRelatie()).andReturn(1L);
-        hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L);
+        expect(jsonHypotheek.getBankId()).andReturn(2L);
+        expect(jsonHypotheek.getGekoppeldeHypotheek()).andReturn(null);
+        hypotheekService.opslaan(hypotheek, "hypotheekVorm", 1L, null, 2L);
         expectLastCall();
 
         expect(hypotheek.getId()).andReturn(46L);
