@@ -39,24 +39,27 @@ public class HypotheekService {
         hypotheek.setRelatie(relatie);
         hypotheek.setHypotheekVorm(soortHypotheek);
 
+        HypotheekPakket pakket = null;
+
         if (gekoppeldeHypotheekId != null) {
             Hypotheek gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
-
-            HypotheekPakket pakket = null;
 
             if (gekoppeldeHypotheek.getHypotheekPakket() == null) {
                 pakket = new HypotheekPakket();
                 pakket.getHypotheken().add(gekoppeldeHypotheek);
+                hypotheekPakketRepository.opslaan(pakket);
             } else {
                 pakket = gekoppeldeHypotheek.getHypotheekPakket();
             }
             pakket.getHypotheken().add(hypotheek);
             hypotheek.setHypotheekPakket(pakket);
 
-            hypotheekPakketRepository.opslaan(pakket);
         }
 
         hypotheekRepository.opslaan(hypotheek);
+        if (pakket != null) {
+            hypotheekPakketRepository.opslaan(pakket);
+        }
     }
 
     public Hypotheek leesHypotheek(Long id) {
