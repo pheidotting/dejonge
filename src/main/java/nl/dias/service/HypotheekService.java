@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Bank;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
@@ -27,17 +28,22 @@ public class HypotheekService {
     private HypotheekPakketRepository hypotheekPakketRepository;
     @InjectParam
     private GebruikerService gebruikerService;
+    @InjectParam
+    private BankService bankService;
 
     public void opslaan(Hypotheek hypotheek) {
         hypotheekRepository.opslaan(hypotheek);
     }
 
-    public void opslaan(Hypotheek hypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId) {
+    public void opslaan(Hypotheek hypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId, Long bankId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
 
         hypotheek.setRelatie(relatie);
         hypotheek.setHypotheekVorm(soortHypotheek);
+
+        Bank bank = bankService.lees(bankId);
+        hypotheek.setBank(bank);
 
         HypotheekPakket pakket = null;
 
@@ -119,5 +125,9 @@ public class HypotheekService {
 
     public void setHypotheekPakketRepository(HypotheekPakketRepository hypotheekPakketRepository) {
         this.hypotheekPakketRepository = hypotheekPakketRepository;
+    }
+
+    public void setBankService(BankService bankService) {
+        this.bankService = bankService;
     }
 }

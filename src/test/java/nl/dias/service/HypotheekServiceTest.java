@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nl.dias.domein.Bank;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.Relatie;
@@ -26,6 +27,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
     private HypotheekRepository repository;
     private GebruikerService gebruikerService;
     private HypotheekPakketRepository hypotheekPakketRepository;
+    private BankService bankService;
 
     @Before
     public void setUp() throws Exception {
@@ -39,6 +41,9 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         hypotheekPakketRepository = createMock(HypotheekPakketRepository.class);
         service.setHypotheekPakketRepository(hypotheekPakketRepository);
+
+        bankService = createMock(BankService.class);
+        service.setBankService(bankService);
     }
 
     @After
@@ -50,9 +55,12 @@ public class HypotheekServiceTest extends EasyMockSupport {
     public void testOpslaan() {
         String hypotheekVorm = "2";
         Long relatieId = 58L;
+        Long bankId = 69L;
         Relatie relatie = createMock(Relatie.class);
         SoortHypotheek soortHypotheek = createMock(SoortHypotheek.class);
+        Bank bank = createMock(Bank.class);
 
+        expect(bankService.lees(bankId)).andReturn(bank);
         expect(gebruikerService.lees(relatieId)).andReturn(relatie);
         expect(repository.leesSoortHypotheek(Long.valueOf(hypotheekVorm))).andReturn(soortHypotheek);
 
@@ -61,13 +69,15 @@ public class HypotheekServiceTest extends EasyMockSupport {
         expectLastCall();
         hypotheek.setHypotheekVorm(soortHypotheek);
         expectLastCall();
+        hypotheek.setBank(bank);
+        expectLastCall();
 
         repository.opslaan(hypotheek);
         expectLastCall();
 
         replayAll();
 
-        service.opslaan(hypotheek, hypotheekVorm, relatieId, null);
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, null, bankId);
     }
 
     @Test
@@ -75,11 +85,14 @@ public class HypotheekServiceTest extends EasyMockSupport {
         String hypotheekVorm = "2";
         Long relatieId = 58L;
         Long gekoppeldeHypotheekId = 46L;
+        Long bankId = 69L;
         Hypotheek gekoppeldeHypotheek = createMock(Hypotheek.class);
         HypotheekPakket pakket = createMock(HypotheekPakket.class);
         Relatie relatie = createMock(Relatie.class);
         SoortHypotheek soortHypotheek = createMock(SoortHypotheek.class);
+        Bank bank = createMock(Bank.class);
 
+        expect(bankService.lees(bankId)).andReturn(bank);
         expect(gebruikerService.lees(relatieId)).andReturn(relatie);
         expect(repository.leesSoortHypotheek(Long.valueOf(hypotheekVorm))).andReturn(soortHypotheek);
 
@@ -89,6 +102,8 @@ public class HypotheekServiceTest extends EasyMockSupport {
         hypotheek.setHypotheekVorm(soortHypotheek);
         expectLastCall();
         hypotheek.setHypotheekPakket(pakket);
+        expectLastCall();
+        hypotheek.setBank(bank);
         expectLastCall();
 
         expect(repository.lees(gekoppeldeHypotheekId)).andReturn(gekoppeldeHypotheek);
@@ -103,7 +118,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId);
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId, bankId);
     }
 
     @Test
@@ -111,11 +126,14 @@ public class HypotheekServiceTest extends EasyMockSupport {
         String hypotheekVorm = "2";
         Long relatieId = 58L;
         Long gekoppeldeHypotheekId = 46L;
+        Long bankId = 69L;
         Hypotheek gekoppeldeHypotheek = createMock(Hypotheek.class);
         HypotheekPakket pakket = createMock(HypotheekPakket.class);
         Relatie relatie = createMock(Relatie.class);
         SoortHypotheek soortHypotheek = createMock(SoortHypotheek.class);
+        Bank bank = createMock(Bank.class);
 
+        expect(bankService.lees(bankId)).andReturn(bank);
         expect(gebruikerService.lees(relatieId)).andReturn(relatie);
         expect(repository.leesSoortHypotheek(Long.valueOf(hypotheekVorm))).andReturn(soortHypotheek);
 
@@ -125,6 +143,8 @@ public class HypotheekServiceTest extends EasyMockSupport {
         hypotheek.setHypotheekVorm(soortHypotheek);
         expectLastCall();
         hypotheek.setHypotheekPakket(pakket);
+        expectLastCall();
+        hypotheek.setBank(bank);
         expectLastCall();
 
         expect(repository.lees(gekoppeldeHypotheekId)).andReturn(gekoppeldeHypotheek);
@@ -141,7 +161,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId);
+        service.opslaan(hypotheek, hypotheekVorm, relatieId, gekoppeldeHypotheekId, bankId);
     }
 
     @Test
