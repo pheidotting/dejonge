@@ -32,12 +32,22 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
     private List<JsonBijlage> bijlages;
     private String leningNummer;
     private String bank;
+    private String bankId;
     // moet vanuit de schermkant
     private String idDiv;
     private String idDivLink;
     private String className;
     private String titel;
     private List<String> soortenHypotheek;
+    private String hypotheekVormOpgemaakt;
+
+    public String getHypotheekVormOpgemaakt() {
+        return hypotheekVormOpgemaakt;
+    }
+
+    public void setHypotheekVormOpgemaakt(String hypotheekVormOpgemaakt) {
+        this.hypotheekVormOpgemaakt = hypotheekVormOpgemaakt;
+    }
 
     public Long getId() {
         return id;
@@ -277,6 +287,14 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
     }
 
     /**

@@ -117,6 +117,19 @@ public class HypotheekController {
         return hypotheekMapper.mapAllNaarJson(hypotheken);
     }
 
+    @GET
+    @Path("/lijstHypothekenInclDePakketten")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonHypotheek> alleHypothekenInclDePakketten(@QueryParam("relatieId") Long relatieId) {
+        Set<Hypotheek> hypotheken = new HashSet<>();
+
+        for (Hypotheek soort : hypotheekService.allesVanRelatieInclDePakketten(relatieId)) {
+            hypotheken.add(soort);
+        }
+
+        return hypotheekMapper.mapAllNaarJson(hypotheken);
+    }
+
     @POST
     @Path("/opslaan")
     @Produces(MediaType.APPLICATION_JSON)

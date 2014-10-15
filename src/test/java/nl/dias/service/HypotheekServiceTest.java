@@ -120,6 +120,22 @@ public class HypotheekServiceTest extends EasyMockSupport {
     }
 
     @Test
+    public void allesVanRelatieInclDePakketten() {
+        Long relatieId = 58L;
+
+        List<Hypotheek> lijst = new ArrayList<Hypotheek>();
+
+        Relatie relatie = createMock(Relatie.class);
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+
+        expect(repository.allesVanRelatieInclDePakketten(relatie)).andReturn(lijst);
+
+        replayAll();
+
+        assertEquals(lijst, service.allesVanRelatieInclDePakketten(relatieId));
+    }
+
+    @Test
     public void allePakketenVanRelatie() {
         Long relatieId = 58L;
 

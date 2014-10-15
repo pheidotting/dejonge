@@ -130,6 +130,21 @@ public class HypotheekControllerTest extends EasyMockSupport {
     }
 
     @Test
+    public void alleHypothekenInclDePakketten() {
+        Long relatieId = 58L;
+        List<Hypotheek> hypotheken = new ArrayList<>();
+        List<JsonHypotheek> jsonHypotheken = new ArrayList<>();
+        Set<Hypotheek> hypothekenSet = new HashSet<>();
+
+        expect(hypotheekService.allesVanRelatieInclDePakketten(relatieId)).andReturn(hypotheken);
+        expect(hypotheekMapper.mapAllNaarJson(hypothekenSet)).andReturn(jsonHypotheken);
+
+        replayAll();
+
+        assertEquals(jsonHypotheken, controller.alleHypothekenInclDePakketten(relatieId));
+    }
+
+    @Test
     public void testAlleHypotheekPakketten() {
         Long relatieId = 58L;
         List<HypotheekPakket> hypotheekPakketten = new ArrayList<>();

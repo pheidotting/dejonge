@@ -43,6 +43,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
 
         Bank bank = new Bank();
         bank.setNaam("naamBank");
+        bank.setId(3L);
 
         Relatie relatie = new Relatie();
         relatie.setId(46L);

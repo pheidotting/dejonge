@@ -64,6 +64,12 @@ public class HypotheekService {
         return hypotheekRepository.allesVanRelatie(relatie);
     }
 
+    public List<Hypotheek> allesVanRelatieInclDePakketten(Long relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
+
+        return hypotheekRepository.allesVanRelatieInclDePakketten(relatie);
+    }
+
     public List<HypotheekPakket> allePakketenVanRelatie(Long relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
 
