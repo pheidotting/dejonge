@@ -33,6 +33,7 @@ define([ "commons/3rdparty/log",
 		
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
+		_this.bankId = ko.observable(data.bankId);
 		_this.relatie = ko.observable(_relatieId);
 		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
 		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
@@ -127,6 +128,7 @@ define([ "commons/3rdparty/log",
 				self.bijlages.push(new Bijlage(item));
 			});
 		}
+		_this.gekoppeldeHypotheek = ko.observable();
 		
 		_this.opslaan = function(hypotheek){
 	    	var result = ko.validation.group(hypotheek, {deep: true});

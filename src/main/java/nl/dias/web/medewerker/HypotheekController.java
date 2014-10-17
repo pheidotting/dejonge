@@ -121,6 +121,8 @@ public class HypotheekController {
     @Path("/lijstHypothekenInclDePakketten")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonHypotheek> alleHypothekenInclDePakketten(@QueryParam("relatieId") Long relatieId) {
+        hypotheekService.leesHypotheek(14L);
+
         Set<Hypotheek> hypotheken = new HashSet<>();
 
         for (Hypotheek soort : hypotheekService.allesVanRelatieInclDePakketten(relatieId)) {
@@ -137,17 +139,20 @@ public class HypotheekController {
     public Response opslaan(JsonHypotheek jsonHypotheek) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
 
-        Hypotheek hypotheek = new Hypotheek();
-        if (jsonHypotheek.getId() != null && jsonHypotheek.getId() != 0) {
-            hypotheek = hypotheekService.leesHypotheek(jsonHypotheek.getId());
-        }
+        // Hypotheek hypotheek = new Hypotheek();
+        // if (jsonHypotheek.getId() != null && jsonHypotheek.getId() != 0) {
+        // hypotheek = hypotheekService.leesHypotheek(jsonHypotheek.getId());
+        // }
+        //
+        // hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
+        // LOGGER.info("Uit de mapper");
+        // LOGGER.info(hypotheek);
 
-        hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
-
-        hypotheekService.opslaan(hypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek(), jsonHypotheek.getBankId());
+        hypotheekService.opslaan(jsonHypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek(), jsonHypotheek.getBankId());
 
         LOGGER.debug("Opgeslagen");
-        return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();
+
+        return Response.status(200).entity(new JsonFoutmelding(jsonHypotheek.getId().toString())).build();
     }
 
     @GET

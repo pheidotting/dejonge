@@ -31,7 +31,10 @@ import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "HYPOTHEEK")
-@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and h.hypotheekPakket is null"),
+@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie"),// and
+                                                                                                                                // h.hypotheekPakket
+                                                                                                                                // is
+                                                                                                                                // null"),
         @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie") })
 public class Hypotheek implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8709743283669873667L;
@@ -367,7 +370,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
                 .append("duurRenteVastePeriode", this.duurRenteVastePeriode + "\n").append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde + "\n").append("ingangsDatum", this.ingangsDatum + "\n")
                 .append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode + "\n").append("waardeNaVerbouwing", this.waardeNaVerbouwing + "\n")
                 .append("marktWaarde", this.marktWaarde + "\n").append("wozWaarde", this.wozWaarde + "\n").append("omschrijving", this.omschrijving + "\n")
-                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").toString();
+                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").append("leningNummer", this.leningNummer + "\n").toString();
     }
 
 }

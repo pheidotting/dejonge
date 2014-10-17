@@ -9,10 +9,23 @@ require(["commons/3rdparty/log",
 		$.each(data, function(key, value) {
 		    $('<option>', { value : value.id }).text(value.omschrijving).appendTo($select);
 		});
-		$.get( "../dejonge/rest/medewerker/hypotheek/lees", {"id" : subId}, function(data) {
-			logger.debug("Gegevens opgehaald voor hypotheek, applyBindings");
-	//		ko.validation.registerExtenders();
-	       	ko.applyBindings(new hypotheek(data));
-	    });
+		$.get( "../dejonge/rest/medewerker/hypotheek/alleBanken", {}, function(data) {
+			var $select = $('#bank');
+			$('<option>', { value : '' }).text('Kies een bank uit de lijst...').appendTo($select);
+			$.each(data, function(key, value) {
+				$('<option>', { value : value.id }).text(value.naam).appendTo($select);
+			});
+			$.get( "../dejonge/rest/medewerker/hypotheek/lijstHypothekenInclDePakketten", {relatieId : _relatieId}, function(data) {
+				var $select = $('#koppelHypotheek');
+				$('<option>', { value : '' }).text('Kies evt. een hypotheek om mee te koppelen...').appendTo($select);
+				$.each(data, function(key, value) {
+					$('<option>', { value : value.id }).text(value.leningNummer).appendTo($select);
+				});
+				$.get( "../dejonge/rest/medewerker/hypotheek/lees", {"id" : subId}, function(data) {
+					logger.debug("Gegevens opgehaald voor hypotheek, applyBindings");
+			       	ko.applyBindings(new hypotheek(data));
+				});
+			});
+		});
 	});
 });

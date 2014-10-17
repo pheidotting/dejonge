@@ -92,7 +92,6 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Hypotheek.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<Hypotheek> hypotheken;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
 

@@ -11,8 +11,10 @@ import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.SoortHypotheek;
+import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
+import nl.dias.web.mapper.HypotheekMapper;
 
 import org.apache.log4j.Logger;
 
@@ -31,45 +33,67 @@ public class HypotheekService {
     @InjectParam
     private BankService bankService;
 
+    private HypotheekMapper hypotheekMapper;
+
     public void opslaan(Hypotheek hypotheek) {
         hypotheekRepository.opslaan(hypotheek);
     }
 
-    public void opslaan(Hypotheek hypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId, Long bankId) {
+    public Hypotheek opslaan(JsonHypotheek jsonHypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId, Long bankId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
 
-        hypotheek.setRelatie(relatie);
-        hypotheek.setHypotheekVorm(soortHypotheek);
+        Hypotheek hypotheek = leesHypotheek(jsonHypotheek.getId());
+        hypotheekMapper = new HypotheekMapper();
+        hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
+
+        if (hypotheek.getRelatie() == null) {
+            hypotheek.setRelatie(relatie);
+            hypotheek.setHypotheekVorm(soortHypotheek);
+        }
 
         Bank bank = bankService.lees(bankId);
         hypotheek.setBank(bank);
 
         HypotheekPakket pakket = null;
 
+        LOGGER.info("1");
         if (gekoppeldeHypotheekId != null) {
+            LOGGER.info("2");
             Hypotheek gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
+            LOGGER.info("3");
 
             if (gekoppeldeHypotheek.getHypotheekPakket() == null) {
+                LOGGER.info("4");
                 pakket = new HypotheekPakket();
                 pakket.getHypotheken().add(gekoppeldeHypotheek);
                 pakket.setRelatie(relatie);
                 hypotheekPakketRepository.opslaan(pakket);
 
+                LOGGER.info("5");
                 gekoppeldeHypotheek.setHypotheekPakket(pakket);
                 hypotheekRepository.opslaan(gekoppeldeHypotheek);
+                LOGGER.info("6");
             } else {
+                LOGGER.info("7");
                 pakket = gekoppeldeHypotheek.getHypotheekPakket();
+                LOGGER.info("8");
             }
+            LOGGER.info("9");
             pakket.getHypotheken().add(hypotheek);
             hypotheek.setHypotheekPakket(pakket);
-
+            LOGGER.info("");
         }
+        LOGGER.info("10");
+
+        LOGGER.info(hypotheek);
 
         hypotheekRepository.opslaan(hypotheek);
         if (pakket != null) {
             hypotheekPakketRepository.opslaan(pakket);
         }
+
+        return hypotheek;
     }
 
     public Hypotheek leesHypotheek(Long id) {

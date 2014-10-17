@@ -2,8 +2,20 @@
 <form enctype="multipart/form-data" id="hypotheekForm">
 <input type="hidden" id="id" name="id" data-bind="value: id" />
 <div class="form-group">
+	<label for="bank">Bank</label>
+	<select id="bank" name="bank" data-bind="value: bankId"></select>
+</div>
+<div class="form-group">
 	<label for="hypotheekVorm">Hypotheekvorm</label>
 	<select id="hypotheekVorm" name="hypotheekVorm" data-bind="value: hypotheekVorm"></select>
+</div>
+<div class="form-group">
+	<label for="koppelHypotheek">Gekoppelde hypotheek</label>
+	<select id="koppelHypotheek" name="koppelHypotheek" data-bind="value: gekoppeldeHypotheek"></select>
+</div>
+<div class="form-group">
+	<label for="leningNummer">Leningnummer</label>
+	<input class="form-control" type="text" id=leningNummer placeholder="Leningnummer..." data-bind="value: leningNummer" />
 </div>
 <div class="form-group">
 	<label for="hypotheekBedrag">Hypotheek bedrag</label>
