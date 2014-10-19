@@ -83,6 +83,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         // browsers.add(new String[] { "Windows 8.1", "11", "internet explorer"
         // });
         browsers.add(new String[] { "OSX 10.8", "38", "chrome" });
+        browsers.add(new String[] { "Windows 7", "10", "iehta" });
         return browsers;
     }
 
@@ -174,6 +175,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
         beherenRelatieScherm.drukOpOpslaan();
         // aantal 'vul dit veld in' meldingen checken
+        beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
         assertEquals(6, beherenRelatieScherm.aantalFouten());
 
         JsonRelatie jsonRelatie = maakJsonRelatie();
@@ -182,6 +184,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         beherenRelatieScherm.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), null, jsonRelatie.getStraat(), "a", null, null, null, null, jsonRelatie.getIdentificatie(),
                 jsonRelatie.getGeboorteDatum(), null, jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), null, null);
 
+        beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
         assertEquals(1, beherenRelatieScherm.aantalFouten());
         assertEquals("Vul een getal in.", beherenRelatieScherm.getValidatieFouten().get(0).getText());
 

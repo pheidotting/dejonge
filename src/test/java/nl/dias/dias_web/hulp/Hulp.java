@@ -40,7 +40,10 @@ public class Hulp {
     }
 
     public static void wachtOpElement(WebElement element) {
-        doeCheckMetTimeOut(element.isDisplayed());
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        while ((element == null || !element.isDisplayed()) && LocalDateTime.now().isBefore(timeOut)) {
+            wachtFf(timeout);
+        }
         if (!element.isDisplayed()) {
             throw new NoSuchElementException(element + " niet gevonden");
         }
@@ -51,7 +54,6 @@ public class Hulp {
         LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
         try {
             while (!element.isDisplayed() && LocalDateTime.now().isBefore(timeOut)) {
-                // doeCheckMetTimeOut(element.isDisplayed());
                 wachtFf(timeout);
             }
             element.click();

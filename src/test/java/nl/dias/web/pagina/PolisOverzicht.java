@@ -107,11 +107,12 @@ public class PolisOverzicht {
 
     public String controleerPolissen(JsonPolis... polissen) {
         StringBuilder sb = new StringBuilder();
-        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(30);
         while (polissen.length != titel.size() && LocalDateTime.now().isBefore(timeOut)) {
-            if (polissen.length != titel.size()) {
-                sb.append("aantal komt niet overeen");
-            }
+            Hulp.wachtFf();
+        }
+        if (polissen.length != titel.size()) {
+            sb.append("aantal komt niet overeen");
         }
         for (JsonPolis p : polissen) {
             sb.append(controleerPolis(p));

@@ -72,9 +72,6 @@ public class LijstRelaties {
         Integer gevondenIndex = null;
         boolean gevonden = false;
 
-        System.out.println(jsonRelatie.getAchternaam());
-        System.out.println(jsonRelatie.getTussenvoegsel());
-        System.out.println(jsonRelatie.getVoornaam());
         for (int i = 0; i < voornaam.size(); i++) {
             if (recordKomtOvereen(jsonRelatie, i)) {
                 gevondenIndex = i;
@@ -107,12 +104,6 @@ public class LijstRelaties {
         String geboortedatum = this.geboortedatum.get(index).getText();
         String adres = this.adres.get(index).getText();
 
-        System.out.println(voornaam + " | " + jsonRelatie.getVoornaam());
-        System.out.println(tussenvoegsel + " | " + jsonRelatie.getTussenvoegsel());
-        System.out.println(achternaam + " | " + jsonRelatie.getAchternaam());
-        System.out.println(geboortedatum + " | " + jsonRelatie.getGeboorteDatum());
-        System.out.println(adres + " | " + jsonRelatie.getAdresOpgemaakt());
-
         if (!jsonRelatie.getVoornaam().equals(voornaam)) {
             komtOvereen = false;
         }
@@ -125,7 +116,7 @@ public class LijstRelaties {
         if (!jsonRelatie.getGeboorteDatum().equals(geboortedatum)) {
             komtOvereen = false;
         }
-        if (!jsonRelatie.getAdresOpgemaakt().equals(adres)) {
+        if (!jsonRelatie.getAdresOpgemaakt().trim().equals(adres.trim())) {
             komtOvereen = false;
         }
 
