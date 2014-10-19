@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import nl.dias.dias_web.hulp.Hulp;
@@ -37,13 +39,23 @@ import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.support.PageFactory;
 
-public class BeherenRelatieIT {
+import com.saucelabs.common.SauceOnDemandAuthentication;
+import com.saucelabs.common.SauceOnDemandSessionIdProvider;
+import com.saucelabs.junit.ConcurrentParameterized;
+import com.saucelabs.junit.SauceOnDemandTestWatcher;
+
+@RunWith(ConcurrentParameterized.class)
+public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     private SeleniumServer seleniumServer;
     private WebDriver driver;
     private StringGeneratieUtil stringGeneratieUtil;
@@ -55,6 +67,24 @@ public class BeherenRelatieIT {
     private List<JsonRelatie> jsonRelaties;
 
     private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
+
+    public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication("lakedigital", "b778ded8-21ad-4a54-b701-647d3521ea53");
+
+    @Rule
+    public SauceOnDemandTestWatcher resultReportingTestWatcher = new SauceOnDemandTestWatcher(this, authentication);
+    private final String browser;
+    private final String os;
+    private final String version;
+    private String sessionId;
+
+    @ConcurrentParameterized.Parameters
+    public static LinkedList browsersStrings() {
+        LinkedList browsers = new LinkedList();
+        // browsers.add(new String[] { "Windows 8.1", "11", "internet explorer"
+        // });
+        browsers.add(new String[] { "OSX 10.8", "38", "chrome" });
+        return browsers;
+    }
 
     // private final String BASIS_URL =
     // "http://localhost:8080/dejonge/index.html#";
@@ -70,13 +100,33 @@ public class BeherenRelatieIT {
         return doorgaan;
     }
 
+    // public BeherenRelatieIT() {
+    // // TODO Auto-generated constructor stub
+    // }
+
+    public BeherenRelatieIT(String os, String version, String browser) {
+        super();
+        this.os = os;
+        this.version = version;
+        this.browser = browser;
+    }
+
     @Before
     public void setUp() throws Exception {
         if (doorgaan()) {
-            seleniumServer = new SeleniumServer();
-            seleniumServer.start();
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability(CapabilityType.BROWSER_NAME, browser);
+            if (version != null) {
+                capabilities.setCapability(CapabilityType.VERSION, version);
+            }
+            capabilities.setCapability(CapabilityType.PLATFORM, os);
+            capabilities.setCapability("name", this.getClass().getSimpleName());
+            this.driver = new RemoteWebDriver(new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"), capabilities);
 
-            driver = new FirefoxDriver();
+            // seleniumServer = new SeleniumServer();
+            // seleniumServer.start();
+            //
+            // driver = new FirefoxDriver();
             stringGeneratieUtil = new StringGeneratieUtil();
         }
 
@@ -87,7 +137,7 @@ public class BeherenRelatieIT {
     public void afsluiten() {
         if (doorgaan()) {
             driver.close();
-            seleniumServer.stop();
+            // seleniumServer.stop();
         }
     }
 
@@ -134,9 +184,24 @@ public class BeherenRelatieIT {
 
         assertEquals(1, beherenRelatieScherm.aantalFouten());
         assertEquals("Vul een getal in.", beherenRelatieScherm.getValidatieFouten().get(0).getText());
-        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, jsonRelatie.getTussenvoegsel(), null, jsonRelatie.getHuisnummer(), jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(),
-                jsonRelatie.getPlaats(), jsonRelatie.getBsn(), null, null, jsonRelatie.getOverlijdensdatum(), null, null,
-                allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()), allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+
+        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, null, jsonRelatie.getHuisnummer(), null, null, null, null, null, null, null, null, null, null, null);
+
+        checkOpgeslagenMelding(beherenRelatieScherm);
+
+        JsonRelatie r = new JsonRelatie();
+        r.setVoornaam(jsonRelatie.getVoornaam());
+        r.setAchternaam(jsonRelatie.getAchternaam());
+        r.setTussenvoegsel("");
+        r.setStraat(jsonRelatie.getStraat());
+        r.setHuisnummer(jsonRelatie.getHuisnummer());
+        r.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
+
+        assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(r));
+
+        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, jsonRelatie.getTussenvoegsel(), null, null, jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(),
+                jsonRelatie.getBsn(), null, null, jsonRelatie.getOverlijdensdatum(), null, null, allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
+                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
         checkOpgeslagenMelding(beherenRelatieScherm);
     }
@@ -176,6 +241,7 @@ public class BeherenRelatieIT {
 
             // beherenRelatieScherm.klikMenuItemAan(MenuItem.POLISSEN, driver);
             PolisOverzicht polissen = PageFactory.initElements(driver, PolisOverzicht.class);
+            Hulp.wachtFf();
             assertEquals("", polissen.controleerPolissen(polis));
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -513,5 +579,10 @@ public class BeherenRelatieIT {
         beherenRelatieTelefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
 
         return beherenRelatieTelefoonnummer;
+    }
+
+    @Override
+    public String getSessionId() {
+        return sessionId;
     }
 }
