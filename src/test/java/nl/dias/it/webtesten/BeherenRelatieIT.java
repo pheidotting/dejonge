@@ -83,7 +83,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         // browsers.add(new String[] { "Windows 8.1", "11", "internet explorer"
         // });
         browsers.add(new String[] { "OSX 10.8", "38", "chrome" });
-        browsers.add(new String[] { "Windows 7", "10", "iehta" });
+        // browsers.add(new String[] { "Windows 7", "10", "iehta" });
         return browsers;
     }
 
@@ -137,7 +137,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     @After
     public void afsluiten() {
         if (doorgaan()) {
-            driver.close();
+            driver.quit();
             // seleniumServer.stop();
         }
     }

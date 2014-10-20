@@ -107,9 +107,9 @@ public class BeherenRelatie extends PaginaMetMenuBalk {
         Hulp.vulVeld(this.postcode, postcode);
         Hulp.vulVeld(this.plaats, plaats);
         Hulp.vulVeld(this.bsn, bsn);
-        Hulp.vulVeld(this.emailadres, emailadres);
         Hulp.vulVeld(this.geboorteDatum, geboorteDatum);
         Hulp.vulVeld(this.overlijdensdatum, overlijdensdatum);
+        Hulp.vulVeld(this.emailadres, emailadres);
         if (geslacht != null) {
             Hulp.selecteerUitSelectieBox(this.geslacht, geslacht);
         }
