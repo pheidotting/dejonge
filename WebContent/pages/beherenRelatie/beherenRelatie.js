@@ -29,7 +29,9 @@ function start(log, relatieId, actie, subId){
 				_subId = subId;
 
 			});
-			$('#details').load("pages/beherenRelatie/details/" + actie + ".html");
+			if(actie != "polis"){
+				$('#details').load("pages/beherenRelatie/details/" + actie + ".html");
+			}
 
 			//Navigatie
 			$("#beherenRelatie").click(function(){

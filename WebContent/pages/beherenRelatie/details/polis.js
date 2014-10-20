@@ -29,10 +29,14 @@ function go(log, relatieId, actie, subId){
 					log.debug(JSON.stringify(data));
 					var polis = new Polis(data, log, relatieId);
 					polis.bijlages.removeAll();
-					ko.applyBindings(polis);
+					$('#details').load("pages/beherenRelatie/details/" + actie + ".html", function(data) {
+						ko.applyBindings(polis);
+					});
 			    });
 			}else{
-				ko.applyBindings(new Polis('', log, relatieId));
+				$('#details').load("pages/beherenRelatie/details/" + actie + ".html", function(data) {
+					ko.applyBindings(new Polis('', log, relatieId));
+				});
 			}
 		});
 	});
