@@ -1,6 +1,7 @@
 package nl.dias.dias_web.hulp;
 
 import org.joda.time.LocalDateTime;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,6 +34,7 @@ public class Hulp {
                 wachtFf();
             } while (!Hulp.getText(element).equals(waarde));
         }
+        element.sendKeys(Keys.TAB);
     }
 
     public static void klikEnWacht(WebElement element) {

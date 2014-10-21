@@ -2,10 +2,12 @@ function go(log, relatieId, actie, subId){
 	$.getScript("pages/beherenRelatie/details/polissen.js");
 	$.getScript("pages/beherenRelatie/details/bijlages.js");
 
-	$.get( "../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen", {}, function(data) {
-		var $select = $('#verzekeringsMaatschappijen');
-		$.each(data, function(key, value) {
-		    $('<option>', { value : value }).text(value).appendTo($select);
+	$('#details').load("pages/beherenRelatie/details/" + actie + ".html", function(data) {
+		$.get( "../dejonge/rest/medewerker/overig/lijstVerzekeringsMaatschappijen", {}, function(data) {
+			var $select = $('#verzekeringsMaatschappijen');
+			$.each(data, function(key, value) {
+			    $('<option>', { value : value }).text(value).appendTo($select);
+			});
 		});
 
 		$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
@@ -29,14 +31,10 @@ function go(log, relatieId, actie, subId){
 					log.debug(JSON.stringify(data));
 					var polis = new Polis(data, log, relatieId);
 					polis.bijlages.removeAll();
-					$('#details').load("pages/beherenRelatie/details/" + actie + ".html", function(data) {
-						ko.applyBindings(polis);
-					});
+					ko.applyBindings(polis);
 			    });
 			}else{
-				$('#details').load("pages/beherenRelatie/details/" + actie + ".html", function(data) {
-					ko.applyBindings(new Polis('', log, relatieId));
-				});
+				ko.applyBindings(new Polis('', log, relatieId));
 			}
 		});
 	});
