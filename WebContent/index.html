@@ -158,8 +158,8 @@
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').show();
 			$('#alertSucces').html(melding);
-/* 			refreshIntervalId = setInterval(verbergMeldingen, 10000);
- */		}
+			refreshIntervalId = setInterval(verbergMeldingen, 10000);
+		}
  		verbergMeldingen = function(){
 			clearInterval(refreshIntervalId); 		
  			$("html, body").animate({ scrollTop: 0 }, "slow");
