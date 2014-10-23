@@ -9,12 +9,13 @@ import org.openqa.selenium.support.ui.Select;
 
 public class Hulp {
     private static final int timeout = 1000;
+    public static final int zoekTimeOut = 60;
 
     private Hulp() {
     }
 
     public static boolean doeCheckMetTimeOut(boolean check) {
-        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
         while (!check && LocalDateTime.now().isBefore(timeOut)) {
             wachtFf();
             return true;
@@ -23,7 +24,7 @@ public class Hulp {
     }
 
     public static void vulVeld(WebElement element, String waarde) {
-        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
         while (!element.isDisplayed() && LocalDateTime.now().isBefore(timeOut)) {
             wachtFf();
         }
@@ -42,7 +43,7 @@ public class Hulp {
     }
 
     public static void wachtOpElement(WebElement element) {
-        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
         while ((element == null || !element.isDisplayed()) && LocalDateTime.now().isBefore(timeOut)) {
             wachtFf(timeout);
         }
@@ -53,7 +54,7 @@ public class Hulp {
 
     public static void klikEnWacht(WebElement element, int timeout) {
         wachtFf(timeout);
-        LocalDateTime timeOut = new LocalDateTime().plusSeconds(10);
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
         try {
             while (!element.isDisplayed() && LocalDateTime.now().isBefore(timeOut)) {
                 wachtFf(timeout);
@@ -109,16 +110,26 @@ public class Hulp {
 
         try {
             ok = getText(element).equals(verwacht);
-            if (!ok) {
-                Hulp.wachtFf();
+            LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
+            while ((!ok) && LocalDateTime.now().isBefore(timeOut)) {
+                wachtFf(timeout);
                 ok = getText(element).equals(verwacht);
             }
+            // if (!ok) {
+            // Hulp.wachtFf();
+            // ok = getText(element).equals(verwacht);
+            // }
         } catch (NullPointerException e) {
             ok = element.getText().equals(verwacht);
-            if (!ok) {
-                Hulp.wachtFf();
+            LocalDateTime timeOut = new LocalDateTime().plusSeconds(zoekTimeOut);
+            while ((!ok) && LocalDateTime.now().isBefore(timeOut)) {
+                wachtFf(timeout);
                 ok = element.getText().equals(verwacht);
             }
+            // if (!ok) {
+            // Hulp.wachtFf();
+            // ok = element.getText().equals(verwacht);
+            // }
         }
 
         return ok;

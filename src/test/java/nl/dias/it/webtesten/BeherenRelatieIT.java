@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,9 +42,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.support.PageFactory;
 
@@ -66,7 +63,9 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     // testgegevens
     private List<JsonRelatie> jsonRelaties;
 
-    private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
+    // private final String BASIS_URL =
+    // "http://46.17.3.242:57525/dejonge/index.html#";
+    private final String BASIS_URL = "http://localhost:8080/dejonge/index.html#";
 
     public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication("lakedigital", "b778ded8-21ad-4a54-b701-647d3521ea53");
 
@@ -86,9 +85,6 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         // browsers.add(new String[] { "Windows 7", "10", "iehta" });
         return browsers;
     }
-
-    // private final String BASIS_URL =
-    // "http://localhost:8080/dejonge/index.html#";
 
     private boolean doorgaan() {
         boolean doorgaan = true;
@@ -115,19 +111,23 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     @Before
     public void setUp() throws Exception {
         if (doorgaan()) {
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability(CapabilityType.BROWSER_NAME, browser);
-            if (version != null) {
-                capabilities.setCapability(CapabilityType.VERSION, version);
-            }
-            capabilities.setCapability(CapabilityType.PLATFORM, os);
-            capabilities.setCapability("name", this.getClass().getSimpleName());
-            this.driver = new RemoteWebDriver(new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"), capabilities);
+            // DesiredCapabilities capabilities = new DesiredCapabilities();
+            // capabilities.setCapability(CapabilityType.BROWSER_NAME, browser);
+            // if (version != null) {
+            // capabilities.setCapability(CapabilityType.VERSION, version);
+            // }
+            // capabilities.setCapability(CapabilityType.PLATFORM, os);
+            // capabilities.setCapability("name",
+            // this.getClass().getSimpleName());
+            // this.driver = new RemoteWebDriver(new URL("http://" +
+            // authentication.getUsername() + ":" +
+            // authentication.getAccessKey() +
+            // "@ondemand.saucelabs.com:80/wd/hub"), capabilities);
 
-            // seleniumServer = new SeleniumServer();
-            // seleniumServer.start();
-            //
-            // driver = new FirefoxDriver();
+            seleniumServer = new SeleniumServer();
+            seleniumServer.start();
+
+            driver = new FirefoxDriver();
             stringGeneratieUtil = new StringGeneratieUtil();
         }
 
@@ -138,7 +138,9 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     public void afsluiten() {
         if (doorgaan()) {
             driver.quit();
-            // seleniumServer.stop();
+            if (seleniumServer != null) {
+                seleniumServer.stop();
+            }
         }
     }
 

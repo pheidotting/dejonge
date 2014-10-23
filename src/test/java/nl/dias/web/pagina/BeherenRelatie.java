@@ -6,6 +6,7 @@ import java.util.List;
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.domein.json.JsonRelatie;
 
+import org.joda.time.LocalDateTime;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -73,6 +74,10 @@ public class BeherenRelatie extends PaginaMetMenuBalk {
     private List<WebElement> validatieFouten;
 
     public int aantalFouten() {
+        LocalDateTime timeOut = new LocalDateTime().plusSeconds(Hulp.zoekTimeOut);
+        while (getValidatieFouten().size() == 0 && LocalDateTime.now().isBefore(timeOut)) {
+            Hulp.wachtFf();
+        }
         return getValidatieFouten().size();
     }
 

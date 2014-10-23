@@ -39,6 +39,10 @@ public class PolisOverzicht {
     private List<WebElement> bedrijf;
 
     public int zoekPolis(JsonPolis jsonPolis) {
+        return zoekPolis(jsonPolis, true);
+    }
+
+    public int zoekPolis(JsonPolis jsonPolis, boolean doorgaan) {
         int gevonden = 0;
         boolean werdGevonden = false;
         for (WebElement element : titel) {
@@ -50,6 +54,9 @@ public class PolisOverzicht {
             gevonden++;
         }
         if (!werdGevonden) {
+            if (doorgaan) {
+                gevonden = zoekPolis(jsonPolis, false);
+            }
             gevonden = -1;
         }
         return gevonden;
