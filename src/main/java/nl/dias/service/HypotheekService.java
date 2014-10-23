@@ -46,8 +46,9 @@ public class HypotheekService {
         Hypotheek hypotheek = null;
         if (jsonHypotheek.getId() == null) {
             hypotheek = new Hypotheek();
+        } else {
+            hypotheek = leesHypotheek(jsonHypotheek.getId());
         }
-        hypotheek = leesHypotheek(jsonHypotheek.getId());
         hypotheekMapper = new HypotheekMapper();
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
