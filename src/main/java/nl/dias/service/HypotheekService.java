@@ -43,7 +43,11 @@ public class HypotheekService {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
 
-        Hypotheek hypotheek = leesHypotheek(jsonHypotheek.getId());
+        Hypotheek hypotheek = null;
+        if (jsonHypotheek.getId() == null) {
+            hypotheek = new Hypotheek();
+        }
+        hypotheek = leesHypotheek(jsonHypotheek.getId());
         hypotheekMapper = new HypotheekMapper();
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
