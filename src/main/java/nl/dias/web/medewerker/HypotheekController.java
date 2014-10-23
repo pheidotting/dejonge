@@ -152,7 +152,7 @@ public class HypotheekController {
 
         LOGGER.debug("Opgeslagen");
 
-        return Response.status(200).entity(new JsonFoutmelding(jsonHypotheek.getId().toString())).build();
+        return Response.status(200).entity(new JsonFoutmelding("")).build();
     }
 
     @GET
