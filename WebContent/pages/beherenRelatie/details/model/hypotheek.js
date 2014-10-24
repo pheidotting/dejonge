@@ -34,6 +34,8 @@ define([ "commons/3rdparty/log",
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
 		_this.bankId = ko.observable(data.bankId);
+		_this.boxI = ko.observable(data.boxI).extend({number: true});
+		_this.boxIII = ko.observable(data.boxIII).extend({number: true});
 		_this.relatie = ko.observable(_relatieId);
 		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
 		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
@@ -46,7 +48,7 @@ define([ "commons/3rdparty/log",
 		_this.wozWaarde = ko.observable(data.wozWaarde).extend({number: true});
 		_this.waardeVoorVerbouwing = ko.observable(data.waardeVoorVerbouwing).extend({number: true});
 		_this.waardeNaVerbouwing = ko.observable(data.waardeNaVerbouwing).extend({number: true});
-		_this.ingangsDatum = ko.observable(data.ingangsDatum).extend({required: true, validation: {
+		_this.ingangsDatum = ko.observable(data.ingangsDatum).extend({validation: {
 	        validator: function (val) {
 	        	return validation.valideerDatum(val);
 	        },

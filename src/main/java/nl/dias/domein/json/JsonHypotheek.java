@@ -34,6 +34,8 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
     private String bank;
     private Long bankId;
     private Long gekoppeldeHypotheek;
+    private String boxI;
+    private String boxIII;
     // moet vanuit de schermkant
     private String idDiv;
     private String idDivLink;
@@ -304,6 +306,22 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
 
     public void setBankId(Long bankId) {
         this.bankId = bankId;
+    }
+
+    public String getBoxI() {
+        return boxI;
+    }
+
+    public void setBoxI(String boxI) {
+        this.boxI = boxI;
+    }
+
+    public String getBoxIII() {
+        return boxIII;
+    }
+
+    public void setBoxIII(String boxIII) {
+        this.boxIII = boxIII;
     }
 
     /**

@@ -87,6 +87,12 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
             hypotheek.setWozWaarde(new Bedrag(jsonHypotheek.getWozWaarde()));
         }
         hypotheek.setLeningNummer(jsonHypotheek.getLeningNummer());
+        if (StringUtils.isNotBlank(jsonHypotheek.getBoxI())) {
+            hypotheek.setBoxI(new Bedrag(jsonHypotheek.getBoxI()));
+        }
+        if (StringUtils.isNotBlank(jsonHypotheek.getBoxIII())) {
+            hypotheek.setBoxIII(new Bedrag(jsonHypotheek.getBoxIII()));
+        }
 
         return hypotheek;
     }
@@ -136,6 +142,12 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (hypotheek.getBank() != null) {
             jsonHypotheek.setBank(hypotheek.getBank().getNaam());
             jsonHypotheek.setBankId(hypotheek.getBank().getId());
+        }
+        if (hypotheek.getBoxI() != null) {
+            jsonHypotheek.setBoxI(hypotheek.getBoxI().getBedrag().toString());
+        }
+        if (hypotheek.getBoxIII() != null) {
+            jsonHypotheek.setBoxIII(hypotheek.getBoxIII().getBedrag().toString());
         }
 
         return jsonHypotheek;

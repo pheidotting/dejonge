@@ -99,6 +99,10 @@ public class Hypotheek implements PersistenceObject, Serializable {
     @ManyToOne
     @JoinColumn(name = "PAKKET")
     private HypotheekPakket hypotheekPakket;
+    @AttributeOverride(name = "bedrag", column = @Column(name = "BOXI"))
+    private Bedrag boxI;
+    @AttributeOverride(name = "bedrag", column = @Column(name = "BOXIII"))
+    private Bedrag boxIII;
 
     @Override
     public Long getId() {
@@ -326,6 +330,22 @@ public class Hypotheek implements PersistenceObject, Serializable {
 
     public void setHypotheekPakket(HypotheekPakket hypotheekPakket) {
         this.hypotheekPakket = hypotheekPakket;
+    }
+
+    public Bedrag getBoxI() {
+        return boxI;
+    }
+
+    public void setBoxI(Bedrag boxI) {
+        this.boxI = boxI;
+    }
+
+    public Bedrag getBoxIII() {
+        return boxIII;
+    }
+
+    public void setBoxIII(Bedrag boxIII) {
+        this.boxIII = boxIII;
     }
 
     /**
