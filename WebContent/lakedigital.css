@@ -8,6 +8,11 @@ input {
 	width: 500px !important;
 }
 
+textarea {
+	width: 500px !important;
+	height: 200px !important;
+}
+
 .polisLabel {
 	width: 300px;
 	float: left;
