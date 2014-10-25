@@ -20,9 +20,9 @@
 	<listener>
 		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
 	</listener>
-	<listener>
+	<!--listener>
 		<listener-class>nl.dias.service.StartUpServlet</listener-class>
-	</listener>
+	</listener-->
 
 	<servlet>
 		<servlet-name>jersey-servlet-medewerker</servlet-name>
