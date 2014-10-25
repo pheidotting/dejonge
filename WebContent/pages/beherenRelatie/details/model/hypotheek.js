@@ -24,12 +24,12 @@ define([ "commons/3rdparty/log",
 					return data;
 				}
 			});
-		}
+		};
 		_this.soorten();
 
 		_this.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
-		}
+		};
 		
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
@@ -37,7 +37,7 @@ define([ "commons/3rdparty/log",
 		_this.boxI = ko.observable(data.boxI).extend({number: true});
 		_this.boxIII = ko.observable(data.boxIII).extend({number: true});
 		_this.relatie = ko.observable(_relatieId);
-		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
+		_this.hypotheekVorm = ko.observable(data.hypotheekVorm).extend({required: true});
 		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
 		_this.rente = ko.observable(data.rente).extend({required: true, number: true});
 		_this.marktWaarde = ko.observable(data.marktWaarde).extend({number: true});
