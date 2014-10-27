@@ -148,11 +148,11 @@ public class HypotheekController {
         // LOGGER.info("Uit de mapper");
         // LOGGER.info(hypotheek);
 
-        hypotheekService.opslaan(jsonHypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek(), jsonHypotheek.getBankId());
+        Hypotheek hypotheek = hypotheekService.opslaan(jsonHypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek(), jsonHypotheek.getBankId());
 
         LOGGER.debug("Opgeslagen");
 
-        return Response.status(200).entity(new JsonFoutmelding("")).build();
+        return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();
     }
 
     @GET

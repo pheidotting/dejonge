@@ -20,15 +20,16 @@ require(["commons/3rdparty/log",
 					var $select = $('#koppelHypotheek');
 					$('<option>', { value : '' }).text('Kies evt. een hypotheek om mee te koppelen...').appendTo($select);
 					$.each(data, function(key, value) {
-						$('<option>', { value : value.id }).text(value.leningNummer).appendTo($select);
-					});
-					$.get( "../dejonge/rest/medewerker/hypotheek/lees", {"id" : subId}, function(data) {
-						logger.debug("Gegevens opgehaald voor hypotheek, applyBindings");
-				       	ko.applyBindings(new hypotheek(data));
+						var h = new hypotheek(value);
+						$('<option>', { value : value.id }).text(h.titel()).appendTo($select);
 					});
 				}else{
 					$('#gekoppeldeHypotheekGroep').hide();
 				}
+				$.get( "../dejonge/rest/medewerker/hypotheek/lees", {"id" : subId}, function(data) {
+					logger.debug("Gegevens opgehaald voor hypotheek, applyBindings");
+					ko.applyBindings(new hypotheek(data));
+				});
 			});
 		});
 	});

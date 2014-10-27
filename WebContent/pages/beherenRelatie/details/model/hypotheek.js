@@ -1,9 +1,10 @@
 define([ "commons/3rdparty/log",
          "commons/validation",
-         "commons/opmaak"],
+         "commons/opmaak",
+         "pages/beherenRelatie/details/model/bijlage"],
 //         "commons/3rdparty/knockout",
 //         "commons/3rdparty/knockoutValidation/knockout.validation.min"],
-         function(logger, validation, opmaak) {
+         function(logger, validation, opmaak, bijlage) {
 	
 	return function hypotheek(data) {
 		_this = this;
@@ -114,7 +115,16 @@ define([ "commons/3rdparty/log",
 				}
 				
 			});
-			var omschrijving = data.leningNummer + " - " + hypVorm + " - " + data.bank + " - " + data.rente + "% - " + _this.bedrag(data.hypotheekBedrag);
+			var omschrijving = "";
+			if(data.leningNummer != null){
+				omschrijving += data.leningNummer + " - ";
+			}
+			omschrijving += hypVorm + " - ";
+			if(data.bank != null){
+				omschrijving += data.bank + " - ";
+			}
+			omschrijving += data.rente + "% - ";
+			omschrijving += _this.bedrag(data.hypotheekBedrag);
 			
 			return omschrijving;
 		}, this);
@@ -126,8 +136,9 @@ define([ "commons/3rdparty/log",
 		}
 		_this.bijlages = ko.observableArray();
 		if(data.bijlages != null){
+			var bijlages = [];
 			$.each(data.bijlages, function(i, item){
-				self.bijlages.push(new Bijlage(item));
+				_this.bijlages.push(new bijlage(item));
 			});
 		}
 		_this.gekoppeldeHypotheek = ko.observable();
@@ -196,18 +207,18 @@ define([ "commons/3rdparty/log",
 		self.tijd = ko.observable(data.tijd);
 	}
 	
-	function Bijlage(data){
-		var self = this;
-
-		self.id = ko.observable(data.id);
-		self.url = ko.computed(function() {
-	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
-		}, this);
-		self.bestandsNaam = ko.observable(data.bestandsNaam);
-		self.soortBijlage = ko.observable(data.soortBijlage);
-		self.parentId = ko.observable(data.parentId);
-		self.tonen = ko.computed(function() {
-			return ko.utils.unwrapObservable(self.soortBijlage) + " (" + ko.utils.unwrapObservable(self.parentId) + ")";
-		},this);
-	}
+//	function Bijlage(data){
+//		var self = this;
+//
+//		self.id = ko.observable(data.id);
+//		self.url = ko.computed(function() {
+//	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
+//		}, this);
+//		self.bestandsNaam = ko.observable(data.bestandsNaam);
+//		self.soortBijlage = ko.observable(data.soortBijlage);
+//		self.parentId = ko.observable(data.parentId);
+//		self.tonen = ko.computed(function() {
+//			return ko.utils.unwrapObservable(self.soortBijlage) + " (" + ko.utils.unwrapObservable(self.parentId) + ")";
+//		},this);
+//	}
 });

@@ -14,6 +14,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
+
     private final static String DATUM_FORMAAT = "dd-MM-yyyy";
 
     @InjectParam
@@ -47,7 +48,9 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         }
         LocalDate taxatieDatum = null;
         if (jsonHypotheek.getTaxatieDatum() != null && !"".equals(jsonHypotheek.getTaxatieDatum())) {
+            System.out.println("a");
             taxatieDatum = LocalDate.parse(jsonHypotheek.getTaxatieDatum(), DateTimeFormat.forPattern(patternDatum));
+            System.out.println(taxatieDatum);
         }
 
         // Hypotheek hypotheek = new Hypotheek();
@@ -104,12 +107,20 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         jsonHypotheek.setId(hypotheek.getId());
         jsonHypotheek.setDuur(hypotheek.getDuur());
         jsonHypotheek.setDuurRenteVastePeriode(hypotheek.getDuurRenteVastePeriode());
-        jsonHypotheek.setEindDatum(hypotheek.getEindDatum().toString(DATUM_FORMAAT));
-        jsonHypotheek.setEindDatumRenteVastePeriode(hypotheek.getEindDatumRenteVastePeriode().toString(DATUM_FORMAAT));
+        if (hypotheek.getEindDatum() != null) {
+            jsonHypotheek.setEindDatum(hypotheek.getEindDatum().toString(DATUM_FORMAAT));
+        }
+        if (hypotheek.getEindDatumRenteVastePeriode() != null) {
+            jsonHypotheek.setEindDatumRenteVastePeriode(hypotheek.getEindDatumRenteVastePeriode().toString(DATUM_FORMAAT));
+        }
         jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
         jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
-        jsonHypotheek.setIngangsDatum(hypotheek.getIngangsDatum().toString(DATUM_FORMAAT));
-        jsonHypotheek.setIngangsDatumRenteVastePeriode(hypotheek.getIngangsDatumRenteVastePeriode().toString(DATUM_FORMAAT));
+        if (hypotheek.getIngangsDatum() != null) {
+            jsonHypotheek.setIngangsDatum(hypotheek.getIngangsDatum().toString(DATUM_FORMAAT));
+        }
+        if (hypotheek.getIngangsDatumRenteVastePeriode() != null) {
+            jsonHypotheek.setIngangsDatumRenteVastePeriode(hypotheek.getIngangsDatumRenteVastePeriode().toString(DATUM_FORMAAT));
+        }
         if (hypotheek.getKoopsom() != null) {
             jsonHypotheek.setKoopsom(hypotheek.getKoopsom().getBedrag().toString());
         }
@@ -122,7 +133,9 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         }
         jsonHypotheek.setRelatie(hypotheek.getRelatie().getId());
         jsonHypotheek.setRente(hypotheek.getRente().toString());
-        jsonHypotheek.setTaxatieDatum(hypotheek.getTaxatieDatum().toString(DATUM_FORMAAT));
+        if (hypotheek.getTaxatieDatum() != null) {
+            jsonHypotheek.setTaxatieDatum(hypotheek.getTaxatieDatum().toString(DATUM_FORMAAT));
+        }
         if (hypotheek.getVrijeVerkoopWaarde() != null) {
             jsonHypotheek.setVrijeVerkoopWaarde(hypotheek.getVrijeVerkoopWaarde().getBedrag().toString());
         }
@@ -152,30 +165,6 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
         return jsonHypotheek;
     }
-
-    // private JsonGekoppeldeHypotheek bepaalTitel(Hypotheek hypotheek) {
-    // JsonGekoppeldeHypotheek gekoppeldeHypotheek = new
-    // JsonGekoppeldeHypotheek();
-    //
-    // gekoppeldeHypotheek.setBank(hypotheek.getBank().getNaam());
-    // gekoppeldeHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
-    // gekoppeldeHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getOmschrijving());
-    // gekoppeldeHypotheek.setLeningNummer(hypotheek.getLeningNummer());
-    // gekoppeldeHypotheek.setRente(hypotheek.getRente().toString());
-    //
-    // return gekoppeldeHypotheek;
-    // }
-    //
-    // private List<JsonHypotheek> getGekoppeldAan(Hypotheek hypotheek) {
-    // List<JsonHypotheek> gekoppeldAan = new ArrayList<>();
-    //
-    // gekoppeldAan.add(mapNaarJson(hypotheek));
-    // for (Hypotheek h : hypotheek.getGekoppeldAan()) {
-    // gekoppeldAan.addAll(getGekoppeldAan(h));
-    // }
-    //
-    // return gekoppeldAan;
-    // }
 
     public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
         this.opmerkingMapper = opmerkingMapper;

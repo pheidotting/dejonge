@@ -445,7 +445,8 @@ public class BijlageController {
         if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
             bestandsnaam = fileDetail.getFileName();
 
-            LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", of bij schadeNummerMaatschappij " + schadeNummerMaatschappij + " en bestandsnaam " + bestandsnaam);
+            LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", schadeNummerMaatschappij " + schadeNummerMaatschappij + " of bij hypotheekId " + hypotheekId + " en bestandsnaam "
+                    + bestandsnaam);
 
             if (StringUtils.isNotBlank(polisNummer)) {
                 Polis polis = polisService.zoekOpPolisNummer(polisNummer);

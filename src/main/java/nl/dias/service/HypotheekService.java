@@ -57,8 +57,10 @@ public class HypotheekService {
             hypotheek.setHypotheekVorm(soortHypotheek);
         }
 
-        Bank bank = bankService.lees(bankId);
-        hypotheek.setBank(bank);
+        if (bankId != null && bankId != 0L) {
+            Bank bank = bankService.lees(bankId);
+            hypotheek.setBank(bank);
+        }
 
         HypotheekPakket pakket = null;
 
