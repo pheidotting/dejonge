@@ -179,6 +179,9 @@ public class Hypotheek implements PersistenceObject, Serializable {
     }
 
     public LocalDate getTaxatieDatum() {
+        if (taxatieDatum == null) {
+            return null;
+        }
         return new LocalDate(taxatieDatum);
     }
 
@@ -215,6 +218,9 @@ public class Hypotheek implements PersistenceObject, Serializable {
     }
 
     public LocalDate getIngangsDatum() {
+        if (ingangsDatum == null) {
+            return null;
+        }
         return new LocalDate(ingangsDatum);
     }
 
@@ -227,6 +233,9 @@ public class Hypotheek implements PersistenceObject, Serializable {
     }
 
     public LocalDate getEindDatum() {
+        if (eindDatum == null) {
+            return null;
+        }
         return new LocalDate(eindDatum);
     }
 
@@ -247,6 +256,9 @@ public class Hypotheek implements PersistenceObject, Serializable {
     }
 
     public LocalDate getIngangsDatumRenteVastePeriode() {
+        if (ingangsDatumRenteVastePeriode == null) {
+            return null;
+        }
         return new LocalDate(ingangsDatumRenteVastePeriode);
     }
 
@@ -259,6 +271,9 @@ public class Hypotheek implements PersistenceObject, Serializable {
     }
 
     public LocalDate getEindDatumRenteVastePeriode() {
+        if (eindDatumRenteVastePeriode == null) {
+            return null;
+        }
         return new LocalDate(eindDatumRenteVastePeriode);
     }
 
