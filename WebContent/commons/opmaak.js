@@ -11,7 +11,7 @@ define([ "commons/3rdparty/log"],
 					opgemaaktBedrag = opgemaaktBedrag + "0";
 				}
 				
-				return '\u20AC ' + opgemaaktBedrag;
+				return '\u20AC ' + opgemaaktBedrag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 			}
 		}
     };
