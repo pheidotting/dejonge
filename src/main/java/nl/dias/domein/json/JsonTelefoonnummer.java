@@ -1,6 +1,7 @@
 package nl.dias.domein.json;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,6 +12,7 @@ public class JsonTelefoonnummer implements Serializable {
     private Long id;
     private String telefoonnummer;
     private String soort;
+    private List<String> errors;
 
     public JsonTelefoonnummer() {
     }
@@ -44,6 +46,14 @@ public class JsonTelefoonnummer implements Serializable {
 
     public void setSoort(String soort) {
         this.soort = soort;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     @Override

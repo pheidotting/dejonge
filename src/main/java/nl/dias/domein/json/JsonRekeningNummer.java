@@ -1,6 +1,7 @@
 package nl.dias.domein.json;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,6 +12,7 @@ public class JsonRekeningNummer implements Serializable {
     private Long id;
     private String bic;
     private String rekeningnummer;
+    private List<String> errors;
 
     public JsonRekeningNummer() {
     }
@@ -44,6 +46,10 @@ public class JsonRekeningNummer implements Serializable {
 
     public void setRekeningnummer(String rekeningnummer) {
         this.rekeningnummer = rekeningnummer;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     @Override
