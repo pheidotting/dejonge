@@ -39,7 +39,13 @@ public class BedrijfController {
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonBedrijf lees(@QueryParam("id") String id) {
-        return bedrijfMapper.mapNaarJson(bedrijfService.lees(Long.valueOf(id)));
+        Bedrijf bedrijf = null;
+        if (id == null || "0".equals(id)) {
+            bedrijf = new Bedrijf();
+        } else {
+            bedrijf = bedrijfService.lees(Long.valueOf(id));
+        }
+        return bedrijfMapper.mapNaarJson(bedrijf);
     }
 
     @GET
