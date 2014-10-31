@@ -17,6 +17,7 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -67,7 +68,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setWijzigingsDatum(wijzigingsDatum);
         polis.setProlongatieDatum(prolongatieDatum);
-        if (jsonPolis.getBetaalfrequentie() != null) {
+        if (StringUtils.isNotEmpty(jsonPolis.getBetaalfrequentie())) {
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
         }
 
@@ -119,6 +120,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
         }
         jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
+        if (polis.getRelatie() != null) {
+            jsonPolis.setRelatie(polis.getRelatie().getId().toString());
+        }
 
         return jsonPolis;
     }
