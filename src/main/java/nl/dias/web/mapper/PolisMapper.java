@@ -67,7 +67,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setWijzigingsDatum(wijzigingsDatum);
         polis.setProlongatieDatum(prolongatieDatum);
-        polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
+        if (jsonPolis.getBetaalfrequentie() != null) {
+            polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
+        }
 
         polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
         polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
