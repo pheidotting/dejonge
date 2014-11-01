@@ -61,10 +61,14 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         JsonSchade jsonSchade = new JsonSchade();
 
         jsonSchade.setBijlages(bijlageMapper.mapAllNaarJson(schade.getBijlages()));
-        jsonSchade.setDatumAfgehandeld(schade.getDatumAfgehandeld().toString("dd-MM-yyyy"));
+        if (schade.getDatumAfgehandeld() != null) {
+            jsonSchade.setDatumAfgehandeld(schade.getDatumAfgehandeld().toString("dd-MM-yyyy"));
+        }
         jsonSchade.setDatumTijdMelding(schade.getDatumTijdMelding().toString("dd-MM-yyyy hh:mm"));
         jsonSchade.setDatumTijdSchade(schade.getDatumTijdSchade().toString("dd-MM-yyyy hh:mm"));
-        jsonSchade.setEigenRisico(schade.getEigenRisico().getBedrag().toString());
+        if (schade.getEigenRisico() != null) {
+            jsonSchade.setEigenRisico(schade.getEigenRisico().getBedrag().toString());
+        }
         jsonSchade.setId(schade.getId());
         jsonSchade.setLocatie(schade.getLocatie());
         jsonSchade.setOmschrijving(schade.getOmschrijving());
