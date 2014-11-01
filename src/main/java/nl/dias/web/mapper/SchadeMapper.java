@@ -33,8 +33,10 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
         LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(patternDatumTijd));
         LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(patternDatumTijd));
-        LocalDate datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
-
+        LocalDate datumAfgehandeld = null;
+        if (json.getDatumAfgehandeld() != null) {
+            datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
+        }
         Schade schade = new Schade();
 
         schade.setId(json.getId());
