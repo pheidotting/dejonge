@@ -1,6 +1,6 @@
 package nl.dias.domein.json;
 
-public class JsonSoortHypotheek {
+public class JsonSoortHypotheek implements Comparable<JsonSoortHypotheek> {
     private Long id;
     private String omschrijving;
     private boolean ingebruik;
@@ -27,5 +27,10 @@ public class JsonSoortHypotheek {
 
     public void setIngebruik(boolean ingebruik) {
         this.ingebruik = ingebruik;
+    }
+
+    @Override
+    public int compareTo(JsonSoortHypotheek o) {
+        return omschrijving.compareTo(o.getOmschrijving());
     }
 }

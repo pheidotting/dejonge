@@ -21,6 +21,7 @@ public class JsonSchade {
     private String omschrijving;
     private List<JsonOpmerking> opmerkingen;
     private List<JsonBijlage> bijlages;
+    private String relatie;
     private String idDiv;
     private String idDivLink;
     private String titel;
@@ -174,6 +175,14 @@ public class JsonSchade {
 
     public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    public String getRelatie() {
+        return relatie;
+    }
+
+    public void setRelatie(String relatie) {
+        this.relatie = relatie;
     }
 
     /**
