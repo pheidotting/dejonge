@@ -40,7 +40,9 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         Schade schade = new Schade();
 
         schade.setId(json.getId());
-        schade.setDatumAfgehandeld(datumAfgehandeld);
+        if (datumAfgehandeld != null) {
+            schade.setDatumAfgehandeld(datumAfgehandeld);
+        }
         schade.setDatumTijdMelding(datumTijdMelding);
         schade.setDatumTijdSchade(datumTijdSchade);
         if (json.getEigenRisico() != null) {
