@@ -3,6 +3,13 @@ package nl.dias.web.medewerker;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.MapMessage;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.Topic;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -30,6 +37,35 @@ public class JsonController {
     private SchadeService schadeService;
     @InjectParam
     private SoortSchadeMapper soortSchadeMapper;
+
+    @Resource(mappedName = "jms/TopicFactory")
+    private static ConnectionFactory topicFactory;
+
+    @Resource(mappedName = "jms/Topic")
+    private static Topic topic;
+
+    @SuppressWarnings("finally")
+    @GET
+    @Path("/mq")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String mq() {
+        Connection topicConnection = null;
+        Session session = null;
+        MapMessage message = null;
+        MessageProducer producer = null;
+        try {
+            topicConnection = topicFactory.createConnection();
+            session = topicConnection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            producer = session.createProducer(topic);
+            message = session.createMapMessage();
+            message.setString("lastname", "Smith");
+            message.setString("firstname", "John");
+            message.setString("id", "0100");
+            producer.send(message);
+        } finally {
+            return "true";
+        }
+    }
 
     @GET
     @Path("/lijstVerzekeringsMaatschappijen")

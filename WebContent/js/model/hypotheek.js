@@ -4,7 +4,7 @@ define(['jquery',
          "commons/validation",
          "commons/opmaak",
          'moment',
-         "pages/beherenRelatie/details/model/bijlage",
+         "js/model/bijlage",
          'commons/commonFunctions'],
          function($, ko, logger, validation, opmaak, moment, bijlage, commonFunctions) {
 	
