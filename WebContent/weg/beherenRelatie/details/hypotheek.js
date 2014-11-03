@@ -21,7 +21,9 @@ require(["commons/3rdparty/log",
 					$('<option>', { value : '' }).text('Kies evt. een hypotheek om mee te koppelen...').appendTo($select);
 					$.each(data, function(key, value) {
 						var h = new hypotheek(value);
-						$('<option>', { value : value.id }).text(h.titel()).appendTo($select);
+						if(h.id() != subId){
+							$('<option>', { value : value.id }).text(h.titel()).appendTo($select);
+						}
 					});
 				}else{
 					$('#gekoppeldeHypotheekGroep').hide();
