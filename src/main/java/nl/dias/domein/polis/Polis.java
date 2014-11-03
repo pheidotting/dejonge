@@ -150,7 +150,9 @@ public abstract class Polis implements PersistenceObject, Serializable {
         if (eindDatum == null) {
             eindDatum = null;
         }
-        this.eindDatum = eindDatum.toDate();
+        if (eindDatum != null) {
+            this.eindDatum = eindDatum.toDate();
+        }
     }
 
     public String getIngangsDatumString() {
