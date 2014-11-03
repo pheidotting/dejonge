@@ -20,7 +20,7 @@ define(['jquery',
 		
 			toevoegenNieuweRelatie : function(){
 				functions.verbergMeldingen();
-				document.location.hash='#beherenRelatie/0/beherenRelatie/0';
+				document.location.hash='#beherenRelatie/0';
 			}
 		});
 		
