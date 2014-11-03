@@ -67,4 +67,20 @@ public class HypotheekPakket implements PersistenceObject, Serializable {
         this.hypotheken = hypotheken;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("HypotheekPakket [id=");
+        builder.append(id);
+        builder.append(", relatie=");
+        builder.append(relatie.getId());
+        builder.append(", hypotheken=");
+        for (Hypotheek h : hypotheken) {
+            builder.append(h.getId());
+            builder.append(", ");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

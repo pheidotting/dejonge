@@ -1,0 +1,157 @@
+<h2>Hypotheek toevoegen</h2>
+<form enctype="multipart/form-data" id="hypotheekForm">
+<input type="hidden" id="id" name="id" data-bind="value: id" />
+<div class="form-group">
+	<label for="bank">Bank</label>
+	<select id="bank" name="bank" data-bind="value: bankId"></select>
+</div>
+<div class="form-group">
+	<label for="hypotheekVorm">Hypotheekvorm</label>
+	<select id="hypotheekVorm" name="hypotheekVorm" data-bind="value: hypotheekVorm"></select>
+</div>
+<div class="form-group" id="gekoppeldeHypotheekGroep">
+	<label for="koppelHypotheek">Gekoppelde hypotheek</label>
+	<select id="koppelHypotheek" name="koppelHypotheek" data-bind="value: gekoppeldeHypotheek"></select>
+</div>
+<div class="form-group">
+	<label for="leningNummer">Leningnummer</label>
+	<input class="form-control" type="text" id=leningNummer placeholder="Leningnummer..." data-bind="value: leningNummer" />
+</div>
+<div class="form-group">
+	<label for="hypotheekBedrag">Hypotheek bedrag</label>
+	<input class="form-control" type="text" id=hypotheekBedrag placeholder="Hypotheek bedrag..." data-bind="value: hypotheekBedrag" />
+</div>
+<div class="form-group">
+	<label for="boxI">Box I</label>
+	<input class="form-control" id="boxI" name="boxI" data-bind="value: boxI" placeholder="BOX I" />
+</div>
+<div class="form-group">
+	<label for="boxIII">Box III</label>
+	<input class="form-control" id="boxIII" name="boxIII" data-bind="value: boxIII" placeholder="BOX III" />
+</div>
+<div class="form-group">
+	<label for="rente">Rente</label>
+	<input class="form-control" type="text" id="rente" placeholder="Rente..." data-bind="value: rente" />
+</div>
+<div class="form-group">
+	<label for="marktWaarde">Marktwaarde</label>
+	<input class="form-control" type="text" id="marktWaarde" placeholder="Marktwaarde..." data-bind="value: marktWaarde" />
+</div>
+<div class="form-group">
+	<label for="onderpand">Onderpand</label>
+	<input class="form-control" type="text" id="onderpand" placeholder="Onderpand..." data-bind="value: onderpand" />
+</div>
+<div class="form-group">
+	<label for="koopsom">Koopsom</label>
+	<input class="form-control" type="text" id="koopsom" placeholder="Koopsom..." data-bind="value: koopsom" />
+</div>
+<div class="form-group">
+	<label for="vrijeVerkoopWaarde">Vrije verkoop waarde</label>
+	<input class="form-control" type="text" id="vrijeVerkoopWaarde" placeholder="Vrije verkoop waarde..." data-bind="value: vrijeVerkoopWaarde" />
+</div>
+<div class="form-group">
+	<label for="taxatieDatum">Taxatie datum</label>
+	<input class="form-control" type="text" id="taxatieDatum" placeholder="Taxatie datum..." data-bind="value: taxatieDatum" />
+</div>
+<div class="form-group">
+	<label for="wozWaarde">WOZ Waarde</label>
+	<input class="form-control" type="text" id="wozWaarde" placeholder="WOZ Waarde..." data-bind="value: wozWaarde" />
+</div>
+<div class="form-group">
+	<label for="waardeVoorVerbouwing">Waarde voor verbouwing</label>
+	<input class="form-control" type="text" id="waardeVoorVerbouwing" placeholder="Waarde voor verbouwing..." data-bind="value: waardeVoorVerbouwing" />
+</div>
+<div class="form-group">
+	<label for="waardeNaVerbouwing">Waarde na verbouwing</label>
+	<input class="form-control" type="text" id="waardeNaVerbouwing" placeholder="Waarde na verbouwing..." data-bind="value: waardeNaVerbouwing" />
+</div>
+<div class="form-group">
+	<label for="ingangsDatum">Ingangs datum</label>
+	<input class="form-control" type="text" id="ingangsDatum" placeholder="Ingangs datum..." data-bind="value: ingangsDatum, event: { change: berekenEinddatumLening }" />
+</div>
+<div class="form-group">
+	<label for="duur">Duur</label>
+	<input class="form-control" type="text" id="duur" placeholder="Duur..." data-bind="value: duur, event: { change: berekenEinddatumLening }" />
+</div>
+<div class="form-group">
+	<label for="eindDatum">Eind datum</label>
+	<input class="form-control" type="text" id="eindDatum" placeholder="Eind datum..." data-bind="value: eindDatum" />
+</div>
+<div class="form-group">
+	<label for="ingangsDatumRenteVastePeriode">Ingangsdatum Rentevaste Periode</label>
+	<input class="form-control" type="text" id="ingangsDatumRenteVastePeriode" placeholder="Ingangsdatum Rentevaste Periode..." data-bind="value: ingangsDatumRenteVastePeriode, event: { change: berekenEinddatumRenteVastePeriode }" />
+</div>
+<div class="form-group">
+	<label for="duurRenteVastePeriode">Duur Rentevaste Periode</label>
+	<input class="form-control" type="text" id="duurRenteVastePeriode" placeholder="Duur Rentevaste Periode..." data-bind="value: duurRenteVastePeriode, event: { change: berekenEinddatumRenteVastePeriode }" />
+</div>
+<div class="form-group">
+	<label for="eindDatumRenteVastePeriode">Einddatum Rentevaste Periode</label>
+	<input class="form-control" type="text" id="eindDatumRenteVastePeriode" placeholder="Einddatum Rentevaste Periode..." data-bind="value: eindDatumRenteVastePeriode" />
+</div>
+<div class="form-group">
+	<label for="omschrijving">Omschrijving</label>
+	<textarea class="form-control" id="omschrijving" placeholder="Omschrijving..." data-bind="value: omschrijving"></textarea>
+</div>
+<div class="form-group" id="uploadHypotheek1">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek1File" name="uploadHypotheek1File" onchange="nieuweHypotheekUpload(1);" />
+	<progress id="fileHypotheek1Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek2" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek2File" name="uploadHypotheek2File" onchange="nieuweHypotheekUpload(2);" />
+	<progress id="fileHypotheek2Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek3" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek3File" name="uploadHypotheek3File" onchange="nieuweHypotheekUpload(3);" />
+	<progress id="fileHypotheek3Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek4" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek4File" name="uploadHypotheek4File" onchange="nieuweHypotheekUpload(4);" />
+	<progress id="fileHypotheek4Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek5" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek5File" name="uploadHypotheek5File" onchange="nieuweHypotheekUpload(5);" />
+	<progress id="fileHypotheek5Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek6" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek6File" name="uploadHypotheek6File" onchange="nieuweHypotheekUpload(6);" />
+	<progress id="fileHypotheek6Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek7" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek7File" name="uploadHypotheek7File" onchange="nieuweHypotheekUpload(7);" />
+	<progress id="fileHypotheek7Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek8" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek8File" name="uploadHypotheek8File" onchange="nieuweHypotheekUpload(8);" />
+	<progress id="fileHypotheek8Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek9" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek9File" name="uploadHypotheek9File" onchange="nieuweHypotheekUpload(9);" />
+	<progress id="fileHypotheek9Progress" style="display:none;"></progress>
+</div>
+<div class="form-group" id="uploadHypotheek10" style="display:none;">
+	<label for="file">&nbsp;</label>
+	<input type="file" id="uploadHypotheek10File" name="uploadHypotheek10File" onchange="nieuweHypotheekUpload(10);" />
+	<progress id="fileHypotheek10Progress" style="display:none;"></progress>
+</div>
+<input type="hidden" id="hoeveelFiles" />
+<script>
+	function nieuweHypotheekUpload(nummer){
+		$('#hoeveelFiles').val(nummer);
+		$('#uploadHypotheek' + ++nummer).show();
+	}
+</script>
+</form>
+<div class="form-group">
+	<label for="opslaanBedrijf">&nbsp;</label>
+	<button id="opslaanBedrijf" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+</div>

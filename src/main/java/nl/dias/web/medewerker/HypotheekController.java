@@ -1,5 +1,6 @@
 package nl.dias.web.medewerker;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,7 +89,13 @@ public class HypotheekController {
             soorten.add(soort);
         }
 
-        return soortHypotheekMapper.mapAllNaarJson(soorten);
+        List<JsonSoortHypotheek> soortenList =
+
+        soortHypotheekMapper.mapAllNaarJson(soorten);
+
+        Collections.sort(soortenList);
+
+        return soortenList;
     }
 
     @GET

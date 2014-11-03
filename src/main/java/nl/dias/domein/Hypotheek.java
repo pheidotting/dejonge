@@ -402,7 +402,8 @@ public class Hypotheek implements PersistenceObject, Serializable {
                 .append("duurRenteVastePeriode", this.duurRenteVastePeriode + "\n").append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde + "\n").append("ingangsDatum", this.ingangsDatum + "\n")
                 .append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode + "\n").append("waardeNaVerbouwing", this.waardeNaVerbouwing + "\n")
                 .append("marktWaarde", this.marktWaarde + "\n").append("wozWaarde", this.wozWaarde + "\n").append("omschrijving", this.omschrijving + "\n")
-                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").append("leningNummer", this.leningNummer + "\n").toString();
+                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").append("leningNummer", this.leningNummer + "\n").append("hypotheekPakket", this.hypotheekPakket + "\n")
+                .toString();
     }
 
 }

@@ -64,28 +64,35 @@ public class HypotheekService {
 
         HypotheekPakket pakket = null;
 
+        LOGGER.debug("gekoppeldeHypotheekId " + gekoppeldeHypotheekId);
         if (gekoppeldeHypotheekId != null) {
             Hypotheek gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
 
+            LOGGER.debug("Gevonden : " + gekoppeldeHypotheek);
+
             if (gekoppeldeHypotheek.getHypotheekPakket() == null) {
+                LOGGER.debug("Nieuw pakket aanmaken");
                 pakket = new HypotheekPakket();
                 pakket.getHypotheken().add(gekoppeldeHypotheek);
                 pakket.setRelatie(relatie);
+                LOGGER.debug("en opslaan " + pakket);
                 hypotheekPakketRepository.opslaan(pakket);
 
                 gekoppeldeHypotheek.setHypotheekPakket(pakket);
                 hypotheekRepository.opslaan(gekoppeldeHypotheek);
             } else {
                 pakket = gekoppeldeHypotheek.getHypotheekPakket();
+                LOGGER.debug("Koppelen aan bestaand pakket met id " + pakket.getId());
             }
+            LOGGER.debug("Eraan toevoegen");
             pakket.getHypotheken().add(hypotheek);
             hypotheek.setHypotheekPakket(pakket);
         }
 
-        LOGGER.info(hypotheek);
-
+        LOGGER.debug("En opslaan " + hypotheek);
         hypotheekRepository.opslaan(hypotheek);
         if (pakket != null) {
+            LOGGER.debug("pakket nog ff opslaan " + pakket);
             hypotheekPakketRepository.opslaan(pakket);
         }
 

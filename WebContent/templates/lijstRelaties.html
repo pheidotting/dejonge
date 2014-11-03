@@ -1,0 +1,20 @@
+<img src="images/add.png" alt="Toevoegen Relatie" id="toevoegenNieuweRelatie" data-bind="click: toevoegenNieuweRelatie" style="cursor:pointer;" />
+
+<table class="table">
+	<tr>
+		<th>Voornaam</th>
+		<th>Tussenvoegsel</th>
+		<th>Achternaam</th>
+		<th>Geboortedatum</th>
+		<th>Adres</th>
+	</tr>
+	<tbody data-bind="foreach: lijst">
+		<tr>
+			<td data-bind="text : voornaam, click: $parent.naarDetailScherm" name="voornaam" style="cursor:pointer;"></td>
+			<td data-bind="text : tussenvoegsel, click: $parent.naarDetailScherm" name="tussenvoegsel" style="cursor:pointer;"></td>
+			<td data-bind="text : achternaam, click: $parent.naarDetailScherm" name="achternaam" style="cursor:pointer;"></td>
+			<td data-bind="text : geboorteDatum, click: $parent.naarDetailScherm" name="geboortedatum" style="cursor:pointer;"></td>
+			<td data-bind="text : adresOpgemaakt, click: $parent.naarDetailScherm" name="adres" style="cursor:pointer;"></td>
+		</tr>
+	</tbody>
+</table>
