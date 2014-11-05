@@ -8,33 +8,33 @@ define(['jquery',
 	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, moment, log) {
     
 	return function relatieModel (data){
-		_this = this;
+		_thisRelatie = this;
 	
-		_this.identificatie = ko.observable(data.identificatie).extend({required: true, email: true});
-		_this.id = ko.observable(data.id);
-		_this.voornaam = ko.observable(data.voornaam).extend({required: true});
-		_this.achternaam = ko.observable(data.achternaam).extend({required: true});
-		_this.tussenvoegsel = ko.observable(data.tussenvoegsel);
-		_this.straat = ko.observable(data.straat).extend({ required: true });
-		_this.huisnummer = ko.observable(data.huisnummer).extend({ number: true, required: true });
-		_this.toevoeging = ko.observable(data.toevoeging);
-		_this.postcode = ko.observable(data.postcode);
-		_this.plaats = ko.observable(data.plaats);
-		_this.bsn = ko.observable(data.bsn);
-		_this.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
-		_this.rekeningnummers = ko.observableArray();
+		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({required: true, email: true});
+		_thisRelatie.id = ko.observable(data.id);
+		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
+		_thisRelatie.achternaam = ko.observable(data.achternaam).extend({required: true});
+		_thisRelatie.tussenvoegsel = ko.observable(data.tussenvoegsel);
+		_thisRelatie.straat = ko.observable(data.straat).extend({ required: true });
+		_thisRelatie.huisnummer = ko.observable(data.huisnummer).extend({ number: true, required: true });
+		_thisRelatie.toevoeging = ko.observable(data.toevoeging);
+		_thisRelatie.postcode = ko.observable(data.postcode);
+		_thisRelatie.plaats = ko.observable(data.plaats);
+		_thisRelatie.bsn = ko.observable(data.bsn);
+		_thisRelatie.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
+		_thisRelatie.rekeningnummers = ko.observableArray();
 		if(data.rekeningnummers != null){
 			$.each(data.rekeningnummers, function(i, item) {
-				_this.rekeningnummers().push(new RekeningNummer(item));
+				_thisRelatie.rekeningnummers().push(new RekeningNummer(item));
 			});
 		}
-		_this.telefoonnummers = ko.observableArray();
+		_thisRelatie.telefoonnummers = ko.observableArray();
 		if(data.telefoonnummers != null){
 			$.each(data.telefoonnummers, function(i, item) {
-				_this.telefoonnummers().push(new TelefoonNummer(item));
+				_thisRelatie.telefoonnummers().push(new TelefoonNummer(item));
 			});
 		}
-		_this.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt).extend({validation: {
+		_thisRelatie.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt).extend({validation: {
 	        validator: function (val) {
 	        	if(moment(val, "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
 	    			return false;
@@ -44,47 +44,48 @@ define(['jquery',
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
 	    }});
-		_this.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
-		_this.geslacht = ko.observable(data.geslacht);
-		_this.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
-		_this.voegRekeningToe = function() {
-			_this.rekeningNummers().push(new RekeningNummer(""));
-			_this.rekeningNummers.valueHasMutated();
+		_thisRelatie.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
+		_thisRelatie.geslacht = ko.observable(data.geslacht);
+		_thisRelatie.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
+		
+		_thisRelatie.voegRekeningToe = function() {
+			_thisRelatie.rekeningnummers().push(new RekeningNummer(""));
+			_thisRelatie.rekeningnummers.valueHasMutated();
 		};
 		
-		_this.verwijderRekening = function(nummer){
-			_this.rekeningNummers().remove(nummer);
-			_this.rekeningNummers.valueHasMutated();
+		_thisRelatie.verwijderRekening = function(nummer){
+			_thisRelatie.rekeningnummers().remove(nummer);
+			_thisRelatie.rekeningnummers.valueHasMutated();
 		};
 		
-		_this.voegTelefoonNummerToe = function() {
-			_this.telefoonnummers().push(new TelefoonNummer(""));
-			_this.telefoonnummers.valueHasMutated();
+		_thisRelatie.voegTelefoonNummerToe = function() {
+			_thisRelatie.telefoonnummers().push(new TelefoonNummer(""));
+			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
 		
-		_this.verwijderTelefoonNummer = function(telefoon) {
-			_this.telefoonnummers().remove(telefoon);
-			_this.telefoonnummers.valueHasMutated();
+		_thisRelatie.verwijderTelefoonNummer = function(telefoon) {
+			_thisRelatie.telefoonnummers().remove(telefoon);
+			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
 		
-		_this.opslaan = function(){
-	    	var result = ko.validation.group(_this, {deep: true});
-	    	if(!_this.isValid()){
+		_thisRelatie.opslaan = function(){
+	    	var result = ko.validation.group(_thisRelatie, {deep: true});
+	    	if(!_thisRelatie.isValid()){
 	    		result.showAllMessages(true);
 	    	}else{
 				commonFunctions.verbergMeldingen();
-				if(_this.geboorteDatum() != null && _this.geboorteDatum() != ''){
-					_this.geboorteDatum(moment(_this.geboorteDatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
+				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
+					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
 				}
-				if(_this.overlijdensdatum() != null && _this.overlijdensdatum() != ''){
-					_this.overlijdensdatum(moment(_this.overlijdensdatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
+				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
+					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
 				}
 				log.debug("Versturen naar ../dejonge/rest/medewerker/gebruiker/opslaan : ");
-				log.debug(ko.toJSON(_this));
+				log.debug(ko.toJSON(_thisRelatie));
 				$.ajax({
 					url: '../dejonge/rest/medewerker/gebruiker/opslaan',
 					type: 'POST',
-					data: ko.toJSON(_this) ,
+					data: ko.toJSON(_thisRelatie) ,
 					contentType: 'application/json; charset=utf-8',
 					success: function (response) {
 						document.location.hash='#lijstRelaties';
@@ -94,16 +95,16 @@ define(['jquery',
 						commonFunctions.plaatsFoutmelding(data);
 					}
 				});
-				if(_this.geboorteDatum() != null && _this.geboorteDatum() != ''){
-					_this.geboorteDatum(moment(_this.geboorteDatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
+				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
+					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
 				}
-				if(_this.overlijdensdatum() != null && _this.overlijdensdatum() != ''){
-					_this.overlijdensdatum(moment(_this.overlijdensdatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
+				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
+					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
 				}
 	    	}
 		};
 	
-		_this.verwijderenRelatie = function(relatie){
+		_thisRelatie.verwijderenRelatie = function(relatie){
 			log.debug("verwijderen Relatie met id " + relatie.id());
 			$.ajax({
 				type: "GET",
@@ -116,7 +117,7 @@ define(['jquery',
 			document.location.hash='#lijstRelaties';
 		},
 		
-		_this.naarDetailScherm = function(relatie){
+		_thisRelatie.naarDetailScherm = function(relatie){
 			commonFunctions.verbergMeldingen();
 			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
 		}
