@@ -63,9 +63,9 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     // testgegevens
     private List<JsonRelatie> jsonRelaties;
 
+    private final String BASIS_URL = "http://46.17.3.242:57525/dejonge/index.html#";
     // private final String BASIS_URL =
-    // "http://46.17.3.242:57525/dejonge/index.html#";
-    private final String BASIS_URL = "http://localhost:8080/dejonge/index.html#";
+    // "http://localhost:8080/dejonge/index.html#";
 
     public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication("lakedigital", "b778ded8-21ad-4a54-b701-647d3521ea53");
 
@@ -267,7 +267,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
 
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             //
-            // B E D R I J F C O N T R O L E R EN
+            // B E D R I J F C O N T R O L E R E N
             //
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
