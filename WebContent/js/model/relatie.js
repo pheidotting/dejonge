@@ -6,10 +6,10 @@ define(['jquery',
          'moment',
          'commons/3rdparty/log'],
 	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, moment, log) {
-    
+
 	return function relatieModel (data){
 		_thisRelatie = this;
-	
+
 		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({required: true, email: true});
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
@@ -47,27 +47,27 @@ define(['jquery',
 		_thisRelatie.overlijdensdatum = ko.observable(data.overlijdensdatumOpgemaakt);
 		_thisRelatie.geslacht = ko.observable(data.geslacht);
 		_thisRelatie.burgerlijkeStaat = ko.observable(data.burgerlijkeStaat);
-		
+
 		_thisRelatie.voegRekeningToe = function() {
 			_thisRelatie.rekeningnummers().push(new RekeningNummer(""));
 			_thisRelatie.rekeningnummers.valueHasMutated();
 		};
-		
+
 		_thisRelatie.verwijderRekening = function(nummer){
 			_thisRelatie.rekeningnummers().remove(nummer);
 			_thisRelatie.rekeningnummers.valueHasMutated();
 		};
-		
+
 		_thisRelatie.voegTelefoonNummerToe = function() {
 			_thisRelatie.telefoonnummers().push(new TelefoonNummer(""));
 			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
-		
+
 		_thisRelatie.verwijderTelefoonNummer = function(telefoon) {
 			_thisRelatie.telefoonnummers().remove(telefoon);
 			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
-		
+
 		_thisRelatie.opslaan = function(){
 	    	var result = ko.validation.group(_thisRelatie, {deep: true});
 	    	if(!_thisRelatie.isValid()){
@@ -103,7 +103,7 @@ define(['jquery',
 				}
 	    	}
 		};
-	
+
 		_thisRelatie.verwijderenRelatie = function(relatie){
 			log.debug("verwijderen Relatie met id " + relatie.id());
 			$.ajax({
@@ -116,7 +116,7 @@ define(['jquery',
 			});
 			document.location.hash='#lijstRelaties';
 		},
-		
+
 		_thisRelatie.naarDetailScherm = function(relatie){
 			commonFunctions.verbergMeldingen();
 			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
