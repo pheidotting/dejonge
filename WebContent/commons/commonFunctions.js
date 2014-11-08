@@ -2,37 +2,37 @@ define([ "commons/3rdparty/log"],
          function(log) {
 
 	var refreshIntervalId;
-	
+
 	return {
-		
+
  		plaatsFoutmelding: function(melding){
         	var foutmelding = jQuery.parseJSON(melding.responseText);
-        	
+
 			$('#alertDanger').show();
 			$('#alertDanger').html("Er is een fout opgetreden : " + foutmelding.foutmelding);
  		},
- 		
+
  		plaatsMelding: function(melding){
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').show();
 			$('#alertSucces').html(melding);
 			refreshIntervalId = setInterval(this.verbergMeldingen, 10000);
 		},
-		
+
 		nietMeerIngelogd: function(data){
         	log.error("FOUT opgehaald : " + JSON.stringify(data));
         	log.error("naar inlogscherm");
 			document.location.hash='#inloggen';
 			this.plaatsFoutmelding("Sessie verlopen, graag opnieuw inloggen");
 		},
-		
+
  		verbergMeldingen: function(){
 			clearInterval(refreshIntervalId); 		
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').hide();
 			$('#alertDanger').hide();
  		},
- 		
+ 
 		uitloggen: function(){
 	    	$.ajax({
 	            url: '../dejonge/rest/authorisatie/authorisatie/uitloggen',
@@ -43,7 +43,7 @@ define([ "commons/3rdparty/log"],
 			$('#homeKnop').hide();
 			document.location.hash='#inloggen';
 		},
- 		
+ 
 		haalIngelogdeGebruiker: function(){
 			log.debug("Haal ingelogde gebruiker");
 	    	$.ajax({
@@ -72,11 +72,11 @@ define([ "commons/3rdparty/log"],
 
 		laadDataMetLoginCheck: function(url) {
 			var opgehaaldeData;
-			$.ajax({  
+			$.ajax({
 				type: "GET",  
 				url: url,
 				async: false,
-				dataType: "json",  
+				dataType: "json",
 				context: this,
 				success: function(data) {
 					opgehaaldeData = data;
@@ -88,4 +88,4 @@ define([ "commons/3rdparty/log"],
 			return opgehaaldeData;
 		}
     };
-});	
+});

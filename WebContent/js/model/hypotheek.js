@@ -7,23 +7,22 @@ define(['jquery',
          'model/bijlage',
          'commons/commonFunctions'],
          function($, ko, logger, validation, opmaak, moment, Bijlage, commonFunctions) {
-	
+
 	return function hypotheek(data) {
 		_this = this;
-		
+
 		_this.soortenHypotheek = ko.observableArray();
 
 		_this.soorten = function(){
 			return $.ajax({
 				type: "GET",
 				async: false,
-				url: '../dejonge/rest/medewerker/hypotheek/alleSoortenHypotheek',	
+				url: '../dejonge/rest/medewerker/hypotheek/alleSoortenHypotheek',
 				dataType:'json',
 				success: function (data) {
 					$.each(data, function(i, item) {
 						_this.soortenHypotheek.push(new SoortHypotheek(item));
 					});
-					
 					return data;
 				}
 			});
@@ -33,7 +32,7 @@ define(['jquery',
 		_this.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
-		
+
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
 		_this.bankId = ko.observable(data.bankId);
@@ -99,7 +98,7 @@ define(['jquery',
 		}, this);
 		_this.hypotheekVormOpgemaakt = ko.computed(function() {
 			var hypVorm;
-			
+
 			$.each(_this.soortenHypotheek(), function(i, soort){
 				if(data.hypotheekVorm == soort.id()){
 					hypVorm = soort.omschrijving();
@@ -110,12 +109,11 @@ define(['jquery',
 		}, this);
 		_this.titel = ko.computed(function() {
 			var hypVorm;
-			
+
 			$.each(_this.soortenHypotheek(), function(i, soort){
 				if(data.hypotheekVorm == soort.id()){
 					hypVorm = soort.omschrijving();
 				}
-				
 			});
 			var omschrijving = "";
 			if(data.leningNummer != null){
@@ -127,7 +125,7 @@ define(['jquery',
 			}
 			omschrijving += data.rente + "% - ";
 			omschrijving += _this.bedrag(data.hypotheekBedrag);
-			
+
 			return omschrijving;
 		}, this);
 	    _this.opmerkingen = ko.observableArray();
@@ -144,7 +142,7 @@ define(['jquery',
 			});
 		}
 		_this.gekoppeldeHypotheek = ko.observable();
-		
+
 		_this.opslaan = function(hypotheek){
 	    	var result = ko.validation.group(hypotheek, {deep: true});
 	    	if(!hypotheek.isValid()){
@@ -195,11 +193,11 @@ define(['jquery',
 
 	function SoortHypotheek(data){
 		var _this = this;
-		
+
 		_this.id = ko.observable(data.id);
 		_this.omschrijving = ko.observable(data.omschrijving);
 	}
-	
+
 	function Opmerking(data){
 		var self = this;
 
