@@ -1,5 +1,5 @@
 	define(['jquery',
-	        "knockout", 
+	        "knockout",
 	        'model/schade',
 	        'commons/block',
 	        'commons/3rdparty/log',
@@ -12,10 +12,10 @@
 				var $select = $('#polisVoorSchademelding');
 				$.each(data, function(key, value) {
 					var polisTitel = value.soort + " (" + value.polisNummer + ")";
-		
+
 				    $('<option>', { value : value.id }).text(polisTitel).appendTo($select);
 				});
-		
+
 				$.get( "../dejonge/rest/medewerker/overig/lijstStatusSchade", function(data) {
 					var $select = $('#statusSchade');
 					$.each(data, function(key, value) {
@@ -38,7 +38,7 @@
 					}
 				});
 			});
-		
+
 //			var soortenSchade = new Bloodhound({
 //				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 //				queryTokenizer: Bloodhound.tokenizers.whitespace,

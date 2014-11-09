@@ -1,5 +1,5 @@
 define(['jquery',
-        "knockout", 
+        "knockout",
         'model/lijstRelaties',
         'model/relatie',
         'commons/commonFunctions',
@@ -20,7 +20,7 @@ define(['jquery',
 							var a = item;
 							lijst().lijst().push(a);
 						});
-						
+
 						log.debug("Relaties opgehaald, applyBindings");
 						ko.applyBindings(lijst);
 					}

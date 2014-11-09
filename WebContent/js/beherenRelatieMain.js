@@ -1,5 +1,5 @@
 define(['jquery',
-        "knockout", 
+        "knockout",
         'model/relatie',
         'commons/block',
         'commons/3rdparty/log',
@@ -9,11 +9,11 @@ define(['jquery',
 	return function(relatieId) {
 		block.block();
 		log.debug("ophalen Relatie met id " + relatieId);
-		$.ajax({  
-			type: "GET",  
+		$.ajax({
+			type: "GET",
 			url: "../dejonge/rest/medewerker/gebruiker/lees",
 			async: false,
-			dataType: "json",  
+			dataType: "json",
 			data: {
 				id : relatieId
 			},
@@ -21,12 +21,12 @@ define(['jquery',
 			success: function(data) {
 				log.debug("opgehaald : " + JSON.stringify(data));
 				ko.validation.registerExtenders();
-				
+
 				ko.applyBindings(new Relatie(data));
 			},
             error: function (data) {
             	commonFunctions.nietMeerIngelogd(data);
     		}
 		});
-	};	
-});	
+	};
+});

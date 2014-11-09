@@ -1,5 +1,5 @@
 define(['jquery',
-        "knockout", 
+        "knockout",
         'model/polissen',
         'commons/block',
         'commons/3rdparty/log',
@@ -9,11 +9,11 @@ define(['jquery',
 	return function(relatieId) {
 		log.debug("Ophalen polissen bij Relatie met id " + relatieId);
 		block.block();
-		$.ajax({  
-			type: "GET",  
+		$.ajax({
+			type: "GET",
 			url: "../dejonge/rest/medewerker/polis/lijst",
 			async: false,
-			dataType: "json",  
+			dataType: "json",
 			data: {
 				relatieId : relatieId
 			},
@@ -21,12 +21,12 @@ define(['jquery',
 			success: function(data) {
 				log.debug("opgehaald : " + JSON.stringify(data));
 				ko.validation.registerExtenders();
-				
+
 				ko.applyBindings(new Polissen(data));
 			},
             error: function (data) {
             	commonFunctions.nietMeerIngelogd(data);
     		}
 		});
-	};	
-});	
+	};
+});

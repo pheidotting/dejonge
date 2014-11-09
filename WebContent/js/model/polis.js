@@ -6,10 +6,10 @@ define(['jquery',
          'model/bijlage',
          "commons/opmaak"],
 	function ($, ko, log, commonFunctions, moment, Bijlage, opmaak) {
-    
+
 	return function polisModel (data){
 		var self = this;
-	
+
 		self.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
@@ -74,23 +74,23 @@ define(['jquery',
 				self.bijlages().push(new Bijlage(item));
 			});
 		};
-	
+
 	    self.schadeMeldenBijPolis = function(polis){
 			log.debug(ko.utils.unwrapObservable(polis.id));
 			log.debug($('#polisVoorSchademelding').val());
 	    };
-	
+
 	    self.bewerkPolis = function(polis){
 			commonFunctions.verbergMeldingen();
 			log.debug("Polis bewerken met id " + polis.id() + " en Relatie id : " + polis.relatie());
 	    	document.location.hash = "#beherenRelatie/" + polis.relatie() + "/polis/" + polis.id();
 	    };
-	    
+
 	    self.beeindigPolis = function(polis){
 			$.get('../dejonge/rest/medewerker/polis/beeindigen', {"id" : polis.id()});
 			self.eindDatum(moment().format("DD-MM-YYYY"));
 	    }
-	
+
 	    self.opslaan = function(polis){
 	    	var result = ko.validation.group(polis, {deep: true});
 	    	if(!polis.isValid()){
