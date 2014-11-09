@@ -59,21 +59,21 @@ public class JsonControllerTest {
     public void extraInfoFAT() {
         System.setProperty("omgeving", "FAT");
 
-        assertEquals("DIAS FAT", controller.extraInfo());
+        assertEquals("FAT", controller.extraInfo());
     }
 
     @Test
     public void extraInfoGAT() {
         System.setProperty("omgeving", "GAT");
 
-        assertEquals("DIAS GAT", controller.extraInfo());
+        assertEquals("GAT", controller.extraInfo());
     }
 
     @Test
     public void extraInfoPRD() {
         System.setProperty("omgeving", "PRD");
 
-        assertEquals("DIAS", controller.extraInfo());
+        assertEquals("PRD", controller.extraInfo());
     }
 
 }
