@@ -62,15 +62,8 @@ public class JsonController {
         String omgeving = System.getProperty("omgeving");
 
         LOGGER.debug("omgeving " + omgeving);
-        String ret = null;
 
-        if ("PRD".equals(omgeving)) {
-            ret = "DIAS";
-        } else {
-            ret = "DIAS " + omgeving;
-        }
-
-        return ret;
+        return omgeving;
     }
 
     @GET
