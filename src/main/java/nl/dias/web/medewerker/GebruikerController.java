@@ -105,7 +105,7 @@ public class GebruikerController {
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
             String sessie = null;
-            if (!"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
+            if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
             }
 
@@ -232,5 +232,13 @@ public class GebruikerController {
 
     public void setKantoorRepository(KantoorRepository kantoorRepository) {
         this.kantoorRepository = kantoorRepository;
+    }
+
+    public void setAuthorisatieService(AuthorisatieService authorisatieService) {
+        this.authorisatieService = authorisatieService;
+    }
+
+    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
     }
 }

@@ -1,17 +1,24 @@
 package nl.dias.web;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Kantoor;
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonLijstRelaties;
 import nl.dias.domein.json.JsonRelatie;
 import nl.dias.repository.KantoorRepository;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
@@ -22,7 +29,6 @@ import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GebruikerControllerTest extends EasyMockSupport {
@@ -32,6 +38,8 @@ public class GebruikerControllerTest extends EasyMockSupport {
     private KantoorRepository kantoorRepository;
     private BedrijfMapper bedrijfMapper;
     private BedrijfService bedrijfService;
+    private HttpServletRequest httpServletRequest;
+    private AuthorisatieService authorisatieService;
 
     @Before
     public void setUp() throws Exception {
@@ -51,6 +59,12 @@ public class GebruikerControllerTest extends EasyMockSupport {
 
         bedrijfService = createMock(BedrijfService.class);
         controller.setBedrijfService(bedrijfService);
+
+        httpServletRequest = createMock(HttpServletRequest.class);
+        controller.setHttpServletRequest(httpServletRequest);
+
+        authorisatieService = createMock(AuthorisatieService.class);
+        controller.setAuthorisatieService(authorisatieService);
     }
 
     @After
@@ -69,7 +83,6 @@ public class GebruikerControllerTest extends EasyMockSupport {
     }
 
     @Test
-    @Ignore
     public void lees() {
         Relatie relatie = new Relatie();
         JsonRelatie jsonRelatie = new JsonRelatie();
@@ -127,18 +140,28 @@ public class GebruikerControllerTest extends EasyMockSupport {
 
     @Test
     public void opslaan() {
+        HttpSession httpSession = createMock(HttpSession.class);
+        expect(httpServletRequest.getSession()).andReturn(httpSession);
+        expect(httpSession.getAttribute("sessie")).andReturn(null);
+        expect(httpServletRequest.getRemoteAddr()).andReturn("remoteAddr");
+
+        Medewerker medewerker = createMock(Medewerker.class);
+        expect(authorisatieService.getIngelogdeGebruiker(httpServletRequest, null, "remoteAddr")).andReturn(medewerker);
+        Kantoor kantoor = createMock(Kantoor.class);
+        expect(medewerker.getKantoor()).andReturn(kantoor);
+        expect(kantoor.getId()).andReturn(58L);
+        expect(kantoorRepository.lees(58L)).andReturn(kantoor);
+
         Relatie relatie = new Relatie();
         JsonRelatie jsonRelatie = new JsonRelatie();
-        Kantoor kantoor = new Kantoor();
 
         EasyMock.expect(mapper.mapVanJson(jsonRelatie)).andReturn(relatie);
-        // EasyMock.expect(kantoorRepository.getIngelogdKantoor()).andReturn(kantoor);
-        // gebruikerService.opslaan(relatie);
-        // EasyMock.expectLastCall();
+        gebruikerService.opslaan(isA(Relatie.class));
+        EasyMock.expectLastCall();
 
         replayAll();
 
-        controller.opslaan(jsonRelatie);
+        assertEquals(202, controller.opslaan(jsonRelatie).getStatus());
     }
 
     @Test
