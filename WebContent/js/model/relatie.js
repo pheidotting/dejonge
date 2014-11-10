@@ -1,6 +1,6 @@
 define(['jquery',
         'commons/commonFunctions',
-         'knockout', 
+         'knockout',
          'model/rekeningNummer',
          'model/telefoonNummer',
          'moment',

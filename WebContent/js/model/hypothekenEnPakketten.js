@@ -5,8 +5,8 @@ define(['jquery',
          "commons/opmaak",
          "js/model/hypotheekPakket",
          "js/model/hypotheek"],
-         function($, ko, logger, validation, opmaak, HypotheekPakket, Hypotheek) {
-	
+     function($, ko, logger, validation, opmaak, HypotheekPakket, Hypotheek) {
+
 	return function hypothekenEnPakketten(pakketten, hypotheken) {
 		dit = this;
 

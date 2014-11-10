@@ -3,7 +3,7 @@ define(['jquery',
          'commons/3rdparty/log',
          'commons/commonFunctions'],
 	function ($, ko, log, commonFunctions) {
-    
+
 	return function opmerkingModel (data){
 		_this = this;
 

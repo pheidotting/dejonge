@@ -104,7 +104,7 @@ define(['jquery',
 					hypVorm = soort.omschrijving();
 				}
 			});
-			
+
 			return hypVorm;
 		}, this);
 		_this.titel = ko.computed(function() {
