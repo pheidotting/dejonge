@@ -105,7 +105,7 @@ public class GebruikerController {
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
             String sessie = null;
-            if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
+            if (!"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
             }
 
