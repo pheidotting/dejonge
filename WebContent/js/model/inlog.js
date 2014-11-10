@@ -1,16 +1,15 @@
 define(['jquery',
          'knockout',
          'commons/commonFunctions',
-         'commons/block'], 
+         'commons/block'],
 	function ($, ko, commonFunctions, block) {
-    
-	return function(){
 
+	return function(){
 		var inlogModel = ko.validatedObservable({
-			identificatie : ko.observable().extend({ required: true }),
-			wachtwoord : ko.observable().extend({ required: true }),
+			identificatie : ko.observable('').extend({ required: true }),
+			wachtwoord : ko.observable('').extend({ required: true }),
 			onthouden : ko.observable('false'),
-			
+
 			inloggen : function(){
 				commonFunctions.verbergMeldingen();
 				if(this.isValid()){
