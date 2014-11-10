@@ -6,11 +6,11 @@ define([ "commons/3rdparty/log",
 
 	return function hypotheekPakket(data) {
 		var _this = this;
-		
+
 		_this.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		}
-		
+
 		_this.id = ko.observable(data.id);
 		_this.totaalBedrag = ko.observable(data.totaalBedrag);
 		_this.titel = ko.observableArray();
@@ -18,10 +18,10 @@ define([ "commons/3rdparty/log",
 		_this.hypotheken = ko.observableArray();
 		$.each(data.hypotheken, function(i, item){
 			var hypotheek = new Hypotheek(item);
-			
+
 			_this.hypotheken.push(hypotheek);
 		});
-		
+
 		_this.idDiv = ko.computed(function() {
 	        return "collapsableP" + data.id;
 		}, this);

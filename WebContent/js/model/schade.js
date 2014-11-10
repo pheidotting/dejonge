@@ -7,7 +7,7 @@ define(['jquery',
          'model/opmerking',
          "commons/opmaak"],
 	function ($, ko, log, commonFunctions, moment, Bijlage, Opmerking, opmaak) {
-    
+
 	return function schadeModel (data){
 		self = this;
 
@@ -85,7 +85,7 @@ define(['jquery',
 	    }});;
 	    self.eigenRisico = ko.observable(data.eigenRisico).extend({number: true});
 	    self.omschrijving = ko.observable(data.omschrijving);
-	    
+
 	    self.titel = ko.computed(function() {
 	    	return data.soortSchade + " (" + data.schadeNummerMaatschappij + ")";
 	    }, this);
@@ -140,7 +140,7 @@ define(['jquery',
 	    self.bewerkSchade = function(schade){
 	    	document.location.hash = "#beherenRelatie/" + schade.relatie() + "/schade/" + schade.id();
 	    };
-	   
+
 	    self.plaatsOpmerking = function(schade){
 	    	document.location.hash = "#beherenRelatie/" + schade.relatie() + "/opmerking/s" + schade.id();
 	    };

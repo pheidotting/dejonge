@@ -1,9 +1,9 @@
 define(['jquery',
         'knockout',
-        "commons/3rdparty/log", 
+        "commons/3rdparty/log",
          "js/model/hypotheek"],
-		function($, ko, logger, hypotheek){
-	
+	function($, ko, logger, hypotheek){
+
 	return function(polisId, relatieId) {
 		logger.debug("aanmaken nieuw hypotheek model");
 		$.get( "../dejonge/rest/medewerker/hypotheek/alleSoortenHypotheek", {}, function(data) {

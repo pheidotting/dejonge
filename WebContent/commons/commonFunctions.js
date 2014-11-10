@@ -27,12 +27,12 @@ define([ "commons/3rdparty/log"],
 		},
 
  		verbergMeldingen: function(){
-			clearInterval(refreshIntervalId); 		
+			clearInterval(refreshIntervalId);
  			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$('#alertSucces').hide();
 			$('#alertDanger').hide();
  		},
- 
+
 		uitloggen: function(){
 	    	$.ajax({
 	            url: '../dejonge/rest/authorisatie/authorisatie/uitloggen',
@@ -43,7 +43,7 @@ define([ "commons/3rdparty/log"],
 			$('#homeKnop').hide();
 			document.location.hash='#inloggen';
 		},
- 
+
 		haalIngelogdeGebruiker: function(){
 			log.debug("Haal ingelogde gebruiker");
 	    	$.ajax({
@@ -73,7 +73,7 @@ define([ "commons/3rdparty/log"],
 		laadDataMetLoginCheck: function(url) {
 			var opgehaaldeData;
 			$.ajax({
-				type: "GET",  
+				type: "GET",
 				url: url,
 				async: false,
 				dataType: "json",

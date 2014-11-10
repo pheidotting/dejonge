@@ -8,17 +8,17 @@ define([ "commons/3rdparty/log"],
         	}
         	return datum == moment(datum, "DD-MM-YYYY").format("DD-MM-YYYY");
         },
-	
+
 		isDatumVoorAndereDatum: function(datumVoor, datumNa) {
 			if(!this.valideerDatum(datumVoor) || !this.valideerDatum(datumNa)){
 				return false;
 			}
-			
+
 			if((moment(datumVoor).diff(moment(datumNa))) < 0){
 				return true;
 			}
-			
+
 			return false;
 		}
     };
-});	
+});
