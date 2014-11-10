@@ -9,7 +9,7 @@ requirejs.config({
     	model: '../js/model',
     	knockout: '../commons/3rdparty/knockout',
         knockoutValidation: '../commons/3rdparty/knockoutValidation/knockout.validation',
-        'blockUI': 'http://malsup.github.com/jquery.blockUI'    
+        'blockUI': 'http://malsup.github.com/jquery.blockUI'
     },
 	shim: {
         "knockoutValidation": ["knockout"],
@@ -31,7 +31,7 @@ requirejs(['jquery',
 function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie) {
 	commonFunctions.haalIngelogdeGebruiker();
 	window.setInterval(commonFunctions.haalIngelogdeGebruiker, 300000);
-	
+
 	$('#uitloggen').click(function() {
 		commonFunctions.uitloggen();
 	});
