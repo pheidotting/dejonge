@@ -74,6 +74,24 @@ public class PolisServiceTest extends EasyMockSupport {
     }
 
     @Test
+    public void testBeeindigen() {
+        Polis polis = createMock(Polis.class);
+
+        expect(polisRepository.lees(2L)).andReturn(polis);
+        polis.setEindDatum(LocalDate.now());
+        expectLastCall();
+
+        polisRepository.opslaan(polis);
+        expectLastCall();
+
+        replayAll();
+
+        polisService.beeindigen(2L);
+
+        verifyAll();
+    }
+
+    @Test
     public void testAllePolissenVanRelatieEnZijnBedrijf() {
         Relatie relatie = new Relatie();
         List<Polis> polissen = new ArrayList<Polis>();
