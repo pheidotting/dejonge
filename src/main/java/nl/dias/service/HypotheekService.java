@@ -49,7 +49,6 @@ public class HypotheekService {
         } else {
             hypotheek = leesHypotheek(jsonHypotheek.getId());
         }
-        hypotheekMapper = new HypotheekMapper();
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
         if (hypotheek.getRelatie() == null) {
@@ -160,5 +159,9 @@ public class HypotheekService {
 
     public void setBankService(BankService bankService) {
         this.bankService = bankService;
+    }
+
+    public void setHypotheekMapper(HypotheekMapper hypotheekMapper) {
+        this.hypotheekMapper = hypotheekMapper;
     }
 }
