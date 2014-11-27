@@ -58,4 +58,4 @@ define(['jquery',
 //				source: soortenSchade.ttAdapter()
 //			});
 	};
-});	
+});

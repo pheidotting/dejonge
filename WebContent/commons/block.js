@@ -8,4 +8,4 @@ define(['jquery',
 			$.blockUI({ message: '<img src="images/ajax-loader.gif">'});
 		}
      };
-});	
+});
