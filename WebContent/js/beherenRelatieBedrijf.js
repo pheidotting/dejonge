@@ -1,10 +1,10 @@
 define(['jquery',
-        "knockout", 
+        "knockout",
         'model/bedrijf',
         'commons/block',
         'commons/3rdparty/log',
         'commons/commonFunctions'],
-     function($, ko, Bedrijf, block, log, commonFunctions) {
+    function($, ko, Bedrijf, block, log, commonFunctions) {
 
 	return function(bedrijfId, relatieId) {
 		block.block();
@@ -15,4 +15,4 @@ define(['jquery',
 			ko.applyBindings(bedrijf);
 	    });
 	};
-});	
+});

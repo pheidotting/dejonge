@@ -3,10 +3,10 @@ define(['jquery',
          'commons/3rdparty/log',
          'commons/commonFunctions'],
 	function ($, ko, log, commonFunctions) {
-    
+
 	return function bedrijfModel (data){
 		_this = this;
-	
+
 		_this.id = ko.observable(data.id);
 		_this.naam = ko.observable(data.naam).extend({required: true});
 		_this.kvk = ko.observable(data.kvk);

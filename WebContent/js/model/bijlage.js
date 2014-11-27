@@ -3,10 +3,10 @@ define(['jquery',
          'commons/3rdparty/log',
          'commons/commonFunctions'],
 	function ($, ko, log, commonFunctions) {
-    
+
 	return function bijlageModel (data){
 		bijlage = this;
-	
+
 		bijlage.id = ko.observable(data.id);
 		bijlage.url = ko.computed(function() {
 	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;

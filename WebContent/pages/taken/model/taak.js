@@ -6,7 +6,7 @@ define([ "commons/3rdparty/log",
 
 	return function hypotheek(data) {
 		_this = this;
-		
+
 		_this.id = ko.observable(data.id);
 		_this.soortTaak = ko.observable(data.soortTaak);
 		_this.datumTijdCreatie = ko.observable(data.datumTijdCreatie);
@@ -19,7 +19,7 @@ define([ "commons/3rdparty/log",
 		_this.omschrijving = ko.observable(data.omschrijving);
 		_this.status = ko.observable(data.status);
 		_this.mijnTaak = ko.observable(data.mijnTaak);
-		
+
 		_this.vrijgeven = function(taak){
 			$.get('../dejonge/rest/medewerker/taak/vrijgeven', {"id" : taak.id()});
 		}

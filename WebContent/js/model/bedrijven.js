@@ -4,7 +4,7 @@ define(['jquery',
          'commons/3rdparty/log',
          'commons/commonFunctions'],
 	function ($, Bedrijf, ko, log, commonFunctions) {
-    
+
 	return function bedrijvenModel (data){
 		_thisBedrijven = this;
 
@@ -13,7 +13,7 @@ define(['jquery',
 			log.debug(JSON.stringify(item));
 			_thisBedrijven.bedrijven().push(new Bedrijf(item));
 		});
-	
+
 		this.verwijderBedrijf = function(bedrijf){
 			log.debug("Verwijderen Bedrijf met id " + bedrijf.id());
 			commonFunctions.verbergMeldingen();

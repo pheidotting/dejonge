@@ -1,8 +1,8 @@
 define(["pages/taken/model/taak",
          "pages/taken/model/taken",
          "knockout"],
-         function(Taak, Taken, ko) {
-	
+    function(Taak, Taken, ko) {
+
 	function takenOphalen(){
 		$('#content').load("pages/taken/taken.html", function(){
 			$.get('../dejonge/rest/medewerker/taak/lijst', function(data){
@@ -11,6 +11,6 @@ define(["pages/taken/model/taak",
 			});
 		});
 	};
-	
+
 	return takenOphalen();
 });

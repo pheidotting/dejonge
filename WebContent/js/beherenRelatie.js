@@ -11,7 +11,7 @@ define(['jquery',
         'js/beherenRelatieBijlages',
         'commons/3rdparty/log',
         'commons/commonFunctions'],
-     function($, beherenRelatie, beherenRelatieBedrijven, beherenRelatieBedrijf, beherenRelatiePolissen, beherenRelatiePolis, beherenRelatieSchades, beherenRelatieSchade, beherenRelatieHypotheken, beherenRelatieHypotheek, beherenRelatieBijlages, log, commonFunctions) {
+    function($, beherenRelatie, beherenRelatieBedrijven, beherenRelatieBedrijf, beherenRelatiePolissen, beherenRelatiePolis, beherenRelatieSchades, beherenRelatieSchade, beherenRelatieHypotheken, beherenRelatieHypotheek, beherenRelatieBijlages, log, commonFunctions) {
 
 	return function(relatieId, actie, subId){
 		$('#content').load('templates/beherenRelatieTemplate.html', function(response, status, xhr) {
@@ -59,7 +59,7 @@ define(['jquery',
 					_subId = subId;
 
 				});
-				
+
 				if(actie == ""){
 					actie = "beherenRelatie";
 				}

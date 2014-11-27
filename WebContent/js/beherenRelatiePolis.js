@@ -1,5 +1,5 @@
 define(['jquery',
-        "knockout", 
+        "knockout",
         'model/polis',
         'commons/block',
         'commons/3rdparty/log',
@@ -15,7 +15,7 @@ define(['jquery',
 			    $('<option>', { value : value }).text(value).appendTo($select);
 			});
 		});
-		
+
 		$.get( "../dejonge/rest/medewerker/bedrijf/lijst", {"relatieId" : relatieId}, function(data) {
 			if(data.length > 0){
 				$.getScript("pages/beherenRelatie/details/bedrijven.js", function(dataX, textStatus, jqxhr) {
