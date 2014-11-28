@@ -33,7 +33,6 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.LocalDate;
 
 @Entity
@@ -94,11 +93,6 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     private Set<Hypotheek> hypotheken;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
-
-    @JsonProperty(value = "zakelijkeKlant")
-    public boolean isZakelijk() {
-        return (bedrijven != null && bedrijven.size() > 0);
-    }
 
     public Adres getAdres() {
         if (adres == null) {
@@ -316,7 +310,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
                 .append("rekeningnummers", this.rekeningnummers).append("bedrijven", this.bedrijven).append("voornaam", this.getVoornaam()).append("id", this.getId())
                 .append("overlijdensdatum", this.overlijdensdatum).append("sessies", this.getSessies()).append("wachtwoord", this.getWachtwoord()).append("opmerkingen", this.opmerkingen)
                 .append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen())
-                .append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("zakelijk", this.isZakelijk()).append("polissen", this.polissen)
+                .append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("polissen", this.polissen)
                 .append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).append("adresOpgemaakt", this.adresOpgemaakt).toString();
     }
 
