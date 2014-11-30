@@ -32,7 +32,6 @@ public class HypotheekService {
     private GebruikerService gebruikerService;
     @InjectParam
     private BankService bankService;
-
     private HypotheekMapper hypotheekMapper;
 
     public void opslaan(Hypotheek hypotheek) {
@@ -48,6 +47,9 @@ public class HypotheekService {
             hypotheek = new Hypotheek();
         } else {
             hypotheek = leesHypotheek(jsonHypotheek.getId());
+        }
+        if (hypotheekMapper == null) {
+            hypotheekMapper = new HypotheekMapper();
         }
         hypotheek = hypotheekMapper.mapVanJson(jsonHypotheek, hypotheek);
 
