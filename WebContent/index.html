@@ -35,10 +35,14 @@
     	        contentType: false,
     	        processData: false,
 	            success: function (response) {
-	            	plaatsMelding("De gegevens zijn opgeslagen");
+	     			$("html, body").animate({ scrollTop: 0 }, "slow");
+	    			$('#alertSucces').show();
+	    			$('#alertSucces').html("De gegevens zijn opgeslagen");
+	    			refreshIntervalId = setInterval(this.verbergMeldingen, 10000);
 	            },
 	            error: function (data) {
-	            	plaatsFoutmelding(data);
+	    			$('#alertDanger').show();
+	    			$('#alertDanger').html("Er is een fout opgetreden : " + data);
 	            }
     	    });
     	    function progressHandlingFunction(e){
