@@ -1,5 +1,6 @@
-define([ "commons/3rdparty/log"],
-         function(log) {
+define(['commons/3rdparty/log',
+        'moment'],
+     function(log, moment) {
 
 	return {
         valideerDatum: function(datum) {

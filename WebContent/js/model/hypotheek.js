@@ -52,7 +52,7 @@ define(['jquery',
 		_this.waardeNaVerbouwing = ko.observable(data.waardeNaVerbouwing).extend({number: true});
 		_this.ingangsDatum = ko.observable(data.ingangsDatum).extend({validation: {
 	        validator: function (val) {
-	        	if(val == undefined){
+	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
 	        		return false;
@@ -62,7 +62,7 @@ define(['jquery',
 	    }});
 		_this.eindDatum = ko.observable(data.eindDatum).extend({validation: {
 	        validator: function (val) {
-	        	if(val == undefined){
+	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
 	        		return false;
@@ -73,7 +73,7 @@ define(['jquery',
 		_this.duur = ko.observable(data.duur).extend({number: true});
 		_this.ingangsDatumRenteVastePeriode = ko.observable(data.ingangsDatumRenteVastePeriode).extend({validation: {
 	        validator: function (val) {
-	        	if(val == undefined){
+	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
 	        		return false;
@@ -83,7 +83,7 @@ define(['jquery',
 	    }});
 		_this.eindDatumRenteVastePeriode = ko.observable(data.eindDatumRenteVastePeriode).extend({validation: {
 	        validator: function (val) {
-	        	if(val == undefined){
+	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
 	        		return false;
