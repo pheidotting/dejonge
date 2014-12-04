@@ -45,10 +45,12 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (jsonRelatie.getGeboorteDatum() != null && !"".equals(jsonRelatie.getGeboorteDatum())) {
             relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
         }
-        try {
-            relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
-        } catch (NumberFormatException nfe) {
-            throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
+        if (jsonRelatie.getHuisnummer() != null && !jsonRelatie.getHuisnummer().equals("")) {
+            try {
+                relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
+            } catch (NumberFormatException nfe) {
+                throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
+            }
         }
         relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
         relatie.getAdres().setPostcode(jsonRelatie.getPostcode());

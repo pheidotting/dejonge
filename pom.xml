@@ -11,10 +11,11 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<org.springframework.version>3.1.4.RELEASE</org.springframework.version>
+		<spring-framework.version>4.1.0.RELEASE</spring-framework.version>
 		<org.hibernate.version>4.2.0.Final</org.hibernate.version>
 		<jetty.version>8.1.12.v20130726</jetty.version>
 		<jersey.version>LATEST</jersey.version>
+		<activemq.version>5.10.0</activemq.version>
 		<release>0.6</release>
 		<build>0</build>
 		<revision>SNAPSHOT</revision>
@@ -22,17 +23,67 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>${activemq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>nl.lakedigital.as</groupId>
+			<artifactId>messaging</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.jms</groupId>
 			<artifactId>javax.jms-api</artifactId>
-			<version>2.0</version>
+			<version>LATEST</version>
 		</dependency>
-        <dependency>
-            <groupId>com.saucelabs</groupId>
-            <artifactId>sauce_junit</artifactId>
-            <version>[1.0.0,)</version>
-            <scope>test</scope>
-        </dependency>
-   		<dependency>
+		<dependency>
+			<groupId>com.saucelabs</groupId>
+			<artifactId>sauce_junit</artifactId>
+			<version>[1.0.0,)</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
@@ -206,7 +257,7 @@
 			<artifactId>selenium-chrome-driver</artifactId>
 			<version>LATEST</version>
 			<scope>test</scope>
-   		</dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-ie-driver</artifactId>
@@ -305,56 +356,56 @@
 					</formats>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.glassfish.maven.plugin</groupId>
-                <artifactId>maven-glassfish-plugin</artifactId>
-                <configuration>
-                    <terse>false</terse>
-                    <echo>true</echo>
-                    <debug>true</debug>
-                    <glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/GlassfishServer/glassfish3</glassfishDirectory>
-                    <user>admin</user>
-                    <adminPassword>admin</adminPassword>
-                    <domain>
+			<plugin>
+				<groupId>org.glassfish.maven.plugin</groupId>
+				<artifactId>maven-glassfish-plugin</artifactId>
+				<configuration>
+					<terse>false</terse>
+					<echo>true</echo>
+					<debug>true</debug>
+					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/GlassfishServer/glassfish3</glassfishDirectory>
+					<user>admin</user>
+					<adminPassword>admin</adminPassword>
+					<domain>
 						<name>domain1</name>
 						<host>localhost</host>
-                        <adminPort>4848</adminPort>
-                    </domain>
-                    <components>
-                        <component>
-                            <name>${project.artifactId}</name>
-                            <artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
-                        </component>
-                    </components>
-                </configuration>
-            </plugin>
-            <plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-surefire-plugin</artifactId>
-			<configuration>
-				<excludes>
-					<exclude>nl/dias/it/**/*IT.java</exclude>
-				</excludes>
-			</configuration>
-			<executions>
-				<execution>
-					<id>integration-test</id>
-					<goals>
-						<goal>test</goal>
-					</goals>
-					<phase>integration-test</phase>
-					<configuration>
-						<excludes>
-							<exclude>none</exclude>
-						</excludes>
-						<includes>
-							<include>nl/dias/it/**/*IT.java</include>
-						</includes>
-					</configuration>
-				</execution>
-			</executions>
-		    </plugin>
-        </plugins>		
+						<adminPort>4848</adminPort>
+					</domain>
+					<components>
+						<component>
+							<name>${project.artifactId}</name>
+							<artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
+						</component>
+					</components>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>nl/dias/it/**/*IT.java</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>integration-test</phase>
+						<configuration>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>nl/dias/it/**/*IT.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<finalName>dejonge</finalName>
 	</build>
 </project>

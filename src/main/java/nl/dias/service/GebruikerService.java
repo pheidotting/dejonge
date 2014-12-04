@@ -1,5 +1,7 @@
 package nl.dias.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -12,11 +14,17 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
+import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.repository.GebruikerRepository;
+import nl.lakedigital.as.messaging.AanmakenTaak;
+import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -26,6 +34,7 @@ public class GebruikerService {
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
+    private AanmakenTaakSender aanmakenTaakSender;
 
     public Gebruiker lees(Long id) {
         return gebruikerRepository.lees(id);
@@ -45,7 +54,49 @@ public class GebruikerService {
                 rekeningNummer.setRelatie((Relatie) gebruiker);
             }
         }
+
         gebruikerRepository.opslaan(gebruiker);
+
+        // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden
+        // aangemaakt
+        if (gebruiker instanceof Relatie) {
+            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+            aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
+
+            Relatie relatie = (Relatie) gebruiker;
+            if (isBlank(relatie.getBsn())) {
+                LOGGER.debug("BSN is leeg, Taak aanmaken");
+
+                AanmakenTaak taak = new AanmakenTaak();
+                taak.setDatumTijdCreatie(LocalDateTime.now());
+                taak.setRelatie(relatie.getId());
+                taak.setSoort(SoortTaak.AANVULLEN_BSN);
+
+                aanmakenTaakSender.send(taak);
+            }
+
+            if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
+                LOGGER.debug("Adres is leeg of niet volledig, Taak aanmaken");
+
+                AanmakenTaak taak = new AanmakenTaak();
+                taak.setDatumTijdCreatie(LocalDateTime.now());
+                taak.setRelatie(relatie.getId());
+                taak.setSoort(SoortTaak.AANVULLEN_ADRES);
+
+                aanmakenTaakSender.send(taak);
+            }
+
+            if (isBlank(relatie.getIdentificatie())) {
+                LOGGER.debug("E-mailadres is leeg, Taak aanmaken");
+
+                AanmakenTaak taak = new AanmakenTaak();
+                taak.setDatumTijdCreatie(LocalDateTime.now());
+                taak.setRelatie(relatie.getId());
+                taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
+
+                aanmakenTaakSender.send(taak);
+            }
+        }
     }
 
     public void verwijder(Long id) {
@@ -126,5 +177,9 @@ public class GebruikerService {
 
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
         this.gebruikerRepository = gebruikerRepository;
+    }
+
+    public void setAanmakenTaakSender(AanmakenTaakSender aanmakenTaakSender) {
+        this.aanmakenTaakSender = aanmakenTaakSender;
     }
 }

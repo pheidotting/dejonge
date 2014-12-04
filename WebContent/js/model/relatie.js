@@ -4,19 +4,20 @@ define(['jquery',
          'model/rekeningNummer',
          'model/telefoonNummer',
          'moment',
-         'commons/3rdparty/log'],
-	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, moment, log) {
+         'commons/3rdparty/log',
+         "commons/validation"],
+	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, moment, log, validation) {
 
 	return function relatieModel (data){
 		_thisRelatie = this;
 
-		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({required: true, email: true});
+		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({email: true});
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
 		_thisRelatie.achternaam = ko.observable(data.achternaam).extend({required: true});
 		_thisRelatie.tussenvoegsel = ko.observable(data.tussenvoegsel);
-		_thisRelatie.straat = ko.observable(data.straat).extend({ required: true });
-		_thisRelatie.huisnummer = ko.observable(data.huisnummer).extend({ number: true, required: true });
+		_thisRelatie.straat = ko.observable(data.straat);
+		_thisRelatie.huisnummer = ko.observable(data.huisnummer).extend({ number: true});
 		_thisRelatie.toevoeging = ko.observable(data.toevoeging);
 		_thisRelatie.postcode = ko.observable(data.postcode);
 		_thisRelatie.plaats = ko.observable(data.plaats);
@@ -36,11 +37,11 @@ define(['jquery',
 		}
 		_thisRelatie.geboorteDatum = ko.observable(data.geboorteDatumOpgemaakt).extend({validation: {
 	        validator: function (val) {
-	        	if(moment(val, "DD-MM-YYYY").format("DD-MM-YYYY") == "Invalid date"){
-	    			return false;
-	    		}else{
-	    			return true;
-	    		}
+	        	if(val != undefined){
+	        		return validation.valideerDatum(val);
+	        	}else{
+	        		return true;
+	        	}
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
 	    }});

@@ -21,7 +21,7 @@
 		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
 	</listener>
 
-    <!--context-param>
+    <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /applicationContext.xml
@@ -30,7 +30,7 @@
  
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener-->
+    </listener>
 
 	<servlet>
 		<servlet-name>jersey-servlet-medewerker</servlet-name>

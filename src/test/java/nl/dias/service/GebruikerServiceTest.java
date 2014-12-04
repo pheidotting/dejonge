@@ -5,11 +5,14 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nl.dias.domein.Adres;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
@@ -17,11 +20,15 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
+import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.repository.GebruikerRepository;
+import nl.lakedigital.as.messaging.AanmakenTaak;
+import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +36,7 @@ import org.junit.Test;
 public class GebruikerServiceTest extends EasyMockSupport {
     private GebruikerRepository repository;
     private GebruikerService service;
+    private AanmakenTaakSender aanmakenTaakSender;
 
     @Before
     public void setUp() throws Exception {
@@ -36,6 +44,9 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
         repository = createMock(GebruikerRepository.class);
         service.setGebruikerRepository(repository);
+
+        aanmakenTaakSender = createMock(AanmakenTaakSender.class);
+        service.setAanmakenTaakSender(aanmakenTaakSender);
     }
 
     @After
@@ -69,8 +80,11 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaan() {
+    public void testOpslaan() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Relatie relatie = new Relatie();
+        relatie.setBsn("1234");
+        relatie.setAdres(maakAdres());
+        relatie.setIdentificatie("id");
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -81,9 +95,12 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanMetRekeningNummer() {
+    public void testOpslaanMetRekeningNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Relatie relatie = new Relatie();
         relatie.getRekeningnummers().add(new RekeningNummer());
+        relatie.setBsn("1234");
+        relatie.setAdres(maakAdres());
+        relatie.setIdentificatie("id");
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -94,9 +111,12 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanMetTelefoonNummer() {
+    public void testOpslaanMetTelefoonNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Relatie relatie = new Relatie();
         relatie.getTelefoonnummers().add(new Telefoonnummer());
+        relatie.setBsn("1234");
+        relatie.setAdres(maakAdres());
+        relatie.setIdentificatie("id");
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -104,6 +124,104 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         service.opslaan(relatie);
+    }
+
+    @Test
+    public void testOpslaanZonderBsn() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Relatie relatie = new Relatie();
+        relatie.setId(2L);
+        relatie.setAdres(maakAdres());
+        relatie.setIdentificatie("id");
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        AanmakenTaak taak = new AanmakenTaak();
+        taak.setDatumTijdCreatie(new LocalDateTime());
+        taak.setRelatie(2L);
+        taak.setSoort(SoortTaak.AANVULLEN_BSN);
+        aanmakenTaakSender.send(taak);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+
+        verifyAll();
+    }
+
+    @Test
+    public void testOpslaanZonderEmail() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Relatie relatie = new Relatie();
+        relatie.setId(2L);
+        relatie.setAdres(maakAdres());
+        relatie.setBsn("id");
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        AanmakenTaak taak = new AanmakenTaak();
+        taak.setDatumTijdCreatie(new LocalDateTime());
+        taak.setRelatie(2L);
+        taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
+        aanmakenTaakSender.send(taak);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+
+        verifyAll();
+    }
+
+    @Test
+    public void testOpslaanZonderAdres() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Relatie relatie = new Relatie();
+        relatie.setId(2L);
+        relatie.setBsn("bsn");
+        relatie.setIdentificatie("id");
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        AanmakenTaak taak = new AanmakenTaak();
+        taak.setDatumTijdCreatie(new LocalDateTime());
+        taak.setRelatie(2L);
+        taak.setSoort(SoortTaak.AANVULLEN_ADRES);
+        aanmakenTaakSender.send(taak);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+
+        verifyAll();
+    }
+
+    @Test
+    public void testOpslaanMetAdresMaarIncompleet() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Relatie relatie = new Relatie();
+        relatie.setId(2L);
+        relatie.setBsn("bsn");
+        relatie.setAdres(maakAdres());
+        relatie.getAdres().setStraat(null);
+        relatie.setIdentificatie("id");
+
+        repository.opslaan(relatie);
+        expectLastCall();
+
+        AanmakenTaak taak = new AanmakenTaak();
+        taak.setDatumTijdCreatie(new LocalDateTime());
+        taak.setRelatie(2L);
+        taak.setSoort(SoortTaak.AANVULLEN_ADRES);
+        aanmakenTaakSender.send(taak);
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(relatie);
+
+        verifyAll();
     }
 
     @Test
@@ -295,5 +413,15 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         service.verwijderVerlopenSessies(medewerker);
+    }
+
+    private Adres maakAdres() {
+        Adres adres = new Adres();
+        adres.setHuisnummer(41L);
+        adres.setPlaats("Zwartemeer");
+        adres.setPostcode("7894AB");
+        adres.setStraat("Eemslandweg");
+
+        return adres;
     }
 }

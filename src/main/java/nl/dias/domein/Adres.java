@@ -1,5 +1,7 @@
 package nl.dias.domein;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -62,6 +64,11 @@ public class Adres implements Serializable {
 
     public void setPlaats(String plaats) {
         this.plaats = plaats;
+    }
+
+    public boolean isCompleet() {
+        return isNotBlank(straat) && huisnummer != null && isNotBlank(postcode) && isNotBlank(plaats);
+
     }
 
     @Override
