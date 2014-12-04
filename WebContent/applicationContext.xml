@@ -51,9 +51,9 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 			</list>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-	</bean-->
+	</bean>
 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="jdbcDias" />
-	</bean>
+	</bean-->
 </beans>
