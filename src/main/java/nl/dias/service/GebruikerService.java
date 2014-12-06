@@ -40,7 +40,6 @@ public class GebruikerService {
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
-    @InjectParam
     private AanmakenTaakSender aanmakenTaakSender;
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
@@ -81,8 +80,7 @@ public class GebruikerService {
         // aangemaakt
         if (gebruiker instanceof Relatie) {
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            // aanmakenTaakSender = (AanmakenTaakSender)
-            // context.getBean("aanmakenTaakSender");
+            aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
             adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
             emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
             bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
