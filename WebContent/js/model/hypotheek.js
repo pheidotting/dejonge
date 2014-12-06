@@ -6,7 +6,7 @@ define(['jquery',
          'moment',
          'model/bijlage',
          'commons/commonFunctions'],
-         function($, ko, logger, validation, opmaak, moment, Bijlage, commonFunctions) {
+         function($, ko, log, validation, opmaak, moment, Bijlage, commonFunctions) {
 
 	return function hypotheek(data) {
 		_this = this;
@@ -33,6 +33,9 @@ define(['jquery',
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
 
+		_this.veranderDatum = function(datum){
+			datum(commonFunctions.zetDatumOm(datum()));
+		}
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
 		_this.bankId = ko.observable(data.bankId);
@@ -164,7 +167,7 @@ define(['jquery',
 	    	if(!hypotheek.isValid()){
 	    		result.showAllMessages(true);
 	    	}else{
-	    		logger.debug("Versturen : " + ko.toJSON(hypotheek));
+	    		log.debug("Versturen : " + ko.toJSON(hypotheek));
 		    	$.ajax({
 		            url: '../dejonge/rest/medewerker/hypotheek/opslaan',
 		            type: 'POST',

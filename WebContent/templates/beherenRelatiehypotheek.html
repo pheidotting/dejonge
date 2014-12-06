@@ -51,7 +51,7 @@
 </div>
 <div class="form-group">
 	<label for="taxatieDatum">Taxatie datum</label>
-	<input class="form-control" type="text" id="taxatieDatum" placeholder="Taxatie datum..." data-bind="value: taxatieDatum" />
+	<input class="form-control" type="text" id="taxatieDatum" placeholder="Taxatie datum..." data-bind="value: taxatieDatum, event: {blur: veranderDatum(taxatieDatum)}" />
 </div>
 <div class="form-group">
 	<label for="wozWaarde">WOZ Waarde</label>
@@ -67,19 +67,19 @@
 </div>
 <div class="form-group">
 	<label for="ingangsDatum">Ingangs datum</label>
-	<input class="form-control" type="text" id="ingangsDatum" placeholder="Ingangs datum..." data-bind="value: ingangsDatum, event: { change: berekenEinddatumLening }" />
+	<input class="form-control" type="text" id="ingangsDatum" placeholder="Ingangs datum..." data-bind="value: ingangsDatum, event: { blur: berekenEinddatumLening, blur: veranderDatum(ingangsDatum) }" />
 </div>
 <div class="form-group">
 	<label for="duur">Duur</label>
-	<input class="form-control" type="text" id="duur" placeholder="Duur..." data-bind="value: duur, event: { change: berekenEinddatumLening }" />
+	<input class="form-control" type="text" id="duur" placeholder="Duur..." data-bind="value: duur, event: { change: berekenEinddatumLening}" />
 </div>
 <div class="form-group">
 	<label for="eindDatum">Eind datum</label>
-	<input class="form-control" type="text" id="eindDatum" placeholder="Eind datum..." data-bind="value: eindDatum" />
+	<input class="form-control" type="text" id="eindDatum" placeholder="Eind datum..." data-bind="value: eindDatum, event: {blur: veranderDatum(eindDatum)}" />
 </div>
 <div class="form-group">
 	<label for="ingangsDatumRenteVastePeriode">Ingangsdatum Rentevaste Periode</label>
-	<input class="form-control" type="text" id="ingangsDatumRenteVastePeriode" placeholder="Ingangsdatum Rentevaste Periode..." data-bind="value: ingangsDatumRenteVastePeriode, event: { change: berekenEinddatumRenteVastePeriode }" />
+	<input class="form-control" type="text" id="ingangsDatumRenteVastePeriode" placeholder="Ingangsdatum Rentevaste Periode..." data-bind="value: ingangsDatumRenteVastePeriode, event: { change: berekenEinddatumRenteVastePeriode, blur: veranderDatum(ingangsDatumRenteVastePeriode)}" />
 </div>
 <div class="form-group">
 	<label for="duurRenteVastePeriode">Duur Rentevaste Periode</label>
@@ -87,7 +87,7 @@
 </div>
 <div class="form-group">
 	<label for="eindDatumRenteVastePeriode">Einddatum Rentevaste Periode</label>
-	<input class="form-control" type="text" id="eindDatumRenteVastePeriode" placeholder="Einddatum Rentevaste Periode..." data-bind="value: eindDatumRenteVastePeriode" />
+	<input class="form-control" type="text" id="eindDatumRenteVastePeriode" placeholder="Einddatum Rentevaste Periode..." data-bind="value: eindDatumRenteVastePeriode, event: {blur: veranderDatum(eindDatumRenteVastePeriode)}" />
 </div>
 <div class="form-group">
 	<label for="omschrijving">Omschrijving</label>

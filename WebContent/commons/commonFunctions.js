@@ -4,6 +4,19 @@ define([ "commons/3rdparty/log"],
 	var refreshIntervalId;
 
 	return {
+		
+		zetDatumOm: function(datumZonderStreepjes){
+			var datumMetStreepjes = datumZonderStreepjes;
+			if(datumZonderStreepjes != undefined && datumZonderStreepjes.length == 8 && this.isNumeric(datumZonderStreepjes)){
+				datumMetStreepjes = datumZonderStreepjes.substring(0, 2) + "-" + datumZonderStreepjes.substring(2, 4) + "-" + datumZonderStreepjes.substring(4, 8);
+			}
+			
+			return datumMetStreepjes;
+		},
+		
+		isNumeric: function(num) {
+		     return (num >=0 || num < 0);
+		},
 
  		plaatsFoutmelding: function(melding){
         	var foutmelding = jQuery.parseJSON(melding.responseText);
