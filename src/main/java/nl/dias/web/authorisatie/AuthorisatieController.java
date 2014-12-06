@@ -43,7 +43,7 @@ public class AuthorisatieController {
     public Response inloggen(Inloggen inloggen) {
         try {
             LOGGER.debug("Inloggen");
-            authorisatieService.inloggen(inloggen.getIdentificatie(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
+            authorisatieService.inloggen(inloggen.getIdentificatie().trim(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
         } catch (OnjuistWachtwoordException | NietGevondenException e) {
             LOGGER.debug("Onjuist wachtwoord of Gebruiker niet gevonden", e);
             return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
