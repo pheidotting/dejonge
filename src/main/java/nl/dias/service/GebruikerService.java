@@ -15,9 +15,15 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.messaging.sender.AanmakenTaakSender;
+import nl.dias.messaging.sender.AdresAangevuldSender;
+import nl.dias.messaging.sender.BsnAangevuldSender;
+import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
+import nl.lakedigital.as.messaging.AdresAangevuld;
+import nl.lakedigital.as.messaging.BsnAangevuld;
+import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
@@ -34,7 +40,11 @@ public class GebruikerService {
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
+    @InjectParam
     private AanmakenTaakSender aanmakenTaakSender;
+    private AdresAangevuldSender adresAangevuldSender;
+    private EmailAdresAangevuldSender emailAdresAangevuldSender;
+    private BsnAangevuldSender bsnAangevuldSender;
 
     public Gebruiker lees(Long id) {
         return gebruikerRepository.lees(id);
@@ -45,6 +55,16 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
+        Gebruiker gebruikerAanwezig = null;
+        try {
+            gebruikerAanwezig = gebruikerRepository.zoek(gebruiker.getIdentificatie());
+        } catch (NietGevondenException e) {
+            // niets aan de hand;
+        }
+        if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
+            throw new IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
+        }
+
         // Even checken of over de connectie met de Relatie is ingevuld
         if (gebruiker instanceof Relatie) {
             for (Telefoonnummer telefoonnummer : ((Relatie) gebruiker).getTelefoonnummers()) {
@@ -61,7 +81,11 @@ public class GebruikerService {
         // aangemaakt
         if (gebruiker instanceof Relatie) {
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
+            // aanmakenTaakSender = (AanmakenTaakSender)
+            // context.getBean("aanmakenTaakSender");
+            adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
+            emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
+            bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
 
             Relatie relatie = (Relatie) gebruiker;
             if (isBlank(relatie.getBsn())) {
@@ -73,6 +97,13 @@ public class GebruikerService {
                 taak.setSoort(SoortTaak.AANVULLEN_BSN);
 
                 aanmakenTaakSender.send(taak);
+            } else {
+                LOGGER.debug("BSN gevuld, bericht versturen");
+
+                BsnAangevuld bsnAangevuld = new BsnAangevuld();
+                bsnAangevuld.setRelatie(relatie.getId());
+
+                bsnAangevuldSender.send(bsnAangevuld);
             }
 
             if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
@@ -84,6 +115,13 @@ public class GebruikerService {
                 taak.setSoort(SoortTaak.AANVULLEN_ADRES);
 
                 aanmakenTaakSender.send(taak);
+            } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
+                LOGGER.debug("Adres gevuld, bericht versturen");
+
+                AdresAangevuld adresAangevuld = new AdresAangevuld();
+                adresAangevuld.setRelatie(relatie.getId());
+
+                adresAangevuldSender.send(adresAangevuld);
             }
 
             if (isBlank(relatie.getIdentificatie())) {
@@ -95,6 +133,13 @@ public class GebruikerService {
                 taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
 
                 aanmakenTaakSender.send(taak);
+            } else {
+                LOGGER.debug("E-mailadres gevuld, bericht versturen");
+
+                EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+                emailadresAangevuld.setRelatie(relatie.getId());
+
+                emailAdresAangevuldSender.send(emailadresAangevuld);
             }
         }
     }

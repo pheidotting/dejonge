@@ -2,7 +2,6 @@ package nl.dias.repository;
 
 import java.util.List;
 
-import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
@@ -14,9 +13,10 @@ import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Named
+@Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     private final static Logger LOGGER = Logger.getLogger(GebruikerRepository.class);
 
