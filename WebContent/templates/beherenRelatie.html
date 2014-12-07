@@ -19,11 +19,11 @@
 </div>
 <div class="form-group">
 	<label for="geboorteDatum">Geboortedatum</label>
-	<input class="form-control" type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatum" />
+	<input class="form-control" type="text" id="geboorteDatum" name="geboorteDatum" data-bind="value: geboorteDatum, event: {blur: veranderDatum(geboorteDatum)}" />
 </div>
 <div class="form-group">
 	<label for="overlijdensdatum">Overlijdensdatum</label>
-	<input class="form-control" type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatum" />
+	<input class="form-control" type="text" id="overlijdensdatum" name="overlijdensdatum" data-bind="value: overlijdensdatum, event: {blur: veranderDatum(overlijdensdatum)}" />
 </div>
 <div class="form-group">
 	<label for="geslacht">Geslacht</label>

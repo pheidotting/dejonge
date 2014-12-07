@@ -10,6 +10,9 @@ define(['jquery',
 	return function polisModel (data){
 		var self = this;
 
+		self.veranderDatum = function(datum){
+			datum(commonFunctions.zetDatumOm(datum()));
+		}
 		self.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};

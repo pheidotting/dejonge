@@ -11,6 +11,9 @@ define(['jquery',
 	return function relatieModel (data){
 		_thisRelatie = this;
 
+		_thisRelatie.veranderDatum = function(datum){
+			datum(commonFunctions.zetDatumOm(datum()));
+		}
 		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({email: true});
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});

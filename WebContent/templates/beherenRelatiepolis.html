@@ -56,15 +56,15 @@
 	</div>
 	<div class="form-group">
 		<label for="naam">Ingangsdatum</label>
-		<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." data-bind="value: ingangsDatum" />
+		<input class="form-control" type="text" id="ingangsDatumString" placeholder="Ingangs datum..." data-bind="value: ingangsDatum, event: {blur: veranderDatum(ingangsDatum)}" />
 	</div>
 	<div class="form-group">
 		<label for="naam">Wijzigingsdatum</label>
-		<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." data-bind="value: wijzigingsDatum"/>
+		<input class="form-control" type="text" id="wijzigingsdatumString" placeholder="Wijzigingsdatum..." data-bind="value: wijzigingsDatum, event: {blur: veranderDatum(wijzigingsDatum)}"/>
 	</div>
 	<div class="form-group">
 		<label for="naam">Prolongatiedatum</label>
-		<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." data-bind="value: prolongatieDatum" />
+		<input class="form-control" type="text" id="prolongatiedatumString" placeholder="Prolongatiedatum..." data-bind="value: prolongatieDatum, event: {blur: veranderDatum(prolongatieDatum)}" />
 	</div>
 	<div class="form-group">
 		<label for="naam">Betaalfrequente</label>

@@ -30,15 +30,15 @@
 </div>
 <div class="form-group">
 	<label for="datumTijdSchade">Datum tijd schade</label>
-	<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdSchade" />
+	<input class="form-control" type="text" id="datumTijdSchade" name="datumTijdSchade" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdSchade, event: {blur: veranderDatumTijd(datumTijdSchade)}" />
 </div>
 <div class="form-group">
 	<label for="datumTijdMelding">Datum tijd melding</label>
-	<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdMelding" />
+	<input class="form-control" type="text" id="datumTijdMelding" name="datumTijdMelding" placeholder="dd-mm-eejj uu:mm" data-bind="value: datumTijdMelding, event: {blur: veranderDatumTijd(datumTijdMelding)}" />
 </div>
 <div class="form-group">
 	<label for="datumAfgehandeld">Datum afgehandeld</label>
-	<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" data-bind="value: datumAfgehandeld" />
+	<input class="form-control" type="text" id="datumAfgehandeld" name="datumAfgehandeld" placeholder="dd-mm-eejj" data-bind="value: datumAfgehandeld, event: {blur: veranderDatum(datumAfgehandeld)}" />
 </div>
 <div class="form-group">
 	<label for="eigenRisico">Eigen risico</label>

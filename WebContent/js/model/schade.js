@@ -11,6 +11,12 @@ define(['jquery',
 	return function schadeModel (data){
 		self = this;
 
+		self.veranderDatum = function(datum){
+			datum(commonFunctions.zetDatumOm(datum()));
+		};
+		self.veranderDatumTijd = function(datum){
+			datum(commonFunctions.zetDatumTijdOm(datum()));
+		};
 		self.bedrag = function(bedrag){
 			log.debug("opmaken bedrag " + bedrag());
 			return opmaak.maakBedragOp(bedrag());
