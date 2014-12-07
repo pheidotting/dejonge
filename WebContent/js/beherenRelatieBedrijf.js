@@ -2,9 +2,8 @@ define(['jquery',
         "knockout",
         'model/bedrijf',
         'commons/block',
-        'commons/3rdparty/log',
-        'commons/commonFunctions'],
-    function($, ko, Bedrijf, block, log, commonFunctions) {
+        'commons/3rdparty/log'],
+    function($, ko, Bedrijf, block, log) {
 
 	return function(bedrijfId, relatieId) {
 		block.block();
