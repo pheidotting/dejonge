@@ -55,10 +55,12 @@ public class GebruikerService {
 
     public void opslaan(Gebruiker gebruiker) {
         Gebruiker gebruikerAanwezig = null;
+        LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         try {
             gebruikerAanwezig = gebruikerRepository.zoek(gebruiker.getIdentificatie());
         } catch (NietGevondenException e) {
             // niets aan de hand;
+            LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
         }
         if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
             throw new IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
@@ -87,7 +89,7 @@ public class GebruikerService {
 
             Relatie relatie = (Relatie) gebruiker;
             if (isBlank(relatie.getBsn())) {
-                LOGGER.debug("BSN is leeg, Taak aanmaken");
+                LOGGER.info("BSN is leeg, Taak aanmaken");
 
                 AanmakenTaak taak = new AanmakenTaak();
                 taak.setDatumTijdCreatie(LocalDateTime.now());
@@ -96,7 +98,7 @@ public class GebruikerService {
 
                 aanmakenTaakSender.send(taak);
             } else {
-                LOGGER.debug("BSN gevuld, bericht versturen");
+                LOGGER.info("BSN gevuld, bericht versturen");
 
                 BsnAangevuld bsnAangevuld = new BsnAangevuld();
                 bsnAangevuld.setRelatie(relatie.getId());
@@ -105,7 +107,7 @@ public class GebruikerService {
             }
 
             if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
-                LOGGER.debug("Adres is leeg of niet volledig, Taak aanmaken");
+                LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
 
                 AanmakenTaak taak = new AanmakenTaak();
                 taak.setDatumTijdCreatie(LocalDateTime.now());
@@ -114,7 +116,7 @@ public class GebruikerService {
 
                 aanmakenTaakSender.send(taak);
             } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
-                LOGGER.debug("Adres gevuld, bericht versturen");
+                LOGGER.info("Adres gevuld, bericht versturen");
 
                 AdresAangevuld adresAangevuld = new AdresAangevuld();
                 adresAangevuld.setRelatie(relatie.getId());
@@ -123,7 +125,7 @@ public class GebruikerService {
             }
 
             if (isBlank(relatie.getIdentificatie())) {
-                LOGGER.debug("E-mailadres is leeg, Taak aanmaken");
+                LOGGER.info("E-mailadres is leeg, Taak aanmaken");
 
                 AanmakenTaak taak = new AanmakenTaak();
                 taak.setDatumTijdCreatie(LocalDateTime.now());
@@ -132,7 +134,7 @@ public class GebruikerService {
 
                 aanmakenTaakSender.send(taak);
             } else {
-                LOGGER.debug("E-mailadres gevuld, bericht versturen");
+                LOGGER.info("E-mailadres gevuld, bericht versturen");
 
                 EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
                 emailadresAangevuld.setRelatie(relatie.getId());
@@ -177,7 +179,7 @@ public class GebruikerService {
         try {
             return gebruikerRepository.zoekOpCookieCode(cookieCode);
         } catch (NietGevondenException e) {
-            LOGGER.debug("Niets gevonden", e);
+            LOGGER.info("Niets gevonden", e);
             return null;
         }
     }
