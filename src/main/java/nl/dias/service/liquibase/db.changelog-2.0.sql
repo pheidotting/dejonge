@@ -558,3 +558,16 @@ CREATE TABLE QRTZ_LOCKS
 --changeset Patrick Heidotting:38
 ALTER TABLE QRTZ_FIRED_TRIGGERS ADD COLUMN SCHED_TIME BIGINT(13) NOT NULL; 
 
+--changeset Patrick Heidotting:39
+
+CREATE TABLE IF NOT EXISTS `LOGS` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `host` varchar(100) NOT NULL,
+  `application` varchar(100) NOT NULL,
+  `thread` varchar(100) NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `priority` varchar(50) NOT NULL,
+  `message` varchar(1000) NOT NULL,
+  `throwable` varchar(100) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+

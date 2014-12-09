@@ -9,27 +9,41 @@
 		</layout>
 	</appender>
 
-	<appender name="diasLog" class="org.apache.log4j.ConsoleAppender">
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="target" value="System.out" />
 		<param name="threshold" value="debug" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
 		</layout>
 	</appender>
-    
-    <appender name="diasLogFile" class="org.apache.log4j.FileAppender">
-        <param name="File" value="C:\logs\dias.log" />
-        <param name="Threshold" value="INFO" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p %t [%-40.40c] %x - %m%n"/>
-        </layout>
-    </appender>
-    
-	<logger name="nl.dias.service.AuthorisatieService">
+
+	<appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
+                <param name="dataSource" value="jdbcDias"/>
+
+                <!-- table -->
+                <param name="table" value="LOGS"/>
+
+                <param name="bufferSize" value="10"/>
+
+                <param name="column" value="date        | TIMESTAMP | %class: org.apache.log4j.extended.jdbc.DateLayout"/>
+                <param name="column" value="host        | VARCHAR   | %class: org.apache.log4j.extended.jdbc.HostLayout"/>
+                <param name="column" value="application | VARCHAR   | order"/>
+                <param name="column" value="thread      | VARCHAR   | %t"/>
+                <param name="column" value="category    | VARCHAR   | %c"/>
+                <param name="column" value="priority    | VARCHAR   | %p"/>
+                <param name="column" value="message     | VARCHAR   | %m"/>
+                <param name="column" value="throwable   | VARCHAR   | %class: org.apache.log4j.extended.jdbc.ThrowableLayout"/>
+        </appender>
+        
+	<logger name="javax.persistence">
 		<level value="info" />
 	</logger>
-	<logger name="javax.persistence">
-		<level value="trace" />
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+	<logger name="nl.dias.service.AuthorisatieService">
+		<level value="info" />
+		<level value="console" />
 	</logger>
 	<logger name="nl.dias.web.filter">
 		<level value="info" />
@@ -40,7 +54,6 @@
 
 	<root>
 		<priority value="debug"></priority>
-		<appender-ref ref="diasLog" />
-		<appender-ref ref="diasLogFile" />
+		<appender-ref ref="jdbc" />
 	</root>
 </log4j:configuration>

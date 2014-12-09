@@ -25,6 +25,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/patrickheidotting/Downloads/JSErrorCollector-0.5.jar"/>
+	<classpathentry kind="lib" path="/Users/patrickheidotting/Documents/DEV/Java/DIAS/dejonge/WebContent/WEB-INF/lib/log4j-extened-jdbc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
