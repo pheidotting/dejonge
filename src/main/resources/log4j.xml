@@ -27,7 +27,7 @@
 
                 <param name="column" value="date        | TIMESTAMP | %class: org.apache.log4j.extended.jdbc.DateLayout"/>
                 <param name="column" value="host        | VARCHAR   | %class: org.apache.log4j.extended.jdbc.HostLayout"/>
-                <param name="column" value="application | VARCHAR   | order"/>
+                <param name="column" value="application | VARCHAR   | relatiebeheer"/>
                 <param name="column" value="thread      | VARCHAR   | %t"/>
                 <param name="column" value="category    | VARCHAR   | %c"/>
                 <param name="column" value="priority    | VARCHAR   | %p"/>
