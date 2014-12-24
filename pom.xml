@@ -35,11 +35,11 @@
 	</repositories>
 
 	<dependencies>
-		<dependency>
+		<!--dependency>
 			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
 			<artifactId>taakbeheerclient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
