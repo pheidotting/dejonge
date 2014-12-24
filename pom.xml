@@ -21,8 +21,26 @@
 		<revision>SNAPSHOT</revision>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>Lake Digital</id>
+        	<name>Lake Digital-releases</name>
+			<url>http://37.59.107.9:8081/artifactory/libs-release-local</url>
+		</repository>
+	    <repository>
+			<id>Lake Digital-snapshot</id>
+        	<name>Lake Digital-snapshots</name>
+			<url>http://37.59.107.9:8081/artifactory/libs-snapshot-local</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
-  		<dependency>
+		<dependency>
+			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
+			<artifactId>taakbeheerclient</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>${activemq.version}</version>
@@ -96,7 +114,7 @@
 		<dependency>
 			<groupId>nl.lakedigital</groupId>
 			<artifactId>archief</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.14-20141224.140334-1</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
