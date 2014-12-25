@@ -72,8 +72,8 @@ public class RelatieMapperTest extends EasyMockSupport {
         jsonRelatie.setHuisnummer("41");
         jsonRelatie.setGeslacht("Man");
         jsonRelatie.setBurgerlijkeStaat("Ongehuwd");
-        jsonRelatie.setGeboorteDatum("2014-02-03");
-        jsonRelatie.setOverlijdensdatum("2014-6-07");
+        jsonRelatie.setGeboorteDatum("03-02-2014");
+        jsonRelatie.setOverlijdensdatum("07-6-2014");
         jsonRelatie.setTelefoonnummers(new ArrayList<JsonTelefoonnummer>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.setOpmerkingen(new ArrayList<JsonOpmerking>());
