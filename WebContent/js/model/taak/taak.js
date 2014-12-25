@@ -2,9 +2,9 @@ define([ "commons/3rdparty/log",
          "commons/validation",
          "commons/opmaak",
          "knockout"],
-         function(logger, validation, opmaak, ko) {
+     function(logger, validation, opmaak, ko) {
 
-	return function hypotheek(data) {
+	return function taak(data) {
 		_this = this;
 
 		_this.id = ko.observable(data.id);
@@ -21,10 +21,13 @@ define([ "commons/3rdparty/log",
 		_this.mijnTaak = ko.observable(data.mijnTaak);
 
 		_this.vrijgeven = function(taak){
+			logger.debug("vrijgeven taak met id " + taak.id());
 			$.get('../dejonge/rest/medewerker/taak/vrijgeven', {"id" : taak.id()});
-		}
+		};
 		_this.oppakken = function(taak){
+			logger.debug("oppakken taak met id " + taak.id());
 			$.get('../dejonge/rest/medewerker/taak/oppakken', {"id" : taak.id()});
-		}
-	}
+			document.location.hash='#taak/' + taak.id();
+		};
+	};
 });

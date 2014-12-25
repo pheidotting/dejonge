@@ -47,6 +47,14 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     }
 
     @Transactional
+    public Relatie zoekOpBsn(String bsn) {
+        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpBsn", Relatie.class);
+        query.setParameter("bsn", bsn);
+
+        return query.getSingleResult();
+    }
+
+    @Transactional
     public Gebruiker zoek(String emailadres) throws NietGevondenException {
         Gebruiker gebruiker = null;
 

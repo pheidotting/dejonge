@@ -41,6 +41,9 @@
 	<logger name="org.springframework">
 		<level value="error" />
 	</logger>
+	<logger name="org.apache">
+		<level value="error" />
+	</logger>
 	<logger name="nl.dias.service.AuthorisatieService">
 		<level value="info" />
 		<level value="console" />

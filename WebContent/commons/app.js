@@ -27,8 +27,10 @@ requirejs(['jquery',
            'commons/commonFunctions',
            'js/inloggen',
            'js/lijstRelaties',
-           'js/beherenRelatie'],
-function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie) {
+           'js/beherenRelatie',
+           'js/taak/taken',
+           'js/taak/afhandelenTaak'],
+function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie, taken, afhandelenTaak) {
 	commonFunctions.haalIngelogdeGebruiker();
 	window.setInterval(commonFunctions.haalIngelogdeGebruiker, 300000);
 
@@ -36,45 +38,51 @@ function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie) 
 		commonFunctions.uitloggen();
 	});
 
-	var diasRoute = new Sammy('body');
+	var app = new Sammy('body');
 
-	diasRoute.route('GET', '#inloggen', function(context) {
+	app.route('GET', '#taken', function(context) {
+		new taken();
+	});
+	
+	app.route('GET', '#taak/:id', function(context) {
+		id = this.params['id'];
+		new afhandelenTaak(id);
+	});
+
+	app.route('GET', '#inloggen', function(context) {
 		new inloggen();
 	});
 
-	diasRoute.route('GET', '#lijstRelaties', function(context) {
+	app.route('GET', '#lijstRelaties', function(context) {
 		new lijstRelaties();
 	});
 
-	diasRoute.route('GET', '#beherenRelatie/:id/:actie/:subId', function(context) {
+	app.route('GET', '#beherenRelatie/:id/:actie/:subId', function(context) {
 		id = this.params['id'];
 		actie = this.params['actie'];
 		subId = this.params['subId'];
 		new beherenRelatie(id, actie, subId);
 	});
 
-	diasRoute.route('GET', '#beherenRelatie/:id/:actie', function(context) {
+	app.route('GET', '#beherenRelatie/:id/:actie', function(context) {
 		id = this.params['id'];
 		actie = this.params['actie'];
 		new beherenRelatie(id, actie);
 	});
 
-	diasRoute.route('GET', '#beherenRelatie/:id', function(context) {
+	app.route('GET', '#beherenRelatie/:id', function(context) {
 		id = this.params['id'];
 		new beherenRelatie(id);
 	});
 
-	diasRoute.route('GET', '#beherenRelatie', function(context) {
+	app.route('GET', '#beherenRelatie', function(context) {
 		new beherenRelatie(null);
 	});
 
-	diasRoute.route('GET', '#taken', function(context) {
-		$.getScript("pages/taken/laden.js");
-	});
-
-	diasRoute.route('GET', '', function(context) {
+	app.route('GET', '', function(context) {
 		new lijstRelaties();
 	});
 
-	diasRoute.run();
+	app.raise_errors = true;
+	app.run();
 });

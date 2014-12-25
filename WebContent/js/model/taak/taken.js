@@ -1,6 +1,6 @@
 define([ "commons/3rdparty/log",
          "commons/validation",
-         "pages/taken/model/taak",
+         "js/model/taak/taak",
          "knockout"],
          function(log, validation, Taak, ko) {
 

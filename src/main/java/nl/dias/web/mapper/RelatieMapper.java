@@ -11,6 +11,7 @@ import nl.dias.domein.json.JsonRelatie;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -26,6 +27,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
+        String patternDatum = "dd-MM-yyyy";
+
         Relatie relatie = new Relatie();
         relatie.setId(jsonRelatie.getId());
         try {
@@ -40,10 +43,10 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setAchternaam(jsonRelatie.getAchternaam());
         relatie.getAdres().setStraat(jsonRelatie.getStraat());
         if (jsonRelatie.getOverlijdensdatum() != null && !"".equals(jsonRelatie.getOverlijdensdatum())) {
-            relatie.setOverlijdensdatum(new LocalDate(jsonRelatie.getOverlijdensdatum()));
+            relatie.setOverlijdensdatum(LocalDate.parse(jsonRelatie.getOverlijdensdatum(), DateTimeFormat.forPattern(patternDatum)));
         }
         if (jsonRelatie.getGeboorteDatum() != null && !"".equals(jsonRelatie.getGeboorteDatum())) {
-            relatie.setGeboorteDatum(new LocalDate(jsonRelatie.getGeboorteDatum()));
+            relatie.setGeboorteDatum(LocalDate.parse(jsonRelatie.getGeboorteDatum(), DateTimeFormat.forPattern(patternDatum)));
         }
         if (jsonRelatie.getHuisnummer() != null && !jsonRelatie.getHuisnummer().equals("")) {
             try {

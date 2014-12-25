@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
@@ -62,10 +63,24 @@ public class GebruikerService {
             // niets aan de hand;
             LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
         }
+
         if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
             throw new IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
         }
 
+        // BSN mag ook niet al voorkomen, daarom deze ook eerst opzoeken
+        if (gebruiker instanceof Relatie) {
+            try {
+                gebruikerAanwezig = gebruikerRepository.zoekOpBsn(((Relatie) gebruiker).getBsn());
+            } catch (NoResultException e) {
+                // niets aan de hand;
+                LOGGER.info("gebruiker met bsn" + ((Relatie) gebruiker).getBsn() + " niet gevonden");
+            }
+
+            if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
+                throw new IllegalArgumentException("Burgerservicenummer komt al voor bij een andere gebruiker");
+            }
+        }
         // Even checken of over de connectie met de Relatie is ingevuld
         if (gebruiker instanceof Relatie) {
             for (Telefoonnummer telefoonnummer : ((Relatie) gebruiker).getTelefoonnummers()) {
