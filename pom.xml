@@ -36,9 +36,9 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>nl.lakedigital.as.taakbeheer.client</groupId>
-		    <artifactId>taakbeheerclient</artifactId>
-		    <version>0.0.3-20141225.101702-1</version>
+			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
+			<artifactId>taakbeheerclient</artifactId>
+			<version>0.0.4-20141225.102924-1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
