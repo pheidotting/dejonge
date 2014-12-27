@@ -88,11 +88,11 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
 
     private boolean doorgaan() {
         boolean doorgaan = true;
-        if (System.getenv("webtesten") != null) {
-            if (System.getenv("webtesten").equals("false")) {
-                doorgaan = false;
-            }
-        }
+        // if (System.getenv("webtesten") != null) {
+        // if (System.getenv("webtesten").equals("false")) {
+        doorgaan = false;
+        // }
+        // }
 
         return doorgaan;
     }
