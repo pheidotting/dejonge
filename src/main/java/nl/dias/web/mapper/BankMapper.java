@@ -5,6 +5,8 @@ import javax.inject.Named;
 import nl.dias.domein.Bank;
 import nl.dias.domein.json.JsonBank;
 
+import org.dozer.DozerBeanMapper;
+
 @Named
 public class BankMapper extends Mapper<Bank, JsonBank> {
 
@@ -15,10 +17,9 @@ public class BankMapper extends Mapper<Bank, JsonBank> {
 
     @Override
     public JsonBank mapNaarJson(Bank bank) {
-        JsonBank jsonBank = new JsonBank();
+        DozerBeanMapper mapper = new DozerBeanMapper();
 
-        jsonBank.setId(bank.getId());
-        jsonBank.setNaam(bank.getNaam());
+        JsonBank jsonBank = mapper.map(bank, JsonBank.class);
 
         return jsonBank;
     }
