@@ -1,12 +1,15 @@
 package nl.dias.domein;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Embeddable
-public class Bedrag {
+public class Bedrag implements Serializable {
+    private static final long serialVersionUID = -5780505649958523939L;
 
     @Column(name = "BEDRAG")
     private Double bedrag;
