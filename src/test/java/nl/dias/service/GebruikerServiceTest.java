@@ -38,7 +38,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GebruikerServiceTest extends EasyMockSupport {
@@ -345,9 +344,11 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    @Ignore
-    public void testOpslaanMedewerker() {
+    public void testOpslaanMedewerker() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Medewerker medewerker = new Medewerker();
+        medewerker.setIdentificatie("identificatie");
+
+        expect(repository.zoek("identificatie")).andReturn(medewerker);
 
         repository.opslaan(medewerker);
         expectLastCall();
