@@ -22,9 +22,15 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.messaging.sender.AanmakenTaakSender;
+import nl.dias.messaging.sender.AdresAangevuldSender;
+import nl.dias.messaging.sender.BsnAangevuldSender;
+import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
+import nl.lakedigital.as.messaging.AdresAangevuld;
+import nl.lakedigital.as.messaging.BsnAangevuld;
+import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.easymock.EasyMockSupport;
@@ -35,11 +41,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class GebruikerServiceTest extends EasyMockSupport {
     private GebruikerRepository repository;
     private GebruikerService service;
     private AanmakenTaakSender aanmakenTaakSender;
+    private AdresAangevuldSender adresAangevuldSender;
+    private EmailAdresAangevuldSender emailAdresAangevuldSender;
+    private BsnAangevuldSender bsnAangevuldSender;
 
     @Before
     public void setUp() throws Exception {
@@ -50,6 +58,15 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
         aanmakenTaakSender = createMock(AanmakenTaakSender.class);
         service.setAanmakenTaakSender(aanmakenTaakSender);
+
+        adresAangevuldSender = createMock(AdresAangevuldSender.class);
+        service.setAdresAangevuldSender(adresAangevuldSender);
+
+        emailAdresAangevuldSender = createMock(EmailAdresAangevuldSender.class);
+        service.setEmailAdresAangevuldSender(emailAdresAangevuldSender);
+
+        bsnAangevuldSender = createMock(BsnAangevuldSender.class);
+        service.setBsnAangevuldSender(bsnAangevuldSender);
     }
 
     @After
@@ -83,11 +100,26 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaan() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaan() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setBsn("1234");
         relatie.setAdres(maakAdres());
         relatie.setIdentificatie("id");
+
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("1234")).andReturn(null);
+
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        AdresAangevuld adresAangevuld = new AdresAangevuld();
+        adresAangevuldSender.send(adresAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -98,14 +130,32 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanMetRekeningNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanMetRekeningNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.getRekeningnummers().add(new RekeningNummer());
         relatie.setBsn("1234");
         relatie.setAdres(maakAdres());
         relatie.setIdentificatie("id");
 
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("1234")).andReturn(null);
+
         repository.opslaan(relatie);
+        expectLastCall();
+
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuld.setRelatie(relatie.getId());
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailadresAangevuld.setRelatie(relatie.getId());
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
+
+        AdresAangevuld adresAangevuld = new AdresAangevuld();
+        adresAangevuld.setRelatie(relatie.getId());
+        adresAangevuldSender.send(adresAangevuld);
         expectLastCall();
 
         replayAll();
@@ -114,13 +164,28 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanMetTelefoonNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanMetTelefoonNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.getTelefoonnummers().add(new Telefoonnummer());
         relatie.setBsn("1234");
         relatie.setAdres(maakAdres());
         relatie.setIdentificatie("id");
 
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("1234")).andReturn(null);
+
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        AdresAangevuld adresAangevuld = new AdresAangevuld();
+        adresAangevuldSender.send(adresAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
+
         repository.opslaan(relatie);
         expectLastCall();
 
@@ -130,11 +195,14 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanZonderBsn() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanZonderBsn() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
         relatie.setAdres(maakAdres());
         relatie.setIdentificatie("id");
+
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn(null)).andReturn(null);
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -146,6 +214,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
         aanmakenTaakSender.send(taak);
         expectLastCall();
 
+        AdresAangevuld adresAangevuld = new AdresAangevuld();
+        adresAangevuld.setRelatie(relatie.getId());
+        adresAangevuldSender.send(adresAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailadresAangevuld.setRelatie(relatie.getId());
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -154,11 +232,14 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanZonderEmail() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanZonderEmail() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
         relatie.setAdres(maakAdres());
         relatie.setBsn("id");
+
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("id")).andReturn(null);
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -170,6 +251,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
         aanmakenTaakSender.send(taak);
         expectLastCall();
 
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuld.setRelatie(relatie.getId());
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        AdresAangevuld adresAangevuld = new AdresAangevuld();
+        adresAangevuld.setRelatie(relatie.getId());
+        adresAangevuldSender.send(adresAangevuld);
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -178,11 +269,14 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanZonderAdres() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanZonderAdres() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
         relatie.setBsn("bsn");
         relatie.setIdentificatie("id");
+
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("bsn")).andReturn(null);
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -194,6 +288,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
         aanmakenTaakSender.send(isA(AanmakenTaak.class));
         expectLastCall();
 
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuld.setRelatie(relatie.getId());
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailadresAangevuld.setRelatie(relatie.getId());
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -202,13 +306,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testOpslaanMetAdresMaarIncompleet() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testOpslaanMetAdresMaarIncompleet() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
         relatie.setBsn("bsn");
         relatie.setAdres(maakAdres());
         relatie.getAdres().setStraat(null);
         relatie.setIdentificatie("id");
+
+        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        expect(repository.zoekOpBsn("bsn")).andReturn(null);
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -220,6 +327,16 @@ public class GebruikerServiceTest extends EasyMockSupport {
         aanmakenTaakSender.send(taak);
         expectLastCall();
 
+        BsnAangevuld bsnAangevuld = new BsnAangevuld();
+        bsnAangevuld.setRelatie(relatie.getId());
+        bsnAangevuldSender.send(bsnAangevuld);
+        expectLastCall();
+
+        EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+        emailadresAangevuld.setRelatie(relatie.getId());
+        emailAdresAangevuldSender.send(emailadresAangevuld);
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -228,6 +345,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     }
 
     @Test
+    @Ignore
     public void testOpslaanMedewerker() {
         Medewerker medewerker = new Medewerker();
 

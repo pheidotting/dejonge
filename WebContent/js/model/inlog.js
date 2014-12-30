@@ -6,8 +6,8 @@ define(['jquery',
 
 	return function(){
 		var inlogModel = ko.validatedObservable({
-			identificatie : ko.observable('').extend({ required: true }),
-			wachtwoord : ko.observable('').extend({ required: true }),
+			identificatie : ko.observable('gerben@dejongefinancieelconsult.nl').extend({ required: true }),
+			wachtwoord : ko.observable('gerben').extend({ required: true }),
 			onthouden : ko.observable('false'),
 
 			inloggen : function(){

@@ -97,10 +97,18 @@ public class GebruikerService {
         // aangemaakt
         if (gebruiker instanceof Relatie) {
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
-            adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
-            emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
-            bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
+            if (aanmakenTaakSender == null) {
+                aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
+            }
+            if (adresAangevuldSender == null) {
+                adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
+            }
+            if (emailAdresAangevuldSender == null) {
+                emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
+            }
+            if (bsnAangevuldSender == null) {
+                bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
+            }
 
             Relatie relatie = (Relatie) gebruiker;
             if (isBlank(relatie.getBsn())) {
@@ -241,5 +249,17 @@ public class GebruikerService {
 
     public void setAanmakenTaakSender(AanmakenTaakSender aanmakenTaakSender) {
         this.aanmakenTaakSender = aanmakenTaakSender;
+    }
+
+    public void setAdresAangevuldSender(AdresAangevuldSender adresAangevuldSender) {
+        this.adresAangevuldSender = adresAangevuldSender;
+    }
+
+    public void setEmailAdresAangevuldSender(EmailAdresAangevuldSender emailAdresAangevuldSender) {
+        this.emailAdresAangevuldSender = emailAdresAangevuldSender;
+    }
+
+    public void setBsnAangevuldSender(BsnAangevuldSender bsnAangevuldSender) {
+        this.bsnAangevuldSender = bsnAangevuldSender;
     }
 }
