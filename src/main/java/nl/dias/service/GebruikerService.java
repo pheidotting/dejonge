@@ -64,7 +64,7 @@ public class GebruikerService {
             LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
         }
 
-        if (gebruikerAanwezig != null && gebruikerAanwezig.getId().equals(gebruiker.getId())) {
+        if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
             throw new IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
         }
 
@@ -77,7 +77,7 @@ public class GebruikerService {
                 LOGGER.info("gebruiker met bsn" + ((Relatie) gebruiker).getBsn() + " niet gevonden");
             }
 
-            if (gebruikerAanwezig != null && gebruikerAanwezig.getId().equals(gebruiker.getId())) {
+            if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
                 throw new IllegalArgumentException("Burgerservicenummer komt al voor bij een andere gebruiker");
             }
         }
