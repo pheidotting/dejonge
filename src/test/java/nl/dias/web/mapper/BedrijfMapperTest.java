@@ -61,22 +61,14 @@ public class BedrijfMapperTest {
 
     @Test
     public void testMapVanJson() {
-        assertEquals(bedrijf, mapper.mapVanJson(jsonBedrijf));
-    }
-
-    @Test
-    public void testMapAllVanJson() {
-        assertEquals(bedrijven, mapper.mapAllVanJson(jsonBedrijven));
+        Bedrijf bedrijfVanJson = mapper.mapVanJson(jsonBedrijf);
+        assertEquals(bedrijf, bedrijfVanJson);
+        assertEquals(bedrijf.getRelatie().getId(), bedrijfVanJson.getRelatie().getId());
     }
 
     @Test
     public void testMapNaarJson() {
         assertEquals(jsonBedrijf, mapper.mapNaarJson(bedrijf));
-    }
-
-    @Test
-    public void testMapAllNaarJson() {
-        assertEquals(jsonBedrijven, mapper.mapAllNaarJson(bedrijven));
     }
 
 }
