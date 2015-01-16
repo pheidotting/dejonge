@@ -13,6 +13,11 @@ define(['jquery',
 		self.veranderDatum = function(datum){
 			datum(commonFunctions.zetDatumOm(datum()));
 		}
+		self.berekenProlongatieDatum = function(){
+			if(self.ingangsDatum() != null && self.ingangsDatum() != ""){
+				self.prolongatieDatum(moment(self.ingangsDatum(), "DD-MM-YYYY").add(1, 'y').format("DD-MM-YYYY"));
+			}
+		}
 		self.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
