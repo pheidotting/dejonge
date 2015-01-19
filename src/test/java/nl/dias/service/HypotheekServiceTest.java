@@ -27,7 +27,6 @@ public class HypotheekServiceTest extends EasyMockSupport {
     private HypotheekRepository repository;
     private GebruikerService gebruikerService;
     private HypotheekPakketRepository hypotheekPakketRepository;
-    private BankService bankService;
     private HypotheekMapper hypotheekMapper;
 
     @Before
@@ -42,9 +41,6 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         hypotheekPakketRepository = createMock(HypotheekPakketRepository.class);
         service.setHypotheekPakketRepository(hypotheekPakketRepository);
-
-        bankService = createMock(BankService.class);
-        service.setBankService(bankService);
 
         hypotheekMapper = createMock(HypotheekMapper.class);
         service.setHypotheekMapper(hypotheekMapper);

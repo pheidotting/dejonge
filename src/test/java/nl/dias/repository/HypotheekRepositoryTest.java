@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
-import nl.dias.domein.Bank;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Hypotheek;
@@ -32,20 +31,16 @@ public class HypotheekRepositoryTest {
         SoortHypotheek soortHypotheek = new SoortHypotheek();
         soortHypotheek.setOmschrijving("jadajada");
 
-        Bank bank = new Bank();
-        bank.setNaam("naamBank");
-
         hypotheekRepository.getEm().getTransaction().begin();
         hypotheekRepository.getEm().persist(soortHypotheek);
-        hypotheekRepository.getEm().persist(bank);
         hypotheekRepository.getEm().persist(relatie);
         hypotheekRepository.getEm().persist(relatie2);
         hypotheekRepository.getEm().getTransaction().commit();
 
-        Hypotheek hypotheek1 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer1");
-        Hypotheek hypotheek2 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer2");
-        Hypotheek hypotheek3 = maakHypotheek(soortHypotheek, bank, relatie, "leningNummer3");
-        Hypotheek hypotheek4 = maakHypotheek(soortHypotheek, bank, relatie2, "leningNummer4");
+        Hypotheek hypotheek1 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer1");
+        Hypotheek hypotheek2 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer2");
+        Hypotheek hypotheek3 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer3");
+        Hypotheek hypotheek4 = maakHypotheek(soortHypotheek, "bank", relatie2, "leningNummer4");
 
         relatie.getHypotheken().add(hypotheek1);
         relatie.getHypotheken().add(hypotheek2);
@@ -92,7 +87,7 @@ public class HypotheekRepositoryTest {
         assertEquals(2, hp.getHypotheken().size());
     }
 
-    private Hypotheek maakHypotheek(SoortHypotheek soortHypotheek, Bank bank, Relatie relatie, String leningNummer) {
+    private Hypotheek maakHypotheek(SoortHypotheek soortHypotheek, String bank, Relatie relatie, String leningNummer) {
         Hypotheek hypotheek = new Hypotheek();
         hypotheek.setDuur(10L);
         hypotheek.setDuurRenteVastePeriode(25L);

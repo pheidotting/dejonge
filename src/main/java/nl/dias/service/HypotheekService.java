@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import nl.dias.domein.Bank;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
@@ -30,15 +29,13 @@ public class HypotheekService {
     private HypotheekPakketRepository hypotheekPakketRepository;
     @InjectParam
     private GebruikerService gebruikerService;
-    @InjectParam
-    private BankService bankService;
     private HypotheekMapper hypotheekMapper;
 
     public void opslaan(Hypotheek hypotheek) {
         hypotheekRepository.opslaan(hypotheek);
     }
 
-    public Hypotheek opslaan(JsonHypotheek jsonHypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId, Long bankId) {
+    public Hypotheek opslaan(JsonHypotheek jsonHypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
 
@@ -56,11 +53,6 @@ public class HypotheekService {
         if (hypotheek.getRelatie() == null) {
             hypotheek.setRelatie(relatie);
             hypotheek.setHypotheekVorm(soortHypotheek);
-        }
-
-        if (bankId != null && bankId != 0L) {
-            Bank bank = bankService.lees(bankId);
-            hypotheek.setBank(bank);
         }
 
         HypotheekPakket pakket = null;
@@ -157,10 +149,6 @@ public class HypotheekService {
 
     public void setHypotheekPakketRepository(HypotheekPakketRepository hypotheekPakketRepository) {
         this.hypotheekPakketRepository = hypotheekPakketRepository;
-    }
-
-    public void setBankService(BankService bankService) {
-        this.bankService = bankService;
     }
 
     public void setHypotheekMapper(HypotheekMapper hypotheekMapper) {

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import nl.dias.domein.Bank;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
@@ -41,10 +40,6 @@ public class HypotheekMapperTest extends EasyMockSupport {
         soortHypotheek.setOmschrijving("soortHypotheek");
         soortHypotheek.setId(2L);
 
-        Bank bank = new Bank();
-        bank.setNaam("naamBank");
-        bank.setId(3L);
-
         Relatie relatie = new Relatie();
         relatie.setId(46L);
 
@@ -69,7 +64,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setWaardeNaVerbouwing(new Bedrag(567.89));
         hypotheek.setWaardeVoorVerbouwing(new Bedrag(789.01));
         hypotheek.setWozWaarde(new Bedrag(678.90));
-        hypotheek.setBank(bank);
+        hypotheek.setBank("naamBank");
 
         jsonHypotheek = new JsonHypotheek();
         jsonHypotheek.setDuur(1L);

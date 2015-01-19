@@ -571,3 +571,11 @@ CREATE TABLE IF NOT EXISTS `LOGS` (
   `throwable` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--changeset Patrick Heidotting:40
+
+ALTER TABLE `HYPOTHEEK` MODIFY `BANK` VARCHAR(25);
+
+--changeset Patrick Heidotting:41
+
+DROP TABLE `BANK`;
+

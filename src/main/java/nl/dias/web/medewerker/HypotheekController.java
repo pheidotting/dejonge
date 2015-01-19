@@ -14,18 +14,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import nl.dias.domein.Bank;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
-import nl.dias.domein.json.JsonBank;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.domein.json.JsonHypotheekPakket;
 import nl.dias.domein.json.JsonSoortHypotheek;
-import nl.dias.service.BankService;
 import nl.dias.service.HypotheekService;
-import nl.dias.web.mapper.BankMapper;
 import nl.dias.web.mapper.HypotheekMapper;
 import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
@@ -46,23 +42,6 @@ public class HypotheekController {
     private HypotheekMapper hypotheekMapper;
     @InjectParam
     private HypotheekPakketMapper hypotheekPakketMapper;
-    @InjectParam
-    private BankService bankService;
-    @InjectParam
-    private BankMapper bankMapper;
-
-    @GET
-    @Path("/alleBanken")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<JsonBank> alleBanken() {
-        Set<Bank> banken = new HashSet<Bank>();
-
-        for (Bank bank : bankService.alles()) {
-            banken.add(bank);
-        }
-
-        return bankMapper.mapAllNaarJson(banken);
-    }
 
     @GET
     @Path("/lees")
@@ -155,7 +134,7 @@ public class HypotheekController {
         // LOGGER.info("Uit de mapper");
         // LOGGER.info(hypotheek);
 
-        Hypotheek hypotheek = hypotheekService.opslaan(jsonHypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek(), jsonHypotheek.getBankId());
+        Hypotheek hypotheek = hypotheekService.opslaan(jsonHypotheek, jsonHypotheek.getHypotheekVorm(), jsonHypotheek.getRelatie(), jsonHypotheek.getGekoppeldeHypotheek());
 
         LOGGER.debug("Opgeslagen");
 
@@ -185,13 +164,5 @@ public class HypotheekController {
 
     public void setHypotheekPakketMapper(HypotheekPakketMapper hypotheekPakketMapper) {
         this.hypotheekPakketMapper = hypotheekPakketMapper;
-    }
-
-    public void setBankService(BankService bankService) {
-        this.bankService = bankService;
-    }
-
-    public void setBankMapper(BankMapper bankMapper) {
-        this.bankMapper = bankMapper;
     }
 }

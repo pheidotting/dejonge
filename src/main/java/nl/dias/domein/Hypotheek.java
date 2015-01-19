@@ -93,9 +93,8 @@ public class Hypotheek implements PersistenceObject, Serializable {
     private Set<Bijlage> bijlages;
     @Column(name = "LENINGNUMMER", length = 50)
     private String leningNummer;
-    @ManyToOne
-    @JoinColumn(name = "BANK", nullable = true)
-    private Bank bank;
+    @Column(name = "BANK", nullable = true, length = 25)
+    private String bank;
     @ManyToOne
     @JoinColumn(name = "PAKKET")
     private HypotheekPakket hypotheekPakket;
@@ -331,11 +330,11 @@ public class Hypotheek implements PersistenceObject, Serializable {
         this.leningNummer = leningNummer;
     }
 
-    public Bank getBank() {
+    public String getBank() {
         return bank;
     }
 
-    public void setBank(Bank bank) {
+    public void setBank(String bank) {
         this.bank = bank;
     }
 

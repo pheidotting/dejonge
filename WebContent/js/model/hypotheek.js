@@ -38,7 +38,6 @@ define(['jquery',
 		}
 		_this.id = ko.observable(data.id);
 		_this.bank = ko.observable(data.bank);
-		_this.bankId = ko.observable(data.bankId);
 		_this.boxI = ko.observable(data.boxI).extend({number: true});
 		_this.boxIII = ko.observable(data.boxIII).extend({number: true});
 		_this.relatie = ko.observable(_relatieId);
