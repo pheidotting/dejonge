@@ -37,10 +37,24 @@ public class HypotheekRepositoryTest {
         hypotheekRepository.getEm().persist(relatie2);
         hypotheekRepository.getEm().getTransaction().commit();
 
-        Hypotheek hypotheek1 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer1");
-        Hypotheek hypotheek2 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer2");
-        Hypotheek hypotheek3 = maakHypotheek(soortHypotheek, "bank", relatie, "leningNummer3");
-        Hypotheek hypotheek4 = maakHypotheek(soortHypotheek, "bank", relatie2, "leningNummer4");
+        Hypotheek hypotheek1 = maakHypotheek(soortHypotheek, "bank1", relatie, "leningNummer1");
+        Hypotheek hypotheek2 = maakHypotheek(soortHypotheek, "bank2", relatie, "leningNummer2");
+        Hypotheek hypotheek3 = maakHypotheek(soortHypotheek, "bank3", relatie, "leningNummer3");
+        Hypotheek hypotheek4 = maakHypotheek(soortHypotheek, "bank4", relatie2, "leningNummer4");
+
+        HypotheekPakket pakket1 = new HypotheekPakket();
+        pakket1.setRelatie(relatie);
+        hypotheek1.setHypotheekPakket(pakket1);
+        pakket1.getHypotheken().add(hypotheek1);
+        HypotheekPakket pakket4 = new HypotheekPakket();
+        pakket4.setRelatie(relatie2);
+        hypotheek4.setHypotheekPakket(pakket4);
+        pakket4.getHypotheken().add(hypotheek4);
+
+        hypotheekRepository.getEm().getTransaction().begin();
+        hypotheekRepository.getEm().persist(pakket1);
+        hypotheekRepository.getEm().persist(pakket4);
+        hypotheekRepository.getEm().getTransaction().commit();
 
         relatie.getHypotheken().add(hypotheek1);
         relatie.getHypotheken().add(hypotheek2);
@@ -76,10 +90,10 @@ public class HypotheekRepositoryTest {
         hypotheekRepository.getEm().getTransaction().commit();
 
         assertEquals(4, hypotheekRepository.alles().size());
-        assertEquals(0, hypotheekRepository.allesVanRelatie(relatie).size());
-        assertEquals(0, hypotheekRepository.allesVanRelatie(relatie2).size());
-        assertEquals(2, hypotheekRepository.allesVanRelatieInclDePakketten(relatie).size());
-        assertEquals(0, hypotheekRepository.allesVanRelatieInclDePakketten(relatie2).size());
+        assertEquals(1, hypotheekRepository.allesVanRelatie(relatie).size());
+        assertEquals(1, hypotheekRepository.allesVanRelatie(relatie2).size());
+        assertEquals(3, hypotheekRepository.allesVanRelatieInclDePakketten(relatie).size());
+        assertEquals(1, hypotheekRepository.allesVanRelatieInclDePakketten(relatie2).size());
 
         Relatie r = (Relatie) hypotheekRepository.getEm().find(Gebruiker.class, relatie.getId());
         assertEquals(1, r.getHypotheken().size());
