@@ -22,7 +22,7 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 @Entity
 @Table(name = "HYPOTHEEKPAKKET")
-@NamedQueries({ @NamedQuery(name = "HypotheekPakket.allesVanRelatie", query = "select h from HypotheekPakket h where h.relatie = :relatie") })
+@NamedQueries({ @NamedQuery(name = "HypotheekPakket.allesVanRelatie", query = "select h from HypotheekPakket h where h.relatie = :relatie and size(h.hypotheken) >= 2") })
 public class HypotheekPakket implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2386437329178396939L;
 
@@ -75,9 +75,11 @@ public class HypotheekPakket implements PersistenceObject, Serializable {
         builder.append(", relatie=");
         builder.append(relatie.getId());
         builder.append(", hypotheken=");
-        for (Hypotheek h : hypotheken) {
-            builder.append(h.getId());
-            builder.append(", ");
+        if (hypotheken != null) {
+            for (Hypotheek h : hypotheken) {
+                builder.append(h.getId());
+                builder.append(", ");
+            }
         }
         builder.append("]");
         return builder.toString();

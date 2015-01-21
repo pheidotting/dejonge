@@ -15,6 +15,7 @@ import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -58,36 +59,52 @@ public class HypotheekService {
         HypotheekPakket pakket = null;
 
         LOGGER.debug("gekoppeldeHypotheekId " + gekoppeldeHypotheekId);
+        Hypotheek gekoppeldeHypotheek = null;
         if (gekoppeldeHypotheekId != null) {
-            Hypotheek gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
+            LOGGER.debug("Opzoeken te koppelen Hypotheek");
+            gekoppeldeHypotheek = hypotheekRepository.lees(gekoppeldeHypotheekId);
 
-            LOGGER.debug("Gevonden : " + gekoppeldeHypotheek);
+            LOGGER.debug("Gevonden : " + ReflectionToStringBuilder.toString(gekoppeldeHypotheek).replace(Hypotheek.class.getPackage().getName(), ""));
 
             if (gekoppeldeHypotheek.getHypotheekPakket() == null) {
                 LOGGER.debug("Nieuw pakket aanmaken");
                 pakket = new HypotheekPakket();
-                pakket.getHypotheken().add(gekoppeldeHypotheek);
                 pakket.setRelatie(relatie);
                 LOGGER.debug("en opslaan " + pakket);
                 hypotheekPakketRepository.opslaan(pakket);
 
+                pakket.getHypotheken().add(gekoppeldeHypotheek);
                 gekoppeldeHypotheek.setHypotheekPakket(pakket);
+                LOGGER.debug("Opslaan gekoppeldeHypotheek " + gekoppeldeHypotheek);
                 hypotheekRepository.opslaan(gekoppeldeHypotheek);
             } else {
                 pakket = gekoppeldeHypotheek.getHypotheekPakket();
-                LOGGER.debug("Koppelen aan bestaand pakket met id " + pakket.getId());
+                LOGGER.debug("Koppelen aan bestaand pakket  " + ReflectionToStringBuilder.toString(pakket).replace(HypotheekPakket.class.getPackage().getName(), ""));
             }
-            LOGGER.debug("Eraan toevoegen");
-            pakket.getHypotheken().add(hypotheek);
-            hypotheek.setHypotheekPakket(pakket);
+        } else {
+            pakket = new HypotheekPakket();
+            pakket.setRelatie(relatie);
+            hypotheekPakketRepository.opslaan(pakket);
         }
 
         LOGGER.debug("En opslaan " + hypotheek);
         hypotheekRepository.opslaan(hypotheek);
-        if (pakket != null) {
-            LOGGER.debug("pakket nog ff opslaan " + pakket);
-            hypotheekPakketRepository.opslaan(pakket);
+
+        LOGGER.debug("Toevoegen aan pakket");
+        LOGGER.debug(ReflectionToStringBuilder.toString(pakket));
+        pakket.getHypotheken().add(hypotheek);
+        hypotheek.setHypotheekPakket(pakket);
+        hypotheekRepository.opslaan(hypotheek);
+
+        if (gekoppeldeHypotheek != null) {
+            gekoppeldeHypotheek.setHypotheekPakket(pakket);
+            pakket.getHypotheken().add(gekoppeldeHypotheek);
+
+            hypotheekRepository.opslaan(gekoppeldeHypotheek);
         }
+
+        LOGGER.debug("pakket nog ff weer opslaan " + pakket);
+        hypotheekPakketRepository.opslaan(pakket);
 
         return hypotheek;
     }

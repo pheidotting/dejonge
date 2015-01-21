@@ -45,6 +45,13 @@ public class HypotheekRepository extends AbstractRepository<Hypotheek> {
         return query.getResultList();
     }
 
+    public List<Hypotheek> allesVanRelatieInEenPakket(Relatie relatie) {
+        TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatieInEenPakket", Hypotheek.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
+    }
+
     public List<Hypotheek> allesVanRelatieInclDePakketten(Relatie relatie) {
         TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatieInclDePakketten", Hypotheek.class);
         query.setParameter("relatie", relatie);

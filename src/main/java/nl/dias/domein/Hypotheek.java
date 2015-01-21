@@ -31,8 +31,9 @@ import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "HYPOTHEEK")
-@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and h.hypotheekPakket is null"),
-        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie") })
+@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) = 1"),
+        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2"),
+        @NamedQuery(name = "Hypotheek.allesVanRelatieInEenPakket", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2") })
 public class Hypotheek implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8709743283669873667L;
 
