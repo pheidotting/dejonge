@@ -10,6 +10,7 @@
 	<persistence-unit name="dias" transaction-type="JTA">
    		<!--provider>org.hibernate.ejb.HibernatePersistence</provider-->
   		<jta-data-source>jdbcDias</jta-data-source>
+		<class>nl.dias.domein.Aangifte</class>
 		<class>nl.dias.domein.Adres</class>
 		<class>nl.dias.domein.Bedrijf</class>
 		<class>nl.dias.domein.Beheerder</class>
@@ -98,6 +99,7 @@
 
 	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>nl.dias.domein.Aangifte</class>
 		<class>nl.dias.domein.Adres</class>
 		<class>nl.dias.domein.Bedrijf</class>
 		<class>nl.dias.domein.Beheerder</class>

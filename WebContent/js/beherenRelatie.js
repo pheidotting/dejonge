@@ -109,6 +109,14 @@ define(['jquery',
 			    	commonFunctions.verbergMeldingen();
 					document.location.hash='#beherenRelatie/' + relatieId + '/bijlages';
 				});
+				$("#aangiftes").click(function(){
+					commonFunctions.verbergMeldingen();
+					document.location.hash='#beherenRelatie/' + relatieId + '/aangiftes';
+				});
+				$("#aangifte").click(function(){
+					commonFunctions.verbergMeldingen();
+					document.location.hash='#beherenRelatie/' + relatieId + '/aangifte/0';
+				});
 			}
 		});
 	};
