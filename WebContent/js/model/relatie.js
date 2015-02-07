@@ -78,12 +78,12 @@ define(['jquery',
 	    		result.showAllMessages(true);
 	    	}else{
 				commonFunctions.verbergMeldingen();
-				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
-					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
-				}
-				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
-					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
-				}
+//				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
+//					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
+//				}
+//				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
+//					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "DD-MM-YYYY").format("YYYY-MM-DD"));
+//				}
 				log.debug("Versturen naar ../dejonge/rest/medewerker/gebruiker/opslaan : ");
 				log.debug(ko.toJSON(_thisRelatie));
 				$.ajax({
@@ -99,12 +99,12 @@ define(['jquery',
 						commonFunctions.plaatsFoutmelding(data);
 					}
 				});
-				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
-					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
-				}
-				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
-					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
-				}
+//				if(_thisRelatie.geboorteDatum() != null && _thisRelatie.geboorteDatum() != ''){
+//					_thisRelatie.geboorteDatum(moment(_thisRelatie.geboorteDatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
+//				}
+//				if(_thisRelatie.overlijdensdatum() != null && _thisRelatie.overlijdensdatum() != ''){
+//					_thisRelatie.overlijdensdatum(moment(_thisRelatie.overlijdensdatum(), "YYYY-MM-DD").format("DD-MM-YYYY"));
+//				}
 	    	}
 		};
 
