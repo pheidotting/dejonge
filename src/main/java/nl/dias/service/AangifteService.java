@@ -7,7 +7,6 @@ import javax.inject.Named;
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.AangifteRepository;
-import nl.dias.web.medewerker.AangifteController;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -16,7 +15,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class AangifteService {
-    private final static Logger LOGGER = Logger.getLogger(AangifteController.class);
+    private final static Logger LOGGER = Logger.getLogger(AangifteService.class);
 
     @InjectParam
     private AangifteRepository aangifteRepository;
