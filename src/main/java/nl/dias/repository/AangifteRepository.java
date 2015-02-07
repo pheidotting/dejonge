@@ -27,4 +27,11 @@ public class AangifteRepository extends AbstractRepository<Aangifte> {
 
         return query.getResultList();
     }
+
+    public List<Aangifte> getAlleAngiftes(Relatie relatie) {
+        TypedQuery<Aangifte> query = getEm().createNamedQuery("Aangifte.alleAangiftesBijRelatie", Aangifte.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
+    }
 }

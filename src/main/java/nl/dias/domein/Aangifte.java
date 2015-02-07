@@ -26,8 +26,10 @@ import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "AANGIFTE")
-@NamedQueries({ @NamedQuery(name = "Aangifte.openAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is null and a.relatie = :relatie") })
+@NamedQueries({ @NamedQuery(name = "Aangifte.openAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is null and a.relatie = :relatie"),
+        @NamedQuery(name = "Aangifte.alleAangiftesBijRelatie", query = "select a from Aangifte a where a.relatie = :relatie") })
 public class Aangifte implements PersistenceObject, Serializable {
+    private static final long serialVersionUID = 5438273206870999491L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +42,10 @@ public class Aangifte implements PersistenceObject, Serializable {
     @Column(name = "DATUMAFGEROND")
     @Temporal(TemporalType.DATE)
     private Date datumAfgerond;
+
+    @Column(name = "UITSTELTOT")
+    @Temporal(TemporalType.DATE)
+    private Date uitstelTot;
 
     @JoinColumn(name = "AFGERONDDOOR")
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Medewerker.class)
@@ -82,6 +88,14 @@ public class Aangifte implements PersistenceObject, Serializable {
         }
     }
 
+    public LocalDate getUitstelTot() {
+        return new LocalDate(uitstelTot);
+    }
+
+    public void setUitstelTot(LocalDate uitstelTot) {
+        this.uitstelTot = uitstelTot.toDate();
+    }
+
     public Relatie getRelatie() {
         return relatie;
     }
@@ -114,5 +128,31 @@ public class Aangifte implements PersistenceObject, Serializable {
     public void reset() {
         setAfgerondDoor(null);
         setDatumAfgerond(null);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + jaar;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Aangifte other = (Aangifte) obj;
+        if (jaar != other.jaar) {
+            return false;
+        }
+        return true;
     }
 }
