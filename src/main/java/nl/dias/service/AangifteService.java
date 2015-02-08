@@ -49,6 +49,14 @@ public class AangifteService {
         return false;
     }
 
+    public void afronden(Long id, LocalDate datumAfronden) {
+        Aangifte aangifte = aangifteRepository.lees(id);
+
+        aangifte.setDatumAfgerond(datumAfronden);
+
+        aangifteRepository.opslaan(aangifte);
+    }
+
     public void setAangifteRepository(AangifteRepository aangifteRepository) {
         this.aangifteRepository = aangifteRepository;
     }

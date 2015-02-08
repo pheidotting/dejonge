@@ -1,6 +1,7 @@
 package nl.dias.service;
 
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -94,7 +95,6 @@ public class AangifteServiceTest extends EasyMockSupport {
         resetAll();
 
         expect(aangifteRepository.getOpenAngiftes(relatie)).andReturn(aangiftes);
-        // expect(aangifteRepository.getAlleAngiftes(relatie)).andReturn(aangiftesMetHuidigJaarMinusEen);
 
         replayAll();
 
@@ -104,7 +104,6 @@ public class AangifteServiceTest extends EasyMockSupport {
         resetAll();
 
         expect(aangifteRepository.getOpenAngiftes(relatie)).andReturn(aangiftesMetHuidigJaarMinusEen);
-        // expect(aangifteRepository.getAlleAngiftes(relatie)).andReturn(aangiftesMetHuidigJaarMinusEen);
 
         replayAll();
 
@@ -114,10 +113,27 @@ public class AangifteServiceTest extends EasyMockSupport {
         resetAll();
 
         expect(aangifteRepository.getOpenAngiftes(relatie)).andReturn(aangiftes);
-        // expect(aangifteRepository.getAlleAngiftes(relatie)).andReturn(aangiftes);
 
         replayAll();
 
         assertEquals(aangiftesMetHuidigJaarMinusEen, aangifteService.getOpenstaandeAangiftes(relatie));
+    }
+
+    @Test
+    public void testAfronden() {
+        Long id = 46L;
+        LocalDate datum = new LocalDate(2014, 2, 4);
+        Aangifte aangifte = new Aangifte();
+        Aangifte aangifteMetDatumAfgerond = new Aangifte();
+        aangifte.setDatumAfgerond(datum);
+
+        expect(aangifteRepository.lees(id)).andReturn(aangifte);
+
+        aangifteRepository.opslaan(aangifteMetDatumAfgerond);
+        expectLastCall();
+
+        replayAll();
+
+        aangifteService.afronden(id, datum);
     }
 }
