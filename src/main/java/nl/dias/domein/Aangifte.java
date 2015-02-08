@@ -27,6 +27,7 @@ import org.joda.time.LocalDate;
 @Entity
 @Table(name = "AANGIFTE")
 @NamedQueries({ @NamedQuery(name = "Aangifte.openAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is null and a.relatie = :relatie"),
+        @NamedQuery(name = "Aangifte.geslotenAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is not null and a.relatie = :relatie"),
         @NamedQuery(name = "Aangifte.alleAangiftesBijRelatie", query = "select a from Aangifte a where a.relatie = :relatie") })
 public class Aangifte implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5438273206870999491L;

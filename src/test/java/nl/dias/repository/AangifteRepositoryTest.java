@@ -53,5 +53,7 @@ public class AangifteRepositoryTest {
         assertEquals(0, aangifteRepository.getOpenAngiftes(relatie).size());
 
         assertEquals(1, aangifteRepository.getAlleAngiftes(relatie).size());
+
+        assertEquals(1, aangifteRepository.getGeslotenAngiftes(relatie).size());
     }
 }
