@@ -34,4 +34,17 @@ public abstract class Mapper<T, Z> {
         }
 
     }
+
+    public List<Z> mapAllNaarJson(List<T> objecten) {
+        if (objecten != null) {
+            List<Z> ret = new ArrayList<>();
+            for (T obj : objecten) {
+                ret.add(mapNaarJson(obj));
+            }
+            return ret;
+        } else {
+            return null;
+        }
+
+    }
 }
