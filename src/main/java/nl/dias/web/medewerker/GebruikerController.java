@@ -1,5 +1,7 @@
 package nl.dias.web.medewerker;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -157,6 +159,16 @@ public class GebruikerController {
         gebruikerService.verwijder(id);
 
         return Response.status(200).build();
+    }
+
+    @GET
+    @Path("/zoekOpNaamAdresOfPolisNummer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonRelatie> zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm) {
+        LOGGER.info("zoekOpNaamAdresOfPolisNummer met zoekterm " + zoekTerm);
+        ;
+
+        return relatieMapper.mapAllNaarJson(gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm));
     }
 
     // @GET

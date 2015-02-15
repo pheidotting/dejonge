@@ -187,6 +187,21 @@ public class GebruikerControllerTest extends EasyMockSupport {
         controller.opslaanBedrijf(jsonBedrijf);
     }
 
+    @Test
+    public void testZoekOpNaamAdresOfPolisNummer() {
+        String zoekTerm = "zoek";
+
+        List<Relatie> relaties = new ArrayList<>();
+        List<JsonRelatie> jsonRelaties = new ArrayList<>();
+
+        expect(gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm)).andReturn(relaties);
+        expect(mapper.mapAllNaarJson(relaties)).andReturn(jsonRelaties);
+
+        replayAll();
+
+        assertEquals(jsonRelaties, controller.zoekOpNaamAdresOfPolisNummer(zoekTerm));
+    }
+
     // @Test
     // public void toevoegenRelatieRelatie() {
     // Medewerker medewerker = new Medewerker();
