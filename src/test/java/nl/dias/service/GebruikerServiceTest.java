@@ -21,6 +21,8 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
+import nl.dias.domein.polis.AutoVerzekering;
+import nl.dias.domein.polis.Polis;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
@@ -47,6 +49,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
+    private PolisService polisService;
 
     @Before
     public void setUp() throws Exception {
@@ -66,6 +69,9 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
         bsnAangevuldSender = createMock(BsnAangevuldSender.class);
         service.setBsnAangevuldSender(bsnAangevuldSender);
+
+        polisService = createMock(PolisService.class);
+        service.setPolisService(polisService);
     }
 
     @After
@@ -535,6 +541,61 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         service.verwijderVerlopenSessies(medewerker);
+    }
+
+    @Test
+    public void testZoekOpNaamAdresOfPolisNummer() {
+        String zoekterm = "a";
+
+        List<Gebruiker> relatiesZoekOpNaam = new ArrayList<Gebruiker>();
+        Relatie relatieZoekOpNaam = new Relatie();
+        relatiesZoekOpNaam.add(relatieZoekOpNaam);
+
+        List<Relatie> relatiesZoekOpAdres = new ArrayList<Relatie>();
+        Relatie relatieZoekOpAdres = new Relatie();
+        relatiesZoekOpAdres.add(relatieZoekOpAdres);
+
+        Polis polis = new AutoVerzekering();
+        Relatie relatiePolis = new Relatie();
+        polis.setRelatie(relatiePolis);
+
+        expect(repository.zoekOpNaam(zoekterm)).andReturn(relatiesZoekOpNaam);
+        expect(repository.zoekOpAdres(zoekterm)).andReturn(relatiesZoekOpAdres);
+        expect(polisService.zoekOpPolisNummer(zoekterm)).andReturn(polis);
+
+        replayAll();
+
+        List<Relatie> relatiesVerwacht = new ArrayList<>();
+        relatiesVerwacht.add(relatieZoekOpNaam);
+        relatiesVerwacht.add(relatieZoekOpAdres);
+        relatiesVerwacht.add(relatiePolis);
+
+        assertEquals(relatiesVerwacht, service.zoekOpNaamAdresOfPolisNummer(zoekterm));
+    }
+
+    @Test
+    public void testZoekOpNaamAdresOfPolisNummerZonderPolis() {
+        String zoekterm = "a";
+
+        List<Gebruiker> relatiesZoekOpNaam = new ArrayList<Gebruiker>();
+        Relatie relatieZoekOpNaam = new Relatie();
+        relatiesZoekOpNaam.add(relatieZoekOpNaam);
+
+        List<Relatie> relatiesZoekOpAdres = new ArrayList<Relatie>();
+        Relatie relatieZoekOpAdres = new Relatie();
+        relatiesZoekOpAdres.add(relatieZoekOpAdres);
+
+        expect(repository.zoekOpNaam(zoekterm)).andReturn(relatiesZoekOpNaam);
+        expect(repository.zoekOpAdres(zoekterm)).andReturn(relatiesZoekOpAdres);
+        expect(polisService.zoekOpPolisNummer(zoekterm)).andReturn(null);
+
+        replayAll();
+
+        List<Relatie> relatiesVerwacht = new ArrayList<>();
+        relatiesVerwacht.add(relatieZoekOpNaam);
+        relatiesVerwacht.add(relatieZoekOpAdres);
+
+        assertEquals(relatiesVerwacht, service.zoekOpNaamAdresOfPolisNummer(zoekterm));
     }
 
     private Adres maakAdres() {

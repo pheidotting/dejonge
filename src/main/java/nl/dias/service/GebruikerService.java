@@ -15,6 +15,7 @@ import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
+import nl.dias.domein.polis.Polis;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
@@ -41,6 +42,8 @@ public class GebruikerService {
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
+    @InjectParam
+    private PolisService polisService;
     private AanmakenTaakSender aanmakenTaakSender;
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
@@ -243,6 +246,22 @@ public class GebruikerService {
         }
     }
 
+    public List<Relatie> zoekOpNaamAdresOfPolisNummer(String zoekTerm) {
+        List<Relatie> relaties = new ArrayList<Relatie>();
+        for (Gebruiker g : gebruikerRepository.zoekOpNaam(zoekTerm)) {
+            relaties.add((Relatie) g);
+        }
+        for (Gebruiker g : gebruikerRepository.zoekOpAdres(zoekTerm)) {
+            relaties.add((Relatie) g);
+        }
+        Polis polis = polisService.zoekOpPolisNummer(zoekTerm);
+        if (polis != null) {
+            relaties.add(polis.getRelatie());
+        }
+
+        return relaties;
+    }
+
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
         this.gebruikerRepository = gebruikerRepository;
     }
@@ -261,5 +280,9 @@ public class GebruikerService {
 
     public void setBsnAangevuldSender(BsnAangevuldSender bsnAangevuldSender) {
         this.bsnAangevuldSender = bsnAangevuldSender;
+    }
+
+    public void setPolisService(PolisService polisService) {
+        this.polisService = polisService;
     }
 }

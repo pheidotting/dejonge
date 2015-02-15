@@ -160,6 +160,74 @@ public class GebruikerRepositoryTest {
         assertEquals(3, gebruikerRepository.alleRelaties().size());
     }
 
+    @Test
+    public void testZoekOpNaam() {
+        Relatie relatie1 = new Relatie();
+        relatie1.setVoornaam("ab");
+        relatie1.setAchternaam("bc");
+        Relatie relatie2 = new Relatie();
+        relatie2.setVoornaam("cd");
+        relatie2.setAchternaam("de");
+        Relatie relatie3 = new Relatie();
+        relatie3.setVoornaam("ef");
+        relatie3.setAchternaam("fg");
+
+        opslaan(relatie1);
+        opslaan(relatie2);
+        opslaan(relatie3);
+
+        assertEquals(1, gebruikerRepository.zoekOpNaam("a").size());
+        assertEquals("ab", gebruikerRepository.zoekOpNaam("a").get(0).getVoornaam());
+
+        assertEquals(1, gebruikerRepository.zoekOpNaam("b").size());
+        assertEquals("ab", gebruikerRepository.zoekOpNaam("b").get(0).getVoornaam());
+
+        assertEquals(2, gebruikerRepository.zoekOpNaam("c").size());
+        assertEquals("ab", gebruikerRepository.zoekOpNaam("c").get(0).getVoornaam());
+        assertEquals("cd", gebruikerRepository.zoekOpNaam("c").get(1).getVoornaam());
+
+        assertEquals(1, gebruikerRepository.zoekOpNaam("d").size());
+        assertEquals("cd", gebruikerRepository.zoekOpNaam("d").get(0).getVoornaam());
+
+        assertEquals(2, gebruikerRepository.zoekOpNaam("e").size());
+        assertEquals("cd", gebruikerRepository.zoekOpNaam("e").get(0).getVoornaam());
+        assertEquals("ef", gebruikerRepository.zoekOpNaam("e").get(1).getVoornaam());
+    }
+
+    @Test
+    public void zoekOpAdres() {
+        Relatie relatie1 = new Relatie();
+        relatie1.getAdres().setStraat("ab");
+        relatie1.getAdres().setPlaats("bc");
+        Relatie relatie2 = new Relatie();
+        relatie2.getAdres().setStraat("cd");
+        relatie2.getAdres().setPlaats("de");
+        Relatie relatie3 = new Relatie();
+        relatie3.getAdres().setStraat("ef");
+        relatie3.getAdres().setPlaats("fg");
+
+        opslaan(relatie1);
+        opslaan(relatie2);
+        opslaan(relatie3);
+
+        assertEquals(1, gebruikerRepository.zoekOpAdres("a").size());
+        assertEquals("ab", gebruikerRepository.zoekOpAdres("a").get(0).getAdres().getStraat());
+
+        assertEquals(1, gebruikerRepository.zoekOpAdres("b").size());
+        assertEquals("ab", gebruikerRepository.zoekOpAdres("b").get(0).getAdres().getStraat());
+
+        assertEquals(2, gebruikerRepository.zoekOpAdres("c").size());
+        assertEquals("ab", gebruikerRepository.zoekOpAdres("c").get(0).getAdres().getStraat());
+        assertEquals("cd", gebruikerRepository.zoekOpAdres("c").get(1).getAdres().getStraat());
+
+        assertEquals(1, gebruikerRepository.zoekOpAdres("d").size());
+        assertEquals("cd", gebruikerRepository.zoekOpAdres("d").get(0).getAdres().getStraat());
+
+        assertEquals(2, gebruikerRepository.zoekOpAdres("e").size());
+        assertEquals("cd", gebruikerRepository.zoekOpAdres("e").get(0).getAdres().getStraat());
+        assertEquals("ef", gebruikerRepository.zoekOpAdres("e").get(1).getAdres().getStraat());
+    }
+
     // @Test
     // @Ignore
     // public void opCookie() {

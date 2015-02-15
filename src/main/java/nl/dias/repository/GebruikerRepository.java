@@ -70,6 +70,20 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         return gebruiker;
     }
 
+    public List<Gebruiker> zoekOpNaam(String naam) {
+        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpNaam", Gebruiker.class);
+        query.setParameter("naam", "%" + naam + "%");
+
+        return query.getResultList();
+    }
+
+    public List<Relatie> zoekOpAdres(String adres) {
+        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class);
+        query.setParameter("adres", "%" + adres + "%");
+
+        return query.getResultList();
+    }
+
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
         LOGGER.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
 

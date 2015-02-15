@@ -31,7 +31,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
 @NamedQueries({ @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.identificatie = :emailadres"),
         @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"),
-        @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), })
+        @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"),
+        @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam") })
 public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
 
