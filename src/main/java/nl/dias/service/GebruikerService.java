@@ -21,6 +21,8 @@ import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.repository.KantoorRepository;
+import nl.dias.repository.PolisRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.AdresAangevuld;
@@ -43,7 +45,9 @@ public class GebruikerService {
     @InjectParam
     private GebruikerRepository gebruikerRepository;
     @InjectParam
-    private PolisService polisService;
+    private PolisRepository polisRepository;
+    @InjectParam
+    private KantoorRepository kantoorRepository;
     private AanmakenTaakSender aanmakenTaakSender;
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
@@ -249,12 +253,19 @@ public class GebruikerService {
     public List<Relatie> zoekOpNaamAdresOfPolisNummer(String zoekTerm) {
         List<Relatie> relaties = new ArrayList<Relatie>();
         for (Gebruiker g : gebruikerRepository.zoekOpNaam(zoekTerm)) {
-            relaties.add((Relatie) g);
+            if (g instanceof Relatie) {
+                relaties.add((Relatie) g);
+            }
         }
         for (Gebruiker g : gebruikerRepository.zoekOpAdres(zoekTerm)) {
             relaties.add((Relatie) g);
         }
-        Polis polis = polisService.zoekOpPolisNummer(zoekTerm);
+        Polis polis = null;
+        try {
+            polis = polisRepository.zoekOpPolisNummer(zoekTerm, kantoorRepository.lees(1L));
+        } catch (NoResultException e) {
+            LOGGER.debug("Niks gevonden ", e);
+        }
         if (polis != null) {
             relaties.add(polis.getRelatie());
         }
@@ -282,7 +293,4 @@ public class GebruikerService {
         this.bsnAangevuldSender = bsnAangevuldSender;
     }
 
-    public void setPolisService(PolisService polisService) {
-        this.polisService = polisService;
-    }
 }

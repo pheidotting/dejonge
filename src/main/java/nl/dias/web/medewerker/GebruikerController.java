@@ -166,7 +166,6 @@ public class GebruikerController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<JsonRelatie> zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm) {
         LOGGER.info("zoekOpNaamAdresOfPolisNummer met zoekterm " + zoekTerm);
-        ;
 
         return relatieMapper.mapAllNaarJson(gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm));
     }
