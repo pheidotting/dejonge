@@ -293,4 +293,12 @@ public class GebruikerService {
         this.bsnAangevuldSender = bsnAangevuldSender;
     }
 
+    public void setPolisRepository(PolisRepository polisRepository) {
+        this.polisRepository = polisRepository;
+    }
+
+    public void setKantoorRepository(KantoorRepository kantoorRepository) {
+        this.kantoorRepository = kantoorRepository;
+    }
+
 }
