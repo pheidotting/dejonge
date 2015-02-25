@@ -3,6 +3,7 @@ package nl.dias.service;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -251,7 +252,7 @@ public class GebruikerService {
     }
 
     public List<Relatie> zoekOpNaamAdresOfPolisNummer(String zoekTerm) {
-        List<Relatie> relaties = new ArrayList<Relatie>();
+        Set<Relatie> relaties = new HashSet<Relatie>();
         for (Gebruiker g : gebruikerRepository.zoekOpNaam(zoekTerm)) {
             if (g instanceof Relatie) {
                 relaties.add((Relatie) g);
@@ -270,7 +271,12 @@ public class GebruikerService {
             relaties.add(polis.getRelatie());
         }
 
-        return relaties;
+        List<Relatie> ret = new ArrayList<>();
+        for (Relatie r : relaties) {
+            ret.add(r);
+        }
+
+        return ret;
     }
 
     public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {

@@ -7,15 +7,17 @@ define(['jquery',
         'commons/3rdparty/log'],
      function($, ko, LijstRelaties, Relatie, functions, block, log) {
 
-	return function(){
+	return function(zoekTerm){
+		var lijst = new LijstRelaties();
+
 		$('#content').load('templates/lijstRelaties.html', function(response, status, xhr) {
+			$('#zoekTerm').val(zoekTerm);
 			if (status == "success") {
 				log.debug("ophalen lijst met Relaties");
 				block.block();
-				$.when(functions.laadDataMetLoginCheck('../dejonge/rest/medewerker/gebruiker/lijstRelaties')).done(function(data) {
+				$.get( "../dejonge/rest/medewerker/gebruiker/zoekOpNaamAdresOfPolisNummer", {"zoekTerm" : zoekTerm}, function(data) {
 					log.debug("opgehaald " + JSON.stringify(data));
 					if(data != undefined){
-						var lijst = new LijstRelaties();
 						$.each(data.jsonRelaties, function(i, item) {
 							var a = item;
 							lijst().lijst().push(a);
@@ -26,6 +28,10 @@ define(['jquery',
 					}
 				});
 			}
+		
+			$('#zoeken').click(function(){
+				document.location.hash='#lijstRelaties/' + $('#zoekTerm').val();
+			});
 		});
 	};
 });

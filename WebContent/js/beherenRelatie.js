@@ -9,9 +9,11 @@ define(['jquery',
         'js/beherenRelatieHypotheken',
         'js/beherenRelatieHypotheek',
         'js/beherenRelatieBijlages',
+        'js/beherenRelatieAangifte',
+        'js/beherenRelatieAangiftes',
         'commons/3rdparty/log',
         'commons/commonFunctions'],
-    function($, beherenRelatie, beherenRelatieBedrijven, beherenRelatieBedrijf, beherenRelatiePolissen, beherenRelatiePolis, beherenRelatieSchades, beherenRelatieSchade, beherenRelatieHypotheken, beherenRelatieHypotheek, beherenRelatieBijlages, log, commonFunctions) {
+    function($, beherenRelatie, beherenRelatieBedrijven, beherenRelatieBedrijf, beherenRelatiePolissen, beherenRelatiePolis, beherenRelatieSchades, beherenRelatieSchade, beherenRelatieHypotheken, beherenRelatieHypotheek, beherenRelatieBijlages, beherenRelatieAangifte, beherenRelatieAangiftes, log, commonFunctions) {
 
 	return function(relatieId, actie, subId){
 		$('#content').load('templates/beherenRelatieTemplate.html', function(response, status, xhr) {
@@ -54,6 +56,10 @@ define(['jquery',
 						new beherenRelatieHypotheek(subId, relatieId);
 					}else if(actie == "bijlages"){
 						new beherenRelatieBijlages(relatieId);
+					}else if(actie == "aangifte"){
+						new beherenRelatieAangifte(relatieId);
+					}else if(actie == "aangiftes"){
+						new beherenRelatieAangiftes(relatieId);
 					}
 					_relatieId = relatieId;
 					_subId = subId;

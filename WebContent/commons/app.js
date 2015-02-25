@@ -57,6 +57,11 @@ function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie, 
 		new lijstRelaties();
 	});
 
+	app.route('GET', '#lijstRelaties/:zoekTerm', function(context) {
+		zoekTerm = this.params['zoekTerm'];
+		new lijstRelaties(zoekTerm);
+	});
+	
 	app.route('GET', '#beherenRelatie/:id/:actie/:subId', function(context) {
 		id = this.params['id'];
 		actie = this.params['actie'];
