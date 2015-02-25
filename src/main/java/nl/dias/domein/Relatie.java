@@ -298,8 +298,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
             return false;
         }
         Relatie rhs = (Relatie) object;
-        return new EqualsBuilder().append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.adres, rhs.adres).append(this.bsn, rhs.bsn).append(this.adresOpgemaakt, rhs.adresOpgemaakt)
-                .append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum).isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.adres, rhs.adres).append(this.bsn, rhs.bsn)
+                .append(this.adresOpgemaakt, rhs.adresOpgemaakt).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum)
+                .isEquals();
     }
 
     /**
