@@ -1,33 +1,85 @@
 <h2>IB Aangifte</h2>
-<div class="form-group">
-	<label for="naam">Naam</label>
-	<input class="form-control" type="text" id="naam" placeholder="Naam..." data-bind="value: naam" />
-</div>
-<div class="form-group">
-	<label for="kvk">Kvk</label>
-	<input class="form-control" type="text" id="kvk" placeholder="Kvk..." data-bind="value: kvk" maxlength="8" />
-</div>
-<div class="form-group">
-	<label for="straat">Straat</label>
-	<input class="form-control" type="text" id="straat" placeholder="Straat..." data-bind="value: straat" />
-</div>
-<div class="form-group">
-	<label for="huisnummer">Huisnummer</label>
-	<input class="form-control" type="text" id="huisnummer" placeholder="Huisnummer..." data-bind="value: huisnummer" />
-</div>
-<div class="form-group">
-	<label for="toevoeging">Toevoeging</label>
-	<input class="form-control" type="text" id="toevoeging" placeholder="Toevoeging..." data-bind="value: toevoeging" />
-</div>
-<div class="form-group">
-	<label for="postcode">Postcode</label>
-	<input class="form-control" type="text" id="postcode" placeholder="Postcode..." data-bind="value: postcode" />
-</div>
-<div class="form-group">
-	<label for="plaats">Plaats</label>
-	<input class="form-control" type="text" id="plaats" placeholder="Plaats..." data-bind="value: plaats" />
-</div>
-<div class="form-group">
-	<label for="opslaanBedrijf">&nbsp;</label>
-	<button id="opslaanBedrijf" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+<div id="bedrijven" data-bind="foreach: aangiftes, visible: aangiftes().length > 0">
+	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4">
+					<a data-toggle="collapse" data-parent="#accordion" data-bind="attr:{href: idDivLink}, text: jaar" name="jaar"></a>
+					&nbsp;&nbsp;&nbsp;
+					<div class="btn-group">
+					</div>
+				</h4>
+			</div>
+			<form enctype="multipart/form-data" id="aangifteForm">
+				<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
+					<input type="checkbox" />Afgerond?
+					<input type="hidden" id="aangifteId" name="aangifteId" data-bind="value: id" />
+					<div class="form-group" id="uploadAangifte1">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte1File" name="uploadAangifte1File" onchange="nieuweAangifteUpload(1);" />
+						<progress id="fileAangifte1Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte2" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte2File" name="uploadAangifte2File" onchange="nieuweAangifteUpload(2);" />
+						<progress id="fileAangifte2Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte3" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte3File" name="uploadAangifte3File" onchange="nieuweAangifteUpload(3);" />
+						<progress id="fileAangifte3Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte4" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte4File" name="uploadAangifte4File" onchange="nieuweAangifteUpload(4);" />
+						<progress id="fileAangifte4Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte5" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte5File" name="uploadAangifte5File" onchange="nieuweAangifteUpload(5);" />
+						<progress id="fileAangifte5Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte6" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte6File" name="uploadAangifte6File" onchange="nieuweAangifteUpload(6);" />
+						<progress id="fileAangifte6Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte7" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte7File" name="uploadAangifte7File" onchange="nieuweAangifteUpload(7);" />
+						<progress id="fileAangifte7Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte8" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte8File" name="uploadAangifte8File" onchange="nieuweAangifteUpload(8);" />
+						<progress id="fileAangifte8Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte9" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte9File" name="uploadAangifte9File" onchange="nieuweAangifteUpload(9);" />
+						<progress id="fileAangifte9Progress" style="display:none;"></progress>
+					</div>
+					<div class="form-group" id="uploadAangifte10" style="display:none;">
+						<label for="file">&nbsp;</label>
+						<input type="file" id="uploadAangifte10File" name="uploadAangifte10File" onchange="nieuweAangifteUpload(10);" />
+						<progress id="fileAangifte10Progress" style="display:none;"></progress>
+					</div>
+				</form>
+				<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
+					<div>
+						<span class="polisLabel">Bijlage :</span>
+						<a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a>
+					</div>
+				</div>
+				<input type="hidden" id="hoeveelFiles" />
+				<script>
+					function nieuweAangifteUpload(nummer){
+						$('#hoeveelFiles').val(nummer);
+						$('#uploadAangifte' + ++nummer).show();
+					}
+				</script>
+				<button id="opslaan" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+			</div>
+		</div>
+	</div>
 </div>

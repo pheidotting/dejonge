@@ -78,6 +78,9 @@ public class Aangifte implements PersistenceObject, Serializable {
     }
 
     public LocalDate getDatumAfgerond() {
+        if (datumAfgerond == null) {
+            return null;
+        }
         return new LocalDate(datumAfgerond);
     }
 
@@ -90,11 +93,18 @@ public class Aangifte implements PersistenceObject, Serializable {
     }
 
     public LocalDate getUitstelTot() {
+        if (uitstelTot == null) {
+            return null;
+        }
         return new LocalDate(uitstelTot);
     }
 
     public void setUitstelTot(LocalDate uitstelTot) {
-        this.uitstelTot = uitstelTot.toDate();
+        if (uitstelTot == null) {
+            this.uitstelTot = null;
+        } else {
+            this.uitstelTot = uitstelTot.toDate();
+        }
     }
 
     public Relatie getRelatie() {

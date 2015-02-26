@@ -120,6 +120,18 @@ public class AangifteServiceTest extends EasyMockSupport {
     }
 
     @Test
+    public void testGetAfgeslotenAangiftes() {
+        List<Aangifte> aangiftes = new ArrayList<Aangifte>();
+        Relatie relatie = new Relatie();
+
+        expect(aangifteRepository.getGeslotenAngiftes(relatie)).andReturn(aangiftes);
+
+        replayAll();
+
+        assertEquals(aangiftes, aangifteService.getAfgeslotenAangiftes(relatie));
+    }
+
+    @Test
     public void testAfronden() {
         Long id = 46L;
         LocalDate datum = new LocalDate(2014, 2, 4);

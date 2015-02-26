@@ -5,7 +5,9 @@ import java.util.List;
 import javax.inject.Named;
 
 import nl.dias.domein.Aangifte;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.AangifteRepository;
 
 import org.apache.log4j.Logger;
@@ -19,12 +21,42 @@ public class AangifteService {
 
     @InjectParam
     private AangifteRepository aangifteRepository;
+    @InjectParam
+    private GebruikerService gebruikerService;
+
+    public List<Aangifte> getAfgeslotenAangiftes(Relatie relatie) {
+        return aangifteRepository.getGeslotenAngiftes(relatie);
+    }
+
+    public void opslaan(Aangifte aangifte) {
+        aangifte.setRelatie((Relatie) gebruikerService.lees(aangifte.getRelatie().getId()));
+
+        aangifteRepository.opslaan(aangifte);
+    }
+
+    public Aangifte lees(Long id) {
+        return aangifteRepository.lees(id);
+    }
+
+    public void slaAangifteOp(Aangifte aangifte, String s3Identificatie) {
+        LOGGER.debug("Opslaan Bijlage bij Aangifte, schadeId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
+
+        Bijlage bijlage = new Bijlage();
+        bijlage.setAangifte(aangifte);
+        bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
+        bijlage.setS3Identificatie(s3Identificatie);
+
+        LOGGER.debug("Bijlage naar repository " + bijlage);
+
+        aangifteRepository.opslaan(aangifte);
+    }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {
         List<Aangifte> aangiftes = aangifteRepository.getOpenAngiftes(relatie);
 
         Aangifte aangifteHuidigJaarMinusEen = new Aangifte();
         aangifteHuidigJaarMinusEen.setJaar(LocalDate.now().minusYears(1).getYear());
+        aangifteHuidigJaarMinusEen.setRelatie(relatie);
 
         if (!aangiftes.contains(aangifteHuidigJaarMinusEen) && !isAangifteAanwezigVoorHuidigJaarMinEen(relatie)) {
             aangiftes.add(aangifteHuidigJaarMinusEen);
