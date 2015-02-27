@@ -39,7 +39,7 @@ define(['jquery',
 				contentType: "application/json",
 	            data: ko.toJSON(aangifte),
 	            success: function(data) {
-	            	aangifte.id(8);
+	            	aangifte.id(data);
 	    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
 	    				var formData = new FormData($('#aangifteForm')[0]);
 	    				log.debug("Versturen naar ../dejonge/rest/medewerker/bijlage/uploadAangifte" + int + 'File')
