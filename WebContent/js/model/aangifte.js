@@ -38,7 +38,8 @@ define(['jquery',
 				url: '../dejonge/rest/medewerker/aangifte/opslaan',
 				contentType: "application/json",
 	            data: ko.toJSON(aangifte),
-	            success: function() {
+	            success: function(data) {
+	            	aangifte.id(8);
 	    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
 	    				var formData = new FormData($('#aangifteForm')[0]);
 	    				log.debug("Versturen naar ../dejonge/rest/medewerker/bijlage/uploadAangifte" + int + 'File')

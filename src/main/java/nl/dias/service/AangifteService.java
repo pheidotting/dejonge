@@ -39,7 +39,7 @@ public class AangifteService {
     }
 
     public void slaAangifteOp(Aangifte aangifte, String s3Identificatie) {
-        LOGGER.debug("Opslaan Bijlage bij Aangifte, schadeId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
+        LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
         bijlage.setAangifte(aangifte);

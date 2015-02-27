@@ -11,6 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.dias.domein.Aangifte;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonAangifte;
 import nl.dias.service.AangifteService;
@@ -50,10 +51,12 @@ public class AangifteController {
     @POST
     @Path("/opslaan")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonAangifte aangifte) {
-        aangifteService.opslaan(aangifteMapper.mapVanJson(aangifte));
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response opslaan(JsonAangifte jsonAangifte) {
+        Aangifte aangifte = aangifteMapper.mapVanJson(jsonAangifte);
+        aangifteService.opslaan(aangifte);
 
-        return Response.ok().build();
+        return Response.ok(aangifte.getId()).build();
     }
 
     @GET
