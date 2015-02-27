@@ -6,8 +6,11 @@ import javax.inject.Named;
 import javax.persistence.TypedQuery;
 
 import nl.dias.domein.Aangifte;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class AangifteRepository extends AbstractRepository<Aangifte> {
@@ -40,5 +43,12 @@ public class AangifteRepository extends AbstractRepository<Aangifte> {
         query.setParameter("relatie", relatie);
 
         return query.getResultList();
+    }
+
+    @Transactional
+    public void opslaanBijlage(Bijlage bijlage) {
+        getEm().getTransaction().begin();
+        getEm().persist(bijlage);
+        getEm().getTransaction().commit();
     }
 }

@@ -48,7 +48,7 @@ public class AangifteService {
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
-        aangifteRepository.opslaan(aangifte);
+        aangifteRepository.opslaanBijlage(bijlage);
     }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {
