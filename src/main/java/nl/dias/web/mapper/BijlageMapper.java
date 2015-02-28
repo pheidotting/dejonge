@@ -46,6 +46,9 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         case HYPOTHEEK:
             parentId = bijlage.getHypotheek().getId().toString();
             break;
+        case IBAANGIFTE:
+            parentId = Integer.toString(bijlage.getAangifte().getJaar());
+            break;
         }
         json.setParentId(parentId);
 
