@@ -2,6 +2,7 @@ package nl.dias.domein;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -124,6 +125,9 @@ public class Aangifte implements PersistenceObject, Serializable {
     }
 
     public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = new HashSet<Bijlage>();
+        }
         return bijlages;
     }
 

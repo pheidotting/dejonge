@@ -13,9 +13,14 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOptions;
 
+import com.sun.jersey.api.core.InjectParam;
+
 @Named
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
     private final static Logger LOGGER = Logger.getLogger(AangifteMapper.class);
+
+    @InjectParam
+    private BijlageMapper bijlageMapper;
 
     @Override
     public Aangifte mapVanJson(JsonAangifte json) {
@@ -50,6 +55,7 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
         });
 
         JsonAangifte aangifte = mapper.map(object, JsonAangifte.class);
+        aangifte.setBijlages(bijlageMapper.mapAllNaarJson(object.getBijlages()));
         LOGGER.debug("naar " + ReflectionToStringBuilder.toString(aangifte));
         return aangifte;
     }
