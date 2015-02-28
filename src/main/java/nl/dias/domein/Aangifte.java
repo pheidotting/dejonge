@@ -57,7 +57,7 @@ public class Aangifte implements PersistenceObject, Serializable {
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", targetEntity = Bijlage.class)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
 
     @Override
