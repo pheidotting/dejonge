@@ -19,8 +19,10 @@ import nl.dias.web.mapper.BedrijfMapper;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class BedrijfControllerTest extends EasyMockSupport {
     private BedrijfController controller;
     private BedrijfService bedrijfService;
