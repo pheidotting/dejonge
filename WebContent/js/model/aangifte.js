@@ -30,6 +30,7 @@ define(['jquery',
 		}, this);
 
 	    self.opslaan = function(aangifte){
+			aangifte.bijlages([]);
     		commonFunctions.verbergMeldingen();
     		log.debug("versturen naar ../dejonge/rest/medewerker/aangifte/opslaan");
     		log.debug(ko.toJSON(aangifte));
