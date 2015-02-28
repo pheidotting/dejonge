@@ -26,7 +26,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @NamedQueries({ @NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"),
         @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"),
         @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie") })
+        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"),
+        @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie") })
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
 
