@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.dias.domein.Aangifte;
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.AangifteRepository;
 
@@ -133,11 +134,16 @@ public class AangifteServiceTest extends EasyMockSupport {
 
     @Test
     public void testAfronden() {
+        Medewerker medewerker = new Medewerker();
+        medewerker.setVoornaam("Hendrik");
+        medewerker.setAchternaam("Haverkamp");
+
         Long id = 46L;
         LocalDate datum = new LocalDate(2014, 2, 4);
         Aangifte aangifte = new Aangifte();
         Aangifte aangifteMetDatumAfgerond = new Aangifte();
         aangifte.setDatumAfgerond(datum);
+        aangifteMetDatumAfgerond.setAfgerondDoor(medewerker);
 
         expect(aangifteRepository.lees(id)).andReturn(aangifte);
 
@@ -146,6 +152,6 @@ public class AangifteServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        aangifteService.afronden(id, datum);
+        aangifteService.afronden(id, datum, medewerker);
     }
 }
