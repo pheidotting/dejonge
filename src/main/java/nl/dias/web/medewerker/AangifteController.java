@@ -2,19 +2,23 @@ package nl.dias.web.medewerker;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.dias.domein.Aangifte;
+import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonAangifte;
 import nl.dias.service.AangifteService;
+import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.AangifteMapper;
 
@@ -33,6 +37,10 @@ public class AangifteController {
     private GebruikerService gebruikerService;
     @InjectParam
     private AangifteMapper aangifteMapper;
+    @Context
+    private HttpServletRequest httpServletRequest;
+    @InjectParam
+    private AuthorisatieService authorisatieService;
 
     @GET
     @Path("/openAangiftes")
@@ -43,9 +51,16 @@ public class AangifteController {
 
     @POST
     @Path("/afronden")
-    public Response afronden(@QueryParam("datum") String datum, @QueryParam("id") Long id) {
-        aangifteService.afronden(id, new LocalDate(datum));
-        return Response.ok().build();
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response afronden(Long id) {
+        LOGGER.info("Afronden Aangifte met id " + id);
+        try {
+            aangifteService.afronden(id, LocalDate.now(), getGebruiker());
+        } catch (Exception e) {
+            return Response.status(500).build();
+        }
+        return Response.ok(id).build();
     }
 
     @POST
@@ -66,4 +81,13 @@ public class AangifteController {
         return aangifteMapper.mapAllNaarJson(aangifteService.getAfgeslotenAangiftes((Relatie) gebruikerService.lees(relatie)));
     }
 
+    private Gebruiker getGebruiker() {
+        String sessie = null;
+        if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
+            sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
+        }
+
+        return authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+
+    }
 }

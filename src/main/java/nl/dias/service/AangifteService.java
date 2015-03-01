@@ -6,6 +6,8 @@ import javax.inject.Named;
 
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.Bijlage;
+import nl.dias.domein.Gebruiker;
+import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.AangifteRepository;
@@ -81,10 +83,11 @@ public class AangifteService {
         return false;
     }
 
-    public void afronden(Long id, LocalDate datumAfronden) {
+    public void afronden(Long id, LocalDate datumAfronden, Gebruiker medewerker) {
         Aangifte aangifte = aangifteRepository.lees(id);
 
         aangifte.setDatumAfgerond(datumAfronden);
+        aangifte.setAfgerondDoor((Medewerker) medewerker);
 
         aangifteRepository.opslaan(aangifte);
     }

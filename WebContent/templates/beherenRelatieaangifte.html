@@ -12,7 +12,6 @@
 			</div>
 			<form enctype="multipart/form-data" id="aangifteForm">
 				<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
-					<input type="checkbox" />Afgerond?
 					<input type="hidden" id="aangifteId" name="aangifteId" data-bind="value: id" />
 					<div class="form-group" id="uploadAangifte1">
 						<label for="file">&nbsp;</label>
@@ -79,6 +78,7 @@
 					}
 				</script>
 				<button id="opslaan" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
+				<button id="opslaan" class="btn btn-success"" data-bind="click: afronden">Afronden</button>
 			</div>
 		</div>
 	</div>

@@ -29,6 +29,21 @@ define(['jquery',
 	        return "#collapsable" + data.id;
 		}, this);
 
+	    self.afronden = function(aangifte){
+			$.ajax({
+				type: "POST",
+				url: '../dejonge/rest/medewerker/aangifte/afronden',
+				contentType: "application/json",
+				data: JSON.stringify(aangifte.id()),
+	            success: function(data) {
+	            	document.location.hash = "#beherenRelatie/aangiftes";
+	        	},
+				error: function (data) {
+					commonFunctions.plaatsFoutmelding(data);
+				}
+	    	});
+	    };
+	    
 	    self.opslaan = function(aangifte){
 			aangifte.bijlages([]);
     		commonFunctions.verbergMeldingen();

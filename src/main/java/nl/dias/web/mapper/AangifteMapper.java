@@ -55,6 +55,9 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
         });
 
         JsonAangifte aangifte = mapper.map(object, JsonAangifte.class);
+        if (object.getAfgerondDoor() != null) {
+            aangifte.setAfgerondDoor(object.getAfgerondDoor().getNaam());
+        }
         aangifte.setBijlages(bijlageMapper.mapAllNaarJson(object.getBijlages()));
         LOGGER.debug("naar " + ReflectionToStringBuilder.toString(aangifte));
         return aangifte;
