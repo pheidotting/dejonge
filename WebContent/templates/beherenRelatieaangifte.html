@@ -13,6 +13,10 @@
 			<form enctype="multipart/form-data" id="aangifteForm">
 				<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
 					<input type="hidden" id="aangifteId" name="aangifteId" data-bind="value: id" />
+					<div class="form-group">
+						<label for="uitstelTot">Uitstel tot</label>
+						<input type="text" id="uitstelTot" name="uitstelTot" data-bind="value: uitstelTot" />
+					</div>
 					<div class="form-group" id="uploadAangifte1">
 						<label for="file">&nbsp;</label>
 						<input type="file" id="uploadAangifte1File" name="uploadAangifte1File" onchange="nieuweAangifteUpload(1);" />

@@ -29,7 +29,13 @@ define(['jquery',
 	        return "#collapsable" + data.id;
 		}, this);
 
-	    self.afronden = function(aangifte){
+//		aangifte.veranderDatum = function(){
+//			log.debug("datum1");
+//			log.debug(datum);
+//			datum(commonFunctions.zetDatumOm(datum()));
+//		}
+
+		aangifte.afronden = function(aangifte){
 			$.ajax({
 				type: "POST",
 				url: '../dejonge/rest/medewerker/aangifte/afronden',
@@ -44,7 +50,7 @@ define(['jquery',
 	    	});
 	    };
 	    
-	    self.opslaan = function(aangifte){
+	    aangifte.opslaan = function(aangifte){
 			aangifte.bijlages([]);
     		commonFunctions.verbergMeldingen();
     		log.debug("versturen naar ../dejonge/rest/medewerker/aangifte/opslaan");
