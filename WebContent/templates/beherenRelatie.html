@@ -126,5 +126,9 @@
 	<label for="emailadres">E-mailadres</label>
 	<input class="form-control" type="text" id="emailadres" name="emailadres" data-bind="value: identificatie" />
 </div>
+<div class="form-group">
+	<label>&nbsp;</label>
+	<a href="mailto:" data-bind="attr: {href: 'mailto:' + identificatie()}, text: identificatie"></a>
+</div>
 <button id="opslaanRelatie" class="btn btn-primary" data-bind="click: opslaan">Opslaan</button>
 <button  id="verwijderen" class="btn btn-danger" data-bind="click: verwijderenRelatie">Verwijderen</button>
