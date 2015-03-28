@@ -242,7 +242,7 @@ public class GebruikerService {
             }
         }
 
-        if (teVerwijderenSessies.size() > 0) {
+        if (!teVerwijderenSessies.isEmpty()) {
             for (Sessie sessie : teVerwijderenSessies) {
                 gebruiker.getSessies().remove(sessie);
             }

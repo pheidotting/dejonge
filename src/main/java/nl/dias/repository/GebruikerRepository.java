@@ -95,7 +95,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
 
         List<Gebruiker> lijst = query.getResultList();
 
-        if (lijst != null && lijst.size() > 0) {
+        if (lijst != null && !lijst.isEmpty()) {
             LOGGER.debug("Aantal gevonden : " + lijst.size());
             gebruiker = lijst.get(0);
         } else if (lijst != null) {

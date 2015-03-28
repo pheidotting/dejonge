@@ -82,7 +82,7 @@ public class SchadeService {
 
         schade.setStatusSchade(status);
 
-        if (soorten.size() > 0) {
+        if (!soorten.isEmpty()) {
             LOGGER.debug("Soort schade gevonden in database (" + soorten.size() + ")");
             schade.setSoortSchade(soorten.get(0));
         } else {
