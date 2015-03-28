@@ -46,6 +46,9 @@ import org.joda.time.LocalDate;
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 
+    @Column(name = "ROEPNAAM")
+    private String roepnaam;
+
     private Adres adres;
     @Transient
     private String adresOpgemaakt;
@@ -95,6 +98,14 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     private Set<Hypotheek> hypotheken;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
+
+    public String getRoepnaam() {
+        return roepnaam;
+    }
+
+    public void setRoepnaam(String roepnaam) {
+        this.roepnaam = roepnaam;
+    }
 
     public Adres getAdres() {
         if (adres == null) {

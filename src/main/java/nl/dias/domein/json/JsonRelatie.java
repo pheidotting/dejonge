@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class JsonRelatie {
     private Long id;
     private String identificatie;
+    private String roepnaam;
     private String voornaam;
     private String tussenvoegsel;
     private String achternaam;
@@ -32,6 +33,14 @@ public class JsonRelatie {
     private List<Long> onderlingeRelaties;
     private boolean zakelijkeKlant;
     private List<String> errors;
+
+    public String getRoepnaam() {
+        return roepnaam;
+    }
+
+    public void setRoepnaam(String roepnaam) {
+        this.roepnaam = roepnaam;
+    }
 
     public String getGeboorteDatum() {
         return geboorteDatum;

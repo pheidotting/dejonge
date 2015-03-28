@@ -31,6 +31,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
         Relatie relatie = new Relatie();
         relatie.setId(jsonRelatie.getId());
+        relatie.setRoepnaam(jsonRelatie.getRoepnaam());
         try {
             relatie.setIdentificatie(jsonRelatie.getIdentificatie());
         } catch (UnsupportedEncodingException e) {
@@ -73,6 +74,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         JsonRelatie jsonRelatie = new JsonRelatie();
 
         jsonRelatie.setId(relatie.getId());
+        jsonRelatie.setRoepnaam(relatie.getRoepnaam());
         jsonRelatie.setIdentificatie(relatie.getIdentificatie());
         jsonRelatie.setVoornaam(relatie.getVoornaam());
         jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());

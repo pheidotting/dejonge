@@ -17,6 +17,7 @@ define(['jquery',
 		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({email: true});
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
+		_thisRelatie.roepnaam = ko.observable(data.roepnaam);
 		_thisRelatie.achternaam = ko.observable(data.achternaam).extend({required: true});
 		_thisRelatie.tussenvoegsel = ko.observable(data.tussenvoegsel);
 		_thisRelatie.straat = ko.observable(data.straat);
