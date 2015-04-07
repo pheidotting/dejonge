@@ -50,6 +50,14 @@ public class GebruikerController {
     private HttpServletRequest httpServletRequest;
 
     @GET
+    @Path("/converteren")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String converteren() {
+        gebruikerService.converteren();
+        return "ok";
+    }
+
+    @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonRelatie lees(@QueryParam("id") String id) {

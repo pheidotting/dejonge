@@ -71,14 +71,14 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     }
 
     public List<Gebruiker> zoekOpNaam(String naam) {
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpNaam", Gebruiker.class);
+        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpNaam", Gebruiker.class).setMaxResults(75);
         query.setParameter("naam", "%" + naam + "%");
 
         return query.getResultList();
     }
 
     public List<Relatie> zoekOpAdres(String adres) {
-        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class);
+        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class).setMaxResults(75);
         query.setParameter("adres", "%" + adres + "%");
 
         return query.getResultList();
