@@ -83,7 +83,7 @@ public class GebruikerService {
         for (DIASGebruiker diasGebruiker : diasGebruikerRepository.alles()) {
             Relatie relatie = new Relatie();
             relatie.setAchternaam(diasGebruiker.getAchternaam());
-            if (!"".equals(diasGebruiker.getBsn())) {
+            if (!"".equals(diasGebruiker.getBsn().trim())) {
                 relatie.setBsn(diasGebruiker.getBsn().replace(".", ""));
             }
             if ("gehuwd".equalsIgnoreCase(diasGebruiker.getBurgerlijkeStaat())) {
