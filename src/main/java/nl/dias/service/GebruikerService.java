@@ -159,10 +159,17 @@ public class GebruikerService {
 
             try {
                 opslaan(relatie);
-            } catch (IllegalArgumentException iae) {
-                if ("Burgerservicenummer komt al voor bij een andere gebruiker".equals(iae.getMessage())) {
+            } catch (IllegalArgumentException iae1) {
+                if ("Burgerservicenummer komt al voor bij een andere gebruiker".equals(iae1.getMessage())) {
                     relatie.setBsn(relatie.getBsn() + "a");
-                    opslaan(relatie);
+                    try {
+                        opslaan(relatie);
+                    } catch (IllegalArgumentException iae2) {
+                        if ("Burgerservicenummer komt al voor bij een andere gebruiker".equals(iae2.getMessage())) {
+                            relatie.setBsn(null);
+                            opslaan(relatie);
+                        }
+                    }
                 }
             }
         }
