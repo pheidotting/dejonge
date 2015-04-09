@@ -48,6 +48,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sun.jersey.api.core.InjectParam;
+
 @Named
 public class GebruikerService {
 
