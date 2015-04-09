@@ -1,14 +1,9 @@
 package nl.dias.service;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.inject.Named;
-import javax.persistence.NoResultException;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.BurgerlijkeStaat;
@@ -44,13 +39,9 @@ import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.sun.jersey.api.core.InjectParam;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Named
 public class GebruikerService {
@@ -157,20 +148,25 @@ public class GebruikerService {
                 }
             }
 
+            Relatie aanwezigeRelatie = null;
+            try {
+                aanwezigeRelatie = gebruikerRepository.zoekOpBsn(relatie.getBsn());
+            } catch (Exception e) {
+            }
+
+            if (relatie.getBsn() != null && aanwezigeRelatie != null) {
+                relatie.setBsn(null);
+            }
+
+            boolean opgeslagen = false;
             try {
                 opslaan(relatie);
-            } catch (IllegalArgumentException iae1) {
-                if ("Burgerservicenummer komt al voor bij een andere gebruiker".equals(iae1.getMessage())) {
-                    relatie.setBsn(relatie.getBsn() + "a");
-                    try {
-                        opslaan(relatie);
-                    } catch (IllegalArgumentException iae2) {
-                        if ("Burgerservicenummer komt al voor bij een andere gebruiker".equals(iae2.getMessage())) {
-                            relatie.setBsn(null);
-                            opslaan(relatie);
-                        }
-                    }
-                }
+                opgeslagen = true;
+            } catch (Exception e) {
+            }
+
+            if (opgeslagen) {
+                diasGebruikerRepository.verwijder(diasGebruiker);
             }
         }
     }
