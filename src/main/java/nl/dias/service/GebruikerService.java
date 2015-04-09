@@ -16,6 +16,8 @@ import nl.dias.domein.Geslacht;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
+import javax.inject.Named;
+import org.joda.time.LocalDate;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
