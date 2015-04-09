@@ -1,5 +1,7 @@
 package nl.dias.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,9 +46,9 @@ import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sun.jersey.api.core.InjectParam;
 
