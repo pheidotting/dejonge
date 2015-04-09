@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Named;
+import javax.persistence.NoResultException;
+
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.DIASAdres;
@@ -16,8 +19,6 @@ import nl.dias.domein.Geslacht;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
-import javax.inject.Named;
-import org.joda.time.LocalDate;
 import nl.dias.domein.Sessie;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
@@ -41,12 +42,15 @@ import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Named
 public class GebruikerService {
+
     private final static Logger LOGGER = Logger.getLogger(GebruikerService.class);
 
     @InjectParam
