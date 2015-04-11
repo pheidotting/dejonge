@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     private final static Logger LOGGER = Logger.getLogger(GebruikerRepository.class);
+    private final static int MAX_RESULTS = 25;
 
     public GebruikerRepository() {
         super(Gebruiker.class);
@@ -33,6 +34,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     @Transactional
     public List<Relatie> alleRelaties() {
         TypedQuery<Relatie> query = getEm().createQuery("select e from Relatie e", Relatie.class);
+        query.setMaxResults(MAX_RESULTS);
         List<Relatie> ret = query.getResultList();
 
         return ret;
@@ -41,6 +43,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     @Transactional
     public List<Relatie> alleRelaties(Kantoor kantoor) {
         TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekAllesVoorKantoor", Relatie.class);
+        query.setMaxResults(MAX_RESULTS);
         query.setParameter("kantoor", kantoor);
 
         return query.getResultList();
@@ -59,6 +62,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         Gebruiker gebruiker = null;
 
         TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpEmail", Gebruiker.class);
+        query.setMaxResults(MAX_RESULTS);
         query.setParameter("emailadres", emailadres);
         try {
             gebruiker = query.getSingleResult();
@@ -71,14 +75,16 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     }
 
     public List<Gebruiker> zoekOpNaam(String naam) {
-        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpNaam", Gebruiker.class).setMaxResults(75);
+        TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpNaam", Gebruiker.class);
+        query.setMaxResults(MAX_RESULTS);
         query.setParameter("naam", "%" + naam + "%");
 
         return query.getResultList();
     }
 
     public List<Relatie> zoekOpAdres(String adres) {
-        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class).setMaxResults(75);
+        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class);
+        query.setMaxResults(MAX_RESULTS);
         query.setParameter("adres", "%" + adres + "%");
 
         return query.getResultList();
