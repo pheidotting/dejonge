@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     private final static Logger LOGGER = Logger.getLogger(GebruikerRepository.class);
-    private final static int MAX_RESULTS = 25;
+    private final static int MAX_RESULTS = 10;
 
     public GebruikerRepository() {
         super(Gebruiker.class);
