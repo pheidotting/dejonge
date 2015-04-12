@@ -98,7 +98,7 @@ public class GebruikerService {
             if (!"".equals(diasGebruiker.getGeslacht())) {
                 relatie.setGeslacht(Geslacht.valueOf(diasGebruiker.getGeslacht().substring(0, 1).toUpperCase()));
             }
-            if (diasGebruiker.getDatumOverlijden() != null && !diasGebruiker.getDatumOverlijden().equals("")) {
+            if (diasGebruiker.getDatumOverlijden() != null && !"".equals(diasGebruiker.getDatumOverlijden())) {
                 relatie.setOverlijdensdatum(LocalDate.parse(diasGebruiker.getDatumOverlijden(), DateTimeFormat.forPattern(patternDatum)));
             }
             relatie.setRoepnaam(diasGebruiker.getRoepnaam());
