@@ -176,9 +176,12 @@ public class GebruikerController {
         JsonLijstRelaties lijst = new JsonLijstRelaties();
 
         if (zoekTerm == null || "".equals(zoekTerm)) {
-            for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
-                lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
-            }
+            // for (Gebruiker r :
+            // gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor()))
+            // {
+            // lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie)
+            // r));
+            // }
         } else {
             for (Gebruiker r : gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm)) {
                 lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));

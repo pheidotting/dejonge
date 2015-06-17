@@ -21,7 +21,7 @@ define(['jquery',
 						data: ko.toJSON(this),
 			            success: function (response) {
 			            	commonFunctions.haalIngelogdeGebruiker();
-			    			document.location.hash='#lijstRelaties';
+			    			document.location.hash='#dashboard';
 			            },
 			            error: function (data) {
 			            	commonFunctions.plaatsFoutmelding(data);

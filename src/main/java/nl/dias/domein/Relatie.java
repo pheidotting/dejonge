@@ -53,13 +53,13 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @Transient
     private String adresOpgemaakt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
     private Set<Telefoonnummer> telefoonnummers;
 
     @Column(name = "BSN")
     private String bsn;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = RekeningNummer.class, mappedBy = "relatie")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = RekeningNummer.class, mappedBy = "relatie")
     private Set<RekeningNummer> rekeningnummers;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false, targetEntity = Kantoor.class)

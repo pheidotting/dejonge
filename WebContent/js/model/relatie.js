@@ -1,4 +1,4 @@
-define(['jquery',
+indefine(['jquery',
         'commons/commonFunctions',
          'knockout',
          'model/rekeningNummer',
@@ -69,7 +69,7 @@ define(['jquery',
 		};
 
 		_thisRelatie.verwijderTelefoonNummer = function(telefoon) {
-			_thisRelatie.telefoonnummers().remove(telefoon);
+//			_thisRelatie.telefoonnummers().removeAll(telefoon);
 			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
 
