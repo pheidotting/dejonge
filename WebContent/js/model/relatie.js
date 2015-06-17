@@ -1,4 +1,4 @@
-indefine(['jquery',
+define(['jquery',
         'commons/commonFunctions',
          'knockout',
          'model/rekeningNummer',
