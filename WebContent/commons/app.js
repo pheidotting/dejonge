@@ -29,8 +29,9 @@ requirejs(['jquery',
            'js/lijstRelaties',
            'js/beherenRelatie',
            'js/taak/taken',
-           'js/taak/afhandelenTaak'],
-function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie, taken, afhandelenTaak) {
+           'js/taak/afhandelenTaak',
+           'js/dashboard'],
+function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie, taken, afhandelenTaak, dashboard) {
 	commonFunctions.haalIngelogdeGebruiker();
 	window.setInterval(commonFunctions.haalIngelogdeGebruiker, 300000);
 
@@ -42,6 +43,10 @@ function   ($, Sammy, commonFunctions, inloggen, lijstRelaties, beherenRelatie, 
 
 	app.route('GET', '#taken', function(context) {
 		new taken();
+	});
+	
+	app.route('GET', '#dashboard', function(context) {
+		new dashboard();
 	});
 	
 	app.route('GET', '#taak/:id', function(context) {
