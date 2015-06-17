@@ -59,7 +59,7 @@ indefine(['jquery',
 		};
 
 		_thisRelatie.verwijderRekening = function(nummer){
-			_thisRelatie.rekeningnummers().remove(nummer);
+//			_thisRelatie.rekeningnummers().remove(nummer);
 			_thisRelatie.rekeningnummers.valueHasMutated();
 		};
 
@@ -69,7 +69,7 @@ indefine(['jquery',
 		};
 
 		_thisRelatie.verwijderTelefoonNummer = function(telefoon) {
-			_thisRelatie.telefoonnummers().removeAll(telefoon);
+//			_thisRelatie.telefoonnummers().remove(telefoon);
 			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
 
