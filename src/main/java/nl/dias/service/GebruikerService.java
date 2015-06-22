@@ -18,6 +18,7 @@ import nl.dias.domein.DIASGebruiker;
 import nl.dias.domein.DIASTelefoonNummer;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Geslacht;
+import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
@@ -29,11 +30,13 @@ import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
+import nl.dias.repository.BedrijfRepository;
 import nl.dias.repository.DIASAdresRepository;
 import nl.dias.repository.DIASBedrijfRepository;
 import nl.dias.repository.DIASGebruikerRepository;
 import nl.dias.repository.DIASTelefoonNummerRepository;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
@@ -43,6 +46,7 @@ import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -71,6 +75,11 @@ public class GebruikerService {
     private PolisRepository polisRepository;
     @InjectParam
     private KantoorRepository kantoorRepository;
+    @InjectParam
+    private HypotheekRepository hypotheekRepository;
+    @InjectParam
+    private BedrijfRepository bedrijfService;
+
     private AanmakenTaakSender aanmakenTaakSender;
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
@@ -305,8 +314,35 @@ public class GebruikerService {
     }
 
     public void verwijder(Long id) {
+        LOGGER.info("Verwijderen gebruiker met id " + id);
+
         // Eerst ophalen
         Gebruiker gebruiker = gebruikerRepository.lees(id);
+
+        LOGGER.debug("Opgehaalde gebruiker : ");
+        LOGGER.debug(ReflectionToStringBuilder.toString(gebruiker));
+
+        if (gebruiker instanceof Relatie) {
+            Relatie relatie = (Relatie) gebruiker;
+            for (Polis polis : relatie.getPolissen()) {
+                LOGGER.debug("Verwijder Polis :");
+                LOGGER.debug(ReflectionToStringBuilder.toString(polis));
+                polisRepository.verwijder(polis);
+                relatie.getPolissen().remove(polis);
+            }
+            for (Hypotheek hypotheek : relatie.getHypotheken()) {
+                LOGGER.debug("Verwijder Hypotheek :");
+                LOGGER.debug(ReflectionToStringBuilder.toString(hypotheek));
+                hypotheekRepository.verwijder(hypotheek);
+                relatie.getHypotheken().remove(hypotheek);
+            }
+            for (Bedrijf bedrijf : relatie.getBedrijven()) {
+                LOGGER.debug("Verwijder Bedrijf :");
+                LOGGER.debug(ReflectionToStringBuilder.toString(bedrijf));
+                bedrijfService.verwijder(bedrijf);
+                relatie.getBedrijven().remove(bedrijf);
+            }
+        }
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);
     }
