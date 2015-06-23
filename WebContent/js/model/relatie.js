@@ -16,10 +16,12 @@ define(['jquery',
 		};
 		_thisRelatie.zetPostcodeOm = function(){
 			var postcode = _thisRelatie.postcode();
-			if(postcode.length == 6){
-				postcode = postcode.toUpperCase();
-				postcode = postcode.substring(0, 4) + " " + postcode.substring(4);
-				_thisRelatie.postcode(postcode);
+			if(postcode != null){
+				if(postcode.length == 6){
+					postcode = postcode.toUpperCase();
+					postcode = postcode.substring(0, 4) + " " + postcode.substring(4);
+					_thisRelatie.postcode(postcode);
+				}
 			}
 		};
 		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({email: true});
