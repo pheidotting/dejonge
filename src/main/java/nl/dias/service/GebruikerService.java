@@ -201,11 +201,13 @@ public class GebruikerService {
     public void opslaan(Gebruiker gebruiker) {
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
-        try {
-            gebruikerAanwezig = gebruikerRepository.zoek(gebruiker.getIdentificatie());
-        } catch (NietGevondenException e) {
-            // niets aan de hand;
-            LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
+        if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
+            try {
+                gebruikerAanwezig = gebruikerRepository.zoek(gebruiker.getIdentificatie());
+            } catch (NietGevondenException e) {
+                // niets aan de hand;
+                LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
+            }
         }
 
         if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
