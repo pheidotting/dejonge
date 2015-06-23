@@ -211,6 +211,8 @@ public class GebruikerService {
         }
 
         if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
+            LOGGER.debug("Gebruiker komt al voor");
+            LOGGER.debug("Gevonden user id : '" + gebruikerAanwezig.getId() + "', op te slaan id : '" + gebruiker.getId() + "'");
             throw new IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
         }
 
