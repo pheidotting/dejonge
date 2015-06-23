@@ -13,7 +13,15 @@ define(['jquery',
 
 		_thisRelatie.veranderDatum = function(datum){
 			datum(commonFunctions.zetDatumOm(datum()));
-		}
+		};
+		_thisRelatie.zetPostcodeOm = function(){
+			var postcode = _thisRelatie.postcode();
+			if(postcode.length == 6){
+				postcode = postcode.toUpperCase();
+				postcode = postcode.substring(0, 4) + " " + postcode.substring(4);
+				_thisRelatie.postcode(postcode);
+			}
+		};
 		_thisRelatie.identificatie = ko.observable(data.identificatie).extend({email: true});
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
@@ -24,6 +32,7 @@ define(['jquery',
 		_thisRelatie.huisnummer = ko.observable(data.huisnummer).extend({ number: true});
 		_thisRelatie.toevoeging = ko.observable(data.toevoeging);
 		_thisRelatie.postcode = ko.observable(data.postcode);
+		_thisRelatie.zetPostcodeOm();
 		_thisRelatie.plaats = ko.observable(data.plaats);
 		_thisRelatie.bsn = ko.observable(data.bsn);
 		_thisRelatie.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
@@ -74,6 +83,7 @@ define(['jquery',
 		};
 
 		_thisRelatie.opslaan = function(){
+			_thisRelatie.postcode(_thisRelatie.postcode().replace(" ", ""));
 	    	var result = ko.validation.group(_thisRelatie, {deep: true});
 	    	if(!_thisRelatie.isValid()){
 	    		result.showAllMessages(true);
