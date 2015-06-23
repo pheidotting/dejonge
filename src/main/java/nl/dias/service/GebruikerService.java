@@ -213,6 +213,7 @@ public class GebruikerService {
         if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
             LOGGER.debug("Gebruiker komt al voor");
             LOGGER.debug("Gevonden user id : '" + gebruikerAanwezig.getId() + "', op te slaan id : '" + gebruiker.getId() + "'");
+            gebruikerAanwezig = null;
             // throw new
             // IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
         }
@@ -224,11 +225,13 @@ public class GebruikerService {
                     gebruikerAanwezig = gebruikerRepository.zoekOpBsn(((Relatie) gebruiker).getBsn());
                 } catch (NoResultException e) {
                     // niets aan de hand;
-                    LOGGER.info("gebruiker met bsn" + ((Relatie) gebruiker).getBsn() + " niet gevonden");
+                    LOGGER.info("gebruiker met bsn " + ((Relatie) gebruiker).getBsn() + " niet gevonden");
                 }
 
                 if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
-                    throw new IllegalArgumentException("Burgerservicenummer komt al voor bij een andere gebruiker");
+                    gebruikerAanwezig = null;
+                    // throw new
+                    // IllegalArgumentException("Burgerservicenummer komt al voor bij een andere gebruiker");
                 }
             }
         }
