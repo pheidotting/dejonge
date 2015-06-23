@@ -249,7 +249,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatie.setAdres(maakAdres());
         relatie.setBsn("id");
 
-        expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
+        // expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
         expect(repository.zoekOpBsn("id")).andReturn(null);
 
         repository.opslaan(relatie);
