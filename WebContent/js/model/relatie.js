@@ -93,6 +93,7 @@ define(['jquery',
 				commonFunctions.verbergMeldingen();
 				log.debug("Versturen naar ../dejonge/rest/medewerker/gebruiker/opslaan : ");
 				log.debug(ko.toJSON(_thisRelatie));
+				var foutmelding;
 				$.ajax({
 					url: '../dejonge/rest/medewerker/gebruiker/opslaan',
 					type: 'POST',
@@ -104,8 +105,13 @@ define(['jquery',
 					},
 					error: function (data) {
 						commonFunctions.plaatsFoutmelding(data);
+						foutmelding = true;
 					}
 				});
+				if(foutmelding == undefined || foutmelding == null){
+					document.location.hash='#lijstRelaties';
+					commonFunctions.plaatsMelding("De gegevens zijn opgeslagen");
+				}
 	    	}
 		};
 
