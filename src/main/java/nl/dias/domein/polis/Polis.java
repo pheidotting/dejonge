@@ -101,6 +101,9 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
     private Set<Schade> schades;
 
+    @Column(name = "OMSCHRIJVING", columnDefinition = "text")
+    private String omschrijvingVerzekering;
+
     @Transient
     private String ingangsDatumString;
 
@@ -264,6 +267,14 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     public void setSchades(Set<Schade> schades) {
         this.schades = schades;
+    }
+
+    public String getOmschrijvingVerzekering() {
+        return omschrijvingVerzekering;
+    }
+
+    public void setOmschrijvingVerzekering(String omschrijvingVerzekering) {
+        this.omschrijvingVerzekering = omschrijvingVerzekering;
     }
 
     @Override

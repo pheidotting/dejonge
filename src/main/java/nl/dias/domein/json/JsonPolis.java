@@ -26,6 +26,7 @@ public class JsonPolis {
     private List<JsonSchade> schades;
     private String relatie;
     private String titel;
+    private String omschrijvingVerzekering;
     private List<String> errors;
 
     public Long getId() {
@@ -187,6 +188,14 @@ public class JsonPolis {
 
     public void setTitel(String titel) {
         this.titel = titel;
+    }
+
+    public String getOmschrijvingVerzekering() {
+        return omschrijvingVerzekering;
+    }
+
+    public void setOmschrijvingVerzekering(String omschrijvingVerzekering) {
+        this.omschrijvingVerzekering = omschrijvingVerzekering;
     }
 
     public List<String> getErrors() {

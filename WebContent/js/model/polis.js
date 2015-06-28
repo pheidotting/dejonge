@@ -12,18 +12,17 @@ define(['jquery',
 
 		self.veranderDatum = function(datum){
 			datum(commonFunctions.zetDatumOm(datum()));
-		}
+		};
 		self.berekenProlongatieDatum = function(){
 			if(self.ingangsDatum() != null && self.ingangsDatum() != ""){
 				self.prolongatieDatum(moment(self.ingangsDatum(), "DD-MM-YYYY").add(1, 'y').format("DD-MM-YYYY"));
 			}
-		}
+		};
 		self.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
 		self.relatie = ko.observable(data.relatie);
 		self.id = ko.observable(data.id);
-		self.omschrijving = ko.observable(data.omschrijving);
 		self.polisNummer = ko.observable(data.polisNummer).extend({required: true});
 		if(data.ingangsDatum != undefined){
 			self.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY")).extend({required: true});
@@ -45,11 +44,12 @@ define(['jquery',
 		}else{
 			self.prolongatieDatum = ko.observable();
 		}
-		self.maatschappij = ko.observable(data.maatschappij);
-		self.soort = ko.observable(data.soort);
+		self.maatschappij = ko.observable(data.maatschappij).extend({required: true});
+		self.soort = ko.observable(data.soort).extend({required: true});
 		self.premie = ko.observable(data.premie);
 		self.betaalfrequentie = ko.observable(data.betaalfrequentie);
 		self.bedrijf = ko.observable(data.bedrijf);
+		self.omschrijvingVerzekering = ko.observable(data.omschrijvingVerzekering);
 		self.idDiv = ko.computed(function() {
 	        return "collapsable" + data.id;
 		}, this);
