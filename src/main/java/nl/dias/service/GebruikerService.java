@@ -85,6 +85,7 @@ public class GebruikerService {
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
 
+    @Deprecated
     public void converteren() {
         String patternDatum = "dd-MM-yyyy";
 
@@ -194,6 +195,10 @@ public class GebruikerService {
         return gebruikerRepository.lees(id);
     }
 
+    public Relatie leesRelatie(Long id) {
+        return (Relatie) this.lees(id);
+    }
+
     public List<Relatie> alleRelaties(Kantoor kantoor) {
         return gebruikerRepository.alleRelaties(kantoor);
     }
@@ -210,7 +215,7 @@ public class GebruikerService {
             }
         }
 
-        if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
+        if (gebruikerAanwezig != null && !gebruikerAanwezig.getId().equals(gebruiker.getId())) {
             LOGGER.debug("Gebruiker komt al voor");
             LOGGER.debug("Gevonden user id : '" + gebruikerAanwezig.getId() + "', op te slaan id : '" + gebruiker.getId() + "'");
             gebruikerAanwezig = null;

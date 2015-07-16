@@ -42,7 +42,8 @@ import org.joda.time.LocalDate;
 @NamedQueries({ @NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"),
         @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"),
-        @NamedQuery(name = "Relatie.zoekOpAdres", query = "select r from Relatie r where r.adres.straat like :adres or r.adres.plaats like :adres") })
+        @NamedQuery(name = "Relatie.zoekOpAdres", query = "select r from Relatie r where r.adres.straat like :adres or r.adres.plaats like :adres"),
+        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r where r.telefoonummers IN (select t from Telefoonnummer t where t.telefoonnummer = :telefoonnummer)") })
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 

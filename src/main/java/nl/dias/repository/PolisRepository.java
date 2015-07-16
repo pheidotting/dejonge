@@ -75,6 +75,14 @@ public class PolisRepository extends AbstractRepository<Polis> {
         return query.getSingleResult();
     }
 
+    public List<Bijlage> zoekBijlagesBijPolis(Polis polis) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijPolis", Bijlage.class);
+        query.setParameter("polis", polis);
+
+        return query.getResultList();
+
+    }
+
     @Transactional
     public void opslaanBijlage(Bijlage bijlage) {
         getEm().getTransaction().begin();

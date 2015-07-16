@@ -64,7 +64,12 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
         relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
         relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
-        relatie.setBurgerlijkeStaat(BurgerlijkeStaat.valueOf(jsonRelatie.getBurgerlijkeStaat().substring(0, 1)));
+
+        for (BurgerlijkeStaat bs : BurgerlijkeStaat.values()) {
+            if (bs.getOmschrijving().equals(jsonRelatie.getBurgerlijkeStaat())) {
+                relatie.setBurgerlijkeStaat(bs);
+            }
+        }
         relatie.getBedrijven();
         return relatie;
     }

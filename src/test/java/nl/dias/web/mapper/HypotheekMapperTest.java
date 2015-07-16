@@ -2,7 +2,9 @@ package nl.dias.web.mapper;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import nl.dias.domein.Bedrag;
@@ -58,7 +60,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setOmschrijving("omschrijving");
         hypotheek.setOnderpand("Onderpand");
         hypotheek.setRelatie(relatie);
-        hypotheek.setRente(3);
+        hypotheek.setRente(new BigDecimal("3"));
         hypotheek.setTaxatieDatum(new LocalDate(2014, 5, 6));
         hypotheek.setVrijeVerkoopWaarde(new Bedrag(456.78));
         hypotheek.setWaardeNaVerbouwing(new Bedrag(567.89));
@@ -67,29 +69,29 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setBank("naamBank");
 
         jsonHypotheek = new JsonHypotheek();
-        jsonHypotheek.setDuur(1L);
-        jsonHypotheek.setDuurRenteVastePeriode(2L);
-        jsonHypotheek.setEindDatum("01-02-2014");
-        jsonHypotheek.setEindDatumRenteVastePeriode("03-02-2014");
-        jsonHypotheek.setHypotheekBedrag("4325.56");
-        jsonHypotheek.setHypotheekVorm("2");
-        jsonHypotheek.setId(3L);
-        jsonHypotheek.setIngangsDatum("04-03-2014");
-        jsonHypotheek.setIngangsDatumRenteVastePeriode("05-04-2014");
-        jsonHypotheek.setKoopsom("123.45");
-        jsonHypotheek.setMarktWaarde("234.56");
-        jsonHypotheek.setOmschrijving("omschrijving");
-        jsonHypotheek.setOnderpand("Onderpand");
-        jsonHypotheek.setRelatie(46L);
-        jsonHypotheek.setRente("3");
-        jsonHypotheek.setTaxatieDatum("06-05-2014");
-        jsonHypotheek.setVrijeVerkoopWaarde("456.78");
-        jsonHypotheek.setWaardeNaVerbouwing("567.89");
-        jsonHypotheek.setWaardeVoorVerbouwing("789.01");
-        jsonHypotheek.setWozWaarde("678.9");
-        jsonHypotheek.setOpmerkingen(new ArrayList<JsonOpmerking>());
-        jsonHypotheek.setBijlages(new ArrayList<JsonBijlage>());
-        jsonHypotheek.setBank("naamBank");
+        // jsonHypotheek.setDuur(1L);
+        // jsonHypotheek.setDuurRenteVastePeriode(2L);
+        // jsonHypotheek.setEindDatum("01-02-2014");
+        // jsonHypotheek.setEindDatumRenteVastePeriode("03-02-2014");
+        // jsonHypotheek.setHypotheekBedrag("4325.56");
+        // jsonHypotheek.setHypotheekVorm("2");
+        // jsonHypotheek.setId(3L);
+        // jsonHypotheek.setIngangsDatum("04-03-2014");
+        // jsonHypotheek.setIngangsDatumRenteVastePeriode("05-04-2014");
+        // jsonHypotheek.setKoopsom("123.45");
+        // jsonHypotheek.setMarktWaarde("234.56");
+        // jsonHypotheek.setOmschrijving("omschrijving");
+        // jsonHypotheek.setOnderpand("Onderpand");
+        // jsonHypotheek.setRelatie(46L);
+        // // jsonHypotheek.setRente("3,1");
+        // jsonHypotheek.setTaxatieDatum("06-05-2014");
+        // jsonHypotheek.setVrijeVerkoopWaarde("456.78");
+        // jsonHypotheek.setWaardeNaVerbouwing("567.89");
+        // jsonHypotheek.setWaardeVoorVerbouwing("789.01");
+        // jsonHypotheek.setWozWaarde("678.9");
+        // jsonHypotheek.setOpmerkingen(new ArrayList<JsonOpmerking>());
+        // jsonHypotheek.setBijlages(new ArrayList<JsonBijlage>());
+        // jsonHypotheek.setBank("naamBank");
     }
 
     @After
@@ -99,8 +101,8 @@ public class HypotheekMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapVanJson() {
-        jsonHypotheek.setHypotheekVorm(null);
-        jsonHypotheek.setRelatie(null);
+        // jsonHypotheek.setHypotheekVorm(null);
+        // jsonHypotheek.setRelatie(null);
 
         hypotheek.setHypotheekVorm(null);
         hypotheek.setRelatie(null);
@@ -110,6 +112,7 @@ public class HypotheekMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapNaarJson() {
+        fail();
         expect(opmerkingMapper.mapAllNaarJson(hypotheek.getOpmerkingen())).andReturn(new ArrayList<JsonOpmerking>());
         expect(bijlageMapper.mapAllNaarJson(hypotheek.getBijlages())).andReturn(new ArrayList<JsonBijlage>());
 

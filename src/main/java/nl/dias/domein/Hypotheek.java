@@ -1,6 +1,7 @@
 package nl.dias.domein;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +55,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
     @AttributeOverride(name = "bedrag", column = @Column(name = "HYPOTHEEKBEDRAG"))
     private Bedrag hypotheekBedrag;
     @Column(name = "RENTE")
-    private Integer rente;
+    private BigDecimal rente;
     @AttributeOverride(name = "bedrag", column = @Column(name = "MARKTWAARDE"))
     private Bedrag marktWaarde;
     @Column(name = "ONDERPAND")
@@ -138,11 +139,11 @@ public class Hypotheek implements PersistenceObject, Serializable {
         this.hypotheekBedrag = hypotheekBedrag;
     }
 
-    public Integer getRente() {
+    public BigDecimal getRente() {
         return rente;
     }
 
-    public void setRente(Integer rente) {
+    public void setRente(BigDecimal rente) {
         this.rente = rente;
     }
 

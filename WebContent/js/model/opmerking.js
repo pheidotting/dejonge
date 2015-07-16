@@ -11,8 +11,22 @@ define(['jquery',
 		_this.opmerking = ko.observable(data.opmerking);
 		_this.schade = ko.observable(data.schade);
 		_this.hypotheek = ko.observable(data.hypotheek);
+		_this.polis = ko.observable(data.polis);
 		_this.tijd = ko.observable(data.tijd);
 		_this.medewerker = ko.observable(data.medewerker);
+		_this.soort = ko.computed(function() {
+			var soort = "Persoon";
+			if(_this.schade() != null){
+				soort = "Schade";
+			}
+			if(_this.hypotheek() != null){
+				soort = "Hypotheek";
+			}
+			if(_this.polis() != null){
+				soort = "Polis";
+			}
+			return soort;
+		}, this);
 
 		_this.opslaan = function(opmerking){
 			log.debug("Versturen naar ../dejonge/rest/medewerker/opmerking/opslaan");

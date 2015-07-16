@@ -26,7 +26,7 @@ define(['jquery',
 					});
 				});
 			}else{
-				$('#bedrijfBijPolis').hide();
+				$('#bedrijfBijPolisDiv').hide();
 			}
 
 			if(subId != null && subId != "0"){
@@ -37,7 +37,6 @@ define(['jquery',
 					log.debug(JSON.stringify(data));
 					var polis = new Polis(data);
 					polis.relatie(relatieId);
-					polis.bijlages.removeAll();
 					ko.applyBindings(polis);
 			    });
 			}else{

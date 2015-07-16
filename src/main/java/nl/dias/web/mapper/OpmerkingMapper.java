@@ -2,9 +2,15 @@ package nl.dias.web.mapper;
 
 import javax.inject.Named;
 
+import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Opmerking;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonOpmerking;
+import nl.dias.domein.polis.Polis;
+import nl.dias.service.GebruikerService;
 import nl.dias.service.HypotheekService;
+import nl.dias.service.PolisService;
 import nl.dias.service.SchadeService;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -15,6 +21,10 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     private SchadeService schadeService;
     @InjectParam
     private HypotheekService hypotheekService;
+    @InjectParam
+    private PolisService polisService;
+    @InjectParam
+    private GebruikerService gebruikerService;
 
     @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
@@ -22,14 +32,28 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
 
         opmerking.setId(jsonOpmerking.getId());
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
-        try {
-            opmerking.setSchade(schadeService.lees(Long.valueOf(jsonOpmerking.getSchade())));
-        } catch (NumberFormatException nfe) {
+        Relatie relatie = null;
+
+        if (jsonOpmerking.getSchade() != null) {
+            Schade schade = schadeService.lees(Long.valueOf(jsonOpmerking.getSchade()));
+            opmerking.setSchade(schade);
+            relatie = schade.getPolis().getRelatie();
         }
-        try {
-            opmerking.setHypotheek(hypotheekService.leesHypotheek(Long.valueOf(jsonOpmerking.getHypotheek())));
-        } catch (NumberFormatException nfe) {
+        if (jsonOpmerking.getHypotheek() != null) {
+            Hypotheek hypotheek = hypotheekService.leesHypotheek(Long.valueOf(jsonOpmerking.getHypotheek()));
+            opmerking.setHypotheek(hypotheek);
+            relatie = hypotheek.getRelatie();
         }
+        if (jsonOpmerking.getPolis() != null) {
+            Polis polis = polisService.lees(Long.valueOf(jsonOpmerking.getPolis()));
+            opmerking.setPolis(polis);
+            relatie = polis.getRelatie();
+        }
+
+        if (relatie == null && jsonOpmerking.getRelatie() != null) {
+            relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
+        }
+        opmerking.setRelatie(relatie);
 
         return opmerking;
     }
@@ -42,6 +66,15 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         jsonOpmerking.setOpmerking(opmerking.getOpmerking());
         jsonOpmerking.setTijd(opmerking.getTijd().toString("dd-MM-yyyy HH:mm"));
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
+        if (opmerking.getSchade() != null) {
+            jsonOpmerking.setSchade(opmerking.getSchade().getId().toString());
+        }
+        if (opmerking.getPolis() != null) {
+            jsonOpmerking.setPolis(opmerking.getPolis().getId().toString());
+        }
+        if (opmerking.getHypotheek() != null) {
+            jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
+        }
 
         return jsonOpmerking;
     }

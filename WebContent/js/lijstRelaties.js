@@ -32,6 +32,12 @@ define(['jquery',
 			$('#zoeken').click(function(){
 				document.location.hash='#lijstRelaties/' + $('#zoekTerm').val();
 			});
+
+			$('#zoekTerm').on("keypress", function(e) {
+	            if (e.keyCode == 13) {
+					document.location.hash='#lijstRelaties/' + $('#zoekTerm').val();
+	            }
+			});
 		});
 	};
 });

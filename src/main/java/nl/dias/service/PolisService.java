@@ -18,12 +18,14 @@ import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.BromSnorfietsVerzekering;
 import nl.dias.domein.polis.CamperVerzekering;
+import nl.dias.domein.polis.CaravanVerzekering;
 import nl.dias.domein.polis.FietsVerzekering;
 import nl.dias.domein.polis.InboedelVerzekering;
 import nl.dias.domein.polis.LevensVerzekering;
 import nl.dias.domein.polis.MobieleApparatuurVerzekering;
 import nl.dias.domein.polis.MotorVerzekering;
 import nl.dias.domein.polis.OngevallenVerzekering;
+import nl.dias.domein.polis.Pakket;
 import nl.dias.domein.polis.PleziervaartuigVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.RechtsbijstandVerzekering;
@@ -69,6 +71,10 @@ public class PolisService {
     }
 
     public void opslaan(Polis polis) {
+        // ophalen al bestanden bijlages
+        List<Bijlage> bijlages = polisRepository.zoekBijlagesBijPolis(polis);
+        polis.getBijlages().addAll(bijlages);
+
         polisRepository.opslaan(polis);
 
         Relatie relatie = polis.getRelatie();
@@ -264,6 +270,9 @@ public class PolisService {
         if ("Brom-/Snorfiets".equals(soort)) {
             polis = new BromSnorfietsVerzekering();
         }
+        if ("Caravan".equals(soort)) {
+            polis = new CaravanVerzekering();
+        }
         if ("Fiets".equals(soort)) {
             polis = new FietsVerzekering();
         }
@@ -284,6 +293,9 @@ public class PolisService {
         }
         if ("Ongevallen".equals(soort)) {
             polis = new OngevallenVerzekering();
+        }
+        if ("Pakket".equals(soort)) {
+            polis = new Pakket();
         }
         if ("Pleziervaartuig".equals(soort)) {
             polis = new PleziervaartuigVerzekering();

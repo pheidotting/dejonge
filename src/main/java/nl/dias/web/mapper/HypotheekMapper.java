@@ -1,12 +1,16 @@
 package nl.dias.web.mapper;
 
+import java.math.BigDecimal;
+
 import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.json.JsonHypotheek;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
@@ -15,6 +19,7 @@ import com.sun.jersey.api.core.InjectParam;
 @Named
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
+    private final static Logger LOGGER = Logger.getLogger(HypotheekMapper.class);
     private final static String DATUM_FORMAAT = "dd-MM-yyyy";
 
     @InjectParam
@@ -48,9 +53,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         }
         LocalDate taxatieDatum = null;
         if (jsonHypotheek.getTaxatieDatum() != null && !"".equals(jsonHypotheek.getTaxatieDatum())) {
-            System.out.println("a");
             taxatieDatum = LocalDate.parse(jsonHypotheek.getTaxatieDatum(), DateTimeFormat.forPattern(patternDatum));
-            System.out.println(taxatieDatum);
         }
 
         // Hypotheek hypotheek = new Hypotheek();
@@ -75,7 +78,9 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (StringUtils.isNotBlank(jsonHypotheek.getOnderpand())) {
             hypotheek.setOnderpand(jsonHypotheek.getOnderpand());
         }
-        hypotheek.setRente(Integer.valueOf(jsonHypotheek.getRente()));
+        if (jsonHypotheek.getRente() != null) {
+            hypotheek.setRente(new BigDecimal(jsonHypotheek.getRente()));
+        }
         hypotheek.setTaxatieDatum(taxatieDatum);
         if (StringUtils.isNotBlank(jsonHypotheek.getVrijeVerkoopWaarde())) {
             hypotheek.setVrijeVerkoopWaarde(new Bedrag(jsonHypotheek.getVrijeVerkoopWaarde()));
@@ -133,7 +138,9 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
             jsonHypotheek.setOnderpand(hypotheek.getOnderpand());
         }
         jsonHypotheek.setRelatie(hypotheek.getRelatie().getId());
-        jsonHypotheek.setRente(hypotheek.getRente().toString());
+        if (hypotheek.getRente() != null) {
+            jsonHypotheek.setRente(hypotheek.getRente().toString());
+        }
         if (hypotheek.getTaxatieDatum() != null) {
             jsonHypotheek.setTaxatieDatum(hypotheek.getTaxatieDatum().toString(DATUM_FORMAAT));
         }
@@ -160,6 +167,9 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (hypotheek.getBoxIII() != null) {
             jsonHypotheek.setBoxIII(hypotheek.getBoxIII().getBedrag().toString());
         }
+
+        LOGGER.debug("In  : " + ReflectionToStringBuilder.toString(hypotheek));
+        LOGGER.debug("Uit : " + ReflectionToStringBuilder.toString(jsonHypotheek));
 
         return jsonHypotheek;
     }

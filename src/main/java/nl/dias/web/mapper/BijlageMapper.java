@@ -8,12 +8,17 @@ import nl.dias.domein.json.JsonBijlage;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.log4j.Logger;
+
 import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
     @InjectParam
     private ArchiefService archiefService;
+
+    private final static Logger LOGGER = Logger.getLogger(BijlageMapper.class);
 
     @Override
     public Bijlage mapVanJson(JsonBijlage json) {
@@ -51,6 +56,9 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
             break;
         }
         json.setParentId(parentId);
+
+        LOGGER.debug("In  : " + ReflectionToStringBuilder.toString(bijlage));
+        LOGGER.debug("Uit : " + ReflectionToStringBuilder.toString(json));
 
         return json;
     }

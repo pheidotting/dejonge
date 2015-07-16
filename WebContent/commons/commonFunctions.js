@@ -69,7 +69,7 @@ define([ "commons/3rdparty/log"],
 		haalIngelogdeGebruiker: function(){
 			log.debug("Haal ingelogde gebruiker");
 	    	$.ajax({
-	            url: '../dejonge/rest/authorisatie/authorisatie/ingelogdeGebruiker',
+	            url: 'rest/authorisatie/authorisatie/ingelogdeGebruiker',
 	            type: 'GET',
 	            contentType: 'application/json; charset=utf-8',
 	            success: function (response) {

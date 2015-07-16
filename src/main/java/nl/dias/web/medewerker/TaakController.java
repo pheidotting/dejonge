@@ -37,6 +37,13 @@ public class TaakController {
     private AuthorisatieService authorisatieService;
 
     @GET
+    @Path("/aantalOpenTaken")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Long aantalOpenTaken() {
+        return taakClient.aantalOpenTaken();
+    }
+
+    @GET
     @Path("/lees")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonTaak lees(@QueryParam("id") Long id) {

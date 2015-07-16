@@ -27,7 +27,6 @@ define(['jquery',
 						log.debug("applybindings met " + JSON.stringify(data));
 						var schade = new Schade(data);
 						schade.relatie(relatieId);
-						schade.bijlages.removeAll();
 						ko.applyBindings(schade);
 				    });
 				}else{

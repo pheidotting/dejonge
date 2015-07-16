@@ -2,6 +2,7 @@ package nl.dias.domein;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -198,6 +199,9 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     }
 
     public Set<Opmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new HashSet<Opmerking>();
+        }
         return opmerkingen;
     }
 
@@ -206,6 +210,9 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     }
 
     public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = new HashSet<Bijlage>();
+        }
         return bijlages;
     }
 

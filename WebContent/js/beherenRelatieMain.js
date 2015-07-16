@@ -3,8 +3,9 @@ define(['jquery',
         'model/relatie',
         'commons/block',
         'commons/3rdparty/log',
-        'commons/commonFunctions'],
-     function($, ko, Relatie, block, log, commonFunctions) {
+        'commons/commonFunctions',
+        'jqueryUI'],
+     function($, ko, Relatie, block, log, commonFunctions, jqueryUI) {
 
 	return function(relatieId) {
 		block.block();
@@ -22,11 +23,19 @@ define(['jquery',
 				log.debug("opgehaald : " + JSON.stringify(data));
 				ko.validation.registerExtenders();
 
-				ko.applyBindings(new Relatie(data));
+				var relatie = new Relatie(data);
+				
+				ko.applyBindings(relatie);
+				
+				if(relatie.opmerkingen().length > 0){
+					$("#opmerkingenDialog").dialog();
+				}
+				$("#persoonsGegevensDialog").dialog();
 			},
             error: function (data) {
             	commonFunctions.nietMeerIngelogd(data);
     		}
 		});
+		
 	};
 });

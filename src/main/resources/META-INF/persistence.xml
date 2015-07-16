@@ -32,12 +32,14 @@
 		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
 		<class>nl.dias.domein.polis.BromSnorfietsVerzekering</class>
 		<class>nl.dias.domein.polis.CamperVerzekering</class>
+		<class>nl.dias.domein.polis.CaravanVerzekering</class>
 		<class>nl.dias.domein.polis.FietsVerzekering</class>
 		<class>nl.dias.domein.polis.InboedelVerzekering</class>
 		<class>nl.dias.domein.polis.LevensVerzekering</class>
 		<class>nl.dias.domein.polis.MobieleApparatuurVerzekering</class>
 		<class>nl.dias.domein.polis.MotorVerzekering</class>
 		<class>nl.dias.domein.polis.OngevallenVerzekering</class>
+		<class>nl.dias.domein.polis.Pakket</class>
 		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
 		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
 		<class>nl.dias.domein.polis.RecreatieVerzekering</class>

@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.StatusPolis;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
@@ -26,7 +27,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
-    private final static Logger LOGGER = Logger.getLogger(PolisService.class);
+    private final static Logger LOGGER = Logger.getLogger(PolisMapper.class);
 
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
@@ -61,6 +62,13 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         Polis polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
 
         polis.setId(jsonPolis.getId());
+
+        for (StatusPolis sp : StatusPolis.values()) {
+            if (sp.getOmschrijving().equals(jsonPolis.getStatus())) {
+                polis.setStatus(sp);
+            }
+        }
+
         polis.setPolisNummer(jsonPolis.getPolisNummer());
         polis.setIngangsDatum(ingangsDatum);
         if (jsonPolis.getPremie() != null) {
@@ -93,6 +101,11 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         JsonPolis jsonPolis = new JsonPolis();
 
         jsonPolis.setId(polis.getId());
+        // polissen die al in het systeem staan hoeven net per se een status te
+        // hebben
+        if (polis.getStatus() != null) {
+            jsonPolis.setStatus(polis.getStatus().getOmschrijving());
+        }
         jsonPolis.setPolisNummer(polis.getPolisNummer());
         if (polis.getPremie() != null) {
             jsonPolis.setPremie(zetBedragOm(polis.getPremie()));

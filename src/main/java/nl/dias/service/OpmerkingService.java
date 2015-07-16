@@ -1,5 +1,7 @@
 package nl.dias.service;
 
+import java.util.List;
+
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -7,6 +9,7 @@ import javax.ws.rs.core.Context;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
+import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.repository.OpmerkingRepository;
 
@@ -22,8 +25,15 @@ public class OpmerkingService {
     private SchadeService schadeService;
     @InjectParam
     private HypotheekService hypotheekService;
+    @InjectParam
+    private GebruikerService gebruikerService;
     @Context
     private HttpServletRequest httpServletRequest;
+
+    public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
+        Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
+        return opmerkingRepository.alleOpmerkingenVoorRelatie(relatie);
+    }
 
     public void opslaan(Opmerking opmerking) {
         String sessie = null;

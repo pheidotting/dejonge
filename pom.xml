@@ -36,9 +36,19 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>nl.lakedigital.djfc</groupId>
+			<artifactId>gui</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
 			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
 			<artifactId>taakbeheerclient</artifactId>
-			<version>0.0.6-20141225.173550-1</version>
+			<version>0.0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
@@ -318,8 +328,41 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
+			<resource>
+				<directory>${project.build.directory}/meuk</directory>
+				<filtering>true</filtering>
+			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-shared-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputDirectory>src/main/webapp</inputDirectory>
+							<outputDirectory>${project.build.directory}/meuk</outputDirectory>
+							<includeArtifacIds>djfc-gui</includeArtifacIds>
+							<includeGroupIds>nl.lakedigital.djfc</includeGroupIds>
+							<excludeTransitive>false</excludeTransitive>
+							<filtering>false</filtering>
+							<!--use as much as needed to be specific...also scope,type,classifier 
+								etc -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin> <artifactId>maven-resources-plugin</artifactId> <version>2.7</version> 
+				<executions> <execution> <id>copy-resources</id> <phase>package</phase> <goals> 
+				<goal>copy-resources</goal> </goals> <configuration> <outputDirectory>${basedir}/target/extra-resources</outputDirectory> 
+				<resources> <resource> <directory>../djfc-gui/src/main/webapp/aa.bb</directory> 
+				<filtering>true</filtering> </resource> </resources> </configuration> </execution> 
+				</executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

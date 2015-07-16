@@ -32,6 +32,7 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
+import nl.dias.domein.StatusPolis;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
@@ -53,6 +54,10 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
+    @Column(name = "STATUS", length = 3)
+    @Enumerated(EnumType.STRING)
+    private StatusPolis status;
 
     @Column(name = "POLISNUMMER", length = 25)
     private String polisNummer;
@@ -121,6 +126,14 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     public String getPolisNummer() {
         return polisNummer;
+    }
+
+    public StatusPolis getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPolis status) {
+        this.status = status;
     }
 
     public void setPolisNummer(String polisNummer) {

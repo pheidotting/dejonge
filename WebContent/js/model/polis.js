@@ -8,55 +8,56 @@ define(['jquery',
 	function ($, ko, log, commonFunctions, moment, Bijlage, opmaak) {
 
 	return function polisModel (data){
-		var self = this;
+		var _polis = this;
 
-		self.veranderDatum = function(datum){
+		_polis.veranderDatum = function(datum){
 			datum(commonFunctions.zetDatumOm(datum()));
 		};
-		self.berekenProlongatieDatum = function(){
-			if(self.ingangsDatum() != null && self.ingangsDatum() != ""){
-				self.prolongatieDatum(moment(self.ingangsDatum(), "DD-MM-YYYY").add(1, 'y').format("DD-MM-YYYY"));
+		_polis.berekenProlongatieDatum = function(){
+			if(_polis.ingangsDatum() != null && _polis.ingangsDatum() != ""){
+				_polis.prolongatieDatum(moment(_polis.ingangsDatum(), "DD-MM-YYYY").add(1, 'y').format("DD-MM-YYYY"));
 			}
 		};
-		self.bedrag = function(bedrag){
+		_polis.bedrag = function(bedrag){
 			return opmaak.maakBedragOp(ko.utils.unwrapObservable(bedrag));
 		};
-		self.relatie = ko.observable(data.relatie);
-		self.id = ko.observable(data.id);
-		self.polisNummer = ko.observable(data.polisNummer).extend({required: true});
+		_polis.relatie = ko.observable(data.relatie);
+		_polis.id = ko.observable(data.id);
+		_polis.status = ko.observable(data.status);
+		_polis.polisNummer = ko.observable(data.polisNummer).extend({required: true});
 		if(data.ingangsDatum != undefined){
-			self.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY")).extend({required: true});
+			_polis.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY")).extend({required: true});
 		}else{
-			self.ingangsDatum = ko.observable().extend({required: true});
+			_polis.ingangsDatum = ko.observable().extend({required: true});
 		}
 		if(data.eindDatum != undefined){
-			self.eindDatum = ko.observable(moment(data.eindDatum).format("DD-MM-YYYY"));
+			_polis.eindDatum = ko.observable(moment(data.eindDatum).format("DD-MM-YYYY"));
 		}else{
-			self.eindDatum = ko.observable();
+			_polis.eindDatum = ko.observable();
 		}
 		if(data.wijzigingsDatum != undefined){
-			self.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
+			_polis.wijzigingsDatum = ko.observable(moment(data.wijzigingsDatum).format("DD-MM-YYYY"));
 		}else{
-			self.wijzigingsDatum = ko.observable();
+			_polis.wijzigingsDatum = ko.observable();
 		}
 		if(data.prolongatieDatum != undefined){
-			self.prolongatieDatum = ko.observable(moment(data.prolongatieDatum).format("DD-MM-YYYY"));
+			_polis.prolongatieDatum = ko.observable(moment(data.prolongatieDatum).format("DD-MM-YYYY"));
 		}else{
-			self.prolongatieDatum = ko.observable();
+			_polis.prolongatieDatum = ko.observable();
 		}
-		self.maatschappij = ko.observable(data.maatschappij).extend({required: true});
-		self.soort = ko.observable(data.soort).extend({required: true});
-		self.premie = ko.observable(data.premie);
-		self.betaalfrequentie = ko.observable(data.betaalfrequentie);
-		self.bedrijf = ko.observable(data.bedrijf);
-		self.omschrijvingVerzekering = ko.observable(data.omschrijvingVerzekering);
-		self.idDiv = ko.computed(function() {
+		_polis.maatschappij = ko.observable(data.maatschappij).extend({required: true});
+		_polis.soort = ko.observable(data.soort).extend({required: true});
+		_polis.premie = ko.observable(data.premie);
+		_polis.betaalfrequentie = ko.observable(data.betaalfrequentie);
+		_polis.bedrijf = ko.observable(data.bedrijf);
+		_polis.omschrijvingVerzekering = ko.observable(data.omschrijvingVerzekering);
+		_polis.idDiv = ko.computed(function() {
 	        return "collapsable" + data.id;
 		}, this);
-		self.idDivLink = ko.computed(function() {
+		_polis.idDivLink = ko.computed(function() {
 	        return "#collapsable" + data.id;
 		}, this);
-		self.className = ko.computed(function() {
+		_polis.className = ko.computed(function() {
 			var datum = moment(data.ingangsDatum);
 			var tijd = moment(datum).fromNow();
 			if(tijd.substr(tijd.length - 3) == "ago"){
@@ -73,33 +74,43 @@ define(['jquery',
 				}
 			}
 		}, this);
-		self.titel = ko.computed(function () {
+		_polis.titel = ko.computed(function () {
 			return data.soort + " (" + data.polisNummer + ")";
 		}, this);
-		self.bijlages = ko.observableArray();
+		_polis.bijlages = ko.observableArray();
 		if(data.bijlages != null){
 			$.each(data.bijlages, function(i, item){
-				self.bijlages().push(new Bijlage(item));
+				var bijlage = new Bijlage(item);
+				_polis.bijlages().push(bijlage);
 			});
 		};
 
-	    self.schadeMeldenBijPolis = function(polis){
+	    _polis.schadeMeldenBijPolis = function(polis){
 			log.debug(ko.utils.unwrapObservable(polis.id));
 			log.debug($('#polisVoorSchademelding').val());
 	    };
 
-	    self.bewerkPolis = function(polis){
+	    _polis.bewerkPolis = function(polis){
 			commonFunctions.verbergMeldingen();
 			log.debug("Polis bewerken met id " + polis.id() + " en Relatie id : " + polis.relatie());
 	    	document.location.hash = "#beherenRelatie/" + polis.relatie() + "/polis/" + polis.id();
 	    };
 
-	    self.beeindigPolis = function(polis){
+	    _polis.beeindigPolis = function(polis){
 			$.get('../dejonge/rest/medewerker/polis/beeindigen', {"id" : polis.id()});
-			self.eindDatum(moment().format("DD-MM-YYYY"));
-	    }
+			_polis.eindDatum(moment().format("DD-MM-YYYY"));
+	    };
 
-	    self.opslaan = function(polis){
+	    _polis.verwijderBijlage = function(bijlage){
+			commonFunctions.verbergMeldingen();
+			var r=confirm("Weet je zeker dat je deze bijlage wilt verwijderen?");
+			if (r==true) {
+				_polis.bijlages.remove(bijlage);
+				$.get( "../dejonge/rest/medewerker/bijlage/verwijder", {"bijlageId" : bijlage.id()}, function() {});
+			}
+		};
+
+	    _polis.opslaan = function(polis){
 	    	var result = ko.validation.group(polis, {deep: true});
 	    	if(!polis.isValid()){
 	    		result.showAllMessages(true);

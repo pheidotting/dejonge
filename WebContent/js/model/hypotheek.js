@@ -41,9 +41,9 @@ define(['jquery',
 		_this.boxI = ko.observable(data.boxI).extend({number: true});
 		_this.boxIII = ko.observable(data.boxIII).extend({number: true});
 		_this.relatie = ko.observable(_relatieId);
-		_this.hypotheekVorm = ko.observable(data.hypotheekVorm).extend({required: true});
+		_this.hypotheekVorm = ko.observable(data.hypotheekVorm);
 		_this.hypotheekBedrag = ko.observable(data.hypotheekBedrag).extend({required: true, number: true});
-		_this.rente = ko.observable(data.rente).extend({required: true, number: true});
+		_this.rente = ko.observable(data.rente).extend({number: true});
 		_this.marktWaarde = ko.observable(data.marktWaarde).extend({number: true});
 		_this.onderpand = ko.observable(data.onderpand);
 		_this.koopsom = ko.observable(data.koopsom).extend({number: true});
@@ -57,7 +57,7 @@ define(['jquery',
 	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
-	        		return false;
+	        		return true;
 	        	}
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
@@ -67,7 +67,7 @@ define(['jquery',
 	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
-	        		return false;
+	        		return true;
 	        	}
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
@@ -78,7 +78,7 @@ define(['jquery',
 	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
-	        		return false;
+	        		return true;
 	        	}
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
@@ -88,7 +88,7 @@ define(['jquery',
 	        	if(val != undefined){
 	        		return validation.valideerDatum(val);
 	        	}else{
-	        		return false;
+	        		return true;
 	        	}
 	        },
 	        message: 'Juiste invoerformaat is : dd-mm-eejj'
@@ -154,7 +154,6 @@ define(['jquery',
 		}
 		_this.bijlages = ko.observableArray();
 		if(data.bijlages != null){
-			var bijlages = [];
 			$.each(data.bijlages, function(i, item){
 				_this.bijlages.push(new Bijlage(item));
 			});

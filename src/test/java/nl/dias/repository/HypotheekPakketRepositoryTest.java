@@ -2,6 +2,7 @@ package nl.dias.repository;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import nl.dias.domein.Bedrag;
@@ -100,7 +101,7 @@ public class HypotheekPakketRepositoryTest {
         hypotheek.setOmschrijving("abcdef");
         hypotheek.setOnderpand("onderpand");
         hypotheek.setLeningNummer(leningNummer);
-        hypotheek.setRente(234);
+        hypotheek.setRente(new BigDecimal("234"));
         hypotheek.setTaxatieDatum(new LocalDate());
         hypotheek.setVrijeVerkoopWaarde(new Bedrag("567890.12"));
         hypotheek.setWaardeNaVerbouwing(new Bedrag("678901.12"));

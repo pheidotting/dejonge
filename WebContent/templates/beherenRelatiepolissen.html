@@ -30,10 +30,15 @@
 							</li>
 						</ul>
 					</div>
+					aasdfsdfasfdf sadf afsdsd
 				</h4>
 			</div>
 			<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
 				<div class="panel-body">
+					<div data-bind="if: status">
+						<span class="polisLabel">Status :</span>
+						<span name="status" data-bind="text: status"></span>
+					</div>
 					<div data-bind="if: polisNummer">
 						<span class="polisLabel">Polisnummer :</span>
 						<span name="polisNummer" data-bind="text: polisNummer"></span>
@@ -74,7 +79,6 @@
 						<span class="polisLabel">Omschrijving Verzekering :</span>
 						<span name="bedrijf" data-bind="text: omschrijvingVerzekering"></span>
 					</div>
-						
 					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
 						<div>
 							<span class="polisLabel">Bijlage :</span>

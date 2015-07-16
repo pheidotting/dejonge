@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class JsonPolis {
     private Long id;
+    private String status;
     private String polisNummer;
     private String ingangsDatum;
     private String eindDatum;
@@ -35,6 +36,14 @@ public class JsonPolis {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPolisNummer() {

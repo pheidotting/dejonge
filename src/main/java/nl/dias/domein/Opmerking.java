@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,7 @@ import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "OPMERKING")
+@NamedQueries({ @NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie") })
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
 

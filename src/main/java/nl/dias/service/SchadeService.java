@@ -94,6 +94,10 @@ public class SchadeService {
         Polis polis = polisService.lees(Long.valueOf(polisId));
         schade.setPolis(polis);
 
+        // Bijlages er bij zoeken
+        List<Bijlage> bijlages = schadeRepository.zoekBijlagesBijSchade(schade);
+        schade.getBijlages().addAll(bijlages);
+
         LOGGER.debug("Schade opslaan");
         schadeRepository.opslaan(schade);
 

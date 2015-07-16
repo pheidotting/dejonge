@@ -1,5 +1,7 @@
 package nl.dias.web.medewerker;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,6 +27,13 @@ public class OpmerkingController {
     private OpmerkingService opmerkingService;
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
+
+    @GET
+    @Path("/lijst")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JsonOpmerking> lijstOpmerkingen(Long relatie) {
+        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenVoorRelatie(relatie));
+    }
 
     @POST
     @Path("/opslaan")

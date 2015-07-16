@@ -4,18 +4,18 @@ define(['jquery',
          'commons/commonFunctions'],
 	function ($, ko, log, commonFunctions) {
 
-	return function bijlageModel (data){
-		bijlage = this;
+	return function bijlageModel (modelData){
+		thisBijlage = this;
 
-		bijlage.id = ko.observable(data.id);
-		bijlage.url = ko.computed(function() {
-	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + data.id;
+		thisBijlage.id = ko.observable(modelData.id);
+		thisBijlage.url = ko.computed(function() {
+	        return "../dejonge/rest/medewerker/bijlage/download?bijlageId=" + modelData.id;
 		}, this);
-		bijlage.bestandsNaam = ko.observable(data.bestandsNaam);
-		bijlage.soortBijlage = ko.observable(data.soortBijlage);
-		bijlage.parentId = ko.observable(data.parentId);
-		bijlage.tonen = ko.computed(function() {
-			return ko.utils.unwrapObservable(bijlage.soortBijlage) + " (" + ko.utils.unwrapObservable(bijlage.parentId) + ")";
+		thisBijlage.bestandsNaam = ko.observable(modelData.bestandsNaam);
+		thisBijlage.soortBijlage = ko.observable(modelData.soortBijlage);
+		thisBijlage.parentId = ko.observable(modelData.parentId);
+		thisBijlage.tonen = ko.computed(function() {
+			return ko.utils.unwrapObservable(thisBijlage.soortBijlage) + " (" + ko.utils.unwrapObservable(thisBijlage.parentId) + ")";
 		},this);
     };
 });

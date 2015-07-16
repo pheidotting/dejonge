@@ -31,6 +31,13 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         zetPersistenceContext(persistenceContext);
     }
 
+    public List<Relatie> zoekRelatiesOpTelefoonnummer(String telefoonnummer) {
+        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpTelefoonnummer", Relatie.class);
+        query.setParameter("telefoonnummer", telefoonnummer);
+
+        return query.getResultList();
+    }
+
     @Transactional
     public List<Relatie> alleRelaties() {
         TypedQuery<Relatie> query = getEm().createQuery("select e from Relatie e", Relatie.class);

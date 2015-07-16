@@ -9,11 +9,13 @@ requirejs.config({
     	model: '../js/model',
     	knockout: '../commons/3rdparty/knockout',
         knockoutValidation: '../commons/3rdparty/knockoutValidation/knockout.validation',
-        'blockUI': 'http://malsup.github.com/jquery.blockUI'
+        'blockUI': 'http://malsup.github.com/jquery.blockUI',
+        jqueryUI: '../commons/3rdparty/jquery-ui-1.10.3'
     },
 	shim: {
         "knockoutValidation": ["knockout"],
-        'blockUI': ['jquery']
+        'blockUI': ['jquery'],
+        'jqueryUI': ['jquery']
     },
     config: {
         moment: {

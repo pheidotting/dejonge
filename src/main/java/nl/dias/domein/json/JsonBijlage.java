@@ -10,6 +10,7 @@ public class JsonBijlage implements Comparable<JsonBijlage> {
     private String soortBijlage;
     private String url;
     private String parentId;
+    private String tonen;
 
     public String getId() {
         return id;
@@ -49,6 +50,14 @@ public class JsonBijlage implements Comparable<JsonBijlage> {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public String getTonen() {
+        return tonen;
+    }
+
+    public void setTonen(String tonen) {
+        this.tonen = tonen;
     }
 
     /**

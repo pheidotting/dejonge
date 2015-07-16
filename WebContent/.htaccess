@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule /rest/authorisatie/authorisatie/ingelogdeGebruiker$ http://37.187.43.205:8080/dejonge/rest

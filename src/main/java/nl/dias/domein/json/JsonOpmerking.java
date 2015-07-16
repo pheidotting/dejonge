@@ -13,6 +13,8 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private String medewerker;
     private String schade;
     private String hypotheek;
+    private String polis;
+    private String relatie;
 
     public Long getId() {
         return id;
@@ -60,6 +62,22 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
 
     public void setHypotheek(String hypotheek) {
         this.hypotheek = hypotheek;
+    }
+
+    public String getPolis() {
+        return polis;
+    }
+
+    public void setPolis(String polis) {
+        this.polis = polis;
+    }
+
+    public String getRelatie() {
+        return relatie;
+    }
+
+    public void setRelatie(String relatie) {
+        this.relatie = relatie;
     }
 
     @Override

@@ -14,7 +14,7 @@ define(['jquery',
 		});
 
 		bijlages.verwijderBijlage = function(bijlage){
-			verbergMeldingen();
+			commonFunctions.verbergMeldingen();
 			var r=confirm("Weet je zeker dat je deze bijlage wilt verwijderen?");
 			if (r==true) {
 				bijlages.bijlages.remove(bijlage);

@@ -11,6 +11,7 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
+import nl.dias.domein.Telefoonnummer;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 
 import org.joda.time.LocalDate;
@@ -24,6 +25,34 @@ public class GebruikerRepositoryTest {
     public void setUp() throws Exception {
         gebruikerRepository = new GebruikerRepository();
         gebruikerRepository.setPersistenceContext("unittest");
+    }
+
+    @Test
+    public void zoekRelatiesOpTelefoonnummer() {
+        Relatie relatie1 = new Relatie();
+        Relatie relatie2 = new Relatie();
+
+        Telefoonnummer telefoonnummer1 = new Telefoonnummer();
+        Telefoonnummer telefoonnummer2 = new Telefoonnummer();
+        Telefoonnummer telefoonnummer3 = new Telefoonnummer();
+
+        relatie1.getTelefoonnummers().add(telefoonnummer1);
+        relatie1.getTelefoonnummers().add(telefoonnummer2);
+        relatie2.getTelefoonnummers().add(telefoonnummer3);
+
+        gebruikerRepository.opslaan(relatie1);
+        gebruikerRepository.opslaan(relatie2);
+
+        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("1").get(0));
+        assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("1").size());
+
+        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("2").get(1));
+        assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("2").size());
+
+        assertEquals(relatie2, gebruikerRepository.zoekRelatiesOpTelefoonnummer("3"));
+        assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("3").size());
+
+        assertEquals(0, gebruikerRepository.zoekRelatiesOpTelefoonnummer("4").size());
     }
 
     @Test

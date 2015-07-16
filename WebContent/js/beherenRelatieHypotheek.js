@@ -27,6 +27,7 @@ define(['jquery',
 				}
 				$.get( "../dejonge/rest/medewerker/hypotheek/lees", {"id" : subId}, function(data) {
 					logger.debug("Gegevens opgehaald voor hypotheek, applyBindings");
+					logger.debug(data);
 					ko.applyBindings(new hypotheek(data));
 				});
 			});

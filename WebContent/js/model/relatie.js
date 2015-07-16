@@ -3,10 +3,11 @@ define(['jquery',
          'knockout',
          'model/rekeningNummer',
          'model/telefoonNummer',
+         'model/opmerking',
          'moment',
          'commons/3rdparty/log',
          "commons/validation"],
-	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, moment, log, validation) {
+	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, Opmerking, moment, log, validation) {
 
 	return function relatieModel (data){
 		_thisRelatie = this;
@@ -38,6 +39,12 @@ define(['jquery',
 		_thisRelatie.plaats = ko.observable(data.plaats);
 		_thisRelatie.bsn = ko.observable(data.bsn);
 		_thisRelatie.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
+		_thisRelatie.opmerkingen = ko.observableArray();
+		if(data.opmerkingen != null){
+			$.each(data.opmerkingen, function(i, item) {
+				_thisRelatie.opmerkingen().push(new Opmerking(item));
+			});
+		}
 		_thisRelatie.rekeningnummers = ko.observableArray();
 		if(data.rekeningnummers != null){
 			$.each(data.rekeningnummers, function(i, item) {
@@ -83,9 +90,36 @@ define(['jquery',
 //			_thisRelatie.telefoonnummers().remove(telefoon);
 			_thisRelatie.telefoonnummers.valueHasMutated();
 		};
+		
+		_thisRelatie.nieuweOpmerking = ko.observable();
+		_thisRelatie.opmerkingOpslaan = function(){
+			log.debug(_thisRelatie.nieuweOpmerking());
+			if(_thisRelatie.nieuweOpmerking() != ''){
+		    	$.ajax({
+		            url: '/rest/authorisatie/authorisatie/ingelogdeGebruiker',
+		            type: 'GET',
+		            contentType: 'application/json; charset=utf-8',
+		            success: function (response) {
+	            		var opmerking = new Opmerking('');
+	            		opmerking.medewerker(response.gebruikersnaam);
+	            		opmerking.tijd(new moment());
+	            		opmerking.opmerking(_thisRelatie.nieuweOpmerking());
+	            		
+	            		log.debug(ko.toJSON(opmerking));
+
+	            		_thisRelatie.opmerkingen().push(opmerking);
+//	            		_thisRelatie.valueHasMutated();
+	            		_thisRelatie.nieuweOpmerking('');
+	            		
+		            }
+		    	});
+			}
+	    };
 
 		_thisRelatie.opslaan = function(){
-			_thisRelatie.postcode(_thisRelatie.postcode().replace(" ", ""));
+			if(_thisRelatie.postcode() != null){
+				_thisRelatie.postcode(_thisRelatie.postcode().replace(" ", ""));
+			}
 	    	var result = ko.validation.group(_thisRelatie, {deep: true});
 	    	if(!_thisRelatie.isValid()){
 	    		result.showAllMessages(true);

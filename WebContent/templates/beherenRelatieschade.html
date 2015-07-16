@@ -48,6 +48,18 @@
 	<label for="omschrijving">Omschrijving</label>
 	<textarea class="form-control" id="omschrijving" name="omschrijving" style="width:600px; height:200px;" data-bind="value: omschrijving"></textarea>
 </div>
+	<table class="table">
+		<tr>
+			<th>Bijlage</th>
+			<!--th>Verwijderen</th-->
+		</tr>
+		<tbody data-bind="foreach: bijlages">
+			<tr>
+				<td><a data-bind="attr:{href: url}, title: bestandsNaam, text: bestandsNaam" target="_blank"></a></td>
+				<!--td data-bind="click: $parent.verwijderBijlage" style="cursor:pointer;">X</td-->
+			</tr>
+		</tbody>
+	</table>
 <div class="form-group" id="uploadSchade1">
 	<label for="file">&nbsp;</label>
 	<input type="file" id="uploadSchade1File" name="uploadSchade1File" onchange="nieuweSchadeUpload(1);" />
