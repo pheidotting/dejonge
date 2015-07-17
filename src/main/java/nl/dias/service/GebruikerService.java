@@ -1,51 +1,19 @@
 package nl.dias.service;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Named;
-import javax.persistence.NoResultException;
-
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.BurgerlijkeStaat;
-import nl.dias.domein.DIASAdres;
-import nl.dias.domein.DIASBedrijf;
-import nl.dias.domein.DIASGebruiker;
-import nl.dias.domein.DIASTelefoonNummer;
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Geslacht;
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Sessie;
-import nl.dias.domein.Telefoonnummer;
-import nl.dias.domein.TelefoonnummerSoort;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
-import nl.dias.repository.BedrijfRepository;
-import nl.dias.repository.DIASAdresRepository;
-import nl.dias.repository.DIASBedrijfRepository;
-import nl.dias.repository.DIASGebruikerRepository;
-import nl.dias.repository.DIASTelefoonNummerRepository;
-import nl.dias.repository.GebruikerRepository;
-import nl.dias.repository.HypotheekRepository;
-import nl.dias.repository.KantoorRepository;
-import nl.dias.repository.PolisRepository;
+import nl.dias.repository.*;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -54,7 +22,14 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Named
 public class GebruikerService {
@@ -441,6 +416,24 @@ public class GebruikerService {
         for (Gebruiker g : gebruikerRepository.zoekOpAdres(zoekTerm)) {
             relaties.add((Relatie) g);
         }
+        LOGGER.debug("Zoeken op telefoonnummer");
+        String zoekTermNumeriek = zoekTerm.replace(" ", "").replace("-", "");
+        try {
+            Long.valueOf(zoekTermNumeriek);
+        } catch (NumberFormatException nfe) {
+            zoekTermNumeriek = null;
+            LOGGER.trace(nfe);
+        }
+        if (zoekTermNumeriek != null) {
+            for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {
+                relaties.add((Relatie) g);
+            }
+        }
+        LOGGER.debug("Zoeken op bedrijfnsaam");
+        for (Gebruiker g : gebruikerRepository.zoekRelatiesOpBedrijfsnaam(zoekTerm)) {
+            relaties.add((Relatie) g);
+        }
+
         LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
         Polis polis = null;
         try {

@@ -1,22 +1,16 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import nl.dias.domein.*;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import nl.dias.domein.Beheerder;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Sessie;
-import nl.dias.domein.Telefoonnummer;
-import nl.lakedigital.loginsystem.exception.NietGevondenException;
-
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class GebruikerRepositoryTest {
     private GebruikerRepository gebruikerRepository;
@@ -33,12 +27,18 @@ public class GebruikerRepositoryTest {
         Relatie relatie2 = new Relatie();
 
         Telefoonnummer telefoonnummer1 = new Telefoonnummer();
+        telefoonnummer1.setTelefoonnummer("1");
         Telefoonnummer telefoonnummer2 = new Telefoonnummer();
+        telefoonnummer2.setTelefoonnummer("2");
         Telefoonnummer telefoonnummer3 = new Telefoonnummer();
+        telefoonnummer3.setTelefoonnummer("3");
 
         relatie1.getTelefoonnummers().add(telefoonnummer1);
+        telefoonnummer1.setRelatie(relatie1);
         relatie1.getTelefoonnummers().add(telefoonnummer2);
+        telefoonnummer2.setRelatie(relatie1);
         relatie2.getTelefoonnummers().add(telefoonnummer3);
+        telefoonnummer3.setRelatie(relatie2);
 
         gebruikerRepository.opslaan(relatie1);
         gebruikerRepository.opslaan(relatie2);
@@ -46,13 +46,41 @@ public class GebruikerRepositoryTest {
         assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("1").get(0));
         assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("1").size());
 
-        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("2").get(1));
+        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("2").get(0));
         assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("2").size());
 
-        assertEquals(relatie2, gebruikerRepository.zoekRelatiesOpTelefoonnummer("3"));
+        assertEquals(relatie2, gebruikerRepository.zoekRelatiesOpTelefoonnummer("3").get(0));
         assertEquals(1, gebruikerRepository.zoekRelatiesOpTelefoonnummer("3").size());
 
         assertEquals(0, gebruikerRepository.zoekRelatiesOpTelefoonnummer("4").size());
+    }
+
+    @Test
+    public void zoekOpBedrijfsnaam() {
+        Relatie relatie = new Relatie();
+        Relatie relatie1 = new Relatie();
+
+        Bedrijf bedrijf = new Bedrijf();
+        Bedrijf bedrijf1 = new Bedrijf();
+        bedrijf.setNaam("aabb");
+        bedrijf1.setNaam("bbcc");
+        relatie.getBedrijven().add(bedrijf);
+        bedrijf.setRelatie(relatie);
+        relatie1.getBedrijven().add(bedrijf1);
+        bedrijf1.setRelatie(relatie1);
+
+        gebruikerRepository.opslaan(relatie);
+        gebruikerRepository.opslaan(relatie1);
+
+        assertEquals(1, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("aa").size());
+        assertEquals(relatie, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("aa").get(0));
+
+        assertEquals(2, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("bb").size());
+        assertEquals(relatie, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("bb").get(0));
+        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("bb").get(1));
+
+        assertEquals(1, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("cc").size());
+        assertEquals(relatie1, gebruikerRepository.zoekRelatiesOpBedrijfsnaam("cc").get(0));
     }
 
     @Test

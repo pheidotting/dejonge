@@ -1,26 +1,6 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import nl.dias.domein.Adres;
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Sessie;
-import nl.dias.domein.Telefoonnummer;
+import nl.dias.domein.*;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.messaging.sender.AanmakenTaakSender;
@@ -36,13 +16,23 @@ import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class GebruikerServiceTest extends EasyMockSupport {
     private GebruikerRepository repository;
@@ -568,6 +558,13 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatieZoekOpAdres.setIdentificatie("relatieZoekOpAdresId");
         relatiesZoekOpAdres.add(relatieZoekOpAdres);
 
+        List<Relatie> relatiesZoekOpBedrijfsnaam = new ArrayList<>();
+        Relatie relatieZoekOpBedrijfsnaam = new Relatie();
+        Bedrijf bedrijf = new Bedrijf();
+        bedrijf.setNaam("naamBedrijf");
+        relatieZoekOpBedrijfsnaam.getBedrijven().add(bedrijf);
+        relatiesZoekOpBedrijfsnaam.add(relatieZoekOpBedrijfsnaam);
+
         Polis polis = new AutoVerzekering();
         Relatie relatiePolis = new Relatie();
         polis.setRelatie(relatiePolis);
@@ -576,6 +573,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         expect(repository.zoekOpAdres(zoekterm)).andReturn(relatiesZoekOpAdres);
         expect(kantoorRepository.lees(1L)).andReturn(kantoor);
         expect(polisRepository.zoekOpPolisNummer(zoekterm, kantoor)).andReturn(polis);
+        expect(repository.zoekRelatiesOpBedrijfsnaam("a")).andReturn(relatiesZoekOpBedrijfsnaam);
 
         replayAll();
 
@@ -583,6 +581,35 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatiesVerwacht.add(relatieZoekOpNaam);
         relatiesVerwacht.add(relatieZoekOpAdres);
         relatiesVerwacht.add(relatiePolis);
+
+        assertEquals(relatiesVerwacht.size(), service.zoekOpNaamAdresOfPolisNummer(zoekterm).size());
+    }
+
+
+    @Test
+    public void testZoekOpNaamAdresOfPolisNummerMetTelefoonnummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        String zoekterm = "06-12 345 678";
+        Kantoor kantoor = new Kantoor();
+
+        Relatie relatieTelefoonnummer = new Relatie();
+        Telefoonnummer telefoonnummer = new Telefoonnummer();
+        telefoonnummer.setTelefoonnummer("031");
+        relatieTelefoonnummer.getTelefoonnummers().add(telefoonnummer);
+        telefoonnummer.setRelatie(relatieTelefoonnummer);
+        List<Relatie> relatiesTelefoonnummer = new ArrayList<>();
+        relatiesTelefoonnummer.add(relatieTelefoonnummer);
+
+        expect(repository.zoekOpNaam(zoekterm)).andReturn(new ArrayList<Gebruiker>());
+        expect(repository.zoekOpAdres(zoekterm)).andReturn(new ArrayList<Relatie>());
+        expect(kantoorRepository.lees(1L)).andReturn(kantoor);
+        expect(polisRepository.zoekOpPolisNummer(zoekterm, kantoor)).andReturn(null);
+        expect(repository.zoekRelatiesOpTelefoonnummer("0612345678")).andReturn(relatiesTelefoonnummer);
+        expect(repository.zoekRelatiesOpBedrijfsnaam(zoekterm)).andReturn(new ArrayList<Relatie>());
+
+        replayAll();
+
+        List<Relatie> relatiesVerwacht = new ArrayList<>();
+        relatiesVerwacht.add(relatieTelefoonnummer);
 
         assertEquals(relatiesVerwacht.size(), service.zoekOpNaamAdresOfPolisNummer(zoekterm).size());
     }
@@ -606,18 +633,25 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatieZoekOpAdres.setIdentificatie("relatieZoekOpAdresId");
         relatiesZoekOpAdres.add(relatieZoekOpAdres);
 
-        System.out.println(relatieZoekOpAdres.equals(relatieZoekOpNaam));
+        List<Relatie> relatiesZoekOpBedrijfsnaam = new ArrayList<>();
+        Relatie relatieZoekOpBedrijfsnaam = new Relatie();
+        Bedrijf bedrijf = new Bedrijf();
+        bedrijf.setNaam("naamBedrijf");
+        relatieZoekOpBedrijfsnaam.getBedrijven().add(bedrijf);
+        relatiesZoekOpBedrijfsnaam.add(relatieZoekOpBedrijfsnaam);
 
         expect(repository.zoekOpNaam(zoekterm)).andReturn(relatiesZoekOpNaam);
         expect(repository.zoekOpAdres(zoekterm)).andReturn(relatiesZoekOpAdres);
         expect(kantoorRepository.lees(1L)).andReturn(kantoor);
         expect(polisRepository.zoekOpPolisNummer(zoekterm, kantoor)).andReturn(null);
+        expect(repository.zoekRelatiesOpBedrijfsnaam("a")).andReturn(relatiesZoekOpBedrijfsnaam);
 
         replayAll();
 
         List<Relatie> relatiesVerwacht = new ArrayList<>();
         relatiesVerwacht.add(relatieZoekOpNaam);
         relatiesVerwacht.add(relatieZoekOpAdres);
+        relatiesVerwacht.add(relatieZoekOpBedrijfsnaam);
 
         assertEquals(relatiesVerwacht.size(), service.zoekOpNaamAdresOfPolisNummer(zoekterm).size());
     }

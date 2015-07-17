@@ -1,39 +1,16 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -43,7 +20,8 @@ import org.joda.time.LocalDate;
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"),
         @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"),
         @NamedQuery(name = "Relatie.zoekOpAdres", query = "select r from Relatie r where r.adres.straat like :adres or r.adres.plaats like :adres"),
-        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r where r.telefoonummers IN (select t from Telefoonnummer t where t.telefoonnummer = :telefoonnummer)") })
+        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"),
+        @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")})
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 
