@@ -464,7 +464,7 @@
 					</execution>
 				</executions>
 			</plugin>
-	</--plugins>
+		</plugins>
 		<finalName>dejonge</finalName>
 	</build>
 </project>
