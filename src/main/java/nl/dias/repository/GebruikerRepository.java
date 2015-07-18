@@ -1,18 +1,21 @@
 package nl.dias.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 @Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
@@ -33,14 +36,26 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpTelefoonnummer", Relatie.class);
         query.setParameter("telefoonnummer", telefoonnummer);
 
-        return query.getResultList();
+        List<Relatie> relaties = new ArrayList<Relatie>();
+
+        for (Relatie relatie : query.getResultList()) {
+            relaties.add(relatie);
+        }
+
+        return relaties;
     }
 
     public List<Relatie> zoekRelatiesOpBedrijfsnaam(String bedrijfsnaam) {
         TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpBedrijfsnaam", Relatie.class);
         query.setParameter("bedrijfsnaam", "%" + bedrijfsnaam + "%");
 
-        return query.getResultList();
+        List<Relatie> relaties = new ArrayList<Relatie>();
+
+        for (Relatie relatie : query.getResultList()) {
+            relaties.add(relatie);
+        }
+
+        return relaties;
     }
 
     @Transactional
