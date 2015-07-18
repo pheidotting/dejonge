@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
 			<artifactId>taakbeheerclient</artifactId>
-			<version>0.0.9-20150718.171431-1</version>
+			<version>0.0.10</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
@@ -99,7 +99,7 @@
 		<dependency>
 			<groupId>nl.lakedigital.as</groupId>
 			<artifactId>messaging</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.jms</groupId>
