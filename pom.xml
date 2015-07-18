@@ -36,11 +36,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>nl.lakedigital.djfc</groupId>
-			<artifactId>gui</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.5.0</version>
@@ -254,7 +249,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>LATEST</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
