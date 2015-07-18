@@ -25,12 +25,12 @@
 		<repository>
 			<id>Lake Digital</id>
 			<name>Lake Digital-releases</name>
-			<url>http://37.59.107.9:8081/artifactory/libs-release-local</url>
+			<url>http://√:8081/artifactory/libs-release-local</url>
 		</repository>
 		<repository>
 			<id>Lake Digital-snapshot</id>
 			<name>Lake Digital-snapshots</name>
-			<url>http://37.59.107.9:8081/artifactory/libs-snapshot-local</url>
+			<url>http://√:8081/artifactory/libs-snapshot-local</url>
 		</repository>
 	</repositories>
 
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>nl.lakedigital.as</groupId>
 			<artifactId>messaging</artifactId>
-			<version>0.0.3-20141230.203935-1</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.jms</groupId>
@@ -159,7 +159,7 @@
 		<dependency>
 			<groupId>nl.lakedigital</groupId>
 			<artifactId>hulpmiddelen</artifactId>
-			<version>0.0.5-20150101.215035-1</version>
+			<version>0.0.4</version>
 		</dependency>
 		<!--dependency> <groupId>nl.lakedigital</groupId> <artifactId>inloggen</artifactId> 
 			<version>0.0.1-SNAPSHOT</version> </dependency -->
@@ -327,7 +327,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<plugins>
+		<!--plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -345,12 +345,10 @@
 							<includeGroupIds>nl.lakedigital.djfc</includeGroupIds>
 							<excludeTransitive>false</excludeTransitive>
 							<filtering>false</filtering>
-							<!--use as much as needed to be specific...also scope,type,classifier 
-								etc -->
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 			<!-- <plugin> <artifactId>maven-resources-plugin</artifactId> <version>2.7</version> 
 				<executions> <execution> <id>copy-resources</id> <phase>package</phase> <goals> 
 				<goal>copy-resources</goal> </goals> <configuration> <outputDirectory>${basedir}/target/extra-resources</outputDirectory> 
@@ -465,7 +463,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+	</--plugins>
 		<finalName>dejonge</finalName>
 	</build>
 </project>
