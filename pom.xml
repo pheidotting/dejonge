@@ -25,12 +25,12 @@
 		<repository>
 			<id>Lake Digital</id>
 			<name>Lake Digital-releases</name>
-			<url>http://151.80.135.111:8081/artifactory/libs-release-local</url>
+			<url>http://dev.lakedigital.nl:8081/artifactory/libs-release-local</url>
 		</repository>
 		<repository>
 			<id>Lake Digital-snapshot</id>
 			<name>Lake Digital-snapshots</name>
-			<url>http://151.80.135.111:8081/artifactory/libs-snapshot-local</url>
+			<url>http://dev.lakedigital.nl:8081/artifactory/libs-snapshot-local</url>
 		</repository>
 	</repositories>
 
