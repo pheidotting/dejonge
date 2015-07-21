@@ -95,3 +95,7 @@ input[type="checkbox"] {
 	font-weight:bold;
 	padding-left:200px;
 }
+
+input[type=file] {
+	display:inline;
+}

@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>nl.lakedigital.as.taakbeheer.client</groupId>
 			<artifactId>taakbeheerclient</artifactId>
-			<version>0.0.11</version>
+			<version>0.0.13</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.dozer</groupId>

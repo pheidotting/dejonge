@@ -1,50 +1,37 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.*;
+import nl.dias.repository.HypotheekPakketRepository;
+import nl.dias.repository.HypotheekRepository;
+import nl.dias.web.mapper.HypotheekMapper;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.HypotheekPakket;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
-import nl.dias.domein.SoortHypotheek;
-import nl.dias.repository.HypotheekPakketRepository;
-import nl.dias.repository.HypotheekRepository;
-import nl.dias.web.mapper.HypotheekMapper;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
 
-import org.easymock.EasyMockSupport;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class HypotheekServiceTest extends EasyMockSupport {
-    private HypotheekService service;
+    @TestSubject
+    private HypotheekService service = new HypotheekService();
+    @Mock
     private HypotheekRepository repository;
+    @Mock
     private GebruikerService gebruikerService;
+    @Mock
     private HypotheekPakketRepository hypotheekPakketRepository;
+    @Mock
     private HypotheekMapper hypotheekMapper;
 
-    @Before
-    public void setUp() throws Exception {
-        service = new HypotheekService();
-
-        repository = createMock(HypotheekRepository.class);
-        service.setHypotheekRepository(repository);
-
-        gebruikerService = createMock(GebruikerService.class);
-        service.setGebruikerService(gebruikerService);
-
-        hypotheekPakketRepository = createMock(HypotheekPakketRepository.class);
-        service.setHypotheekPakketRepository(hypotheekPakketRepository);
-
-        hypotheekMapper = createMock(HypotheekMapper.class);
-        service.setHypotheekMapper(hypotheekMapper);
-    }
 
     @After
     public void tearDown() throws Exception {
@@ -259,12 +246,14 @@ public class HypotheekServiceTest extends EasyMockSupport {
         bijlage.setHypotheek(hypotheek);
         bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
         bijlage.setS3Identificatie("s3Identificatie");
+        bijlage.setOmschrijving("omschrijving");
+
         repository.opslaanBijlage(bijlage);
         expectLastCall();
 
         replayAll();
 
-        service.slaBijlageOp(3L, "s3Identificatie");
+        service.slaBijlageOp(3L, "s3Identificatie", "omschrijving");
     }
 
 }

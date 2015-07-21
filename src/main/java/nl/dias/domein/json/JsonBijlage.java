@@ -11,6 +11,8 @@ public class JsonBijlage implements Comparable<JsonBijlage> {
     private String url;
     private String parentId;
     private String tonen;
+    private String omschrijving;
+    private String datumUpload;
 
     public String getId() {
         return id;
@@ -58,6 +60,22 @@ public class JsonBijlage implements Comparable<JsonBijlage> {
 
     public void setTonen(String tonen) {
         this.tonen = tonen;
+    }
+
+    public String getOmschrijving() {
+        return omschrijving;
+    }
+
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
+    }
+
+    public String getDatumUpload() {
+        return datumUpload;
+    }
+
+    public void setDatumUpload(String datumUpload) {
+        this.datumUpload = datumUpload;
     }
 
     /**

@@ -1,42 +1,32 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.*;
+import nl.dias.domein.polis.Polis;
+import nl.dias.repository.SchadeRepository;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
-import nl.dias.domein.SoortBijlage;
-import nl.dias.domein.SoortSchade;
-import nl.dias.domein.StatusSchade;
-import nl.dias.domein.polis.Polis;
-import nl.dias.repository.SchadeRepository;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
 
-import org.easymock.EasyMockSupport;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class SchadeServiceTest extends EasyMockSupport {
-    private SchadeService service;
+    @TestSubject
+    private SchadeService service = new SchadeService();
+    @Mock
     private SchadeRepository schadeRepository;
+    @Mock
     private PolisService polisService;
-
-    @Before
-    public void setUp() throws Exception {
-        service = new SchadeService();
-
-        schadeRepository = createMock(SchadeRepository.class);
-        service.setSchadeRepository(schadeRepository);
-
-        polisService = createMock(PolisService.class);
-        service.setPolisService(polisService);
-    }
 
     @Test
     public void testSoortenSchade() {
@@ -99,6 +89,11 @@ public class SchadeServiceTest extends EasyMockSupport {
         schade.setOpmerkingen(new HashSet<Opmerking>());
         expectLastCall();
 
+        Set<Bijlage> bijlageSet = new HashSet<>();
+        List<Bijlage> bijlages = new ArrayList<>();
+        expect(schadeRepository.zoekBijlagesBijSchade(schade)).andReturn(bijlages);
+        expect(schade.getBijlages()).andReturn(bijlageSet);
+
         schadeRepository.opslaan(schade);
         expectLastCall();
 
@@ -137,6 +132,11 @@ public class SchadeServiceTest extends EasyMockSupport {
         expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
         schade.setOpmerkingen(new HashSet<Opmerking>());
         expectLastCall();
+
+        Set<Bijlage> bijlageSet = new HashSet<>();
+        List<Bijlage> bijlages = new ArrayList<>();
+        expect(schadeRepository.zoekBijlagesBijSchade(schade)).andReturn(bijlages);
+        expect(schade.getBijlages()).andReturn(bijlageSet);
 
         schadeRepository.opslaan(schade);
         expectLastCall();
@@ -213,6 +213,7 @@ public class SchadeServiceTest extends EasyMockSupport {
         Bijlage bijlage = new Bijlage();
         bijlage.setSoortBijlage(SoortBijlage.SCHADE);
         bijlage.setS3Identificatie(s3Identificatie);
+        bijlage.setOmschrijving("Omschrijving");
 
         expect(schadeRepository.lees(schadeId)).andReturn(schade);
 
@@ -221,7 +222,7 @@ public class SchadeServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.slaBijlageOp(schadeId, s3Identificatie);
+        service.slaBijlageOp(schadeId, s3Identificatie, "Omschrijving");
 
         verifyAll();
     }

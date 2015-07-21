@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<context:component-scan base-package="nl.dias" />
 
@@ -89,6 +88,42 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<bean name="verstuurAanmakenTaakJob"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="nl.dias.batch.jobs.VerstuurAanmakenTaakJob" />
+	</bean>
+
+	<!-- Opslaan Bestand -->
+	<!-- Default Destination Queue Definition -->
+	<!--Moet nog ooit
+    <bean id="opslaanBestandDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="opslaanBestandQueue" />
+    </bean>
+    -->
+
+	<!-- opslaanBestandTemplate Definition -->
+	<!--Moet nog ooit
+    <bean id="opslaanBestandTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="opslaanBestandDestination" />
+    </bean>
+    -->
+
+	<!-- Message Sender Definition -->
+	<!--Moet nog ooit
+    <bean id="opslaanBestandSender" class="nl.lakedigital.archief.messaging.sender.OpslaanBestandSender">
+        <constructor-arg index="0" ref="opslaanBestandTemplate" />
+    </bean>
+    -->
+	<!-- /Opslaan Bestand -->
+
+	<!-- Bestand Gelezen -->
+	<!-- Default Destination Queue Definition -->
+	<bean id="bestandGelezenDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="bestandGelezenQueue"/>
+	</bean>
+
+	<!-- bestandGelezenTemplate Definition -->
+	<bean id="bestandGelezenTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="defaultDestination" ref="bestandGelezenDestination"/>
 	</bean>
 
 	<!--bean id="simpleTriggert"

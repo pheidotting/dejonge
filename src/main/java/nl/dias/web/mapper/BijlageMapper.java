@@ -1,17 +1,16 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDateTime;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
 
 @Named
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
@@ -38,6 +37,10 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
         if (archiefBestand != null) {
             json.setBestandsNaam(archiefBestand.getBestandsnaam());
+        }
+        json.setOmschrijving(bijlage.getOmschrijving());
+        if (archiefBestand != null && archiefBestand.getDatumOpgeslagen() != null) {
+            json.setDatumUpload(new LocalDateTime(archiefBestand.getDatumOpgeslagen()).toString("dd-MM-yyyy HH:mm"));
         }
 
         String parentId = null;
