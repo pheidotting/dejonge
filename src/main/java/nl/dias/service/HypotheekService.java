@@ -1,24 +1,16 @@
 package nl.dias.service;
 
-import java.util.List;
-
-import javax.inject.Named;
-
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.HypotheekPakket;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
-import nl.dias.domein.SoortHypotheek;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
 import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.util.List;
 
 @Named
 public class HypotheekService {
@@ -143,13 +135,14 @@ public class HypotheekService {
         return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
 
-    public void slaBijlageOp(Long hypotheekId, String s3Identificatie) {
+    public void slaBijlageOp(Long hypotheekId, String s3Identificatie, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
         bijlage.setHypotheek(leesHypotheek(hypotheekId));
         bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
         bijlage.setS3Identificatie(s3Identificatie);
+        bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
 

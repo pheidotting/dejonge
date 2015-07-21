@@ -1,36 +1,31 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.AangifteRepository;
-
+import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.joda.time.LocalDate;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.*;
+
+@RunWith(EasyMockRunner.class)
 public class AangifteServiceTest extends EasyMockSupport {
+    @TestSubject
+    private AangifteService aangifteService = new AangifteService();
+    @Mock
     private AangifteRepository aangifteRepository;
-    private AangifteService aangifteService;
-
-    @Before
-    public void setUp() throws Exception {
-        aangifteService = new AangifteService();
-
-        aangifteRepository = createMock(AangifteRepository.class);
-        aangifteService.setAangifteRepository(aangifteRepository);
-    }
 
     @After
     public void cleanUp() {

@@ -1,21 +1,13 @@
 package nl.dias.service;
 
-import java.util.List;
-
-import javax.inject.Named;
-
-import nl.dias.domein.Aangifte;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
 import nl.dias.repository.AangifteRepository;
-
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.util.List;
 
 @Named
 public class AangifteService {
@@ -40,13 +32,14 @@ public class AangifteService {
         return aangifteRepository.lees(id);
     }
 
-    public void slaAangifteOp(Aangifte aangifte, String s3Identificatie) {
+    public void slaAangifteOp(Aangifte aangifte, String s3Identificatie, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
         bijlage.setAangifte(aangifte);
         bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
         bijlage.setS3Identificatie(s3Identificatie);
+        bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
 

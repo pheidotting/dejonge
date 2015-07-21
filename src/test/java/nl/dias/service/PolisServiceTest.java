@@ -1,72 +1,48 @@
 package nl.dias.service;
 
+import nl.dias.domein.*;
+import nl.dias.domein.json.JsonPolis;
+import nl.dias.domein.polis.*;
+import nl.dias.repository.KantoorRepository;
+import nl.dias.repository.PolisRepository;
+import nl.lakedigital.archief.service.ArchiefService;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
-import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
-import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.polis.AutoVerzekering;
-import nl.dias.domein.polis.Betaalfrequentie;
-import nl.dias.domein.polis.CamperVerzekering;
-import nl.dias.domein.polis.FietsVerzekering;
-import nl.dias.domein.polis.MobieleApparatuurVerzekering;
-import nl.dias.domein.polis.Polis;
-import nl.dias.repository.KantoorRepository;
-import nl.dias.repository.PolisRepository;
-import nl.lakedigital.archief.service.ArchiefService;
-
-import org.easymock.EasyMockSupport;
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class PolisServiceTest extends EasyMockSupport {
-    private PolisService polisService;
+    @TestSubject
+    private PolisService polisService = new PolisService();
 
+    @Mock
     private PolisRepository polisRepository;
+    @Mock
     private ArchiefService archiefService;
+    @Mock
     private GebruikerService gebruikerService;
+    @Mock
     private KantoorRepository kantoorRepository;
+    @Mock
     private BedrijfService bedrijfService;
+    @Mock
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
-
-    @Before
-    public void setUp() throws Exception {
-        polisService = new PolisService();
-
-        polisRepository = createMock(PolisRepository.class);
-        polisService.setPolisRepository(polisRepository);
-
-        archiefService = createMock(ArchiefService.class);
-        polisService.setArchiefService(archiefService);
-
-        gebruikerService = createMock(GebruikerService.class);
-        polisService.setGebruikerService(gebruikerService);
-
-        kantoorRepository = createMock(KantoorRepository.class);
-        polisService.setKantoorRepository(kantoorRepository);
-
-        bedrijfService = createMock(BedrijfService.class);
-        polisService.setBedrijfService(bedrijfService);
-
-        verzekeringsMaatschappijService = createMock(VerzekeringsMaatschappijService.class);
-        polisService.setVerzekeringsMaatschappijService(verzekeringsMaatschappijService);
-    }
 
     @After
     public void after() {
@@ -107,6 +83,12 @@ public class PolisServiceTest extends EasyMockSupport {
     public void testOpslaanPolis() {
         AutoVerzekering polis = createMock(AutoVerzekering.class);
         Relatie relatie = createMock(Relatie.class);
+
+        List<Bijlage> bijlages = new ArrayList<>();
+        Set<Bijlage> bijlagesSet = new HashSet<>();
+
+        expect(polisRepository.zoekBijlagesBijPolis(polis)).andReturn(bijlages);
+        expect(polis.getBijlages()).andReturn(bijlagesSet);
 
         polisRepository.opslaan(polis);
         expectLastCall();
@@ -153,12 +135,16 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testSlaBijlageOp() {
+        String S3IDENTIFICATIE = "s3Identificatie";
+        String OMSCHRIJVING = "omschrijvingBijlage";
+
         FietsVerzekering fietsVerzekering = new FietsVerzekering();
 
         Bijlage bijlage = new Bijlage();
         bijlage.setPolis(fietsVerzekering);
         bijlage.setSoortBijlage(SoortBijlage.POLIS);
-        bijlage.setS3Identificatie("s3Identificatie");
+        bijlage.setS3Identificatie(S3IDENTIFICATIE);
+        bijlage.setOmschrijving(OMSCHRIJVING);
 
         expect(polisRepository.lees(1L)).andReturn(fietsVerzekering);
 
@@ -167,7 +153,7 @@ public class PolisServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        polisService.slaBijlageOp(1L, "s3Identificatie");
+        polisService.slaBijlageOp(1L, S3IDENTIFICATIE, OMSCHRIJVING);
     }
 
     @Test

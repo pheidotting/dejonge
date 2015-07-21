@@ -1,21 +1,13 @@
 package nl.dias.service;
 
-import java.util.List;
-
-import javax.inject.Named;
-
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
-import nl.dias.domein.SoortBijlage;
-import nl.dias.domein.SoortSchade;
-import nl.dias.domein.StatusSchade;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
-
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.util.List;
 
 @Named
 public class SchadeService {
@@ -51,13 +43,14 @@ public class SchadeService {
         schadeRepository.verwijder(schade);
     }
 
-    public void slaBijlageOp(Long schadeId, String s3Identificatie) {
+    public void slaBijlageOp(Long schadeId, String s3Identificatie, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
         bijlage.setSchade(schadeRepository.lees(schadeId));
         bijlage.setSoortBijlage(SoortBijlage.SCHADE);
         bijlage.setS3Identificatie(s3Identificatie);
+        bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
 

@@ -1,27 +1,12 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "BIJLAGE")
@@ -62,6 +47,9 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     @Column(name = "S3")
     private String s3Identificatie;
+
+    @Column(name = "OMSCHRIJVING")
+    private String omschrijving;
 
     @Override
     public Long getId() {
@@ -119,6 +107,14 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setS3Identificatie(String s3Identificatie) {
         this.s3Identificatie = s3Identificatie;
+    }
+
+    public String getOmschrijving() {
+        return omschrijving;
+    }
+
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
     }
 
     @Override
