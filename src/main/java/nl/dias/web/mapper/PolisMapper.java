@@ -1,12 +1,6 @@
 package nl.dias.web.mapper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
@@ -17,13 +11,16 @@ import nl.dias.domein.polis.PolisComperator;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Named
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
@@ -70,6 +67,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
 
         polis.setPolisNummer(jsonPolis.getPolisNummer());
+        polis.setKenmerk(jsonPolis.getKenmerk());
         polis.setIngangsDatum(ingangsDatum);
         if (jsonPolis.getPremie() != null) {
             polis.setPremie(new Bedrag(jsonPolis.getPremie().replace(",", ".")));
@@ -107,6 +105,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             jsonPolis.setStatus(polis.getStatus().getOmschrijving());
         }
         jsonPolis.setPolisNummer(polis.getPolisNummer());
+        jsonPolis.setKenmerk(polis.getKenmerk());
         if (polis.getPremie() != null) {
             jsonPolis.setPremie(zetBedragOm(polis.getPremie()));
         }

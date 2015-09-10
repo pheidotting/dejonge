@@ -1,15 +1,16 @@
 package nl.dias.domein.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonPolis {
     private Long id;
     private String status;
     private String polisNummer;
+    private String kenmerk;
     private String ingangsDatum;
     private String eindDatum;
     private String premie;
@@ -52,6 +53,14 @@ public class JsonPolis {
 
     public void setPolisNummer(String polisNummer) {
         this.polisNummer = polisNummer;
+    }
+
+    public String getKenmerk() {
+        return kenmerk;
+    }
+
+    public void setKenmerk(String kenmerk) {
+        this.kenmerk = kenmerk;
     }
 
     public String getIngangsDatum() {

@@ -25,6 +25,7 @@ define(['jquery',
 		_polis.id = ko.observable(data.id);
 		_polis.status = ko.observable(data.status);
 		_polis.polisNummer = ko.observable(data.polisNummer).extend({required: true});
+		_polis.kenmerk = ko.observable(data.kenmerk);
 		if(data.ingangsDatum != undefined){
 			_polis.ingangsDatum = ko.observable(moment(data.ingangsDatum).format("DD-MM-YYYY")).extend({required: true});
 		}else{

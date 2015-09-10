@@ -32,6 +32,22 @@
 					</div>
 				</h4>
 			</div>
+			<table>
+				<thead>
+				<tr>
+					<th style="width:250px;">Polisnummer</th>
+					<th style="width:250px;">Status</th>
+					<th style="width:250px;">Kenmerk</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td data-bind="text: polisNummer"></td>
+					<td data-bind="text: status"></td>
+					<td data-bind="text: kenmerk"></td>
+				</tr>
+				</tbody>
+			</table>
 			<div data-bind="attr:{id: idDiv}" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div data-bind="if: status">
@@ -42,51 +58,57 @@
 						<span class="polisLabel">Polisnummer :</span>
 						<span name="polisNummer" data-bind="text: polisNummer"></span>
 					</div>
+					<div data-bind="if: kenmerk">
+						<span class="polisLabel">Kenmerk :</span>
+						<span name="kenmerk" data-bind="text: kenmerk"></span>
+					</div>
 					<div data-bind="if: ingangsDatum">
-						<span class="polisLabel">Ingangsdatum :</span>
-						<span name="ingangsDatum" data-bind="text: ingangsDatum"></span>
-					</div>
-					<div data-bind="if: eindDatum">
-						<span class="polisLabel">Einddatum :</span>
-						<span name="eindDatum" data-bind="text: eindDatum"></span>
-					</div>
-					<div data-bind="if: wijzigingsDatum">
-						<span class="polisLabel">Wijzigingsdatum :</span>
-						<span name="wijzigingsDatum" data-bind="text: wijzigingsDatum"></span>
-					</div>
-					<div data-bind="if: prolongatieDatum">
-						<span class="polisLabel">Prolongatie :</span>
-						<span name="prolongatieDatum" data-bind="text: prolongatieDatum"></span>
-					</div>
-					<div data-bind="if: maatschappij">
-						<span class="polisLabel">Maatschappij :</span>
-						<span name="maatschappij" data-bind="text: maatschappij"></span>
-					</div>
-					<div data-bind="if: premie">
-						<span class="polisLabel">Premie :</span>
-						<span name="premie" data-bind="text: bedrag(premie)"></span>
-					</div>
-					<div data-bind="if: betaalfrequentie">
-						<span class="polisLabel">Betaalfrequentie :</span>
-						<span name="betaalfrequentie" data-bind="text: betaalfrequentie"></span>
-					</div>
-					<div data-bind="if: bedrijf">
-						<span class="polisLabel">Bedrijf :</span>
-						<span name="bedrijf" data-bind="text: bedrijf"></span>
-					</div>
-					<div data-bind="if: omschrijvingVerzekering">
-						<span class="polisLabel">Omschrijving Verzekering :</span>
-						<span name="bedrijf" data-bind="text: omschrijvingVerzekering"></span>
-					</div>
-					<div id="bijlages2" class="bijlages" data-bind="foreach: bijlages, visible: bijlages().length > 0">
-						<div>
-							<span class="polisLabel">Bijlage :</span>
-							<a data-bind="attr:{href: url}, title: omschrijvingOfBestandsNaam, text: omschrijvingOfBestandsNaam"
-							   target="_blank"></a>
+						<div data-bind="if: ingangsDatum">
+							<span class="polisLabel">Ingangsdatum :</span>
+							<span name="ingangsDatum" data-bind="text: ingangsDatum"></span>
+						</div>
+						<div data-bind="if: eindDatum">
+							<span class="polisLabel">Einddatum :</span>
+							<span name="eindDatum" data-bind="text: eindDatum"></span>
+						</div>
+						<div data-bind="if: wijzigingsDatum">
+							<span class="polisLabel">Wijzigingsdatum :</span>
+							<span name="wijzigingsDatum" data-bind="text: wijzigingsDatum"></span>
+						</div>
+						<div data-bind="if: prolongatieDatum">
+							<span class="polisLabel">Prolongatie :</span>
+							<span name="prolongatieDatum" data-bind="text: prolongatieDatum"></span>
+						</div>
+						<div data-bind="if: maatschappij">
+							<span class="polisLabel">Maatschappij :</span>
+							<span name="maatschappij" data-bind="text: maatschappij"></span>
+						</div>
+						<div data-bind="if: premie">
+							<span class="polisLabel">Premie :</span>
+							<span name="premie" data-bind="text: bedrag(premie)"></span>
+						</div>
+						<div data-bind="if: betaalfrequentie">
+							<span class="polisLabel">Betaalfrequentie :</span>
+							<span name="betaalfrequentie" data-bind="text: betaalfrequentie"></span>
+						</div>
+						<div data-bind="if: bedrijf">
+							<span class="polisLabel">Bedrijf :</span>
+							<span name="bedrijf" data-bind="text: bedrijf"></span>
+						</div>
+						<div data-bind="if: omschrijvingVerzekering">
+							<span class="polisLabel">Omschrijving Verzekering :</span>
+							<span name="bedrijf" data-bind="text: omschrijvingVerzekering"></span>
+						</div>
+						<div id="bijlages2" class="bijlages"
+							 data-bind="foreach: bijlages, visible: bijlages().length > 0">
+							<div>
+								<span class="polisLabel">Bijlage :</span>
+								<a data-bind="attr:{href: url}, title: omschrijvingOfBestandsNaam, text: omschrijvingOfBestandsNaam"
+								   target="_blank"></a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>

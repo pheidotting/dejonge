@@ -1,52 +1,23 @@
 package nl.dias.domein.polis;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
-import nl.dias.domein.StatusPolis;
-import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.*;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
-@NamedQueries({ @NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"),
-        @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"),
-        @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie") })
+@NamedQueries({@NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"),
+        @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"), @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie")})
 public abstract class Polis implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 1011438129295546984L;
 
@@ -61,6 +32,9 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     @Column(name = "POLISNUMMER", length = 25)
     private String polisNummer;
+
+    @Column(name = "KENMERK", length = 100)
+    private String kenmerk;
 
     @Column(name = "INGANGSDATUM")
     @Temporal(TemporalType.DATE)
@@ -86,11 +60,11 @@ public abstract class Polis implements PersistenceObject, Serializable {
     private Betaalfrequentie betaalfrequentie;
 
     @JoinColumn(name = "RELATIE")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
 
     @JoinColumn(name = "BEDRIJF")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
@@ -99,7 +73,7 @@ public abstract class Polis implements PersistenceObject, Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-    @ManyToOne(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     @JoinColumn(name = "MAATSCHAPPIJ")
     private VerzekeringsMaatschappij maatschappij;
 
@@ -126,6 +100,14 @@ public abstract class Polis implements PersistenceObject, Serializable {
 
     public String getPolisNummer() {
         return polisNummer;
+    }
+
+    public String getKenmerk() {
+        return kenmerk;
+    }
+
+    public void setKenmerk(String kenmerk) {
+        this.kenmerk = kenmerk;
     }
 
     public StatusPolis getStatus() {

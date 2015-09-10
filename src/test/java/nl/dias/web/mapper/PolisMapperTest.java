@@ -1,19 +1,6 @@
 package nl.dias.web.mapper;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
-import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.*;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonPolis;
@@ -24,13 +11,20 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
-
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class PolisMapperTest extends EasyMockSupport {
@@ -85,6 +79,7 @@ public class PolisMapperTest extends EasyMockSupport {
         polis.getBijlages();
         polis.setBedrijf(bedrijf);
         polis.getSchades();
+        polis.setKenmerk("kenmerkPolis");
 
         jsonPolis = new JsonPolis();
         jsonPolis.setPremie("12345");
@@ -100,6 +95,7 @@ public class PolisMapperTest extends EasyMockSupport {
         jsonPolis.setBedrijf("TestBedrijf");
         jsonPolis.getSchades();
         jsonPolis.setRelatie("1");
+        jsonPolis.setKenmerk("kenmerkPolis");
 
         polissen = new HashSet<Polis>();
         polissen.add(polis);
