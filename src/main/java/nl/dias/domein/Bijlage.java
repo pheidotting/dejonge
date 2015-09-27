@@ -10,13 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "BIJLAGE")
-@NamedQueries({ @NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"),
-        @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie"),
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijPolis", query = "select b from Bijlage b where b.polis = :polis"),
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijSchade", query = "select b from Bijlage b where b.schade = :schade") })
+@NamedQueries({@NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"), @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie"), @NamedQuery(name = "Bijlage.zoekBijlagesBijPolis", query = "select b from Bijlage b where b.polis = :polis"), @NamedQuery(name = "Bijlage.zoekBijlagesBijSchade", query = "select b from Bijlage b where b.schade = :schade")})
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
 
@@ -26,19 +20,19 @@ public class Bijlage implements PersistenceObject, Serializable {
     private Long id;
 
     @JoinColumn(name = "POLIS", nullable = true)
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
     private Polis polis;
 
     @JoinColumn(name = "HYPOTHEEK", nullable = true)
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Hypotheek.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Hypotheek.class)
     private Hypotheek hypotheek;
 
     @JoinColumn(name = "SCHADE", nullable = true)
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Schade.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Schade.class)
     private Schade schade;
 
     @JoinColumn(name = "AANGIFTE", nullable = true)
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Aangifte.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Aangifte.class)
     private Aangifte aangifte;
 
     @Enumerated(EnumType.STRING)
@@ -119,15 +113,25 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Bijlage [id=");
-        builder.append(id);
-        builder.append(", soortBijlage=");
-        builder.append(soortBijlage);
-        builder.append(", s3Identificatie=");
-        builder.append(s3Identificatie);
-        builder.append("]");
-        return builder.toString();
+        final StringBuilder sb = new StringBuilder("Bijlage{");
+        sb.append("id=").append(id);
+        if (polis != null) {
+            sb.append(", polis=").append(polis.getId());
+        }
+        if (hypotheek != null) {
+            sb.append(", hypotheek=").append(hypotheek.getId());
+        }
+        if (schade != null) {
+            sb.append(", schade=").append(schade.getId());
+        }
+        if (aangifte != null) {
+            sb.append(", aangifte=").append(aangifte.getId());
+        }
+        sb.append(", soortBijlage=").append(soortBijlage);
+        sb.append(", s3Identificatie='").append(s3Identificatie).append('\'');
+        sb.append(", omschrijving='").append(omschrijving).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     /**

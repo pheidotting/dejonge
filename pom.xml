@@ -380,7 +380,7 @@
 					<terse>false</terse>
 					<echo>true</echo>
 					<debug>true</debug>
-					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/GlazenVis/glassfish3</glassfishDirectory>
+					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/glassfish/</glassfishDirectory>
 					<user>admin</user>
 					<adminPassword>admin</adminPassword>
 					<domain>
@@ -422,7 +422,7 @@
 					<terse>false</terse>
 					<echo>true</echo>
 					<debug>true</debug>
-					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/GlazenVis/glassfish3</glassfishDirectory>
+					<glassfishDirectory>/Users/patrickheidotting/Documents/DEV/Java/glassfish</glassfishDirectory>
 					<user>admin</user>
 					<adminPassword>admin</adminPassword>
 					<domain>

@@ -11,6 +11,7 @@ import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.web.mapper.PolisMapper;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -76,6 +77,7 @@ public class PolisController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonPolis jsonPolis) {
+        LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
         try {
             polisService.opslaan(polisMapper.mapVanJson(jsonPolis));
         } catch (IllegalArgumentException e) {

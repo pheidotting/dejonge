@@ -32,7 +32,7 @@ public class AangifteService {
         return aangifteRepository.lees(id);
     }
 
-    public void slaAangifteOp(Aangifte aangifte, String s3Identificatie, String omschrijving) {
+    public Long slaAangifteOp(Aangifte aangifte, String s3Identificatie, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
@@ -44,6 +44,8 @@ public class AangifteService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         aangifteRepository.opslaanBijlage(bijlage);
+
+        return bijlage.getId();
     }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {

@@ -110,74 +110,32 @@
 	<table class="table">
 		<tr>
 			<th>Bijlage</th>
-			<!--th>Verwijderen</th-->
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
 		</tr>
 		<tbody data-bind="foreach: bijlages">
 			<tr>
-				<td><a data-bind="attr:{href: url}, title: omschrijvingOfBestandsNaam, text: omschrijvingOfBestandsNaam"
-					   target="_blank"></a></td>
-				<!--td data-bind="click: $parent.verwijderBijlage" style="cursor:pointer;">X</td-->
+                <td>
+                    <span data-bind="text: omschrijvingOfBestandsNaam, attr:{id: 'tekst' + id()}, click: startEditModus"></span>
+
+                    <div data-bind="attr:{id: 'edit' + id()}" style="display: none;">
+                        <input type="text" data-bind="value: omschrijvingOfBestandsNaam"/>
+                        <button data-bind="click: stopEditModus">Opslaan</button>
+                        <button data-bind="click: stopEditModusAnnuleren">Annuleren</button>
+                    </div>
+                </td>
+                <td><a data-bind="attr:{href: url}, title: omschrijvingOfBestandsNaam"
+                       target="_blank">Download</a></td>
+                <td data-bind="click: $parent.verwijderBijlage" style="cursor:pointer;">Verwijderen</td>
 			</tr>
 		</tbody>
 	</table>
 
 	<div class="form-group" id="uploadPolis1">
-		<input type="file" id="uploadPolis1File" name="uploadPolis1File" onchange="nieuwePolisUpload(1);" />
-		<input type="text" id="uploadPolis1Omschrijving" name="uploadPolis1Omschrijving"/>
-		<progress id="filePolis1Progress" style="display:none;"></progress>
+        <input type="file" id="uploadPolis1File" name="uploadPolis1File"
+               data-bind="event: {change: nieuwePolisUpload}"/>
+        <progress id="uploadprogress" style="display:none;"></progress>
 	</div>
-	<div class="form-group" id="uploadPolis2" style="display:none;">
-		<input type="file" id="uploadPolis2File" name="uploadPolis2File" onchange="nieuwePolisUpload(2);" />
-		<input type="text" id="uploadPolis2Omschrijving" name="uploadPolis2Omschrijving"/>
-		<progress id="filePolis2Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis3" style="display:none;">
-		<input type="file" id="uploadPolis3File" name="uploadPolis3File" onchange="nieuwePolisUpload(3);" />
-		<input type="text" id="uploadPolis3Omschrijving" name="uploadPolis3Omschrijving"/>
-		<progress id="filePolis3Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis4" style="display:none;">
-		<input type="file" id="uploadPolis4File" name="uploadPolis4File" onchange="nieuwePolisUpload(4);" />
-		<input type="text" id="uploadPolis4Omschrijving" name="uploadPolis4Omschrijving"/>
-		<progress id="filePolis4Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis5" style="display:none;">
-		<input type="file" id="uploadPolis5File" name="uploadPolis5File" onchange="nieuwePolisUpload(5);" />
-		<input type="text" id="uploadPolis5Omschrijving" name="uploadPolis5Omschrijving"/>
-		<progress id="filePolis5Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis6" style="display:none;">
-		<input type="file" id="uploadPolis6File" name="uploadPolis6File" onchange="nieuwePolisUpload(6);" />
-		<input type="text" id="uploadPolis6Omschrijving" name="uploadPolis6Omschrijving"/>
-		<progress id="filePolis6Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis7" style="display:none;">
-		<input type="file" id="uploadPolis7File" name="uploadPolis7File" onchange="nieuwePolisUpload(7);" />
-		<input type="text" id="uploadPolis7Omschrijving" name="uploadPolis7Omschrijving"/>
-		<progress id="filePolis7Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis8" style="display:none;">
-		<input type="file" id="uploadPolis8File" name="uploadPolis8File" onchange="nieuwePolisUpload(8);" />
-		<input type="text" id="uploadPolis8Omschrijving" name="uploadPolis8Omschrijving"/>
-		<progress id="filePolis8Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis9" style="display:none;">
-		<input type="file" id="uploadPolis9File" name="uploadPolis9File" onchange="nieuwePolisUpload(9);" />
-		<input type="text" id="uploadPolis9Omschrijving" name="uploadPolis8Omschrijving"/>
-		<progress id="filePolis9Progress" style="display:none;"></progress>
-	</div>
-	<div class="form-group" id="uploadPolis10" style="display:none;">
-		<input type="file" id="uploadPolis10File" name="uploadPolis10File" onchange="nieuwePolisUpload(10);" />
-		<input type="text" id="uploadPolis10Omschrijving" name="uploadPolis10Omschrijving"/>
-		<progress id="filePolis10Progress" style="display:none;"></progress>
-	</div>
-	<input type="hidden" id="hoeveelFiles" />
-	<script>
-		function nieuwePolisUpload(nummer){
-			$('#hoeveelFiles').val(nummer);
-			$('#uploadPolis' + ++nummer).show();
-		}
-	</script>
 </form>
 <div class="form-group">
 	<label for="opslaanPolis">&nbsp;</label>

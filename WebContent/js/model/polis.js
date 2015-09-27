@@ -107,9 +107,40 @@ define(['jquery',
 			var r=confirm("Weet je zeker dat je deze bijlage wilt verwijderen?");
 			if (r==true) {
 				_polis.bijlages.remove(bijlage);
-				$.get( "../dejonge/rest/medewerker/bijlage/verwijder", {"bijlageId" : bijlage.id()}, function() {});
+				$.get( "../dejonge/rest/medewerker/bijlage/verwijder", {"id" : bijlage.id()}, function() {});
 			}
 		};
+
+		_polis.nieuwePolisUpload = function (){
+			log.debug("Nieuwe polis upload");
+			$('uploadprogress').show();
+
+			uploaden().done(function(bijlage){
+				console.log(ko.toJSON(bijlage));
+				_polis.bijlages().push(bijlage);
+				_polis.bijlages.valueHasMutated();
+				$('#uploadPolis1File').val("");
+			});
+		};
+
+
+		uploaden = function(){
+			var deferred = $.Deferred();
+
+			var formData = new FormData($('#polisForm')[0]);
+			commonFunctions.uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadPolis1File', _polis.bijlages()).done(function(response) {
+				console.log(response);
+
+				var bijlageData = {};
+				bijlageData.id = response;
+				bijlageData.soortBijlage = 'Polis';
+				bijlageData.bestandsNaam = $('#uploadPolis1File').val().replace("C:\\fakepath\\", "");
+				bijlageData.datumUpload = moment().format("DD-MM-YYYY HH:mm");
+
+				return deferred.resolve(new Bijlage(bijlageData));
+			});
+			return deferred.promise();
+		}
 
 	    _polis.opslaan = function(polis){
 	    	var result = ko.validation.group(polis, {deep: true});
@@ -127,7 +158,7 @@ define(['jquery',
 		            success: function() {
 		    			for (var int = 1; int <= $('#hoeveelFiles').val(); int++) {
 		    				var formData = new FormData($('#polisForm')[0]);
-		    				uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadPolis' + int + 'File');
+		    				commonFunctions.uploadBestand(formData, '../dejonge/rest/medewerker/bijlage/uploadPolis' + int + 'File');
 		    			}
 		    			commonFunctions.plaatsMelding("De gegevens zijn opgeslagen");
 		            	document.location.hash = "#beherenRelatie/" + polis.relatie() + "/polissen";

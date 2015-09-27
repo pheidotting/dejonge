@@ -21,10 +21,16 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
     @Override
     public Bijlage mapVanJson(JsonBijlage json) {
+        LOGGER.debug(json);
+
         Bijlage bijlage = new Bijlage();
-        bijlage.setId(Long.valueOf(json.getId()));
+        if (json.getId() != null) {
+            bijlage.setId(Long.valueOf(json.getId()));
+        }
+        bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
         bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
+        LOGGER.debug(bijlage);
         return bijlage;
     }
 
@@ -38,25 +44,25 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         if (archiefBestand != null) {
             json.setBestandsNaam(archiefBestand.getBestandsnaam());
         }
-        json.setOmschrijving(bijlage.getOmschrijving());
+        json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
         if (archiefBestand != null && archiefBestand.getDatumOpgeslagen() != null) {
             json.setDatumUpload(new LocalDateTime(archiefBestand.getDatumOpgeslagen()).toString("dd-MM-yyyy HH:mm"));
         }
 
         String parentId = null;
         switch (bijlage.getSoortBijlage()) {
-        case POLIS:
-            parentId = bijlage.getPolis().getPolisNummer();
-            break;
-        case SCHADE:
-            parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
-            break;
-        case HYPOTHEEK:
-            parentId = bijlage.getHypotheek().getId().toString();
-            break;
-        case IBAANGIFTE:
-            parentId = Integer.toString(bijlage.getAangifte().getJaar());
-            break;
+            case POLIS:
+                parentId = bijlage.getPolis().getPolisNummer();
+                break;
+            case SCHADE:
+                parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
+                break;
+            case HYPOTHEEK:
+                parentId = bijlage.getHypotheek().getId().toString();
+                break;
+            case IBAANGIFTE:
+                parentId = Integer.toString(bijlage.getAangifte().getJaar());
+                break;
         }
         json.setParentId(parentId);
 

@@ -1,13 +1,12 @@
 package nl.dias.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.TypedQuery;
-
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BijlageRepository extends AbstractRepository<Bijlage> {
     public BijlageRepository() {
@@ -40,5 +39,9 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
         bijlages.addAll(query.getResultList());
 
         return bijlages;
+    }
+
+    public Bijlage leesBijlage(Long id) {
+        return getEm().find(Bijlage.class, id);
     }
 }

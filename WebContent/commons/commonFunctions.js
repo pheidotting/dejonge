@@ -108,6 +108,41 @@ define([ "commons/3rdparty/log"],
         		}
 			});
 			return opgehaaldeData;
+		},
+
+		uploadBestand: function(formData, url){
+			var deferred = $.Deferred();
+
+			$.ajax({
+				url: url,
+				type: 'POST',
+				xhr: function() {  // Custom XMLHttpRequest
+					var myXhr = $.ajaxSettings.xhr();
+					if(myXhr.upload){ // Check if upload property exists
+						myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+					}
+					return myXhr;
+				},
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (response) {
+					$('uploadprogress').hide();
+					return deferred.resolve(response);
+				},
+				error: function (data) {
+					$('#alertDanger').show();
+					$('#alertDanger').html("Er is een fout opgetreden : " + data);
+				}
+			});
+			function progressHandlingFunction(e){
+				if(e.lengthComputable){
+					$('uploadprogress').attr({value:e.loaded,max:e.total});
+				}
+			}
+			return deferred.promise();
 		}
+
     };
 });

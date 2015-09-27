@@ -7,11 +7,13 @@ import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import nl.lakedigital.archief.service.ArchiefService;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -43,19 +45,50 @@ public class PolisService {
     }
 
     public void opslaan(Polis polis) {
+        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
+        //        List<Bijlage> bijlages = new ArrayList<>();
+
         // ophalen al bestanden bijlages
-        List<Bijlage> bijlages = polisRepository.zoekBijlagesBijPolis(polis);
-        polis.getBijlages().addAll(bijlages);
+        //        bijlages.addAll(polisRepository.zoekBijlagesBijPolis(polis));
+        //        LOGGER.debug(bijlages);
+        //        bijlages.addAll(werkBijlagesBij(polis));
+        //        LOGGER.debug(bijlages);
+        //
+        //        polis.setBijlages(Sets.newHashSet(bijlages));
+        //
+        //        for (Bijlage bijlage : bijlages) {
+        //            polisRepository.opslaanBijlage(bijlage);
+        //        }
+        //        polisRepository.verwijder(polisRepository.lees(polis.getId()));
+        //        polis.setBijlages(null);
+        //        polis.getBijlages();
 
         polisRepository.opslaan(polis);
 
-        Relatie relatie = polis.getRelatie();
-        relatie.getPolissen().add(polis);
+        //        Relatie relatie = polis.getRelatie();
+        //        relatie.getPolissen().add(polis);
 
-        gebruikerService.opslaan(relatie);
+        //        gebruikerService.opslaan(relatie);
 
         LOGGER.debug(lees(polis.getId()));
     }
+
+    private List<Bijlage> werkBijlagesBij(Polis polis) {
+        List<Bijlage> result = new ArrayList<>();
+
+        for (Bijlage bijlage : polis.getBijlages()) {
+            Bijlage uitDb = polisRepository.leesBijlage(bijlage.getId());
+
+            uitDb.setPolis(polis);
+            uitDb.setSoortBijlage(SoortBijlage.POLIS);
+            uitDb.setOmschrijving(bijlage.getOmschrijving());
+
+            result.add(uitDb);
+        }
+
+        return result;
+    }
+
 
     public Polis lees(Long id) {
         return polisRepository.lees(id);
@@ -70,7 +103,7 @@ public class PolisService {
         }
     }
 
-    public void slaBijlageOp(Long polisId, String s3Identificatie, String omschrijving) {
+    public Long slaBijlageOp(Long polisId, String s3Identificatie, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId + " s3Identificatie " + s3Identificatie);
 
         Bijlage bijlage = new Bijlage();
@@ -82,10 +115,16 @@ public class PolisService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         polisRepository.opslaanBijlage(bijlage);
+
+        return bijlage.getId();
     }
 
     public Bijlage leesBijlage(Long id) {
         return polisRepository.leesBijlage(id);
+    }
+
+    public Bijlage leesBijlage(String s3) {
+        return polisRepository.leesBijlage(s3);
     }
 
     public void verwijder(Long id) throws IllegalArgumentException {

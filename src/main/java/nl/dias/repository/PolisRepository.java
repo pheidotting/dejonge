@@ -1,24 +1,20 @@
 package nl.dias.repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import nl.dias.domein.*;
+import nl.dias.domein.polis.Polis;
+import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Named;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.polis.Polis;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Named
 public class PolisRepository extends AbstractRepository<Polis> {
+    private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PolisRepository.class);
+
     public PolisRepository() {
         super(Polis.class);
         zetPersistenceContext("dias");
@@ -32,8 +28,7 @@ public class PolisRepository extends AbstractRepository<Polis> {
     @Transactional
     public List<Polis> zoekPolissenOpSoort(Class<?> soort) {
         Query query = getEm().createQuery("select e from " + soort.getSimpleName() + " e");
-        @SuppressWarnings("unchecked")
-        List<Polis> ret = query.getResultList();
+        @SuppressWarnings("unchecked") List<Polis> ret = query.getResultList();
 
         return ret;
     }
@@ -85,12 +80,25 @@ public class PolisRepository extends AbstractRepository<Polis> {
 
     @Transactional
     public void opslaanBijlage(Bijlage bijlage) {
+        LOGGER.debug("opslaan " + bijlage);
+
         getEm().getTransaction().begin();
-        getEm().persist(bijlage);
+        if (bijlage.getId() == null) {
+            getEm().persist(bijlage);
+        } else {
+            getEm().merge(bijlage);
+        }
         getEm().getTransaction().commit();
     }
 
     public Bijlage leesBijlage(Long id) {
         return getEm().find(Bijlage.class, id);
     }
+
+    public Bijlage leesBijlage(String s3) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijS3", Bijlage.class);
+        query.setParameter("s3", s3);
+        return query.getSingleResult();
+    }
+
 }

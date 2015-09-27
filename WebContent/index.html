@@ -19,7 +19,8 @@
 	<link rel="stylesheet" href="lakedigital.css">
 
 	<script type="text/javascript">
-		function uploadBestand(formData, url){
+		function uploadBestand(formData, url, bijlages){
+			var ret = "";
     	    $.ajax({
 				url: url,
     	        type: 'POST',
@@ -35,10 +36,13 @@
     	        contentType: false,
     	        processData: false,
 	            success: function (response) {
-	     			$("html, body").animate({ scrollTop: 0 }, "slow");
-	    			$('#alertSucces').show();
-	    			$('#alertSucces').html("De gegevens zijn opgeslagen");
-	    			refreshIntervalId = setInterval(this.verbergMeldingen, 10000);
+	     			<!--$("html, body").animate({ scrollTop: 0 }, "slow");-->
+	    			<!--$('#alertSucces').show();-->
+	    			<!--$('#alertSucces').html("De gegevens zijn opgeslagen");-->
+	    			<!--refreshIntervalId = setInterval(this.verbergMeldingen, 10000);-->
+	    			console.log(response);
+	    			ret = response;
+	    			console.log(bijlages);
 	            },
 	            error: function (data) {
 	    			$('#alertDanger').show();
@@ -50,7 +54,9 @@
     	            $('progress').attr({value:e.loaded,max:e.total});
     	        }
     	    }
-		}		
+
+			return ret;
+		}
 	</script>
 </head>
 <body id="body">

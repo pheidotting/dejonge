@@ -1,24 +1,17 @@
 package nl.dias.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
+import com.sun.jersey.core.header.FormDataContentDisposition;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
 import nl.lakedigital.archief.domain.ArchiefBestand;
 import nl.lakedigital.archief.service.ArchiefService;
-
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.core.header.FormDataContentDisposition;
+import javax.inject.Named;
+import java.io.*;
+import java.util.List;
 
 @Named
 public class BijlageService {
@@ -38,6 +31,10 @@ public class BijlageService {
         archiefService.setBucketName("dias");
         archiefService.verwijderen(bijlage.getS3Identificatie());
         bijlageRepository.verwijder(bijlage);
+    }
+
+    public void opslaan(Bijlage bijlage) {
+        bijlageRepository.opslaan(bijlage);
     }
 
     public String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {

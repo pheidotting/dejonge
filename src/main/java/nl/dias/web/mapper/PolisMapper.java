@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
 import nl.dias.domein.json.JsonPolis;
@@ -12,6 +13,7 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -56,9 +58,14 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
         }
 
-        Polis polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
+        Polis polis = null;
+        if (jsonPolis.getId() == null || jsonPolis.getId() == 0L) {
+            polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
 
-        polis.setId(jsonPolis.getId());
+            polis.setId(jsonPolis.getId());
+        } else {
+            polis = polisService.lees(jsonPolis.getId());
+        }
 
         for (StatusPolis sp : StatusPolis.values()) {
             if (sp.getOmschrijving().equals(jsonPolis.getStatus())) {
@@ -89,6 +96,12 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis.setOpmerkingen(p.getOpmerkingen());
         }
 
+        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
+        for (Bijlage bijlage : polis.getBijlages()) {
+            bijlage.setPolis(polis);
+        }
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
         return polis;
     }
 
@@ -126,8 +139,11 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         LOGGER.debug(polis.getBijlages());
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
+
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
-        jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());
+        if (polis.getMaatschappij() != null) {
+            jsonPolis.setMaatschappij(polis.getMaatschappij().getNaam());
+        }
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
