@@ -1,10 +1,10 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
 import nl.dias.domein.json.JsonTelefoonnummer;
+
+import javax.inject.Named;
 
 @Named
 public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnummer> {
@@ -15,6 +15,7 @@ public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnum
         telefoonnummer.setId(jsonTelefoonnummer.getId());
         telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
         telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort().toUpperCase()));
+        telefoonnummer.setOmschrijving(jsonTelefoonnummer.getOmschrijving());
 
         return telefoonnummer;
     }
@@ -26,6 +27,7 @@ public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnum
         jsonTelefoonnummer.setId(telefoonnummer.getId());
         jsonTelefoonnummer.setTelefoonnummer(telefoonnummer.getTelefoonnummer());
         jsonTelefoonnummer.setSoort(telefoonnummer.getSoort().toString());
+        jsonTelefoonnummer.setOmschrijving(telefoonnummer.getOmschrijving());
 
         return jsonTelefoonnummer;
     }

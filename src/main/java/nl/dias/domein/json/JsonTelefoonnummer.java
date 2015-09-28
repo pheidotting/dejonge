@@ -1,10 +1,10 @@
 package nl.dias.domein.json;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class JsonTelefoonnummer implements Serializable {
     private static final long serialVersionUID = 3624291960507458499L;
@@ -12,16 +12,18 @@ public class JsonTelefoonnummer implements Serializable {
     private Long id;
     private String telefoonnummer;
     private String soort;
+    private String omschrijving;
     private List<String> errors;
 
     public JsonTelefoonnummer() {
     }
 
-    public JsonTelefoonnummer(Long id, String telefoonnummer, String soort) {
+    public JsonTelefoonnummer(Long id, String telefoonnummer, String soort, String omschrijving) {
         super();
         this.id = id;
         this.telefoonnummer = telefoonnummer;
         this.soort = soort;
+        this.omschrijving = omschrijving;
     }
 
     public Long getId() {
@@ -48,6 +50,14 @@ public class JsonTelefoonnummer implements Serializable {
         this.soort = soort;
     }
 
+    public String getOmschrijving() {
+        return omschrijving;
+    }
+
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
+    }
+
     public List<String> getErrors() {
         return errors;
     }
@@ -58,7 +68,7 @@ public class JsonTelefoonnummer implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(telefoonnummer).toHashCode();
+        return new HashCodeBuilder().append(id).append(telefoonnummer).append(omschrijving).toHashCode();
     }
 
     @Override
@@ -74,7 +84,7 @@ public class JsonTelefoonnummer implements Serializable {
         }
         JsonTelefoonnummer other = (JsonTelefoonnummer) obj;
 
-        return new EqualsBuilder().append(id, other.id).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).isEquals();
+        return new EqualsBuilder().append(id, other.id).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).append(omschrijving, other.omschrijving).isEquals();
     }
 
     @Override
@@ -86,6 +96,8 @@ public class JsonTelefoonnummer implements Serializable {
         builder.append(telefoonnummer);
         builder.append(", soort=");
         builder.append(soort);
+        builder.append(", omschrijving=");
+        builder.append(omschrijving);
         builder.append("]");
         return builder.toString();
     }

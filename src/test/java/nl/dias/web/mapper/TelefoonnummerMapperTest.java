@@ -1,18 +1,17 @@
 package nl.dias.web.mapper;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Telefoonnummer;
+import nl.dias.domein.TelefoonnummerSoort;
+import nl.dias.domein.json.JsonTelefoonnummer;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.Telefoonnummer;
-import nl.dias.domein.TelefoonnummerSoort;
-import nl.dias.domein.json.JsonTelefoonnummer;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class TelefoonnummerMapperTest {
     private TelefoonnummerMapper mapper;
@@ -54,6 +53,7 @@ public class TelefoonnummerMapperTest {
         telefoonnummer.setId(46L);
         telefoonnummer.setTelefoonnummer("0123456789");
         telefoonnummer.setSoort(TelefoonnummerSoort.MOBIEL);
+        telefoonnummer.setOmschrijving("Lorem ipsum");
 
         return telefoonnummer;
     }
@@ -64,6 +64,7 @@ public class TelefoonnummerMapperTest {
         telefoonnummer.setId(46L);
         telefoonnummer.setTelefoonnummer("0123456789");
         telefoonnummer.setSoort("Mobiel");
+        telefoonnummer.setOmschrijving("Lorem ipsum");
 
         return telefoonnummer;
     }

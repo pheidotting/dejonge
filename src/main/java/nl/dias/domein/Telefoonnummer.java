@@ -1,24 +1,11 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "TELEFOONNUMMER")
@@ -37,6 +24,8 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
+    @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
+    private String omschrijving;
 
     @Override
     public Long getId() {
@@ -72,9 +61,17 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         this.relatie = relatie;
     }
 
+    public String getOmschrijving() {
+        return omschrijving;
+    }
+
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
+    }
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(relatie).append(soort).append(telefoonnummer).toHashCode();
+        return new HashCodeBuilder().append(id).append(relatie).append(soort).append(telefoonnummer).append(omschrijving).toHashCode();
     }
 
     @Override
@@ -90,7 +87,7 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         }
         Telefoonnummer other = (Telefoonnummer) obj;
 
-        return new EqualsBuilder().append(id, other.id).append(relatie, other.relatie).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).isEquals();
+        return new EqualsBuilder().append(id, other.id).append(relatie, other.relatie).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).append(omschrijving, other.omschrijving).isEquals();
     }
 
     @Override
@@ -102,6 +99,8 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         builder.append(telefoonnummer);
         builder.append(", soort=");
         builder.append(soort);
+        builder.append(", omschrijving=");
+        builder.append(omschrijving);
         builder.append("]");
         return builder.toString();
     }

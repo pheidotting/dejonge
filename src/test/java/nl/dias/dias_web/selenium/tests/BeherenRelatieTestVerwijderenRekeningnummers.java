@@ -1,10 +1,5 @@
 package nl.dias.dias_web.selenium.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.dias_web.medewerker.GebruikerControllerTest;
 import nl.dias.dias_web.selenium.AbstractSeleniumTest;
@@ -14,9 +9,13 @@ import nl.dias.domein.json.JsonTelefoonnummer;
 import nl.dias.web.pagina.BeherenRelatie;
 import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
 import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
-
 import org.junit.Ignore;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class BeherenRelatieTestVerwijderenRekeningnummers extends AbstractSeleniumTest {
@@ -75,11 +74,11 @@ public class BeherenRelatieTestVerwijderenRekeningnummers extends AbstractSeleni
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic5", "rekeningnummer5"));
 
         jsonRelatie.setTelefoonnummers(new ArrayList<JsonTelefoonnummer>());
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer1", "Vast"));
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer2", "Mobiel"));
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer3", "Werk"));
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer4", "Mobiel"));
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer5", "Vast"));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer1", "Vast", null));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer2", "Mobiel", null));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer3", "Werk", null));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer4", "Mobiel", null));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, "telefoonnummer5", "Vast", null));
 
         return jsonRelatie;
     }

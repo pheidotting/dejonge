@@ -1,55 +1,30 @@
 package nl.dias.it.webtesten;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.saucelabs.common.SauceOnDemandAuthentication;
+import com.saucelabs.common.SauceOnDemandSessionIdProvider;
+import com.saucelabs.junit.ConcurrentParameterized;
+import com.saucelabs.junit.SauceOnDemandTestWatcher;
 import nl.dias.dias_web.hulp.Hulp;
-import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.json.JsonRekeningNummer;
-import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.JsonSchade;
-import nl.dias.domein.json.JsonTelefoonnummer;
+import nl.dias.domein.json.*;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.it.webtesten.util.StringGeneratieUtil;
-import nl.dias.web.pagina.BedrijfBewerken;
-import nl.dias.web.pagina.BedrijvenOverzicht;
-import nl.dias.web.pagina.BeherenRelatie;
-import nl.dias.web.pagina.BeherenRelatieRekeningnummer;
-import nl.dias.web.pagina.BeherenRelatieTelefoonnummer;
-import nl.dias.web.pagina.InlogScherm;
-import nl.dias.web.pagina.LijstRelaties;
-import nl.dias.web.pagina.OpmerkingBewerken;
+import nl.dias.web.pagina.*;
 import nl.dias.web.pagina.PaginaMetMenuBalk.MenuItem;
-import nl.dias.web.pagina.PolisBewerken;
-import nl.dias.web.pagina.PolisOverzicht;
-import nl.dias.web.pagina.SchadeBewerken;
-import nl.dias.web.pagina.SchadeOverzicht;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ComparisonFailure;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.support.PageFactory;
 
-import com.saucelabs.common.SauceOnDemandAuthentication;
-import com.saucelabs.common.SauceOnDemandSessionIdProvider;
-import com.saucelabs.junit.ConcurrentParameterized;
-import com.saucelabs.junit.SauceOnDemandTestWatcher;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(ConcurrentParameterized.class)
 public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
@@ -537,7 +512,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, stringGeneratieUtil.genereerBic(), stringGeneratieUtil.genereerIban()));
 
         jsonRelatie.setTelefoonnummers(new ArrayList<JsonTelefoonnummer>());
-        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, stringGeneratieUtil.genereerTelefoonnummer(), (String) stringGeneratieUtil.kiesUitItems("Vast", "Mobiel", "Werk")));
+        jsonRelatie.getTelefoonnummers().add(new JsonTelefoonnummer(null, stringGeneratieUtil.genereerTelefoonnummer(), (String) stringGeneratieUtil.kiesUitItems("Vast", "Mobiel", "Werk"), null));
 
         return jsonRelatie;
     }
