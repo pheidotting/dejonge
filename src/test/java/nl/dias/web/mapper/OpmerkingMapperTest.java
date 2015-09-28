@@ -1,23 +1,24 @@
 package nl.dias.web.mapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import nl.dias.domein.Medewerker;
+import nl.dias.domein.Opmerking;
+import nl.dias.domein.json.JsonOpmerking;
+import nl.dias.service.SchadeService;
+import org.easymock.EasyMockSupport;
+import org.joda.time.LocalDateTime;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.service.SchadeService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import org.easymock.EasyMockSupport;
-import org.joda.time.LocalDateTime;
-import org.junit.Before;
-import org.junit.Test;
-
+@Ignore
 public class OpmerkingMapperTest extends EasyMockSupport {
     private OpmerkingMapper mapper;
     private SchadeService schadeService;

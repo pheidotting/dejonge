@@ -1,28 +1,13 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.joda.time.LocalDateTime;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "OPMERKING")
@@ -63,7 +48,7 @@ public class Opmerking implements PersistenceObject, Serializable {
     @JoinColumn(name = "HYPOTHEEK")
     private Hypotheek hypotheek;
 
-    @Column(columnDefinition = "TEXT", name = "OPMERKING")
+    @Column(columnDefinition = "varchar(2500)", name = "OPMERKING")
     private String opmerking;
 
     public Opmerking() {

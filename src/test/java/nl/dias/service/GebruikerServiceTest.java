@@ -21,6 +21,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -34,6 +35,7 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+@Ignore
 public class GebruikerServiceTest extends EasyMockSupport {
     private GebruikerRepository repository;
     private GebruikerService service;

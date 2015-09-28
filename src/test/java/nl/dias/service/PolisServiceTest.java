@@ -12,6 +12,7 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.joda.time.LocalDate;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,6 +27,8 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+
+@Ignore
 @RunWith(EasyMockRunner.class)
 public class PolisServiceTest extends EasyMockSupport {
     @TestSubject

@@ -242,6 +242,8 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         expect(repository.lees(3L)).andReturn(hypotheek);
 
+        expect(hypotheek.getId()).andReturn(4L);
+
         Bijlage bijlage = new Bijlage();
         bijlage.setHypotheek(hypotheek);
         bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);

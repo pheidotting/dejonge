@@ -78,7 +78,7 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
     private Set<Schade> schades;
 
-    @Column(name = "OMSCHRIJVING", columnDefinition = "text")
+    @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
     private String omschrijvingVerzekering;
 
     @Transient
@@ -314,7 +314,9 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     public String toString() {
         final StringBuilder sb = new StringBuilder("Polis{");
         sb.append("id=").append(id).append("\n");
-        sb.append(", status=").append(status.getOmschrijving()).append("\n");
+        if (status != null) {
+            sb.append(", status=").append(status.getOmschrijving()).append("\n");
+        }
         sb.append(", polisNummer='").append(polisNummer).append('\'').append("\n");
         sb.append(", kenmerk='").append(kenmerk).append('\'').append("\n");
         sb.append(", ingangsDatum=").append(getIngangsDatum()).append("\n");
