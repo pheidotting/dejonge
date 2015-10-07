@@ -1,7 +1,11 @@
 package nl.dias.domein;
 
+import com.google.common.collect.Sets;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
+import nl.dias.domein.predicates.WoonAdresPredicate;
+import nl.dias.domein.transformers.BedrijfToStringTransformer;
+import nl.dias.domein.transformers.SessieToStringTransformer;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -12,14 +16,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static com.google.common.collect.Iterables.*;
+
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "R")
-@AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
-@NamedQueries({ @NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
+@AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES"))})
+@NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"),
-        @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"),
-        @NamedQuery(name = "Relatie.zoekOpAdres", query = "select r from Relatie r where r.adres.straat like :adres or r.adres.plaats like :adres"),
+        @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"),
         @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"),
         @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")})
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
@@ -28,9 +33,8 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @Column(name = "ROEPNAAM")
     private String roepnaam;
 
-    private Adres adres;
-    @Transient
-    private String adresOpgemaakt;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "relatie")
+    private Set<Adres> adressen;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
     private Set<Telefoonnummer> telefoonnummers;
@@ -86,25 +90,34 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
         this.roepnaam = roepnaam;
     }
 
-    public Adres getAdres() {
-        if (adres == null) {
-            adres = new Adres();
+    public Set<Adres> getAdressen() {
+        if (adressen == null) {
+            adressen = new HashSet<>();
         }
-        return adres;
+        return adressen;
     }
 
-    public void setAdres(Adres adres) {
-        this.adres = adres;
+    public void setAdressen(List<Adres> adressen) {
+        this.adressen = Sets.newHashSet(adressen);
+    }
+
+    public void setAdressen(Set<Adres> adressen) {
+        this.adressen = adressen;
+    }
+
+    public Adres getAdres() {
+        return (Adres) getFirst(filter(getAdressen(), new WoonAdresPredicate()), null);
     }
 
     public String getAdresOpgemaakt() {
-        this.adresOpgemaakt = getAdres().getStraat() + " " + getAdres().getHuisnummer() + " " + getAdres().getToevoeging() + ", " + getAdres().getPlaats();
-        return this.adresOpgemaakt;
+        Adres adres = (Adres) getFirst(getAdressen(), new WoonAdresPredicate());
+        if (adres != null) {
+            return adres.getStraat() + " " + adres.getHuisnummer() + " " + adres.getToevoeging() + ", " + adres.getPlaats();
+        } else {
+            return null;
+        }
     }
 
-    public void setAdresOpgemaakt(String adresOpgemaakt) {
-        this.adresOpgemaakt = adresOpgemaakt;
-    }
 
     public Set<Telefoonnummer> getTelefoonnummers() {
         if (telefoonnummers == null) {
@@ -275,8 +288,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.burgerlijkeStaat).append(this.adres).append(this.bsn).append(this.adresOpgemaakt).append(this.geboorteDatum).append(this.geslacht)
-                .append(this.overlijdensdatum).toHashCode();
+        return new HashCodeBuilder().append(this.burgerlijkeStaat).append(this.getAdressen()).append(this.bsn).append(this.geboorteDatum).append(this.geslacht).append(this.overlijdensdatum).toHashCode();
     }
 
     /**
@@ -288,9 +300,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
             return false;
         }
         Relatie rhs = (Relatie) object;
-        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.adres, rhs.adres).append(this.bsn, rhs.bsn)
-                .append(this.adresOpgemaakt, rhs.adresOpgemaakt).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum)
-                .isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.getAdressen(), rhs.getAdressen()).append(this.bsn, rhs.bsn).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum).isEquals();
     }
 
     /**
@@ -298,13 +308,12 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", this.kantoor).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adres", this.adres)
-                .append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen())
-                .append("rekeningnummers", this.rekeningnummers).append("bedrijven", this.bedrijven).append("voornaam", this.getVoornaam()).append("id", this.getId())
-                .append("overlijdensdatum", this.overlijdensdatum).append("sessies", this.getSessies()).append("wachtwoord", this.getWachtwoord()).append("opmerkingen", this.opmerkingen)
-                .append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen())
-                .append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("polissen", this.polissen)
-                .append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).append("adresOpgemaakt", this.adresOpgemaakt).toString();
+        Long kantoorId = null;
+        if (kantoor != null) {
+            kantoorId = kantoor.getId();
+        }
+
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adressen", this.getAdressen()).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("opmerkingen", this.opmerkingen).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen()).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("polissen", this.polissen).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
     }
 
     @Override

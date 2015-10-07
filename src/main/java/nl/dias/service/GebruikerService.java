@@ -179,6 +179,7 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
+        LOGGER.debug("GO " + gebruiker);
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
@@ -196,6 +197,13 @@ public class GebruikerService {
             gebruikerAanwezig = null;
             // throw new
             // IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
+        }
+
+        if (gebruikerAanwezig != null && gebruikerAanwezig instanceof Relatie) {
+            LOGGER.debug("Adressen wissen bij relatie");
+            //            ((Relatie)gebruikerAanwezig).setAdressen(new ArrayList<Adres>());
+            //            gebruikerRepository.opslaan(gebruikerAanwezig);
+            gebruikerRepository.verwijderAdressenBijRelatie((Relatie) gebruiker);
         }
 
         // BSN mag ook niet al voorkomen, daarom deze ook eerst opzoeken

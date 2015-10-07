@@ -1,33 +1,17 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
+import nl.dias.domein.json.predicates.AdresPredicate;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joda.time.LocalDate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 
 @Entity
 @Table(name = "KANTOOR")
@@ -42,12 +26,8 @@ public class Kantoor implements Serializable, PersistenceObject {
     @Column(name = "NAAM")
     private String naam;
 
-    private Adres adres;
-
-    @AttributeOverrides({ @AttributeOverride(name = "straat", column = @Column(name = "STRAAT_FACTUUR")), @AttributeOverride(name = "huisnummer", column = @Column(name = "HUISNUMMER_FACTUUR")),
-            @AttributeOverride(name = "toevoeging", column = @Column(name = "TOEVOEGING_FACTUUR")), @AttributeOverride(name = "postcode", column = @Column(name = "POSTCODE_FACTUUR")),
-            @AttributeOverride(name = "plaats", column = @Column(name = "PLAATS_FACTUUR")) })
-    private Adres factuurAdres;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "kantoor")
+    private Set<Adres> adressen;
 
     @Column(name = "KVK", length = 8)
     private Long kvk;
@@ -100,27 +80,25 @@ public class Kantoor implements Serializable, PersistenceObject {
         this.naam = naam;
     }
 
-    public Adres getAdres() {
-        if (adres == null) {
-            adres = new Adres();
+    public Set<Adres> getAdressen() {
+        if (adressen == null) {
+            adressen = new HashSet<>();
         }
-        return adres;
+        return adressen;
     }
 
-    public void setAdres(Adres adres) {
-        this.adres = adres;
+    public void setAdressen(Set<Adres> adressen) {
+        this.adressen = adressen;
+    }
+
+    public Adres getPostAdres() {
+        return getFirst(filter(adressen, new AdresPredicate(Adres.SoortAdres.POSTADRES)), null);
     }
 
     public Adres getFactuurAdres() {
-        if (factuurAdres == null) {
-            factuurAdres = new Adres();
-        }
-        return factuurAdres;
+        return getFirst(filter(adressen, new AdresPredicate(Adres.SoortAdres.FACTUURADRES)), null);
     }
 
-    public void setFactuurAdres(Adres factuurAdres) {
-        this.factuurAdres = factuurAdres;
-    }
 
     public List<Medewerker> getMedewerkers() {
         if (medewerkers == null) {
@@ -217,11 +195,10 @@ public class Kantoor implements Serializable, PersistenceObject {
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(adres);
+        builder.append(adressen);
         builder.append(btwNummer);
         builder.append(datumOprichting);
         builder.append(emailadres);
-        builder.append(factuurAdres);
         builder.append(id);
         builder.append(kvk);
         builder.append(medewerkers);
@@ -243,10 +220,7 @@ public class Kantoor implements Serializable, PersistenceObject {
             return false;
         }
         Kantoor other = (Kantoor) obj;
-        return new EqualsBuilder().append(adres, other.adres).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres)
-                .append(factuurAdres, other.factuurAdres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm)
-                .append(opmerkingen, other.opmerkingen).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers)
-                .append(relaties, other.relaties).isEquals();
+        return new EqualsBuilder().append(adressen, other.adressen).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm).append(opmerkingen, other.opmerkingen).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers).append(relaties, other.relaties).isEquals();
     }
 
     @Override
@@ -256,10 +230,8 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(id);
         builder.append(", naam=");
         builder.append(naam);
-        builder.append(", adres=");
-        builder.append(adres);
-        builder.append(", factuurAdres=");
-        builder.append(factuurAdres);
+        builder.append(", adressen=");
+        builder.append(adressen);
         builder.append(", kvk=");
         builder.append(kvk);
         builder.append(", btwNummer=");

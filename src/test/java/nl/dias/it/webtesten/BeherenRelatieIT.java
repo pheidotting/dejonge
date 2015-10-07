@@ -158,30 +158,30 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         JsonRelatie jsonRelatie = maakJsonRelatie();
         jsonRelaties.add(jsonRelatie);
 
-        beherenRelatieScherm.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), null, jsonRelatie.getStraat(), "a", null, null, null, null, jsonRelatie.getIdentificatie(),
-                jsonRelatie.getGeboorteDatum(), null, jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), null, null);
-
-        beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
-        assertEquals(1, beherenRelatieScherm.aantalFouten());
-        assertEquals("Vul een getal in.", beherenRelatieScherm.getValidatieFouten().get(0).getText());
-
-        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, null, jsonRelatie.getHuisnummer(), null, null, null, null, null, null, null, null, null, null, null);
-
-        checkOpgeslagenMelding(beherenRelatieScherm);
-
-        JsonRelatie r = new JsonRelatie();
-        r.setVoornaam(jsonRelatie.getVoornaam());
-        r.setAchternaam(jsonRelatie.getAchternaam());
-        r.setTussenvoegsel("");
-        r.setStraat(jsonRelatie.getStraat());
-        r.setHuisnummer(jsonRelatie.getHuisnummer());
-        r.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
-
-        assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(r));
-
-        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, jsonRelatie.getTussenvoegsel(), null, null, jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(),
-                jsonRelatie.getBsn(), null, null, jsonRelatie.getOverlijdensdatum(), null, null, allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
-                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+        //        beherenRelatieScherm.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), null, jsonRelatie.getStraat(), "a", null, null, null, null, jsonRelatie.getIdentificatie(),
+        //                jsonRelatie.getGeboorteDatum(), null, jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), null, null);
+        //
+        //        beherenRelatieScherm = PageFactory.initElements(driver, BeherenRelatie.class);
+        //        assertEquals(1, beherenRelatieScherm.aantalFouten());
+        //        assertEquals("Vul een getal in.", beherenRelatieScherm.getValidatieFouten().get(0).getText());
+        //
+        //        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, null, jsonRelatie.getHuisnummer(), null, null, null, null, null, null, null, null, null, null, null);
+        //
+        //        checkOpgeslagenMelding(beherenRelatieScherm);
+        //
+        //        JsonRelatie r = new JsonRelatie();
+        //        r.setVoornaam(jsonRelatie.getVoornaam());
+        //        r.setAchternaam(jsonRelatie.getAchternaam());
+        //        r.setTussenvoegsel("");
+        //        r.setStraat(jsonRelatie.getStraat());
+        //        r.setHuisnummer(jsonRelatie.getHuisnummer());
+        //        r.setGeboorteDatum(jsonRelatie.getGeboorteDatum());
+        //
+        //        assertTrue(lijstRelaties.zoekRelatieOpEnKlikDezeAan(r));
+        //
+        //        beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, jsonRelatie.getTussenvoegsel(), null, null, jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(),
+        //                jsonRelatie.getBsn(), null, null, jsonRelatie.getOverlijdensdatum(), null, null, allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
+        //                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
         checkOpgeslagenMelding(beherenRelatieScherm);
     }
@@ -358,14 +358,14 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
             // R E L A T I E W I J Z I G E N
             //
             // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-            String nieuweStraat = null;
-            do {
-                nieuweStraat = stringGeneratieUtil.genereerStraatnaam();
-            } while (nieuweStraat.equals(jsonRelaties.get(0).getStraat()));
-            jsonRelaties.get(0).setStraat(nieuweStraat);
+            //            String nieuweStraat = null;
+            //            do {
+            //                nieuweStraat = stringGeneratieUtil.genereerStraatnaam();
+            //            } while (nieuweStraat.equals(jsonRelaties.get(0).getStraat()));
+            //            jsonRelaties.get(0).setStraat(nieuweStraat);
             jsonRelaties.get(0).setAdresOpgemaakt(null);
             beherenRelatieScherm.klikMenuItemAan(MenuItem.BEHERENRELATIE, driver);
-            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, nieuweStraat, null, null, null, null, null, null, null, null, null, null, null, null);
+            //            beherenRelatieScherm.vulVeldenEnDrukOpOpslaan(null, null, null, nieuweStraat, null, null, null, null, null, null, null, null, null, null, null, null);
             checkOpgeslagenMelding(beherenRelatieScherm);
 
             // Opgeslagen Relatie weer aanklikken op overzichtsscherm
@@ -502,11 +502,11 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         jsonRelatie.setGeslacht((String) stringGeneratieUtil.kiesUitItems("Man", "Vrouw"));
         jsonRelatie.setBurgerlijkeStaat((String) stringGeneratieUtil.kiesUitItems("Gehuwd", "Ongehuwd"));
 
-        jsonRelatie.setStraat(stringGeneratieUtil.genereerStraatnaam());
-        jsonRelatie.setHuisnummer(((Integer) stringGeneratieUtil.randomGetal(200)).toString());
-        jsonRelatie.setToevoeging(stringGeneratieUtil.genereerToevoeging());
-        jsonRelatie.setPostcode(stringGeneratieUtil.genereerPostcode());
-        jsonRelatie.setPlaats(stringGeneratieUtil.genereerPlaatsnaam());
+        //        jsonRelatie.setStraat(stringGeneratieUtil.genereerStraatnaam());
+        //        jsonRelatie.setHuisnummer(((Integer) stringGeneratieUtil.randomGetal(200)).toString());
+        //        jsonRelatie.setToevoeging(stringGeneratieUtil.genereerToevoeging());
+        //        jsonRelatie.setPostcode(stringGeneratieUtil.genereerPostcode());
+        //        jsonRelatie.setPlaats(stringGeneratieUtil.genereerPlaatsnaam());
         jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, stringGeneratieUtil.genereerBic(), stringGeneratieUtil.genereerIban()));

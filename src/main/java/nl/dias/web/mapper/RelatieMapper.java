@@ -1,19 +1,14 @@
 package nl.dias.web.mapper;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import nl.dias.domein.BurgerlijkeStaat;
-import nl.dias.domein.Geslacht;
-import nl.dias.domein.OnderlingeRelatie;
-import nl.dias.domein.Relatie;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
 import nl.dias.domein.json.JsonRelatie;
-
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
-import com.sun.jersey.api.core.InjectParam;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     @InjectParam
@@ -22,6 +17,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private RekeningnummerMapper rekeningnummerMapper;
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
+    @InjectParam
+    private AdresMapper adresMapper;
 
     private final static Logger LOGGER = Logger.getLogger(RelatieMapper.class);
 
@@ -42,23 +39,16 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         relatie.setVoornaam(jsonRelatie.getVoornaam());
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
         relatie.setAchternaam(jsonRelatie.getAchternaam());
-        relatie.getAdres().setStraat(jsonRelatie.getStraat());
         if (jsonRelatie.getOverlijdensdatum() != null && !"".equals(jsonRelatie.getOverlijdensdatum())) {
             relatie.setOverlijdensdatum(LocalDate.parse(jsonRelatie.getOverlijdensdatum(), DateTimeFormat.forPattern(patternDatum)));
         }
         if (jsonRelatie.getGeboorteDatum() != null && !"".equals(jsonRelatie.getGeboorteDatum())) {
             relatie.setGeboorteDatum(LocalDate.parse(jsonRelatie.getGeboorteDatum(), DateTimeFormat.forPattern(patternDatum)));
         }
-        if (jsonRelatie.getHuisnummer() != null && !jsonRelatie.getHuisnummer().equals("")) {
-            try {
-                relatie.getAdres().setHuisnummer(Long.valueOf(jsonRelatie.getHuisnummer()));
-            } catch (NumberFormatException nfe) {
-                throw new NumberFormatException("Huisnummer mag alleen cijfers bevatten");
-            }
+        relatie.setAdressen(adresMapper.mapAllVanJson(jsonRelatie.getAdressen()));
+        for (Adres adres : relatie.getAdressen()) {
+            adres.setRelatie(relatie);
         }
-        relatie.getAdres().setToevoeging(jsonRelatie.getToevoeging());
-        relatie.getAdres().setPostcode(jsonRelatie.getPostcode());
-        relatie.getAdres().setPlaats(jsonRelatie.getPlaats());
         relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
         relatie.setBsn(jsonRelatie.getBsn());
         relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
@@ -84,30 +74,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setVoornaam(relatie.getVoornaam());
         jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());
         jsonRelatie.setAchternaam(relatie.getAchternaam());
-        if (relatie.getAdres() != null) {
-            jsonRelatie.setStraat(relatie.getAdres().getStraat());
-            if (relatie.getAdres().getHuisnummer() != null) {
-                jsonRelatie.setHuisnummer(relatie.getAdres().getHuisnummer().toString());
-            }
-            jsonRelatie.setToevoeging(relatie.getAdres().getToevoeging());
-            jsonRelatie.setPostcode(relatie.getAdres().getPostcode());
-            jsonRelatie.setPlaats(relatie.getAdres().getPlaats());
-        }
-        StringBuilder sb = new StringBuilder();
-        if (jsonRelatie.getStraat() != null) {
-            sb.append(jsonRelatie.getStraat() + " ");
-        }
-        if (jsonRelatie.getHuisnummer() != null) {
-            sb.append(jsonRelatie.getHuisnummer() + " ");
-        }
-        if (jsonRelatie.getToevoeging() != null && !"".equals(jsonRelatie.getToevoeging())) {
-            sb.append(jsonRelatie.getToevoeging() + " ");
-        }
-        if (jsonRelatie.getPlaats() != null) {
-            sb.append(", " + jsonRelatie.getPlaats());
-        }
-
-        jsonRelatie.setAdresOpgemaakt(sb.toString());
+        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
@@ -134,17 +101,5 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         }
 
         return jsonRelatie;
-    }
-
-    public void setTelefoonnummerMapper(TelefoonnummerMapper telefoonnummerMapper) {
-        this.telefoonnummerMapper = telefoonnummerMapper;
-    }
-
-    public void setRekeningnummerMapper(RekeningnummerMapper rekeningnummerMapper) {
-        this.rekeningnummerMapper = rekeningnummerMapper;
-    }
-
-    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
-        this.opmerkingMapper = opmerkingMapper;
     }
 }

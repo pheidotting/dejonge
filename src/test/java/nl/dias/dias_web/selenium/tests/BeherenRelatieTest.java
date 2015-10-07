@@ -30,10 +30,10 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
 
         JsonRelatie jsonRelatie = maakJsonRelatie();
 
-        pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
-                jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-                jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
-                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+        //        pagina.vulVeldenEnDrukOpOpslaan(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
+        //                jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
+        //                jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
+        //                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
         assertEquals(jsonRelatie, GebruikerControllerTest.jsonRelatie);
 
@@ -55,11 +55,11 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         jsonRelatie.setGeslacht("Vrouw");
         jsonRelatie.setBurgerlijkeStaat("Gehuwd");
 
-        jsonRelatie.setStraat("Herderstraat");
-        jsonRelatie.setHuisnummer("65");
-        jsonRelatie.setToevoeging("toevoeging");
-        jsonRelatie.setPostcode("1234AA");
-        jsonRelatie.setPlaats("plaats");
+        //        jsonRelatie.setStraat("Herderstraat");
+        //        jsonRelatie.setHuisnummer("65");
+        //        jsonRelatie.setToevoeging("toevoeging");
+        //        jsonRelatie.setPostcode("1234AA");
+        //        jsonRelatie.setPlaats("plaats");
         jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic1", "rekeningnummer1"));

@@ -4,10 +4,11 @@ define(['jquery',
          'model/rekeningNummer',
          'model/telefoonNummer',
          'model/opmerking',
+         'model/adres',
          'moment',
          'commons/3rdparty/log',
          "commons/validation"],
-	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, Opmerking, moment, log, validation) {
+	function ($, commonFunctions, ko, RekeningNummer, TelefoonNummer, Opmerking, Adres, moment, log, validation) {
 
 	return function relatieModel (data){
 		_thisRelatie = this;
@@ -29,14 +30,28 @@ define(['jquery',
 		_thisRelatie.id = ko.observable(data.id);
 		_thisRelatie.voornaam = ko.observable(data.voornaam).extend({required: true});
 		_thisRelatie.roepnaam = ko.observable(data.roepnaam);
-		_thisRelatie.achternaam = ko.observable(data.achternaam).extend({required: true});
 		_thisRelatie.tussenvoegsel = ko.observable(data.tussenvoegsel);
-		_thisRelatie.straat = ko.observable(data.straat);
-		_thisRelatie.huisnummer = ko.observable(data.huisnummer).extend({ number: true});
-		_thisRelatie.toevoeging = ko.observable(data.toevoeging);
-		_thisRelatie.postcode = ko.observable(data.postcode);
-		_thisRelatie.zetPostcodeOm();
-		_thisRelatie.plaats = ko.observable(data.plaats);
+		_thisRelatie.achternaam = ko.observable(data.achternaam).extend({required: true});
+
+		_thisRelatie.adressen = ko.observableArray();
+		if(data.adressen != null){
+			$.each(data.adressen, function(i, item) {
+				_thisRelatie.adressen().push(new Adres(item));
+			});
+		}
+
+		_thisRelatie.voegAdresToe = function(){
+			log.debug("nieuwe Adres");
+			_thisRelatie.adressen().push(new Adres(""));
+			_thisRelatie.adressen.valueHasMutated();
+		}
+
+		_thisRelatie.verwijderAdres = function(adres){
+			log.debug(ko.toJSON(adres));
+			_thisRelatie.adressen.remove(adres);
+			_thisRelatie.adressen.valueHasMutated();
+		}
+
 		_thisRelatie.bsn = ko.observable(data.bsn);
 		_thisRelatie.zakelijkeKlant = ko.observable(data.zakelijkeKlant);
 		_thisRelatie.opmerkingen = ko.observableArray();
@@ -117,9 +132,6 @@ define(['jquery',
 	    };
 
 		_thisRelatie.opslaan = function(){
-			if(_thisRelatie.postcode() != null){
-				_thisRelatie.postcode(_thisRelatie.postcode().replace(" ", ""));
-			}
 	    	var result = ko.validation.group(_thisRelatie, {deep: true});
 	    	if(!_thisRelatie.isValid()){
 	    		result.showAllMessages(true);
@@ -166,5 +178,27 @@ define(['jquery',
 			commonFunctions.verbergMeldingen();
 			document.location.hash='#beherenRelatie/' + ko.utils.unwrapObservable(relatie.id);
 		}
+
+        _thisRelatie.opzoekenAdres = function(adres){
+            log.debug(ko.toJSON(adres));
+            adres.postcode(adres.postcode().toUpperCase().replace(" ", ""));
+            $.ajax({
+                type: "GET",
+                url: 'http://api.postcodeapi.nu/' + adres.postcode() + '/' + adres.huisnummer(),
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                headers: { 'Api-Key': '0eaff635fe5d9be439582d7501027f34d5a3ca9d'},
+                success: function (data) {
+                    log.debug(JSON.stringify(data));
+                    adres.straat(data.resource.street);
+                    adres.plaats(data.resource.town);
+                    adres.postcode(adres.zetPostcodeOm(adres.postcode()));
+                },
+                error: function(data) {
+                    log.debug(JSON.stringify(data));
+                    adres.straat('');
+                    adres.plaats('');
+                }
+            });
+        };
     };
 });

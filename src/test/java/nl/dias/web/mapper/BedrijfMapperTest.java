@@ -1,19 +1,18 @@
 package nl.dias.web.mapper;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Adres;
+import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.json.JsonBedrijf;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.Adres;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonBedrijf;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class BedrijfMapperTest {
     private BedrijfMapper mapper;
@@ -33,7 +32,7 @@ public class BedrijfMapperTest {
         adres.setPostcode("7894AB");
         adres.setStraat("Eemslandweg");
         adres.setToevoeging("toevoeging");
-        bedrijf.setAdres(adres);
+        bedrijf.getAdressen().add(adres);
         bedrijf.setKvk("kvk");
         bedrijf.setNaam("NaamBedrijf");
         bedrijf.setId(1L);

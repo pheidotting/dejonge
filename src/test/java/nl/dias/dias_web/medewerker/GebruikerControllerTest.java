@@ -1,20 +1,10 @@
 package nl.dias.dias_web.medewerker;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import nl.dias.domein.json.*;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonFoutmelding;
-import nl.dias.domein.json.JsonLijstRelaties;
-import nl.dias.domein.json.JsonRekeningNummer;
-import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.JsonTelefoonnummer;
 
 @Path("/gebruiker")
 public class GebruikerControllerTest {
@@ -37,12 +27,12 @@ public class GebruikerControllerTest {
             jsonRelatie.setBurgerlijkeStaat("Ongehuwd");
             jsonRelatie.setGeboorteDatumOpgemaakt("06-09-1979");
             jsonRelatie.setGeslacht("Man");
-            jsonRelatie.setHuisnummer("41");
+            //            jsonRelatie.setHuisnummer("41");
             jsonRelatie.setId(3L);
             jsonRelatie.setIdentificatie("patrick@heidotting.nl");
-            jsonRelatie.setPlaats("Zwartemeer");
-            jsonRelatie.setPostcode("7894AB");
-            jsonRelatie.setStraat("Eemslandweg");
+            //            jsonRelatie.setPlaats("Zwartemeer");
+            //            jsonRelatie.setPostcode("7894AB");
+            //            jsonRelatie.setStraat("Eemslandweg");
             jsonRelatie.setVoornaam("Patrick");
 
             jsonRelatie.setZakelijkeKlant(true);

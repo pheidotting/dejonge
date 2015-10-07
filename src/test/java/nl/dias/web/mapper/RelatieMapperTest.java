@@ -1,38 +1,39 @@
 package nl.dias.web.mapper;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.*;
+import nl.dias.domein.json.*;
+import nl.dias.domein.polis.Polis;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.BurgerlijkeStaat;
-import nl.dias.domein.Geslacht;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Telefoonnummer;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.domein.json.JsonRekeningNummer;
-import nl.dias.domein.json.JsonRelatie;
-import nl.dias.domein.json.JsonTelefoonnummer;
-import nl.dias.domein.polis.Polis;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
-import org.easymock.EasyMockSupport;
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class RelatieMapperTest extends EasyMockSupport {
-    private RelatieMapper mapper;
+    @TestSubject
+    private RelatieMapper mapper = new RelatieMapper();
 
+    @Mock
     private TelefoonnummerMapper telefoonnummerMapper;
+    @Mock
     private RekeningnummerMapper rekeningnummerMapper;
+    @Mock
     private OpmerkingMapper opmerkingMapper;
+    @Mock
+    private AdresMapper adresMapper;
 
     private Relatie relatie;
     private JsonRelatie jsonRelatie;
@@ -41,19 +42,9 @@ public class RelatieMapperTest extends EasyMockSupport {
 
     @Before
     public void setUp() throws Exception {
-        mapper = new RelatieMapper();
-
-        telefoonnummerMapper = createMock(TelefoonnummerMapper.class);
-        rekeningnummerMapper = createMock(RekeningnummerMapper.class);
-        opmerkingMapper = createMock(OpmerkingMapper.class);
-
-        mapper.setOpmerkingMapper(opmerkingMapper);
-        mapper.setRekeningnummerMapper(rekeningnummerMapper);
-        mapper.setTelefoonnummerMapper(telefoonnummerMapper);
-
         relatie = new Relatie();
         relatie.setAchternaam("achternaam");
-        relatie.getAdres().setHuisnummer(41L);
+        //        relatie.getAdres().setHuisnummer(41L);
         relatie.setGeslacht(Geslacht.M);
         relatie.setBurgerlijkeStaat(BurgerlijkeStaat.C);
         relatie.setGeboorteDatum(new LocalDate(2014, 2, 3));
@@ -70,10 +61,10 @@ public class RelatieMapperTest extends EasyMockSupport {
         jsonRelatie = new JsonRelatie();
         jsonRelatie.setBurgerlijkeStaat("Samenlevingscontract");
         jsonRelatie.setAchternaam("achternaam");
-        jsonRelatie.setHuisnummer("41");
+        //        jsonRelatie.setHuisnummer("41");
         jsonRelatie.setGeslacht("Man");
         jsonRelatie.setGeboorteDatum("03-02-2014");
-        jsonRelatie.setOverlijdensdatum("07-6-2014");
+        jsonRelatie.setOverlijdensdatum("07-06-2014");
         jsonRelatie.setTelefoonnummers(new ArrayList<JsonTelefoonnummer>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.setOpmerkingen(new ArrayList<JsonOpmerking>());
@@ -92,6 +83,7 @@ public class RelatieMapperTest extends EasyMockSupport {
         expect(telefoonnummerMapper.mapAllVanJson(new ArrayList<JsonTelefoonnummer>())).andReturn(new HashSet<Telefoonnummer>());
         expect(rekeningnummerMapper.mapAllVanJson(new ArrayList<JsonRekeningNummer>())).andReturn(new HashSet<RekeningNummer>());
         expect(opmerkingMapper.mapAllVanJson(new ArrayList<JsonOpmerking>())).andReturn(new HashSet<Opmerking>());
+        expect(adresMapper.mapAllVanJson(new ArrayList<JsonAdres>())).andReturn(new HashSet<Adres>());
 
         replayAll();
 
@@ -103,6 +95,7 @@ public class RelatieMapperTest extends EasyMockSupport {
         expect(telefoonnummerMapper.mapAllNaarJson(new HashSet<Telefoonnummer>())).andReturn(new ArrayList<JsonTelefoonnummer>());
         expect(rekeningnummerMapper.mapAllNaarJson(new HashSet<RekeningNummer>())).andReturn(new ArrayList<JsonRekeningNummer>());
         expect(opmerkingMapper.mapAllNaarJson(new HashSet<Opmerking>())).andReturn(new ArrayList<JsonOpmerking>());
+        expect(adresMapper.mapAllNaarJson(new HashSet<Adres>())).andReturn(new ArrayList<JsonAdres>());
 
         replayAll();
 
@@ -114,6 +107,7 @@ public class RelatieMapperTest extends EasyMockSupport {
         expect(telefoonnummerMapper.mapAllNaarJson(new HashSet<Telefoonnummer>())).andReturn(new ArrayList<JsonTelefoonnummer>());
         expect(rekeningnummerMapper.mapAllNaarJson(new HashSet<RekeningNummer>())).andReturn(new ArrayList<JsonRekeningNummer>());
         expect(opmerkingMapper.mapAllNaarJson(new HashSet<Opmerking>())).andReturn(new ArrayList<JsonOpmerking>());
+        expect(adresMapper.mapAllNaarJson(new HashSet<Adres>())).andReturn(new ArrayList<JsonAdres>());
 
         replayAll();
 

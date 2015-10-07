@@ -30,12 +30,12 @@ public class BeherenRelatieTestVerwijderenTelefoonnummers extends AbstractSeleni
 
         JsonRelatie jsonRelatie = maakJsonRelatie();
 
-        Hulp.naarAdres(driver, "http://localhost:9999/dias-web/index.html#beherenRelatie/3");
-        GebruikerControllerTest.jsonRelatie = null;
-        pagina.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
-                jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
-                jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
-                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
+        //        Hulp.naarAdres(driver, "http://localhost:9999/dias-web/index.html#beherenRelatie/3");
+        //        GebruikerControllerTest.jsonRelatie = null;
+        //        pagina.vulVelden(jsonRelatie.getVoornaam(), jsonRelatie.getAchternaam(), jsonRelatie.getTussenvoegsel(), jsonRelatie.getStraat(), jsonRelatie.getHuisnummer().toString(),
+        //                jsonRelatie.getToevoeging(), jsonRelatie.getPostcode(), jsonRelatie.getPlaats(), jsonRelatie.getBsn(), jsonRelatie.getIdentificatie(), jsonRelatie.getGeboorteDatum(),
+        //                jsonRelatie.getOverlijdensdatum(), jsonRelatie.getGeslacht(), jsonRelatie.getBurgerlijkeStaat(), allJsonRekeningNummerToBeherenRelatieRekeningnummer(jsonRelatie.getRekeningnummers()),
+        //                allJsonTelefoonnummerToBeherenRelatieTelefoonnummer(jsonRelatie.getTelefoonnummers()));
 
         pagina.verwijderTelefoonnummer(2);
         jsonRelatie.getTelefoonnummers().remove(1);
@@ -60,11 +60,11 @@ public class BeherenRelatieTestVerwijderenTelefoonnummers extends AbstractSeleni
         jsonRelatie.setGeslacht("Vrouw");
         jsonRelatie.setBurgerlijkeStaat("Gehuwd");
 
-        jsonRelatie.setStraat("Herderstraat");
-        jsonRelatie.setHuisnummer("65");
-        jsonRelatie.setToevoeging("toevoeging");
-        jsonRelatie.setPostcode("1234AA");
-        jsonRelatie.setPlaats("plaats");
+        //        jsonRelatie.setStraat("Herderstraat");
+        //        jsonRelatie.setHuisnummer("65");
+        //        jsonRelatie.setToevoeging("toevoeging");
+        //        jsonRelatie.setPostcode("1234AA");
+        //        jsonRelatie.setPlaats("plaats");
         jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic1", "rekeningnummer1"));

@@ -68,26 +68,42 @@
 
 <div class="form-group">
 	<h3>Adresgegevens</h3>
+	&nbsp;<span class="glyphicon glyphicon-plus" data-bind="click: voegAdresToe" id="voegAdresToe"></span>
 </div>
-<div class="form-group">
-	<label for="straat">Straat</label>
-	<input class="form-control" type="text" id="straat" name="straat" data-bind="value: straat" />
-</div>
-<div class="form-group">
-	<label for="huisnummer">Huisnummer</label>
-	<input class="form-control" type="text" id="huisnummer" name="huisnummer" data-bind="value: huisnummer" />
-</div>
-<div class="form-group">
-	<label for="toevoeging">Toevoeging</label>
-	<input class="form-control" type="text" id="toevoeging" name="toevoeging" data-bind="value: toevoeging" />
-</div>
-<div class="form-group">
-	<label for="postcode">Postcode</label>
-	<input class="form-control" type="text" id="postcode" name="postcode" data-bind="value: postcode, event: {blur: zetPostcodeOm}" />
-</div>
-<div class="form-group">
-	<label for="plaats">Plaats</label>
-	<input class="form-control" type="text" id="plaats" name="plaats" data-bind="value: plaats" />
+<div id="adressen" data-bind="foreach: adressen, visible: adressen().length > 0">
+	<div class="form-group">
+		<label for="soortadres">Soort</label>
+		<select id="soortadres" name="soortadres" data-bind="value: soortAdres">
+			<option value="WOONADRES">Woonadres</option>
+			<option value="POSTADRES">Postadres</option>
+			<option value="RISICOADRES">Risicoadres</option>
+			<option value="FACTUURADRES">Factuuradres</option>
+		</select>
+	</div>
+	&nbsp;<span class="glyphicon glyphicon-minus" data-bind="click: $parent.verwijderAdres"></span>
+
+	<div class="form-group">
+		<label for="postcode">Postcode</label>
+		<input class="form-control" type="text" id="postcode" name="postcode"
+			   data-bind="value: postcode, event: {blur: $parent.opzoekenAdres}"/>
+	</div>
+	<div class="form-group">
+		<label for="huisnummer">Huisnummer</label>
+		<input class="form-control" type="text" id="huisnummer" name="huisnummer"
+			   data-bind="value: huisnummer, event: {blur: $parent.opzoekenAdres}"/>
+	</div>
+	<div class="form-group">
+		<label for="toevoeging">Toevoeging</label>
+		<input class="form-control" type="text" id="toevoeging" name="toevoeging" data-bind="value: toevoeging"/>
+	</div>
+	<div class="form-group">
+		<label for="straat">Straat</label>
+		<input class="form-control" type="text" id="straat" name="straat" data-bind="value: straat"/>
+	</div>
+	<div class="form-group">
+		<label for="plaats">Plaats</label>
+		<input class="form-control" type="text" id="plaats" name="plaats" data-bind="value: plaats"/>
+	</div>
 </div>
 
 <div class="form-group">

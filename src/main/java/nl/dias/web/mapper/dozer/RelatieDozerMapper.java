@@ -1,7 +1,6 @@
 package nl.dias.web.mapper.dozer;
 
 import nl.dias.domein.Relatie;
-
 import org.dozer.DozerConverter;
 
 public class RelatieDozerMapper extends DozerConverter<String, Relatie> {
@@ -22,7 +21,9 @@ public class RelatieDozerMapper extends DozerConverter<String, Relatie> {
     @Override
     public Relatie convertTo(String arg0, Relatie arg1) {
         Relatie relatie = new Relatie();
-        relatie.setId(Long.valueOf(arg0));
+        if (arg0 != null) {
+            relatie.setId(Long.valueOf(arg0));
+        }
 
         return relatie;
     }

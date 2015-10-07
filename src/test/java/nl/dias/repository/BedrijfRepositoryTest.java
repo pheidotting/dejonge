@@ -1,11 +1,13 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
-
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class BedrijfRepositoryTest {
     private BedrijfRepository bedrijfRepository;
@@ -27,15 +29,55 @@ public class BedrijfRepositoryTest {
         bedrijfRepository.getEm().getTransaction().commit();
 
         Bedrijf bedrijf1 = new Bedrijf();
+        bedrijf1.setNaam("bedrijf1");
         bedrijf1.setRelatie(relatie1);
+        Adres adres = new Adres();
+        adres.setToevoeging("toevoeging");
+        adres.setStraat("straat");
+        adres.setPostcode("postco");
+        adres.setHuisnummer(42L);
+        adres.setPlaats("plaats");
+        bedrijf1.getAdressen().add(adres);
         Bedrijf bedrijf2 = new Bedrijf();
+        bedrijf2.setNaam("bedrijf2");
         bedrijf2.setRelatie(relatie2);
         Bedrijf bedrijf3 = new Bedrijf();
         bedrijf3.setRelatie(relatie2);
+        bedrijf3.setNaam("bedrijf3");
 
         bedrijfRepository.opslaan(bedrijf1);
         bedrijfRepository.opslaan(bedrijf2);
         bedrijfRepository.opslaan(bedrijf3);
+
+        bedrijf3.setKvk("kvk");
+        bedrijfRepository.opslaan(bedrijf3);
+
+        bedrijf3.setKvk("kvkNieuw");
+        bedrijfRepository.opslaan(bedrijf3);
+
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println(ReflectionToStringBuilder.toString(bedrijf3));
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        bedrijf3.setKvk("kvNie3uw");
+        bedrijfRepository.opslaan(bedrijf3);
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println(ReflectionToStringBuilder.toString(bedrijf3));
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+        System.out.println("# # # # # # # # # # # # # #");
+        System.out.println(" # # # # # # # # # # # # # #");
+
+        bedrijf1.setKvk("kvkNie");
+        bedrijfRepository.opslaan(bedrijf1);
 
         assertEquals(bedrijf1, bedrijfRepository.alleBedrijvenBijRelatie(relatie1).get(0));
         assertEquals(2, bedrijfRepository.alleBedrijvenBijRelatie(relatie2).size());

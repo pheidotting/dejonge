@@ -2,12 +2,14 @@ package nl.dias.repository;
 
 import nl.dias.domein.*;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -254,21 +256,37 @@ public class GebruikerRepositoryTest {
     @Test
     public void zoekOpAdres() {
         Relatie relatie1 = new Relatie();
-        relatie1.getAdres().setStraat("ab");
-        relatie1.getAdres().setPlaats("bc");
+        Adres adres1 = new Adres();
+        adres1.setStraat("ab");
+        adres1.setPlaats("bc");
+        adres1.setSoortAdres(Adres.SoortAdres.WOONADRES);
+        adres1.setRelatie(relatie1);
+        relatie1.getAdressen().add(adres1);
         Relatie relatie2 = new Relatie();
-        relatie2.getAdres().setStraat("cd");
-        relatie2.getAdres().setPlaats("de");
+        Adres adres2 = new Adres();
+        adres2.setStraat("cd");
+        adres2.setPlaats("de");
+        adres2.setSoortAdres(Adres.SoortAdres.WOONADRES);
+        adres2.setRelatie(relatie2);
+        relatie2.getAdressen().add(adres2);
         Relatie relatie3 = new Relatie();
-        relatie3.getAdres().setStraat("ef");
-        relatie3.getAdres().setPlaats("fg");
+        Adres adres3 = new Adres();
+        adres3.setStraat("ef");
+        adres3.setPlaats("fg");
+        adres3.setSoortAdres(Adres.SoortAdres.WOONADRES);
+        adres3.setRelatie(relatie3);
+        relatie3.getAdressen().add(adres3);
+
+        System.out.println(ReflectionToStringBuilder.toString(relatie1));
+        System.out.println(ReflectionToStringBuilder.toString(adres1));
 
         opslaan(relatie1);
         opslaan(relatie2);
         opslaan(relatie3);
 
-        assertEquals(1, gebruikerRepository.zoekOpAdres("a").size());
-        assertEquals("ab", gebruikerRepository.zoekOpAdres("a").get(0).getAdres().getStraat());
+        List<Relatie> result = gebruikerRepository.zoekOpAdres("a");
+        assertEquals(1, result.size());
+        assertEquals("ab", result.get(0).getAdres().getStraat());
 
         assertEquals(1, gebruikerRepository.zoekOpAdres("b").size());
         assertEquals("ab", gebruikerRepository.zoekOpAdres("b").get(0).getAdres().getStraat());
@@ -283,6 +301,24 @@ public class GebruikerRepositoryTest {
         assertEquals(2, gebruikerRepository.zoekOpAdres("e").size());
         assertEquals("cd", gebruikerRepository.zoekOpAdres("e").get(0).getAdres().getStraat());
         assertEquals("ef", gebruikerRepository.zoekOpAdres("e").get(1).getAdres().getStraat());
+    }
+
+    @Test
+    public void verwijderAdressenBijRelatie() {
+        Relatie relatie = new Relatie();
+        Adres adres = new Adres();
+        adres.setRelatie(relatie);
+        relatie.getAdressen().add(adres);
+
+        opslaan(relatie);
+
+        relatie = (Relatie) gebruikerRepository.lees(relatie.getId());
+
+        assertEquals(1, gebruikerRepository.getEm().createNativeQuery("select * from ADRES").getResultList().size());
+
+        gebruikerRepository.verwijderAdressenBijRelatie(relatie);
+
+        assertEquals(0, gebruikerRepository.getEm().createNativeQuery("select * from ADRES").getResultList().size());
     }
 
     // @Test

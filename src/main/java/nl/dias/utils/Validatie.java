@@ -1,21 +1,12 @@
 package nl.dias.utils;
 
+import nl.dias.domein.*;
+import nl.dias.exception.*;
+import org.apache.log4j.Logger;
+
 import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import nl.dias.domein.Adres;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Telefoonnummer;
-import nl.dias.exception.BsnNietGoedException;
-import nl.dias.exception.EmailAdresFoutiefException;
-import nl.dias.exception.IbanNietGoedException;
-import nl.dias.exception.PostcodeNietGoedException;
-import nl.dias.exception.TelefoonnummerNietGoedException;
-
-import org.apache.log4j.Logger;
 
 public final class Validatie {
     private static Pattern pattern;
@@ -63,8 +54,8 @@ public final class Validatie {
     }
 
     public static void valideer(Kantoor kantoor) throws PostcodeNietGoedException, IbanNietGoedException {
-        if (kantoor.getAdres() != null) {
-            validate(kantoor.getAdres());
+        if (kantoor.getPostAdres() != null) {
+            validate(kantoor.getPostAdres());
         }
         if (kantoor.getFactuurAdres() != null) {
             validate(kantoor.getFactuurAdres());

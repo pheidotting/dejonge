@@ -1,16 +1,6 @@
 package nl.dias.web.medewerker;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
@@ -25,10 +15,13 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
-
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/gebruiker")
 public class GebruikerController {
@@ -108,10 +101,11 @@ public class GebruikerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonRelatie jsonRelatie) {
-        LOGGER.debug("Opslaan " + jsonRelatie);
+        LOGGER.info("Opslaan " + jsonRelatie);
 
         try {
             Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+            LOGGER.debug("Uit mapper " + relatie);
             String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();

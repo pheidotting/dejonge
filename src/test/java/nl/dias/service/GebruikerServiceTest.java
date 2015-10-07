@@ -1,5 +1,6 @@
 package nl.dias.service;
 
+import com.google.common.collect.Lists;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Polis;
@@ -106,7 +107,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     public void testOpslaan() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setBsn("1234");
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.setIdentificatie("id");
 
         expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
@@ -137,7 +138,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatie = new Relatie();
         relatie.getRekeningnummers().add(new RekeningNummer());
         relatie.setBsn("1234");
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.setIdentificatie("id");
 
         expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
@@ -171,7 +172,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatie = new Relatie();
         relatie.getTelefoonnummers().add(new Telefoonnummer());
         relatie.setBsn("1234");
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.setIdentificatie("id");
 
         expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
@@ -201,7 +202,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     public void testOpslaanZonderBsn() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.setIdentificatie("id");
 
         expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
@@ -238,7 +239,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
     public void testOpslaanZonderEmail() throws UnsupportedEncodingException, NoSuchAlgorithmException, NietGevondenException {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.setBsn("id");
 
         // expect(repository.zoek(relatie.getIdentificatie())).andReturn(relatie);
@@ -313,7 +314,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatie = new Relatie();
         relatie.setId(2L);
         relatie.setBsn("bsn");
-        relatie.setAdres(maakAdres());
+        relatie.setAdressen(Lists.newArrayList(maakAdres()));
         relatie.getAdres().setStraat(null);
         relatie.setIdentificatie("id");
 

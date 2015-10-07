@@ -1,13 +1,13 @@
 package nl.dias.domein;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.joda.time.LocalDate;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.joda.time.LocalDate;
 
 public class KantoorJson extends Kantoor {
     private static final long serialVersionUID = 78054457231283351L;
@@ -27,17 +27,20 @@ public class KantoorJson extends Kantoor {
     private String datumOprichtingString;
 
     public KantoorJson(Kantoor kantoor) {
-        this.adresHuisnummer = kantoor.getAdres().getHuisnummer();
-        this.adresPlaats = kantoor.getAdres().getPlaats();
-        this.adresPostcode = kantoor.getAdres().getPostcode();
-        this.adresStraat = kantoor.getAdres().getStraat();
-        this.adresToevoeging = kantoor.getAdres().getToevoeging();
+        Adres postAdres = kantoor.getPostAdres();
+        Adres factuurAdres = kantoor.getFactuurAdres();
 
-        this.factuurAdresHuisnummer = kantoor.getFactuurAdres().getHuisnummer();
-        this.factuurAdresPlaats = kantoor.getFactuurAdres().getPlaats();
-        this.factuurAdresPostcode = kantoor.getFactuurAdres().getPostcode();
-        this.factuurAdresStraat = kantoor.getFactuurAdres().getStraat();
-        this.factuurAdresToevoeging = kantoor.getFactuurAdres().getToevoeging();
+        this.adresHuisnummer = postAdres.getHuisnummer();
+        this.adresPlaats = postAdres.getPlaats();
+        this.adresPostcode = postAdres.getPostcode();
+        this.adresStraat = postAdres.getStraat();
+        this.adresToevoeging = postAdres.getToevoeging();
+
+        this.factuurAdresHuisnummer = factuurAdres.getHuisnummer();
+        this.factuurAdresPlaats = factuurAdres.getPlaats();
+        this.factuurAdresPostcode = factuurAdres.getPostcode();
+        this.factuurAdresStraat = factuurAdres.getStraat();
+        this.factuurAdresToevoeging = factuurAdres.getToevoeging();
 
         this.setBtwNummer(kantoor.getBtwNummer());
         this.setDatumOprichtingString(kantoor.getDatumOprichting().toString("dd-MM-yyyy"));
@@ -59,17 +62,25 @@ public class KantoorJson extends Kantoor {
         } else {
             ret.setId(kantoor.getId());
         }
-        ret.getAdres().setHuisnummer(this.getAdresHuisnummer());
-        ret.getAdres().setPlaats(this.getAdresPlaats());
-        ret.getAdres().setPostcode(this.getAdresPostcode());
-        ret.getAdres().setStraat(this.getAdresStraat());
-        ret.getAdres().setToevoeging(this.getAdresToevoeging());
 
-        ret.getFactuurAdres().setHuisnummer(this.getFactuurAdresHuisnummer());
-        ret.getFactuurAdres().setPlaats(this.getFactuurAdresPlaats());
-        ret.getFactuurAdres().setPostcode(this.getFactuurAdresPostcode());
-        ret.getFactuurAdres().setStraat(this.getFactuurAdresStraat());
-        ret.getFactuurAdres().setToevoeging(this.getFactuurAdresToevoeging());
+        Adres postAdres = new Adres();
+
+        postAdres.setHuisnummer(this.getAdresHuisnummer());
+        postAdres.setPlaats(this.getAdresPlaats());
+        postAdres.setPostcode(this.getAdresPostcode());
+        postAdres.setStraat(this.getAdresStraat());
+        postAdres.setToevoeging(this.getAdresToevoeging());
+        postAdres.setSoortAdres(Adres.SoortAdres.POSTADRES);
+        ret.getAdressen().add(postAdres);
+
+        Adres factuurAdres = new Adres();
+        factuurAdres.setHuisnummer(this.getFactuurAdresHuisnummer());
+        factuurAdres.setPlaats(this.getFactuurAdresPlaats());
+        factuurAdres.setPostcode(this.getFactuurAdresPostcode());
+        factuurAdres.setStraat(this.getFactuurAdresStraat());
+        factuurAdres.setToevoeging(this.getFactuurAdresToevoeging());
+        factuurAdres.setSoortAdres(Adres.SoortAdres.FACTUURADRES);
+        ret.getAdressen().add(factuurAdres);
 
         ret.setBtwNummer(this.getBtwNummer());
         if (this.getDatumOprichtingString() != null && !"".equals(this.getDatumOprichtingString())) {

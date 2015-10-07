@@ -1,32 +1,19 @@
 package nl.dias.domein;
 
+import nl.dias.domein.polis.Polis;
+import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import nl.dias.domein.polis.Polis;
-import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 @Entity
 @Table(name = "BEDRIJF")
-@NamedQueries({ @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie") })
+@NamedQueries({@NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie")})
 public class Bedrijf implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 4611123664803995245L;
 
@@ -36,7 +23,7 @@ public class Bedrijf implements Serializable, PersistenceObject {
     private Long id;
 
     @JoinColumn(name = "RELATIE")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Polis.class, mappedBy = "bedrijf")
@@ -48,7 +35,8 @@ public class Bedrijf implements Serializable, PersistenceObject {
     @Column(name = "KVK", length = 8)
     private String kvk;
 
-    private Adres adres;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "bedrijf")
+    private Set<Adres> adressen;
 
     @Override
     public Long getId() {
@@ -95,49 +83,39 @@ public class Bedrijf implements Serializable, PersistenceObject {
         this.kvk = kvk;
     }
 
-    public Adres getAdres() {
-        if (adres == null) {
-            adres = new Adres();
+    public Set<Adres> getAdressen() {
+        if (adressen == null) {
+            adressen = new HashSet<>();
         }
-        return adres;
+        return adressen;
     }
 
-    public void setAdres(Adres adres) {
-        this.adres = adres;
+    public void setAdressen(Set<Adres> adressen) {
+        this.adressen = adressen;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Bedrijf)) {
+            return false;
+        }
+
+        Bedrijf bedrijf = (Bedrijf) o;
+
+        return new EqualsBuilder().append(getId(), bedrijf.getId()).append(getRelatie(), bedrijf.getRelatie()).append(getNaam(), bedrijf.getNaam()).append(getKvk(), bedrijf.getKvk()).append(getAdressen(), bedrijf.getAdressen()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(getId()).append(getRelatie()).append(getNaam()).append(getKvk()).append(getAdressen()).toHashCode();
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Bedrijf [id=");
-        builder.append(id);
-        builder.append(", naam=");
-        builder.append(naam);
-        builder.append(", kvk=");
-        builder.append(kvk);
-        builder.append(", adres=");
-        builder.append(adres);
-        builder.append("]");
-        return builder.toString();
-    }
-
-    /**
-     * @see java.lang.Object#equals(Object)
-     */
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Bedrijf)) {
-            return false;
-        }
-        Bedrijf rhs = (Bedrijf) object;
-        return new EqualsBuilder().append(this.id, rhs.id).append(this.adres, rhs.adres).append(this.kvk, rhs.kvk).append(this.naam, rhs.naam).isEquals();
-    }
-
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(this.id).append(this.adres).append(this.kvk).append(this.naam).toHashCode();
+        return new ToStringBuilder(this).append("id", id).append("relatie", relatie).append("polissen", polissen).append("naam", naam).append("kvk", kvk).append("adressen", adressen).toString();
     }
 }

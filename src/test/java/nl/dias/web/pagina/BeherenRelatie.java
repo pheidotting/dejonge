@@ -1,14 +1,13 @@
 package nl.dias.web.pagina;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.dias.dias_web.hulp.Hulp;
 import nl.dias.domein.json.JsonRelatie;
-
 import org.joda.time.LocalDateTime;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeherenRelatie extends PaginaMetMenuBalk {
     @FindBy(id = "voornaam")
@@ -149,21 +148,21 @@ public class BeherenRelatie extends PaginaMetMenuBalk {
         if (!Hulp.controleerVeld(this.tussenvoegsel, jsonRelatie.getTussenvoegsel())) {
             sb.append("|").append(Hulp.getText(this.tussenvoegsel)).append(",").append(jsonRelatie.getTussenvoegsel()).append(";").append("tussenvoegsel");
         }
-        if (!Hulp.controleerVeld(this.straat, jsonRelatie.getStraat())) {
-            sb.append("|").append(Hulp.getText(this.straat)).append(",").append(jsonRelatie.getStraat()).append(";").append("straat");
-        }
-        if (!Hulp.controleerVeld(this.huisnummer, jsonRelatie.getHuisnummer())) {
-            sb.append("|").append(Hulp.getText(this.huisnummer)).append(",").append(jsonRelatie.getHuisnummer()).append(";").append("huisnummer");
-        }
-        if (!Hulp.controleerVeld(this.toevoeging, jsonRelatie.getToevoeging())) {
-            sb.append("|").append(Hulp.getText(this.toevoeging)).append(",").append(jsonRelatie.getToevoeging()).append(";").append("toevoeging");
-        }
-        if (!Hulp.controleerVeld(this.postcode, jsonRelatie.getPostcode())) {
-            sb.append("|").append(Hulp.getText(this.postcode)).append(",").append(jsonRelatie.getPostcode()).append(";").append("postcode");
-        }
-        if (!Hulp.controleerVeld(this.plaats, jsonRelatie.getPlaats())) {
-            sb.append("|").append(Hulp.getText(this.plaats)).append(",").append(jsonRelatie.getPlaats()).append(";").append("plaats");
-        }
+        //        if (!Hulp.controleerVeld(this.straat, jsonRelatie.getStraat())) {
+        //            sb.append("|").append(Hulp.getText(this.straat)).append(",").append(jsonRelatie.getStraat()).append(";").append("straat");
+        //        }
+        //        if (!Hulp.controleerVeld(this.huisnummer, jsonRelatie.getHuisnummer())) {
+        //            sb.append("|").append(Hulp.getText(this.huisnummer)).append(",").append(jsonRelatie.getHuisnummer()).append(";").append("huisnummer");
+        //        }
+        //        if (!Hulp.controleerVeld(this.toevoeging, jsonRelatie.getToevoeging())) {
+        //            sb.append("|").append(Hulp.getText(this.toevoeging)).append(",").append(jsonRelatie.getToevoeging()).append(";").append("toevoeging");
+        //        }
+        //        if (!Hulp.controleerVeld(this.postcode, jsonRelatie.getPostcode())) {
+        //            sb.append("|").append(Hulp.getText(this.postcode)).append(",").append(jsonRelatie.getPostcode()).append(";").append("postcode");
+        //        }
+        //        if (!Hulp.controleerVeld(this.plaats, jsonRelatie.getPlaats())) {
+        //            sb.append("|").append(Hulp.getText(this.plaats)).append(",").append(jsonRelatie.getPlaats()).append(";").append("plaats");
+        //        }
         if (!Hulp.controleerVeld(this.bsn, jsonRelatie.getBsn())) {
             sb.append("|").append(Hulp.getText(this.bsn)).append(",").append(jsonRelatie.getBsn()).append(";").append("bsn");
         }

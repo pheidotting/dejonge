@@ -1,10 +1,15 @@
 package nl.dias.domein.json;
 
+import nl.dias.domein.json.predicates.JsonWoonAdresPredicate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 
 public class JsonRelatie {
     private Long id;
@@ -13,12 +18,8 @@ public class JsonRelatie {
     private String voornaam;
     private String tussenvoegsel;
     private String achternaam;
-    private String straat;
-    private String huisnummer;
-    private String toevoeging;
-    private String postcode;
-    private String plaats;
     private String adresOpgemaakt;
+    private List<JsonAdres> adressen;
     private List<JsonTelefoonnummer> telefoonnummers;
     private String bsn;
     private List<JsonRekeningNummer> rekeningnummers;
@@ -98,60 +99,33 @@ public class JsonRelatie {
         this.achternaam = achternaam;
     }
 
-    public String getStraat() {
-        return straat;
+    public List<JsonAdres> getAdressen() {
+        if (adressen == null) {
+            adressen = new ArrayList<>();
+        }
+        return adressen;
     }
 
-    public void setStraat(String straat) {
-        this.straat = straat;
-    }
-
-    public String getHuisnummer() {
-        return huisnummer;
-    }
-
-    public void setHuisnummer(String huisnummer) {
-        this.huisnummer = huisnummer;
-    }
-
-    public String getToevoeging() {
-        return toevoeging;
-    }
-
-    public void setToevoeging(String toevoeging) {
-        this.toevoeging = toevoeging;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public String getPlaats() {
-        return plaats;
-    }
-
-    public void setPlaats(String plaats) {
-        this.plaats = plaats;
+    public void setAdressen(List<JsonAdres> adressen) {
+        this.adressen = adressen;
     }
 
     public String getAdresOpgemaakt() {
-        if (adresOpgemaakt == null) {
+        JsonAdres adres = (JsonAdres) getFirst(filter(getAdressen(), new JsonWoonAdresPredicate()), null);
+
+        if (adresOpgemaakt == null && adres != null) {
             StringBuilder sb = new StringBuilder();
-            if (getStraat() != null) {
-                sb.append(getStraat() + " ");
+            if (adres.getStraat() != null) {
+                sb.append(adres.getStraat() + " ");
             }
-            if (getHuisnummer() != null) {
-                sb.append(getHuisnummer() + " ");
+            if (adres.getHuisnummer() != null) {
+                sb.append(adres.getHuisnummer() + " ");
             }
-            if (getToevoeging() != null && !"".equals(getToevoeging())) {
-                sb.append(getToevoeging() + " ");
+            if (adres.getToevoeging() != null && !"".equals(adres.getToevoeging())) {
+                sb.append(adres.getToevoeging() + " ");
             }
-            if (getPlaats() != null) {
-                sb.append(", " + getPlaats());
+            if (adres.getPlaats() != null) {
+                sb.append(", " + adres.getPlaats());
             }
             adresOpgemaakt = sb.toString();
 
@@ -266,58 +240,27 @@ public class JsonRelatie {
     }
 
     @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(achternaam).append(bsn).append(burgerlijkeStaat).append(geslacht).append(huisnummer).append(id).append(identificatie).append(kantoor)
-                .append(onderlingeRelaties).append(opmerkingen).append(plaats).append(postcode).append(rekeningnummers).append(straat).append(telefoonnummers).append(toevoeging).append(tussenvoegsel)
-                .append(voornaam).append(zakelijkeKlant).toHashCode();
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof JsonRelatie)) {
+            return false;
+        }
+
+        JsonRelatie that = (JsonRelatie) o;
+
+        return new EqualsBuilder().append(isZakelijkeKlant(), that.isZakelijkeKlant()).append(getId(), that.getId()).append(getIdentificatie(), that.getIdentificatie()).append(getRoepnaam(), that.getRoepnaam()).append(getVoornaam(), that.getVoornaam()).append(getTussenvoegsel(), that.getTussenvoegsel()).append(getAchternaam(), that.getAchternaam()).append(getAdresOpgemaakt(), that.getAdresOpgemaakt()).append(getAdressen(), that.getAdressen()).append(getTelefoonnummers(), that.getTelefoonnummers()).append(getBsn(), that.getBsn()).append(getRekeningnummers(), that.getRekeningnummers()).append(getKantoor(), that.getKantoor()).append(getOpmerkingen(), that.getOpmerkingen()).append(getGeboorteDatum(), that.getGeboorteDatum()).append(getOverlijdensdatum(), that.getOverlijdensdatum()).append(getGeslacht(), that.getGeslacht()).append(getBurgerlijkeStaat(), that.getBurgerlijkeStaat()).append(getOnderlingeRelaties(), that.getOnderlingeRelaties()).append(getErrors(), that.getErrors()).isEquals();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        JsonRelatie other = (JsonRelatie) obj;
-
-        return new EqualsBuilder().append(achternaam, other.achternaam).append(bsn, other.bsn).append(burgerlijkeStaat, other.burgerlijkeStaat).append(geslacht, other.geslacht)
-                .append(huisnummer, other.huisnummer).append(id, other.id).append(identificatie, other.identificatie).append(kantoor, other.kantoor)
-                .append(onderlingeRelaties, other.onderlingeRelaties).append(opmerkingen, other.opmerkingen).append(plaats, other.plaats).append(postcode, other.postcode)
-                .append(rekeningnummers, other.rekeningnummers).append(straat, other.straat).append(telefoonnummers, other.telefoonnummers).append(toevoeging, other.toevoeging)
-                .append(tussenvoegsel, other.tussenvoegsel).append(voornaam, other.voornaam).append(zakelijkeKlant, other.zakelijkeKlant).isEquals();
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(getId()).append(getIdentificatie()).append(getRoepnaam()).append(getVoornaam()).append(getTussenvoegsel()).append(getAchternaam()).append(getAdresOpgemaakt()).append(getAdressen()).append(getTelefoonnummers()).append(getBsn()).append(getRekeningnummers()).append(getKantoor()).append(getOpmerkingen()).append(getGeboorteDatum()).append(getOverlijdensdatum()).append(getGeslacht()).append(getBurgerlijkeStaat()).append(getOnderlingeRelaties()).append(isZakelijkeKlant()).append(getErrors()).toHashCode();
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("JsonRelatie [\nid=").append(id);
-        builder.append(", identificatie=").append(identificatie);
-        builder.append(", voornaam=").append(voornaam);
-        builder.append(", tussenvoegsel=").append(tussenvoegsel);
-        builder.append(", achternaam=").append(achternaam);
-        builder.append(", straat=").append(straat);
-        builder.append(", huisnummer=").append(huisnummer);
-        builder.append(", toevoeging=").append(toevoeging);
-        builder.append(", postcode=").append(postcode);
-        builder.append(", plaats=").append(plaats);
-        builder.append(", telefoonnummers=").append(telefoonnummers);
-        builder.append(", bsn=").append(bsn);
-        builder.append(", rekeningnummers=").append(rekeningnummers);
-        builder.append(", kantoor=").append(kantoor);
-        builder.append(", opmerkingen=").append(opmerkingen);
-        builder.append(", geboorteDatum=").append(geboorteDatum);
-        builder.append(", overlijdensdatum=").append(overlijdensdatum);
-        builder.append(", geslacht=").append(geslacht);
-        builder.append(", burgerlijkeStaat=").append(burgerlijkeStaat);
-        builder.append(", onderlingeRelaties=").append(onderlingeRelaties);
-        builder.append(", zakelijkeKlant=").append(zakelijkeKlant);
-        builder.append("]");
-        return builder.toString();
+        return new ToStringBuilder(this).append("id", id).append("identificatie", identificatie).append("roepnaam", roepnaam).append("voornaam", voornaam).append("tussenvoegsel", tussenvoegsel).append("achternaam", achternaam).append("adresOpgemaakt", adresOpgemaakt).append("adressen", adressen).append("telefoonnummers", telefoonnummers).append("bsn", bsn).append("rekeningnummers", rekeningnummers).append("kantoor", kantoor).append("opmerkingen", opmerkingen).append("geboorteDatum", geboorteDatum).append("overlijdensdatum", overlijdensdatum).append("geslacht", geslacht).append("burgerlijkeStaat", burgerlijkeStaat).append("onderlingeRelaties", onderlingeRelaties).append("zakelijkeKlant", zakelijkeKlant).append("errors", errors).toString();
     }
-
 }

@@ -1,24 +1,19 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Rechtsvorm;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.SoortKantoor;
+import nl.dias.domein.*;
 import nl.dias.exception.BsnNietGoedException;
 import nl.dias.exception.IbanNietGoedException;
 import nl.dias.exception.PostcodeNietGoedException;
 import nl.dias.exception.TelefoonnummerNietGoedException;
-
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class KantoorRepositoryTest {
     private KantoorRepository kantoorService;
@@ -33,11 +28,15 @@ public class KantoorRepositoryTest {
     public void test() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Kantoor kantoor = new Kantoor();
         kantoor.setNaam("Patrick's mooie kantoortje");
-        kantoor.getAdres().setHuisnummer(46L);
-        kantoor.getAdres().setPlaats("Plaaaaaaaaaaaaaats");
-        kantoor.getAdres().setPostcode("1234BB");
-        kantoor.getAdres().setStraat("Straaaaaaaaaaaaaaaaat");
-        kantoor.getAdres().setToevoeging("toevoeging");
+        Adres adres = new Adres();
+        adres.setHuisnummer(46L);
+        adres.setPlaats("Plaaaaaaaaaaaaaats");
+        adres.setPostcode("1234BB");
+        adres.setStraat("Straaaaaaaaaaaaaaaaat");
+        adres.setToevoeging("toevoeging");
+        adres.setSoortAdres(Adres.SoortAdres.POSTADRES);
+        adres.setKantoor(kantoor);
+        kantoor.getAdressen().add(adres);
         kantoor.setKvk(138383838L);
         kantoor.setBtwNummer("btwNummer");
         kantoor.setDatumOprichting(new LocalDate());
@@ -45,11 +44,14 @@ public class KantoorRepositoryTest {
         kantoor.setRechtsvorm(Rechtsvorm.EENM);
         kantoor.setSoortKantoor(SoortKantoor.HYP);
 
-        kantoor.getFactuurAdres().setHuisnummer(58L);
-        kantoor.getFactuurAdres().setPlaats("Ploats");
-        kantoor.getFactuurAdres().setPostcode("2345JJ");
-        kantoor.getFactuurAdres().setStraat("Stroate");
-        kantoor.getFactuurAdres().setToevoeging("toevoeg");
+        Adres factuurAdres = new Adres();
+        factuurAdres.setHuisnummer(58L);
+        factuurAdres.setPlaats("Ploats");
+        factuurAdres.setPostcode("2345JJ");
+        factuurAdres.setStraat("Stroate");
+        factuurAdres.setToevoeging("toevoeg");
+        factuurAdres.setSoortAdres(Adres.SoortAdres.FACTUURADRES);
+        kantoor.getAdressen().add(factuurAdres);
 
         Medewerker medewerker = new Medewerker();
         medewerker.setIdentificatie("pp");

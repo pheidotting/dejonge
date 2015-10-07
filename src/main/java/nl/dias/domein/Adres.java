@@ -1,18 +1,26 @@
 package nl.dias.domein;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-@Embeddable
+import javax.persistence.*;
+import java.io.Serializable;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+@Entity
+@Table(name = "ADRES")
+@NamedQueries({@NamedQuery(name = "Adres.verwijderAdressenBijRelatie", query = "delete from Adres a where a.relatie = :relatie")})
 public class Adres implements Serializable {
     private static final long serialVersionUID = 2361944992062349932L;
 
+    public enum SoortAdres {
+        WOONADRES, POSTADRES, RISICOADRES, FACTUURADRES;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
     @Column(name = "STRAAT")
     private String straat;
     @Column(name = "HUISNUMMER")
@@ -23,6 +31,26 @@ public class Adres implements Serializable {
     private String postcode;
     @Column(name = "PLAATS")
     private String plaats;
+    @Column(name = "SOORT")
+    @Enumerated(EnumType.STRING)
+    private SoortAdres soortAdres;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @JoinColumn(name = "RELATIE")
+    private Relatie relatie;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
+    @JoinColumn(name = "BEDRIJF")
+    private Bedrijf bedrijf;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Kantoor.class)
+    @JoinColumn(name = "KANTOOR")
+    private Kantoor kantoor;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getStraat() {
         return straat;
@@ -66,6 +94,38 @@ public class Adres implements Serializable {
         this.plaats = plaats;
     }
 
+    public SoortAdres getSoortAdres() {
+        return soortAdres;
+    }
+
+    public void setSoortAdres(SoortAdres soortAdres) {
+        this.soortAdres = soortAdres;
+    }
+
+    public Relatie getRelatie() {
+        return relatie;
+    }
+
+    public void setRelatie(Relatie relatie) {
+        this.relatie = relatie;
+    }
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
+    }
+
+    public Kantoor getKantoor() {
+        return kantoor;
+    }
+
+    public void setKantoor(Kantoor kantoor) {
+        this.kantoor = kantoor;
+    }
+
     public boolean isCompleet() {
         return isNotBlank(straat) && huisnummer != null && isNotBlank(postcode) && isNotBlank(plaats);
 
@@ -85,6 +145,9 @@ public class Adres implements Serializable {
         builder.append(", plaats=");
         builder.append(plaats);
         builder.append("]");
+        builder.append(", soortAdres=");
+        builder.append(soortAdres);
+        builder.append("]");
         return builder.toString();
     }
 
@@ -97,6 +160,7 @@ public class Adres implements Serializable {
         result = prime * result + ((postcode == null) ? 0 : postcode.hashCode());
         result = prime * result + ((straat == null) ? 0 : straat.hashCode());
         result = prime * result + ((toevoeging == null) ? 0 : toevoeging.hashCode());
+        result = prime * result + ((soortAdres == null) ? 0 : soortAdres.hashCode());
         return result;
     }
 
@@ -109,7 +173,6 @@ public class Adres implements Serializable {
             return false;
         }
         Adres other = (Adres) obj;
-        return new EqualsBuilder().append(huisnummer, other.huisnummer).append(plaats, other.plaats).append(postcode, other.postcode).append(straat, other.straat).append(toevoeging, other.toevoeging)
-                .isEquals();
+        return new EqualsBuilder().append(huisnummer, other.huisnummer).append(plaats, other.plaats).append(postcode, other.postcode).append(straat, other.straat).append(toevoeging, other.toevoeging).append(soortAdres, other.soortAdres).isEquals();
     }
 }
