@@ -381,17 +381,33 @@ public class GebruikerRepositoryTest {
     //
     // }
     //
-    // @Test
-    // public void patrick() {
-    // Beheerder beheerder = new Beheerder();
-    // beheerder.setAchternaam("Jonge");
-    // beheerder.setVoornaam("Bene");
-    // beheerder.setTussenvoegsel("de");
-    // beheerder.setIdentificatie("Bene@dejongefinancieelconsult.nl");
-    // beheerder.setHashWachtwoord("welkom");
-    //
-    // gebruikerService.opslaan(beheerder);
-    // }
+     @Test
+     public void patrick() throws Exception{
+     Beheerder beheerder = new Beheerder();
+     beheerder.setAchternaam("Jonge");
+     beheerder.setVoornaam("Bene");
+     beheerder.setTussenvoegsel("de");
+     beheerder.setIdentificatie("djfc.bene");
+     beheerder.setHashWachtwoord("bene");
+
+         gebruikerRepository.opslaan(beheerder);
+
+     Beheerder beheerder2 = new Beheerder();
+         beheerder2.setAchternaam("Zwiers");
+         beheerder2.setVoornaam("Gerben");
+         beheerder2.setIdentificatie("djfc.gerben");
+         beheerder2.setHashWachtwoord("gerben");
+
+         gebruikerRepository.opslaan(beheerder2);
+
+     Beheerder beheerder3 = new Beheerder();
+         beheerder3.setAchternaam("Vooys");
+         beheerder3.setVoornaam("Karin");
+         beheerder3.setIdentificatie("djfc.karin");
+         beheerder3.setHashWachtwoord("karin");
+
+         gebruikerRepository.opslaan(beheerder3);
+     }
 
     private void opslaan(Object object) {
         gebruikerRepository.getEm().getTransaction().begin();

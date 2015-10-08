@@ -105,6 +105,7 @@ public abstract class Onderwerp implements Serializable {
         builder.append("\nsalt=");
         builder.append(salt);
         builder.append("]");
+        builder.append("]");
         return builder.toString();
     }
 

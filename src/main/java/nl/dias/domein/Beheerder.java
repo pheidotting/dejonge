@@ -14,7 +14,7 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "B")
-@AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
+@AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM")) })
 public class Beheerder extends Gebruiker implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 3403882985064145165L;
 

@@ -21,7 +21,7 @@ import static com.google.common.collect.Iterables.*;
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "R")
-@AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES"))})
+@AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM"))})
 @NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"),
         @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"),

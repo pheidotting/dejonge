@@ -1,38 +1,20 @@
 package nl.dias.domein;
 
+import nl.lakedigital.domein.Onderwerp;
+import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import javax.persistence.*;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import nl.lakedigital.domein.Onderwerp;
-import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorColumn(name = "SOORT", length = 1)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "EMAILADRES")) })
-@NamedQueries({ @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.identificatie = :emailadres"),
-        @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"),
-        @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"),
-        @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam") })
+@AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM"))})
+@NamedQueries({@NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.identificatie = :emailadres"), @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"), @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam")})
 public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
 
@@ -42,6 +24,8 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
     private String tussenvoegsel;
     @Column(name = "ACHTERNAAM")
     private String achternaam;
+    @Column(name = "EMAILADRES")
+    private String emailadres;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gebruiker", orphanRemoval = true, targetEntity = Sessie.class)
     private Set<Sessie> sessies;
 
@@ -72,6 +56,14 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
         this.achternaam = achternaam;
     }
 
+    public String getEmailadres() {
+        return emailadres;
+    }
+
+    public void setEmailadres(String emailadres) {
+        this.emailadres = emailadres;
+    }
+
     public Set<Sessie> getSessies() {
         if (sessies == null) {
             sessies = new HashSet<>();
@@ -96,8 +88,7 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("wachtwoordString", this.wachtwoordString).append("achternaam", this.achternaam).append("tussenvoegsel", this.tussenvoegsel)
-                .append("voornaam", this.voornaam).append("sessies", this.sessies).toString();
+        return new ToStringBuilder(this).append("wachtwoordString", this.wachtwoordString).append("achternaam", this.achternaam).append("tussenvoegsel", this.tussenvoegsel).append("voornaam", this.voornaam).append("sessies", this.sessies).append("emailadres", emailadres).toString();
     }
 
     public String getNaam() {
