@@ -135,13 +135,11 @@ public class HypotheekService {
         return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
 
-    public Long slaBijlageOp(Long hypotheekId, String s3Identificatie, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId + " s3Identificatie " + s3Identificatie);
+    public Long slaBijlageOp(Long hypotheekId, Bijlage bijlage, String omschrijving) {
+        LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId);
 
-        Bijlage bijlage = new Bijlage();
         bijlage.setHypotheek(leesHypotheek(hypotheekId));
         bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
-        bijlage.setS3Identificatie(s3Identificatie);
         bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);

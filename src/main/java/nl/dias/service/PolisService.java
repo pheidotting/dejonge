@@ -6,7 +6,6 @@ import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
-import nl.lakedigital.archief.service.ArchiefService;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -22,8 +21,6 @@ public class PolisService {
 
     @InjectParam
     private PolisRepository polisRepository;
-    @InjectParam
-    private ArchiefService archiefService;
     @InjectParam
     private GebruikerService gebruikerService;
     @InjectParam
@@ -103,13 +100,11 @@ public class PolisService {
         }
     }
 
-    public Long slaBijlageOp(Long polisId, String s3Identificatie, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId + " s3Identificatie " + s3Identificatie);
+    public Long slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
+        LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
 
-        Bijlage bijlage = new Bijlage();
         bijlage.setPolis(polisRepository.lees(polisId));
         bijlage.setSoortBijlage(SoortBijlage.POLIS);
-        bijlage.setS3Identificatie(s3Identificatie);
         bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
@@ -128,8 +123,6 @@ public class PolisService {
     }
 
     public void verwijder(Long id) throws IllegalArgumentException {
-        archiefService.setBucketName("dias");
-
         LOGGER.debug("Ophalen Polis");
         Polis polis = polisRepository.lees(id);
 
@@ -150,10 +143,6 @@ public class PolisService {
         }
 
         gebruikerService.opslaan(relatie);
-
-        for (Bijlage bijlage : polis.getBijlages()) {
-            archiefService.verwijderen(bijlage.getS3Identificatie());
-        }
 
         polisRepository.verwijder(polis);
     }
@@ -336,10 +325,6 @@ public class PolisService {
 
     public void setPolisRepository(PolisRepository polisRepository) {
         this.polisRepository = polisRepository;
-    }
-
-    public void setArchiefService(ArchiefService archiefService) {
-        this.archiefService = archiefService;
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

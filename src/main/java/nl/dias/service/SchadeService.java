@@ -43,13 +43,11 @@ public class SchadeService {
         schadeRepository.verwijder(schade);
     }
 
-    public Long slaBijlageOp(Long schadeId, String s3Identificatie, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId + " s3Identificatie " + s3Identificatie);
+    public Long slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
+        LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId);
 
-        Bijlage bijlage = new Bijlage();
         bijlage.setSchade(schadeRepository.lees(schadeId));
         bijlage.setSoortBijlage(SoortBijlage.SCHADE);
-        bijlage.setS3Identificatie(s3Identificatie);
         bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);

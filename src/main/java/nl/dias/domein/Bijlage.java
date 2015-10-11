@@ -4,9 +4,11 @@ import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "BIJLAGE")
@@ -18,6 +20,13 @@ public class Bijlage implements PersistenceObject, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
+    @Column(name = "BESTANDSNAAM", length = 500)
+    private String bestandsNaam;
+
+    @Column(name="UPLOADMOMENT")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date uploadMoment;
 
     @JoinColumn(name = "POLIS", nullable = true)
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
@@ -53,6 +62,22 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBestandsNaam() {
+        return bestandsNaam;
+    }
+
+    public void setBestandsNaam(String bestandsNaam) {
+        this.bestandsNaam = bestandsNaam;
+    }
+
+    public LocalDateTime getUploadMoment() {
+        return new LocalDateTime(uploadMoment);
+    }
+
+    public void setUploadMoment(LocalDateTime uploadMoment) {
+        this.uploadMoment = uploadMoment.toDate();
     }
 
     public Polis getPolis() {

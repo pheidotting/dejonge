@@ -1,28 +1,21 @@
 package nl.dias.service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.*;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
+import org.apache.log4j.Logger;
 
 import javax.inject.Named;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import nl.dias.domein.Beheerder;
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Sessie;
-import nl.lakedigital.archief.service.CodeService;
-import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-
-import org.apache.log4j.Logger;
-
-import com.sun.jersey.api.core.InjectParam;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Named
 public class AuthorisatieService {
@@ -32,8 +25,6 @@ public class AuthorisatieService {
 
     @InjectParam
     private GebruikerService gebruikerService;
-    @InjectParam
-    private CodeService codeService;
 
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {
         LOGGER.debug("Inloggen met " + identificatie + " en onthouden " + onthouden);
@@ -77,7 +68,7 @@ public class AuthorisatieService {
         sessie.setIpadres(request.getRemoteAddr());
         sessie.setDatumLaatstGebruikt(new Date());
         sessie.setGebruiker(gebruikerUitDatabase);
-        sessie.setSessie(codeService.genereerNieuweCode(25));
+        sessie.setSessie(UUID.randomUUID().toString());
 
         gebruikerService.opslaan(sessie);
 
@@ -90,7 +81,7 @@ public class AuthorisatieService {
 
         if (onthouden) {
             LOGGER.debug("onthouden is true, dus cookie maken en opslaan");
-            String cookieCode = codeService.genereerNieuweCode(30);
+            String cookieCode = UUID.randomUUID().toString();
             Cookie cookie = new Cookie(COOKIE_DOMEIN_CODE, cookieCode);
             cookie.setMaxAge(60 * 60);
             LOGGER.debug("cookie op de response zetten, code : " + cookieCode);
@@ -172,9 +163,5 @@ public class AuthorisatieService {
 
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;
-    }
-
-    public void setCodeService(CodeService codeService) {
-        this.codeService = codeService;
     }
 }

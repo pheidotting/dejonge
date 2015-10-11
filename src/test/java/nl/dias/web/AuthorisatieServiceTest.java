@@ -1,39 +1,35 @@
 package nl.dias.web;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
-import nl.lakedigital.archief.service.CodeService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 @Ignore
 public class AuthorisatieServiceTest extends EasyMockSupport {
     private AuthorisatieService service;
     private GebruikerService gebruikerService;
-    private CodeService codeService;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession httpSession;
@@ -47,9 +43,6 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
 
         gebruikerService = createMock(GebruikerService.class);
         service.setGebruikerService(gebruikerService);
-
-        codeService = createMock(CodeService.class);
-        service.setCodeService(codeService);
 
         request = createMock(HttpServletRequest.class);
         response = createMock(HttpServletResponse.class);
@@ -113,7 +106,6 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         expect(gebruikerService.zoek(identificatie)).andReturn(medewerker);
         expect(request.getHeader("user-agent")).andReturn("agent");
         expect(request.getRemoteAddr()).andReturn("addr");
-        expect(codeService.genereerNieuweCode(25)).andReturn("nieuweCode");
 
         Sessie sessie = new Sessie();
         sessie.setBrowser("agent");

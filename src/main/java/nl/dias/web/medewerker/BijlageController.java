@@ -10,16 +10,18 @@ import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.*;
+import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +31,6 @@ import java.util.Set;
 public class BijlageController {
     private final static Logger LOGGER = Logger.getLogger(BijlageController.class);
 
-    @InjectParam
-    private ArchiefService archiefService;
     @InjectParam
     private PolisService polisService;
     @InjectParam
@@ -73,31 +73,14 @@ public class BijlageController {
     @Path("/download")
     @Produces("application/pdf")
     public Response getFile(@QueryParam("id") String id) throws IOException {
-        archiefService.setBucketName("dias");
         LOGGER.debug("Ophalen bijlage met id " + id);
 
         Bijlage bijlage = polisService.leesBijlage(Long.parseLong(id));
-        String s3Identificatie = bijlage.getS3Identificatie();
 
-        LOGGER.debug("Ophalen archiefbestand met s3 : " + s3Identificatie);
-        ArchiefBestand archiefBestand = archiefService.ophalen(s3Identificatie, false);
-        LOGGER.debug("Opgehaald " + archiefBestand);
+        File file = new File(Utils.getUploadPad() + "/" + bijlage.getS3Identificatie());
 
-        File tmpFile = File.createTempFile("dias", "download");
-
-        try {
-            bijlageService.writeToFile(new FileInputStream(archiefBestand.getBestand()), tmpFile.toString());
-        } catch (FileNotFoundException e1) {
-            LOGGER.error("Bestand niet gevonden", e1);
-        }
-
-        Date fileDate = new Date(archiefBestand.getBestand().lastModified());
-        try {
-            return Response.ok(new FileInputStream(archiefBestand.getBestand())).lastModified(fileDate).build();
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Bestand niet gevonden", e);
-            return Response.noContent().build();
-        }
+        Date fileDate = new Date(file.lastModified());
+        return Response.ok(new FileInputStream(file)).lastModified(fileDate).build();
     }
 
     @POST
@@ -441,8 +424,7 @@ public class BijlageController {
 
                 return hypotheekService.slaBijlageOp(Long.valueOf(hypotheekId), bijlageService.uploaden(uploadedInputStream, fileDetail), omschrijving).toString();
             } else {
-                Bijlage bijlage = new Bijlage();
-                bijlage.setS3Identificatie(bijlageService.uploaden(uploadedInputStream, fileDetail));
+                Bijlage bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
 
                 bijlageService.opslaan(bijlage);
 

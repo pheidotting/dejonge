@@ -1,37 +1,29 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
+import nl.dias.repository.BijlageRepository;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Relatie;
-import nl.dias.repository.BijlageRepository;
-import nl.lakedigital.archief.service.ArchiefService;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
 
-import org.easymock.EasyMockSupport;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class BijlageServiceTest extends EasyMockSupport {
-    private BijlageService service;
-    private ArchiefService archiefService;
+    @TestSubject
+    private BijlageService service=new BijlageService();
+    @Mock
     private BijlageRepository repository;
-
-    @Before
-    public void setUp() throws Exception {
-        service = new BijlageService();
-
-        archiefService = createMock(ArchiefService.class);
-        service.setArchiefService(archiefService);
-
-        repository = createMock(BijlageRepository.class);
-        service.setBijlageRepository(repository);
-    }
 
     @After
     public void tearDown() throws Exception {
@@ -55,13 +47,6 @@ public class BijlageServiceTest extends EasyMockSupport {
     public void testVerwijderBijlage() {
         Bijlage bijlage = createMock(Bijlage.class);
         expect(repository.lees(3L)).andReturn(bijlage);
-
-        archiefService.setBucketName("dias");
-        expectLastCall();
-
-        expect(bijlage.getS3Identificatie()).andReturn("1234");
-        archiefService.verwijderen("1234");
-        expectLastCall();
 
         repository.verwijder(bijlage);
         expectLastCall();

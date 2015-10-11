@@ -5,7 +5,6 @@ import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
-import nl.lakedigital.archief.service.ArchiefService;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -36,8 +35,6 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Mock
     private PolisRepository polisRepository;
-    @Mock
-    private ArchiefService archiefService;
     @Mock
     private GebruikerService gebruikerService;
     @Mock
@@ -156,7 +153,7 @@ public class PolisServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        polisService.slaBijlageOp(1L, S3IDENTIFICATIE, OMSCHRIJVING);
+        polisService.slaBijlageOp(1L, bijlage, OMSCHRIJVING);
     }
 
     @Test
@@ -172,9 +169,6 @@ public class PolisServiceTest extends EasyMockSupport {
 
     @Test
     public void testVerwijder() {
-        archiefService.setBucketName("dias");
-        expectLastCall();
-
         MobieleApparatuurVerzekering verzekering = new MobieleApparatuurVerzekering();
         expect(polisRepository.lees(1L)).andReturn(verzekering);
 

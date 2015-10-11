@@ -32,13 +32,11 @@ public class AangifteService {
         return aangifteRepository.lees(id);
     }
 
-    public Long slaAangifteOp(Aangifte aangifte, String s3Identificatie, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId() + " s3Identificatie " + s3Identificatie);
+    public Long slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
+        LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId());
 
-        Bijlage bijlage = new Bijlage();
         bijlage.setAangifte(aangifte);
         bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
-        bijlage.setS3Identificatie(s3Identificatie);
         bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);

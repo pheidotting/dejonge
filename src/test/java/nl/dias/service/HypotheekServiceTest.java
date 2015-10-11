@@ -255,7 +255,7 @@ public class HypotheekServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.slaBijlageOp(3L, "s3Identificatie", "omschrijving");
+        service.slaBijlageOp(3L, bijlage, "omschrijving");
     }
 
 }

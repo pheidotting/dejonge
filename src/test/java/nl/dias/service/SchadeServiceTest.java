@@ -222,7 +222,7 @@ public class SchadeServiceTest extends EasyMockSupport {
 
         replayAll();
 
-        service.slaBijlageOp(schadeId, s3Identificatie, "Omschrijving");
+        service.slaBijlageOp(schadeId, bijlage, "Omschrijving");
 
         verifyAll();
     }

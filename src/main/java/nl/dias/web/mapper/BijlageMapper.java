@@ -1,22 +1,15 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDateTime;
 
 import javax.inject.Named;
 
 @Named
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
-    @InjectParam
-    private ArchiefService archiefService;
-
     private final static Logger LOGGER = Logger.getLogger(BijlageMapper.class);
 
     @Override
@@ -36,18 +29,13 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
     @Override
     public JsonBijlage mapNaarJson(Bijlage bijlage) {
-        ArchiefBestand archiefBestand = archiefService.ophalen(bijlage.getS3Identificatie(), true);
 
         JsonBijlage json = new JsonBijlage();
         json.setId(bijlage.getId().toString());
         json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
-        if (archiefBestand != null) {
-            json.setBestandsNaam(archiefBestand.getBestandsnaam());
-        }
         json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
-        if (archiefBestand != null && archiefBestand.getDatumOpgeslagen() != null) {
-            json.setDatumUpload(new LocalDateTime(archiefBestand.getDatumOpgeslagen()).toString("dd-MM-yyyy HH:mm"));
-        }
+        json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
+        json.setBestandsNaam(bijlage.getBestandsNaam());
 
         String parentId = null;
         switch (bijlage.getSoortBijlage()) {
@@ -71,9 +59,4 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
         return json;
     }
-
-    public void setArchiefService(ArchiefService archiefService) {
-        this.archiefService = archiefService;
-    }
-
 }

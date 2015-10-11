@@ -5,19 +5,18 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
-import nl.lakedigital.archief.domain.ArchiefBestand;
-import nl.lakedigital.archief.service.ArchiefService;
+import nl.dias.utils.Utils;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDateTime;
 
 import javax.inject.Named;
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 
 @Named
 public class BijlageService {
     private static final Logger LOGGER = Logger.getLogger(BijlageService.class);
-    @InjectParam
-    private ArchiefService archiefService;
     @InjectParam
     private BijlageRepository bijlageRepository;
 
@@ -28,8 +27,6 @@ public class BijlageService {
     public void verwijderBijlage(Long id) {
         Bijlage bijlage = bijlageRepository.lees(id);
 
-        archiefService.setBucketName("dias");
-        archiefService.verwijderen(bijlage.getS3Identificatie());
         bijlageRepository.verwijder(bijlage);
     }
 
@@ -37,34 +34,22 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
+    public Bijlage uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
         String[] exp = fileDetail.getFileName().split("//.");
         String extensie = exp[exp.length - 1];
 
-        String identificatie = null;
+        String identificatie = UUID.randomUUID().toString().replace("-","");
 
         LOGGER.debug("Gevonden extensie " + extensie);
-        try {
-            File tempFile = File.createTempFile("dias", "upload." + extensie);
 
-            // save it
-            writeToFile(uploadedInputStream, tempFile.getAbsolutePath());
+        Bijlage bijlage=new Bijlage();
+        bijlage.setS3Identificatie(identificatie);
+        bijlage.setBestandsNaam(fileDetail.getFileName());
+        bijlage.setUploadMoment(LocalDateTime.now());
 
-            // File file = new File(uploadedFileLocation);
-            ArchiefBestand archiefBestand = new ArchiefBestand();
-            archiefBestand.setBestandsnaam(fileDetail.getFileName());
-            archiefBestand.setBestand(tempFile);
+        writeToFile(uploadedInputStream, Utils.getUploadPad() + "/" + identificatie);
 
-            LOGGER.debug("naar s3");
-            archiefService.setBucketName("dias");
-            identificatie = archiefService.opslaan(archiefBestand);
-
-            LOGGER.debug("Opgeslagen naar S3, identificatie terug : " + identificatie);
-        } catch (IOException e) {
-            LOGGER.error("Fout bij opslaan bijlage ", e);
-        }
-
-        return identificatie;
+        return bijlage;
     }
 
     public void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
@@ -98,9 +83,6 @@ public class BijlageService {
         }
     }
 
-    public void setArchiefService(ArchiefService archiefService) {
-        this.archiefService = archiefService;
-    }
 
     public void setBijlageRepository(BijlageRepository bijlageRepository) {
         this.bijlageRepository = bijlageRepository;
