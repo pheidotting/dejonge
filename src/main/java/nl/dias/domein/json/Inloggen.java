@@ -13,6 +13,15 @@ public class Inloggen {
     private String onthouden;
     private List<String> errors;
 
+    public Inloggen() {
+    }
+
+    public Inloggen(String identificatie, String wachtwoord) {
+        this.identificatie = identificatie;
+        this.wachtwoord = wachtwoord;
+        this.onthouden = "";
+    }
+
     public String getIdentificatie() {
         return identificatie;
     }
@@ -30,7 +39,7 @@ public class Inloggen {
     }
 
     public boolean isOnthouden() {
-        return onthouden.equals("true");
+        return "true".equals(onthouden);
     }
 
     public List<String> getErrors() {

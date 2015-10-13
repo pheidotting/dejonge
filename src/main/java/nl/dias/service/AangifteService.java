@@ -32,7 +32,7 @@ public class AangifteService {
         return aangifteRepository.lees(id);
     }
 
-    public Long slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
+    public void slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId());
 
         bijlage.setAangifte(aangifte);
@@ -42,8 +42,6 @@ public class AangifteService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         aangifteRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {

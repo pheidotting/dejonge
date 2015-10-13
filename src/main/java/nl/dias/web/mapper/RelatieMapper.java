@@ -19,6 +19,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
     private AdresMapper adresMapper;
+    @InjectParam
+    private BijlageMapper bijlageMapper;
 
     private final static Logger LOGGER = Logger.getLogger(RelatieMapper.class);
 
@@ -99,6 +101,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(ol.getId());
         }
+        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
     }

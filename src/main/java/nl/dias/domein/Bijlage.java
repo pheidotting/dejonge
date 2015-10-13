@@ -44,6 +44,10 @@ public class Bijlage implements PersistenceObject, Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Aangifte.class)
     private Aangifte aangifte;
 
+    @JoinColumn(name = "RELATIE", nullable = true)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    private Relatie relatie;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50, name = "SOORTBIJLAGE")
     private SoortBijlage soortBijlage;
@@ -110,6 +114,14 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setAangifte(Aangifte aangifte) {
         this.aangifte = aangifte;
+    }
+
+    public Relatie getRelatie() {
+        return relatie;
+    }
+
+    public void setRelatie(Relatie relatie) {
+        this.relatie = relatie;
     }
 
     public SoortBijlage getSoortBijlage() {

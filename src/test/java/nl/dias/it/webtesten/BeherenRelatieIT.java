@@ -26,6 +26,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@Ignore
 @RunWith(ConcurrentParameterized.class)
 public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
     private SeleniumServer seleniumServer;

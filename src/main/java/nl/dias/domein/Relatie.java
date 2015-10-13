@@ -82,6 +82,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Bijlage.class, mappedBy = "relatie", orphanRemoval = true)
+    private Set<Bijlage> bijlages;
+
     public String getRoepnaam() {
         return roepnaam;
     }
@@ -281,6 +284,17 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
 
     public void setHypotheekPakketten(Set<HypotheekPakket> hypotheekPakketten) {
         this.hypotheekPakketten = hypotheekPakketten;
+    }
+
+    public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = new HashSet<>();
+        }
+        return bijlages;
+    }
+
+    public void setBijlages(Set<Bijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     /**

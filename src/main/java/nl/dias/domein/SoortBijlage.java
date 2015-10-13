@@ -1,7 +1,7 @@
 package nl.dias.domein;
 
 public enum SoortBijlage {
-    POLIS("Polis"), SCHADE("Schade"), HYPOTHEEK("Hypotheek"), IBAANGIFTE("IB-Aangifte");
+    POLIS("Polis"), SCHADE("Schade"), HYPOTHEEK("Hypotheek"), IBAANGIFTE("IB-Aangifte"), RELATIE("Relatie");
     private String omschrijving;
 
     private SoortBijlage(String omschrijving) {

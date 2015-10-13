@@ -100,7 +100,7 @@ public class PolisService {
         }
     }
 
-    public Long slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
+    public void slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
 
         bijlage.setPolis(polisRepository.lees(polisId));
@@ -110,8 +110,6 @@ public class PolisService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         polisRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public Bijlage leesBijlage(Long id) {

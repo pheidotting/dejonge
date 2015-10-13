@@ -14,11 +14,12 @@ import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -34,7 +35,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @Named
 public class GebruikerService {
 
-    private final static Logger LOGGER = Logger.getLogger(GebruikerService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerService.class);
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
@@ -59,6 +60,20 @@ public class GebruikerService {
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
+
+    public void opslaanBijlage(String relatieId, Bijlage bijlage){
+        LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(),relatieId);
+
+        Relatie relatie=(Relatie)gebruikerRepository.lees(Long.valueOf(relatieId));
+
+        relatie.getBijlages().add(bijlage);
+        bijlage.setRelatie(relatie);
+        bijlage.setSoortBijlage(SoortBijlage.RELATIE);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        gebruikerRepository.opslaan(relatie);
+    }
 
     @Deprecated
     public void converteren() {
@@ -430,7 +445,7 @@ public class GebruikerService {
             Long.valueOf(zoekTermNumeriek);
         } catch (NumberFormatException nfe) {
             zoekTermNumeriek = null;
-            LOGGER.trace(nfe);
+            LOGGER.trace("",nfe);
         }
         if (zoekTermNumeriek != null) {
             for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {

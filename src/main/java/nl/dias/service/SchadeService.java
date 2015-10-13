@@ -43,7 +43,7 @@ public class SchadeService {
         schadeRepository.verwijder(schade);
     }
 
-    public Long slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
+    public void slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId);
 
         bijlage.setSchade(schadeRepository.lees(schadeId));
@@ -53,8 +53,6 @@ public class SchadeService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         schadeRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public void opslaan(Schade schade) {

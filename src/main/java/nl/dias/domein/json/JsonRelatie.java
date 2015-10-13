@@ -34,6 +34,7 @@ public class JsonRelatie {
     private List<Long> onderlingeRelaties;
     private boolean zakelijkeKlant;
     private List<String> errors;
+    private List<JsonBijlage> bijlages;
 
     public String getRoepnaam() {
         return roepnaam;
@@ -237,6 +238,14 @@ public class JsonRelatie {
 
     public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    public List<JsonBijlage> getBijlages() {
+        return bijlages;
+    }
+
+    public void setBijlages(List<JsonBijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     @Override
