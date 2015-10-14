@@ -21,13 +21,14 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.SchadeService;
 import nl.dias.web.mapper.SchadeMapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/schade")
 public class SchadeController {
-    private final static Logger LOGGER = Logger.getLogger(SchadeController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeController.class);
 
     @InjectParam
     private SchadeService schadeService;
@@ -41,7 +42,7 @@ public class SchadeController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonSchade jsonSchade) {
-        LOGGER.debug(jsonSchade);
+        LOGGER.debug("{}",jsonSchade);
 
         Schade schade = schadeMapper.mapVanJson(jsonSchade);
         schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());

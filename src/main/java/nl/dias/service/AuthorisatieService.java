@@ -4,7 +4,8 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import javax.servlet.http.Cookie;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @Named
 public class AuthorisatieService {
-    private final static Logger LOGGER = Logger.getLogger(AuthorisatieService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieService.class);
 
     public final static String COOKIE_DOMEIN_CODE = "lakedigitaladministratie";
 

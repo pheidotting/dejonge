@@ -10,7 +10,8 @@ import nl.dias.domein.json.JsonHypotheek;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
@@ -19,7 +20,7 @@ import com.sun.jersey.api.core.InjectParam;
 @Named
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
-    private final static Logger LOGGER = Logger.getLogger(HypotheekMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
     private final static String DATUM_FORMAAT = "dd-MM-yyyy";
 
     @InjectParam

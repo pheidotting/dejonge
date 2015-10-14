@@ -7,7 +7,8 @@ import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 
 import javax.inject.Named;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Named
 public class PolisService {
-    private final static Logger LOGGER = Logger.getLogger(PolisService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PolisService.class);
 
     @InjectParam
     private PolisRepository polisRepository;
@@ -67,7 +68,7 @@ public class PolisService {
 
         //        gebruikerService.opslaan(relatie);
 
-        LOGGER.debug(lees(polis.getId()));
+        LOGGER.debug("{}",lees(polis.getId()));
     }
 
     private List<Bijlage> werkBijlagesBij(Polis polis) {
@@ -167,7 +168,7 @@ public class PolisService {
                 LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
                 polis = polisRepository.lees(jsonPolis.getId());
 
-                LOGGER.debug(polis);
+                LOGGER.debug("{}",polis);
             }
 
             if (polis == null) {

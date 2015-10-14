@@ -20,13 +20,14 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/bedrijf")
 public class BedrijfController {
-    private final static Logger LOGGER = Logger.getLogger(BedrijfController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfController.class);
 
     @InjectParam
     private BedrijfService bedrijfService;

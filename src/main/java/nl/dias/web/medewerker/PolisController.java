@@ -12,7 +12,8 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.web.mapper.PolisMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +25,7 @@ import java.util.Set;
 
 @Path("/polis")
 public class PolisController {
-    private final static Logger LOGGER = Logger.getLogger(PolisController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PolisController.class);
 
     @InjectParam
     private PolisService polisService;

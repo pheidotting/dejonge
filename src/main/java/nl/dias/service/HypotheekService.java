@@ -7,14 +7,15 @@ import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 public class HypotheekService {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekService.class);
 
     @InjectParam
     private HypotheekRepository hypotheekRepository;

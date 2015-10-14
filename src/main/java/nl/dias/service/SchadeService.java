@@ -4,14 +4,15 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 public class SchadeService {
-    private final static Logger LOGGER = Logger.getLogger(SchadeService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeService.class);
 
     @InjectParam
     private SchadeRepository schadeRepository;
@@ -61,7 +62,7 @@ public class SchadeService {
 
     public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
-        LOGGER.debug(schadeIn);
+        LOGGER.debug("{}",schadeIn);
 
         Schade schade = schadeIn;
 

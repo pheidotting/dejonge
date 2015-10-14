@@ -10,10 +10,12 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 public class PolisRepository extends AbstractRepository<Polis> {
-    private final static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PolisRepository.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PolisRepository.class);
 
     public PolisRepository() {
         super(Polis.class);

@@ -11,12 +11,13 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class HypotheekRepository extends AbstractRepository<Hypotheek> {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekRepository.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
 
     public HypotheekRepository() {
         super(Hypotheek.class);

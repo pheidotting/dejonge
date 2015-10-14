@@ -15,13 +15,14 @@ import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/opmerking")
 public class OpmerkingController {
-    private final static Logger LOGGER = Logger.getLogger(OpmerkingController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingController.class);
 
     @InjectParam
     private OpmerkingService opmerkingService;

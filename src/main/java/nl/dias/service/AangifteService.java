@@ -3,7 +3,8 @@ package nl.dias.service;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.repository.AangifteRepository;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 
 import javax.inject.Named;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Named
 public class AangifteService {
-    private final static Logger LOGGER = Logger.getLogger(AangifteService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteService.class);
 
     @InjectParam
     private AangifteRepository aangifteRepository;
@@ -64,7 +65,7 @@ public class AangifteService {
         LOGGER.debug("Opgehaald " + aangiftes.size() + " aangiftes");
 
         for (Aangifte aangifte : aangiftes) {
-            LOGGER.debug(aangifte.getJaar());
+            LOGGER.debug("{}",aangifte.getJaar());
 
             if (aangifte.getJaar() == LocalDate.now().minusYears(1).getYear()) {
                 return true;

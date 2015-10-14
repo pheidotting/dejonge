@@ -16,13 +16,14 @@ import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.dias.web.mapper.SoortSchadeMapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/overig")
 public class JsonController {
-    private static final Logger LOGGER = Logger.getLogger(JsonController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonController.class);
 
     @InjectParam
     private VerzekeringsMaatschappijService maatschappijService;
@@ -49,7 +50,7 @@ public class JsonController {
             ret.add(vm.getNaam());
         }
 
-        LOGGER.debug(ret);
+        LOGGER.debug("{}",ret);
 
         return ret;
     }

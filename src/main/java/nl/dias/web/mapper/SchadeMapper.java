@@ -10,7 +10,8 @@ import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonSchade;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -19,7 +20,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 @Named
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
-    private final static Logger LOGGER = Logger.getLogger(SchadeMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeMapper.class);
 
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
@@ -92,7 +93,7 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
             jsonSchade.setPolis(schade.getPolis().getId().toString());
         }
 
-        LOGGER.debug(jsonSchade);
+        LOGGER.debug("{}",jsonSchade);
 
         return jsonSchade;
     }

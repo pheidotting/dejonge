@@ -12,7 +12,8 @@ import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/authorisatie")
 public class AuthorisatieController {
-    private final static Logger LOGGER = Logger.getLogger(AuthorisatieController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
     @Context
     private HttpServletRequest httpServletRequest;
     @Context

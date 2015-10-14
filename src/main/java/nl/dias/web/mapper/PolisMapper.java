@@ -14,8 +14,9 @@ import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDate;import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.joda.time.format.DateTimeFormat;
 
 import javax.inject.Named;
@@ -26,7 +27,7 @@ import java.util.Set;
 
 @Named
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
-    private final static Logger LOGGER = Logger.getLogger(PolisMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PolisMapper.class);
 
     @InjectParam
     private OpmerkingMapper opmerkingMapper;
@@ -137,7 +138,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
-        LOGGER.debug(polis.getBijlages());
+        LOGGER.debug("{}",polis.getBijlages());
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
 
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));

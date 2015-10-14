@@ -26,13 +26,14 @@ import nl.dias.web.mapper.HypotheekMapper;
 import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/hypotheek")
 public class HypotheekController {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
 
     @InjectParam
     private HypotheekService hypotheekService;

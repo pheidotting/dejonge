@@ -22,14 +22,15 @@ import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.AangifteMapper;
 
-import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDate;import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import com.sun.jersey.api.core.InjectParam;
 
 @Path("/aangifte")
 public class AangifteController {
-    private final static Logger LOGGER = Logger.getLogger(AangifteController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteController.class);
 
     @InjectParam
     private AangifteService aangifteService;
