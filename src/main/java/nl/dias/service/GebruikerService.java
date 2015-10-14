@@ -3,6 +3,7 @@ package nl.dias.service;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
+import nl.dias.domein.predicates.SessieOpCookiePredicate;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
@@ -30,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Named
@@ -373,13 +376,7 @@ public class GebruikerService {
     }
 
     public Sessie zoekSessieOp(String cookieCode, Set<Sessie> sessies) {
-        for (Sessie sessie : sessies) {
-            if (sessie.getCookieCode() != null && sessie.getCookieCode().equals(cookieCode)) {
-                return sessie;
-            }
-        }
-
-        return null;
+        return getFirst(filter(sessies, new SessieOpCookiePredicate(cookieCode)), null);
     }
 
     public Gebruiker zoekOpCookieCode(String cookieCode) {

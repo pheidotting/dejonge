@@ -1,32 +1,31 @@
 package nl.dias.web.filter;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.ext.Provider;
-
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
+import nl.dias.domein.predicates.SessieOpSessiecodePredicate;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.ext.Provider;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
+
 
 @Provider
 public class AuthorisatieFilter implements Filter {
-    private static final Logger LOGGER = Logger.getLogger(AuthorisatieFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisatieFilter.class);
 
     private GebruikerService gebruikerService = null;
     private GebruikerRepository gebruikerRepository = null;
@@ -39,23 +38,41 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
+        String sessieHeader = req.getHeader("sessieCode");
+
         Gebruiker gebruiker = null;
         Sessie sessie = null;
         Cookie cookie = null;
 
         LOGGER.debug("koekjes opzoeken");
         init();
-        List<Cookie> cookies = authorisatieService.getCookies(req);
-        for (Cookie koekje : cookies) {
-            LOGGER.debug(koekje.getValue());
-            if (gebruiker == null) {
-                try {
-                    init();
-                    gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
-                } catch (NietGevondenException e) {
-                    LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
+        if (sessieHeader != null) {
+            LOGGER.debug("sessieHeader : {}", sessieHeader);
+            try {
+                gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
+
+                req.getSession().setAttribute("sessie", getFirst(filter(gebruiker.getSessies(), new SessieOpSessiecodePredicate(sessieHeader)), null));
+
+                LOGGER.debug("Gebruiker opgehaald : {}", gebruiker != null ? gebruiker.getId() : "0");
+            } catch (NietGevondenException nge) {
+                LOGGER.trace("Niet gevonden blijkbaar ", nge);
+            }
+            LOGGER.debug("Verder met het filter");
+            opruimen();
+            chain.doFilter(request, response);
+        } else {
+            List<Cookie> cookies = authorisatieService.getCookies(req);
+            for (Cookie koekje : cookies) {
+                LOGGER.debug(koekje.getValue());
+                if (gebruiker == null) {
+                    try {
+                        init();
+                        gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
+                    } catch (NietGevondenException e) {
+                        LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
+                    }
+                    cookie = koekje;
                 }
-                cookie = koekje;
             }
         }
         LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
@@ -100,7 +117,7 @@ public class AuthorisatieFilter implements Filter {
                 LOGGER.debug("Stuur een UNAUTHORIZED");
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
-        } else {
+        } else if (cookie != null) {
             init();
             Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
             req.getSession().setAttribute("sessie", sessie2.getSessie());

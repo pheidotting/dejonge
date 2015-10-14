@@ -1,16 +1,6 @@
 package nl.dias.web.authorisatie;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
@@ -18,13 +8,18 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.json.IngelogdeGebruiker;
 import nl.dias.domein.json.Inloggen;
 import nl.dias.domein.json.JsonFoutmelding;
+import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/authorisatie")
 public class AuthorisatieController {
@@ -35,6 +30,8 @@ public class AuthorisatieController {
     private HttpServletResponse httpServletResponse;
     @InjectParam
     private AuthorisatieService authorisatieService;
+    @InjectParam
+    private GebruikerRepository gebruikerRepository;
 
     @POST
     @Path("/inloggen")
@@ -106,7 +103,18 @@ public class AuthorisatieController {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
         }
 
-        return authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+        Gebruiker gebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
 
+        if (gebruiker == null) {
+            String sessieHeader = httpServletRequest.getHeader("sessieCode");
+
+            try {
+                gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
+            } catch (NietGevondenException nge) {
+                LOGGER.trace("Gebruiker dus niet gevonden", nge);
+            }
+        }
+
+        return gebruiker;
     }
 }
