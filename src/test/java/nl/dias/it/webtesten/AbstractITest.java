@@ -25,7 +25,7 @@ public class AbstractITest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractITest.class);
 
-    protected void aanroepenUrlPost(String adres, Object object) {
+    protected void aanroepenUrlPost(String adres, Object object, String sessieCode) {
         Gson gson = builder.create();
 
         Client client = Client.create();
@@ -34,10 +34,10 @@ public class AbstractITest {
         String verstuurObject = gson.toJson(object);
         LOGGER.info("Versturen {}", verstuurObject);
 
-        webResource.accept("application/json").type("application/json").post(ClientResponse.class, verstuurObject);
+        webResource.accept("application/json").type("application/json").header("sessieCode", sessieCode).post(ClientResponse.class, verstuurObject);
     }
 
-    protected String uitvoerenGet(String adres) {
+    protected String uitvoerenGet(String adres, String sessieCode) {
         //        adres = adres.replace("{{poort}}", bepaalPoort());
         LOGGER.info("Aanroepen via GET " + adres);
 
@@ -45,14 +45,14 @@ public class AbstractITest {
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
-        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+        ClientResponse response = webResource.accept("application/json").type("application/json").header("sessieCode", sessieCode).get(ClientResponse.class);
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
         return response.getEntity(String.class);
     }
 
-    protected <T> T uitvoerenGet(String adres, Class<T> clazz, String... args) {
+    protected <T> T uitvoerenGet(String adres, String sessieCode, Class<T> clazz, String... args) {
         LOGGER.debug("uitvoerenGet");
 
         Gson gson = builder.create();
@@ -68,7 +68,7 @@ public class AbstractITest {
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
-        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+        ClientResponse response = webResource.accept("application/json").type("application/json").header("sessieCode", sessieCode).get(ClientResponse.class);
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
@@ -76,7 +76,7 @@ public class AbstractITest {
         return gson.fromJson(response.getEntity(String.class), clazz);
     }
 
-    protected <T> List<T> uitvoerenGetLijst(String adres, Class<T> clazz, String... args) {
+    protected <T> List<T> uitvoerenGetLijst(String adres, String sessieCode, Class<T> clazz, String... args) {
         Gson gson = builder.create();
 
         if (args != null) {

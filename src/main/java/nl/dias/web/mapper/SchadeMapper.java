@@ -1,22 +1,19 @@
 package nl.dias.web.mapper;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonSchade;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.util.Collections;
+import java.util.List;
 
 @Named
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
@@ -73,9 +70,9 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         jsonSchade.setId(schade.getId());
         jsonSchade.setLocatie(schade.getLocatie());
         jsonSchade.setOmschrijving(schade.getOmschrijving());
-        if (schade.getPolis() != null && schade.getPolis().getRelatie() != null) {
-            jsonSchade.setRelatie(schade.getPolis().getRelatie().getId().toString());
-        }
+        //        if (schade.getPolis() != null && schade.getPolis().getRelatie() != null) {
+        //            jsonSchade.setRelatie(schade.getPolis().getRelatie().getId().toString());
+        //        }
 
         List<JsonOpmerking> opmerkingen = opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen());
         Collections.sort(opmerkingen);

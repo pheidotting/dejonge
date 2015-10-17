@@ -1,29 +1,33 @@
 package nl.dias.web.mapper;
 
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
+import nl.dias.domein.predicates.StatusPolisBijStatusPredicate;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.joda.time.LocalDate;import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 
 @Named
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
@@ -68,11 +72,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis = polisService.lees(jsonPolis.getId());
         }
 
-        for (StatusPolis sp : StatusPolis.values()) {
-            if (sp.getOmschrijving().equals(jsonPolis.getStatus())) {
-                polis.setStatus(sp);
-            }
-        }
+        polis.setStatus(getFirst(filter(Lists.newArrayList(StatusPolis.values()), new StatusPolisBijStatusPredicate(jsonPolis.getStatus())), StatusPolis.ACT));
 
         polis.setPolisNummer(jsonPolis.getPolisNummer());
         polis.setKenmerk(jsonPolis.getKenmerk());
@@ -97,10 +97,10 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis.setOpmerkingen(p.getOpmerkingen());
         }
 
-        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
-        for (Bijlage bijlage : polis.getBijlages()) {
-            bijlage.setPolis(polis);
-        }
+        //        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
+        //        for (Bijlage bijlage : polis.getBijlages()) {
+        //            bijlage.setPolis(polis);
+        //        }
 
         LOGGER.debug(ReflectionToStringBuilder.toString(polis));
         return polis;

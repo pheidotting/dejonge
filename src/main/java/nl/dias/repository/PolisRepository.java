@@ -1,8 +1,13 @@
 package nl.dias.repository;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Kantoor;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Named;
@@ -10,8 +15,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Named
 public class PolisRepository extends AbstractRepository<Polis> {
@@ -55,11 +58,11 @@ public class PolisRepository extends AbstractRepository<Polis> {
         relatie = getEm().find(Relatie.class, relatie.getId());
 
         List<Polis> poli = new ArrayList<>();
-        poli.addAll(relatie.getPolissen());
+        //        poli.addAll(relatie.getPolissen());
 
-        for (Bedrijf bedrijf : relatie.getBedrijven()) {
-            poli.addAll(bedrijf.getPolissen());
-        }
+        //        for (Bedrijf bedrijf : relatie.getBedrijven()) {
+        //            poli.addAll(bedrijf.getPolissen());
+        //        }
 
         return poli;
     }
