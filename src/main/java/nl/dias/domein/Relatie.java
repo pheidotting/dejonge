@@ -6,9 +6,12 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolissenOpSoortPredicate;
 import nl.dias.domein.predicates.WoonAdresPredicate;
+import nl.dias.domein.transformers.BedrijfToStringTransformer;
+import nl.dias.domein.transformers.SessieToStringTransformer;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -20,6 +23,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.transform;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -81,7 +85,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Bijlage.class, mappedBy = "relatie", orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, targetEntity = Bijlage.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<Bijlage> bijlages;
 
     public String getRoepnaam() {
@@ -305,15 +309,16 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     /**
      * @see java.lang.Object#toString()
      */
-    //    @Override
-    //    public String toString() {
-    //        Long kantoorId = null;
-    //        if (kantoor != null) {
-    //            kantoorId = kantoor.getId();
-    //        }
-    //
-    //        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adressen", this.getAdressen()).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("opmerkingen", this.opmerkingen).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen()).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("polissen", this.polissen).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
-    //    }
+    @Override
+    public String toString() {
+        Long kantoorId = null;
+        if (kantoor != null) {
+            kantoorId = kantoor.getId();
+        }
+
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adressen", this.getAdressen()).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("zakelijkePolissen", this.getZakelijkePolissen()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("opmerkingen", this.opmerkingen).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("particulierePolissen", this.getParticulierePolissen()).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("polissen", this.polissen).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
+    }
+
     @Override
     public String getName() {
         return this.getIdentificatie();

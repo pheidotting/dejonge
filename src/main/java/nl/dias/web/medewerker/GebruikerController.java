@@ -15,6 +15,7 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,6 +114,8 @@ public class GebruikerController {
             }
 
             Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+
+            LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
 
             relatie.setKantoor(kantoorRepository.lees(medewerker.getKantoor().getId()));
 

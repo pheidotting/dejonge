@@ -136,6 +136,20 @@ public class HypotheekService {
         return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
 
+    public void opslaanBijlage(String hypotheekId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), hypotheekId);
+
+        Hypotheek hypotheek = hypotheekRepository.lees(Long.valueOf(hypotheekId));
+
+        hypotheek.getBijlages().add(bijlage);
+        bijlage.setHypotheek(hypotheek);
+        bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
+
+        LOGGER.debug(org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(bijlage));
+
+        hypotheekRepository.opslaan(hypotheek);
+    }
+
     public void slaBijlageOp(Long hypotheekId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId);
 

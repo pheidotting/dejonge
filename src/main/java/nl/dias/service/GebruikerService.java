@@ -64,18 +64,18 @@ public class GebruikerService {
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
 
-    public void opslaanBijlage(String relatieId, Bijlage bijlage){
-        LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(),relatieId);
+    public void opslaanBijlage(String relatieId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(), relatieId);
 
-        Relatie relatie=(Relatie)gebruikerRepository.lees(Long.valueOf(relatieId));
+        Relatie relatie = (Relatie) gebruikerRepository.lees(Long.valueOf(relatieId));
 
         relatie.getBijlages().add(bijlage);
         bijlage.setRelatie(relatie);
         bijlage.setSoortBijlage(SoortBijlage.RELATIE);
 
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-
         gebruikerRepository.opslaan(relatie);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
     }
 
     @Deprecated
@@ -197,7 +197,7 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
-        LOGGER.debug("GO " + gebruiker);
+        LOGGER.debug("Opslaan {}" ,ReflectionToStringBuilder.toString(gebruiker));
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
@@ -249,6 +249,8 @@ public class GebruikerService {
             for (RekeningNummer rekeningNummer : ((Relatie) gebruiker).getRekeningnummers()) {
                 rekeningNummer.setRelatie((Relatie) gebruiker);
             }
+
+            ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
         }
 
         gebruikerRepository.opslaan(gebruiker);

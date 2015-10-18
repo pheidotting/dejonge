@@ -4,6 +4,7 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,20 @@ public class SchadeService {
     public void verwijder(Long id) {
         Schade schade = lees(id);
         schadeRepository.verwijder(schade);
+    }
+
+    public void opslaanBijlage(String schadeId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Schade met id {}", bijlage.getId(), schadeId);
+
+        Schade schade = schadeRepository.lees(Long.valueOf(schadeId));
+
+        schade.getBijlages().add(bijlage);
+        bijlage.setSchade(schade);
+        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        schadeRepository.opslaan(schade);
     }
 
     public void slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {

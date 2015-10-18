@@ -13,6 +13,7 @@ import nl.dias.service.*;
 import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +94,17 @@ public class BijlageController {
 
         //        return Response.status(200).entity(bijlageId).build();
         return bijlageId;
+    }
+
+
+    @POST
+    @Path("/uploadBijlage")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public JsonBijlage uploadBijlage(@FormDataParam("bijlageFile") InputStream uploadedInputStream, @FormDataParam("bijlageFile") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("soortEntiteit") String soortEntiteit) {
+        LOGGER.debug("uploaden bestand voor {} met id {}", soortEntiteit, id);
+
+        return bijlageMapper.mapNaarJson(uploaden(uploadedInputStream, fileDetail, soortEntiteit,id));
     }
 
     @POST
@@ -450,5 +462,47 @@ public class BijlageController {
             result = bijlage.getId().toString();
         }
         return result;
+    }
+
+    private Bijlage uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String soortEntiteit, String id) {
+        Bijlage bijlage =null;
+
+        if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
+
+            bijlage  = bijlageService.uploaden(uploadedInputStream,fileDetail);
+            LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+            switch(soortEntiteit) {
+                case "Relatie":
+                    LOGGER.debug("Opslaan bijlage bij Relatie id {}", id);
+
+                    gebruikerService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Polis":
+
+                    polisService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Schade":
+
+                    schadeService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Aangifte":
+
+                    aangifteService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Hypotheek":
+
+                    hypotheekService.opslaanBijlage(id, bijlage);
+
+                    break;
+                default:
+                    bijlageService.opslaan(bijlage);
+            }
+        }
+        return bijlage;
     }
 }

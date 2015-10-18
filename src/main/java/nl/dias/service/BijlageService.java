@@ -48,6 +48,8 @@ public class BijlageService {
         bijlage.setBestandsNaam(fileDetail.getFileName());
         bijlage.setUploadMoment(LocalDateTime.now());
 
+        bijlageRepository.opslaan(bijlage);
+
         writeToFile(uploadedInputStream, Utils.getUploadPad() + "/" + identificatie);
 
         return bijlage;
