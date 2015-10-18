@@ -6,8 +6,9 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
 import nl.dias.utils.Utils;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.io.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 @Named
 public class BijlageService {
-    private static final Logger LOGGER = Logger.getLogger(BijlageService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
     @InjectParam
     private BijlageRepository bijlageRepository;
 
@@ -46,6 +47,8 @@ public class BijlageService {
         bijlage.setS3Identificatie(identificatie);
         bijlage.setBestandsNaam(fileDetail.getFileName());
         bijlage.setUploadMoment(LocalDateTime.now());
+
+        bijlageRepository.opslaan(bijlage);
 
         writeToFile(uploadedInputStream, Utils.getUploadPad() + "/" + identificatie);
 

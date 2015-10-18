@@ -2,7 +2,8 @@ package nl.dias.utils;
 
 import nl.dias.domein.*;
 import nl.dias.exception.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.util.regex.Matcher;
@@ -18,7 +19,7 @@ public final class Validatie {
     private static final BigInteger IBANNUMBERMAGICNUMBER = new BigInteger("97");
     private static final String EMAILPATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private static final Logger LOGGER = Logger.getLogger(Validatie.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Validatie.class);
 
     private Validatie() {
     }

@@ -1,25 +1,23 @@
 package nl.dias.web.mapper;
 
-import java.math.BigDecimal;
-
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.json.JsonHypotheek;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.math.BigDecimal;
 
 @Named
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
-    private final static Logger LOGGER = Logger.getLogger(HypotheekMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
     private final static String DATUM_FORMAAT = "dd-MM-yyyy";
 
     @InjectParam

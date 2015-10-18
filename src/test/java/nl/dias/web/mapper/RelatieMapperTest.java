@@ -34,6 +34,8 @@ public class RelatieMapperTest extends EasyMockSupport {
     private OpmerkingMapper opmerkingMapper;
     @Mock
     private AdresMapper adresMapper;
+    @Mock
+    private BijlageMapper bijlageMapper;
 
     private Relatie relatie;
     private JsonRelatie jsonRelatie;
@@ -96,6 +98,7 @@ public class RelatieMapperTest extends EasyMockSupport {
         expect(rekeningnummerMapper.mapAllNaarJson(new HashSet<RekeningNummer>())).andReturn(new ArrayList<JsonRekeningNummer>());
         expect(opmerkingMapper.mapAllNaarJson(new HashSet<Opmerking>())).andReturn(new ArrayList<JsonOpmerking>());
         expect(adresMapper.mapAllNaarJson(new HashSet<Adres>())).andReturn(new ArrayList<JsonAdres>());
+        expect(bijlageMapper.mapAllNaarJson(new HashSet<Bijlage>())).andReturn(new ArrayList<JsonBijlage>());
 
         replayAll();
 
@@ -108,6 +111,7 @@ public class RelatieMapperTest extends EasyMockSupport {
         expect(rekeningnummerMapper.mapAllNaarJson(new HashSet<RekeningNummer>())).andReturn(new ArrayList<JsonRekeningNummer>());
         expect(opmerkingMapper.mapAllNaarJson(new HashSet<Opmerking>())).andReturn(new ArrayList<JsonOpmerking>());
         expect(adresMapper.mapAllNaarJson(new HashSet<Adres>())).andReturn(new ArrayList<JsonAdres>());
+        expect(bijlageMapper.mapAllNaarJson(new HashSet<Bijlage>())).andReturn(new ArrayList<JsonBijlage>());
 
         replayAll();
 

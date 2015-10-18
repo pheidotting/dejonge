@@ -3,6 +3,7 @@ package nl.dias.service;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
+import nl.dias.domein.predicates.SessieOpCookiePredicate;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
@@ -14,11 +15,12 @@ import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,12 +31,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Named
 public class GebruikerService {
 
-    private final static Logger LOGGER = Logger.getLogger(GebruikerService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerService.class);
 
     @InjectParam
     private GebruikerRepository gebruikerRepository;
@@ -59,6 +63,20 @@ public class GebruikerService {
     private AdresAangevuldSender adresAangevuldSender;
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
+
+    public void opslaanBijlage(String relatieId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(), relatieId);
+
+        Relatie relatie = (Relatie) gebruikerRepository.lees(Long.valueOf(relatieId));
+
+        relatie.getBijlages().add(bijlage);
+        bijlage.setRelatie(relatie);
+        bijlage.setSoortBijlage(SoortBijlage.RELATIE);
+
+        gebruikerRepository.opslaan(relatie);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+    }
 
     @Deprecated
     public void converteren() {
@@ -179,7 +197,7 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
-        LOGGER.debug("GO " + gebruiker);
+        LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker));
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
@@ -231,6 +249,8 @@ public class GebruikerService {
             for (RekeningNummer rekeningNummer : ((Relatie) gebruiker).getRekeningnummers()) {
                 rekeningNummer.setRelatie((Relatie) gebruiker);
             }
+
+            ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
         }
 
         gebruikerRepository.opslaan(gebruiker);
@@ -358,13 +378,7 @@ public class GebruikerService {
     }
 
     public Sessie zoekSessieOp(String cookieCode, Set<Sessie> sessies) {
-        for (Sessie sessie : sessies) {
-            if (sessie.getCookieCode() != null && sessie.getCookieCode().equals(cookieCode)) {
-                return sessie;
-            }
-        }
-
-        return null;
+        return getFirst(filter(sessies, new SessieOpCookiePredicate(cookieCode)), null);
     }
 
     public Gebruiker zoekOpCookieCode(String cookieCode) {
@@ -430,7 +444,7 @@ public class GebruikerService {
             Long.valueOf(zoekTermNumeriek);
         } catch (NumberFormatException nfe) {
             zoekTermNumeriek = null;
-            LOGGER.trace(nfe);
+            LOGGER.trace("", nfe);
         }
         if (zoekTermNumeriek != null) {
             for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {

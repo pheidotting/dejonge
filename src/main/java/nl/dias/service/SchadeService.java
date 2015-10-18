@@ -4,14 +4,16 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 public class SchadeService {
-    private final static Logger LOGGER = Logger.getLogger(SchadeService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeService.class);
 
     @InjectParam
     private SchadeRepository schadeRepository;
@@ -43,7 +45,21 @@ public class SchadeService {
         schadeRepository.verwijder(schade);
     }
 
-    public Long slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
+    public void opslaanBijlage(String schadeId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Schade met id {}", bijlage.getId(), schadeId);
+
+        Schade schade = schadeRepository.lees(Long.valueOf(schadeId));
+
+        schade.getBijlages().add(bijlage);
+        bijlage.setSchade(schade);
+        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        schadeRepository.opslaan(schade);
+    }
+
+    public void slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId);
 
         bijlage.setSchade(schadeRepository.lees(schadeId));
@@ -53,8 +69,6 @@ public class SchadeService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         schadeRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public void opslaan(Schade schade) {
@@ -63,7 +77,7 @@ public class SchadeService {
 
     public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
-        LOGGER.debug(schadeIn);
+        LOGGER.debug("{}", schadeIn);
 
         Schade schade = schadeIn;
 

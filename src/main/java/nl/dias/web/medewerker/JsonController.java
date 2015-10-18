@@ -1,28 +1,26 @@
 package nl.dias.web.medewerker;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonSoortSchade;
 import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.dias.web.mapper.SoortSchadeMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
-
-import com.sun.jersey.api.core.InjectParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/overig")
 public class JsonController {
-    private static final Logger LOGGER = Logger.getLogger(JsonController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonController.class);
 
     @InjectParam
     private VerzekeringsMaatschappijService maatschappijService;
@@ -49,7 +47,7 @@ public class JsonController {
             ret.add(vm.getNaam());
         }
 
-        LOGGER.debug(ret);
+        LOGGER.debug("{}", ret);
 
         return ret;
     }

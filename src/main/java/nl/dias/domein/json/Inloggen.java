@@ -1,17 +1,26 @@
 package nl.dias.domein.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Inloggen {
     private String identificatie;
     private String wachtwoord;
     private String onthouden;
     private List<String> errors;
+
+    public Inloggen() {
+    }
+
+    public Inloggen(String identificatie, String wachtwoord) {
+        this.identificatie = identificatie;
+        this.wachtwoord = wachtwoord;
+        this.onthouden = "";
+    }
 
     public String getIdentificatie() {
         return identificatie;
@@ -30,7 +39,7 @@ public class Inloggen {
     }
 
     public boolean isOnthouden() {
-        return onthouden.equals("true");
+        return "true".equals(onthouden);
     }
 
     public List<String> getErrors() {

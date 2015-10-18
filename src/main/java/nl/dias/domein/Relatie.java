@@ -1,20 +1,25 @@
 package nl.dias.domein;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
+import nl.dias.domein.predicates.PolissenOpSoortPredicate;
 import nl.dias.domein.predicates.WoonAdresPredicate;
 import nl.dias.domein.transformers.BedrijfToStringTransformer;
 import nl.dias.domein.transformers.SessieToStringTransformer;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Iterables.*;
 
@@ -22,11 +27,7 @@ import static com.google.common.collect.Iterables.*;
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "R")
 @AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM"))})
-@NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"),
-        @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"),
-        @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"),
-        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"),
-        @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")})
+@NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"), @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"), @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"), @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"), @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")})
 public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 
@@ -81,6 +82,9 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     private Set<Hypotheek> hypotheken;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
     private Set<HypotheekPakket> hypotheekPakketten;
+
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, targetEntity = Bijlage.class, mappedBy = "relatie", orphanRemoval = true)
+    private Set<Bijlage> bijlages;
 
     public String getRoepnaam() {
         return roepnaam;
@@ -218,25 +222,11 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     }
 
     public List<Polis> getZakelijkePolissen() {
-        List<Polis> lijst = new ArrayList<>();
-        for (Polis polis : getPolissen()) {
-            if (polis.getSoortVerzekering().equals(SoortVerzekering.ZAKELIJK)) {
-                lijst.add(polis);
-            }
-        }
-
-        return lijst;
+        return Lists.newArrayList(filter(getPolissen(), new PolissenOpSoortPredicate(SoortVerzekering.ZAKELIJK)));
     }
 
     public List<Polis> getParticulierePolissen() {
-        List<Polis> lijst = new ArrayList<>();
-        for (Polis polis : getPolissen()) {
-            if (polis.getSoortVerzekering().equals(SoortVerzekering.PARTICULIER)) {
-                lijst.add(polis);
-            }
-        }
-
-        return lijst;
+        return Lists.newArrayList(filter(getPolissen(), new PolissenOpSoortPredicate(SoortVerzekering.PARTICULIER)));
     }
 
     public Set<Polis> getPolissen() {
@@ -281,6 +271,17 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
 
     public void setHypotheekPakketten(Set<HypotheekPakket> hypotheekPakketten) {
         this.hypotheekPakketten = hypotheekPakketten;
+    }
+
+    public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = new HashSet<>();
+        }
+        return bijlages;
+    }
+
+    public void setBijlages(Set<Bijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     /**

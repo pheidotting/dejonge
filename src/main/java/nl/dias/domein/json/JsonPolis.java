@@ -30,6 +30,7 @@ public class JsonPolis {
     private String titel;
     private String omschrijvingVerzekering;
     private List<String> errors;
+    private String soortEntiteit;
 
     public Long getId() {
         return id;
@@ -222,6 +223,14 @@ public class JsonPolis {
 
     public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    public String getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(String soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
     @Override

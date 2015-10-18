@@ -3,15 +3,17 @@ package nl.dias.service;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.repository.AangifteRepository;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 public class AangifteService {
-    private final static Logger LOGGER = Logger.getLogger(AangifteService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteService.class);
 
     @InjectParam
     private AangifteRepository aangifteRepository;
@@ -32,7 +34,21 @@ public class AangifteService {
         return aangifteRepository.lees(id);
     }
 
-    public Long slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
+    public void opslaanBijlage(String aangifteId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), aangifteId);
+
+        Aangifte aangifte = aangifteRepository.lees(Long.valueOf(aangifteId));
+
+        aangifte.getBijlages().add(bijlage);
+        bijlage.setAangifte(aangifte);
+        bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        aangifteRepository.opslaan(aangifte);
+    }
+
+    public void slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId());
 
         bijlage.setAangifte(aangifte);
@@ -42,8 +58,6 @@ public class AangifteService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         aangifteRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {
@@ -66,7 +80,7 @@ public class AangifteService {
         LOGGER.debug("Opgehaald " + aangiftes.size() + " aangiftes");
 
         for (Aangifte aangifte : aangiftes) {
-            LOGGER.debug(aangifte.getJaar());
+            LOGGER.debug("{}", aangifte.getJaar());
 
             if (aangifte.getJaar() == LocalDate.now().minusYears(1).getYear()) {
                 return true;

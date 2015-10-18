@@ -4,17 +4,18 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 
 @Named
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
-    private final static Logger LOGGER = Logger.getLogger(BijlageMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageMapper.class);
 
     @Override
     public Bijlage mapVanJson(JsonBijlage json) {
-        LOGGER.debug(json);
+        LOGGER.debug("{}", json);
 
         Bijlage bijlage = new Bijlage();
         if (json.getId() != null) {
@@ -23,7 +24,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
         bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
-        LOGGER.debug(bijlage);
+        LOGGER.debug("{}", bijlage);
         return bijlage;
     }
 
@@ -31,7 +32,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
     public JsonBijlage mapNaarJson(Bijlage bijlage) {
 
         JsonBijlage json = new JsonBijlage();
-        json.setId(bijlage.getId().toString());
+        json.setId(bijlage.getId() == null ? null : bijlage.getId().toString());
         json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
         json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));

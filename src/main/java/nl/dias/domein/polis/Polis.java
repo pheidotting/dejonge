@@ -2,8 +2,6 @@ package nl.dias.domein.polis;
 
 import nl.dias.domein.*;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -81,9 +79,6 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
     private String omschrijvingVerzekering;
 
-    @Transient
-    private String ingangsDatumString;
-
     public abstract SoortVerzekering getSoortVerzekering();
 
     @Override
@@ -149,14 +144,6 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         if (eindDatum != null) {
             this.eindDatum = eindDatum.toDate();
         }
-    }
-
-    public String getIngangsDatumString() {
-        return new LocalDate(ingangsDatum).toString("dd-MM-yyyy");
-    }
-
-    public void setIngangsDatumString(String ingangsDatum) {
-        this.ingangsDatumString = ingangsDatum;
     }
 
     public Bedrag getPremie() {
@@ -270,45 +257,26 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.omschrijvingVerzekering = omschrijvingVerzekering;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
 
-        if (!(o instanceof Polis)) {
-            return false;
-        }
-
-        Polis polis = (Polis) o;
-
-        EqualsBuilder builder = new EqualsBuilder().append(getId(), polis.getId()).append(getStatus(), polis.getStatus()).append(getPolisNummer(), polis.getPolisNummer()).append(getKenmerk(), polis.getKenmerk()).append(getIngangsDatum(), polis.getIngangsDatum()).append(getEindDatum(), polis.getEindDatum()).append(getPremie(), polis.getPremie()).append(getWijzigingsDatum(), polis.getWijzigingsDatum()).append(getProlongatieDatum(), polis.getProlongatieDatum()).append(getBetaalfrequentie(), polis.getBetaalfrequentie());
-
-        if (relatie != null) {
-            builder.append(getRelatie(), polis.getRelatie());
-        }
-        if (bedrijf != null) {
-            builder.append(getBedrijf(), polis.getBedrijf());
-        }
-        builder.append(getBijlages(), polis.getBijlages()).append(getOpmerkingen(), polis.getOpmerkingen()).append(getMaatschappij(), polis.getMaatschappij()).append(getSchades(), polis.getSchades()).append(getOmschrijvingVerzekering(), polis.getOmschrijvingVerzekering());
-
-        return builder.isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        HashCodeBuilder builder = new HashCodeBuilder(17, 37).append(getId()).append(getStatus()).append(getPolisNummer()).append(getKenmerk()).append(getIngangsDatum()).append(getEindDatum()).append(getPremie()).append(getWijzigingsDatum()).append(getProlongatieDatum()).append(getBetaalfrequentie());
-
-        if (relatie != null) {
-            builder.append(getRelatie());
-        }
-        if (bedrijf != null) {
-            builder.append(getBedrijf());
-        }
-        builder.append(getBijlages()).append(getOpmerkingen()).append(getMaatschappij()).append(getSchades()).append(getOmschrijvingVerzekering());
-
-        return builder.toHashCode();
-    }
+    //    @Override
+    //    public boolean equals(Object o) {
+    //        if (this == o) {
+    //            return true;
+    //        }
+    //
+    //        if (!(o instanceof Polis)) {
+    //            return false;
+    //        }
+    //
+    //        Polis polis = (Polis) o;
+    //
+    //        return new EqualsBuilder().append(getId(), polis.getId()).append(getStatus(), polis.getStatus()).append(getPolisNummer(), polis.getPolisNummer()).append(getKenmerk(), polis.getKenmerk()).append(getIngangsDatum(), polis.getIngangsDatum()).append(getEindDatum(), polis.getEindDatum()).append(getPremie(), polis.getPremie()).append(getWijzigingsDatum(), polis.getWijzigingsDatum()).append(getProlongatieDatum(), polis.getProlongatieDatum()).append(getBetaalfrequentie(), polis.getBetaalfrequentie()).append(getRelatie(), polis.getRelatie()).append(getBedrijf(), polis.getBedrijf()).append(getMaatschappij(), polis.getMaatschappij()).append(getOmschrijvingVerzekering(), polis.getOmschrijvingVerzekering()).isEquals();
+    //    }
+    //
+    //    @Override
+    //    public int hashCode() {
+    //        return new HashCodeBuilder(17, 37).append(getId()).append(getStatus()).append(getPolisNummer()).append(getKenmerk()).append(getIngangsDatum()).append(getEindDatum()).append(getPremie()).append(getWijzigingsDatum()).append(getProlongatieDatum()).append(getBetaalfrequentie()).append(getRelatie()).append(getBedrijf()).append(getMaatschappij()).append(getOmschrijvingVerzekering()).toHashCode();
+    //    }
 
     @Override
     public String toString() {
@@ -325,13 +293,13 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         sb.append(", wijzigingsDatum=").append(getWijzigingsDatum()).append("\n");
         sb.append(", prolongatieDatum=").append(getProlongatieDatum()).append("\n");
         sb.append(", betaalfrequentie=").append(betaalfrequentie).append("\n");
-        if (relatie != null) {
-            sb.append(", relatie=").append(relatie.getIdentificatie()).append("\n");
-        }
+        //        if (relatie != null) {
+        //            sb.append(", relatie=").append(relatie.getIdentificatie()).append("\n");
+        //        }
         if (bedrijf != null) {
             sb.append(", bedrijf=").append(bedrijf.getNaam()).append("\n");
         }
-        sb.append(", bijlages=").append(bijlages).append("\n");
+        //        sb.append(", bijlages=").append(bijlages).append("\n");
         sb.append(", opmerkingen=").append(opmerkingen).append("\n");
         if (maatschappij != null) {
             sb.append(", maatschappij=").append(maatschappij.getNaam()).append("\n");

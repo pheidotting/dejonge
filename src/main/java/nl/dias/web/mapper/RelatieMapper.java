@@ -3,9 +3,10 @@ package nl.dias.web.mapper;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonRelatie;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -19,8 +20,10 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private OpmerkingMapper opmerkingMapper;
     @InjectParam
     private AdresMapper adresMapper;
+    @InjectParam
+    private BijlageMapper bijlageMapper;
 
-    private final static Logger LOGGER = Logger.getLogger(RelatieMapper.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(RelatieMapper.class);
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
@@ -32,9 +35,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         try {
             relatie.setIdentificatie(jsonRelatie.getIdentificatie());
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e);
+            LOGGER.error("fout", e);
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error(e);
+            LOGGER.error("fout", e);
         }
         relatie.setVoornaam(jsonRelatie.getVoornaam());
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
@@ -99,6 +102,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(ol.getId());
         }
+        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
     }

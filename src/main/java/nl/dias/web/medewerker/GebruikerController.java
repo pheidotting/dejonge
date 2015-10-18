@@ -15,7 +15,9 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -25,7 +27,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/gebruiker")
 public class GebruikerController {
-    private final static Logger LOGGER = Logger.getLogger(GebruikerController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerController.class);
 
     @InjectParam
     private GebruikerService gebruikerService;
@@ -112,6 +114,8 @@ public class GebruikerController {
             }
 
             Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+
+            LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
 
             relatie.setKantoor(kantoorRepository.lees(medewerker.getKantoor().getId()));
 

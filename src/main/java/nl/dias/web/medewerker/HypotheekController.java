@@ -1,19 +1,6 @@
 package nl.dias.web.medewerker;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
@@ -25,14 +12,20 @@ import nl.dias.service.HypotheekService;
 import nl.dias.web.mapper.HypotheekMapper;
 import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
-
-import com.sun.jersey.api.core.InjectParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Path("/hypotheek")
 public class HypotheekController {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
 
     @InjectParam
     private HypotheekService hypotheekService;

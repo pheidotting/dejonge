@@ -7,8 +7,9 @@ import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Named
 public class PolisService {
-    private final static Logger LOGGER = Logger.getLogger(PolisService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PolisService.class);
 
     @InjectParam
     private PolisRepository polisRepository;
@@ -67,7 +68,7 @@ public class PolisService {
 
         //        gebruikerService.opslaan(relatie);
 
-        LOGGER.debug(lees(polis.getId()));
+        LOGGER.debug("{}", lees(polis.getId()));
     }
 
     private List<Bijlage> werkBijlagesBij(Polis polis) {
@@ -100,7 +101,21 @@ public class PolisService {
         }
     }
 
-    public Long slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
+    public void opslaanBijlage(String polisId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Polis met id {}", bijlage.getId(), polisId);
+
+        Polis polis = polisRepository.lees(Long.valueOf(polisId));
+
+        polis.getBijlages().add(bijlage);
+        bijlage.setPolis(polis);
+        bijlage.setSoortBijlage(SoortBijlage.POLIS);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        polisRepository.opslaan(polis);
+    }
+
+    public void slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
 
         bijlage.setPolis(polisRepository.lees(polisId));
@@ -110,8 +125,6 @@ public class PolisService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         polisRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public Bijlage leesBijlage(Long id) {
@@ -169,7 +182,7 @@ public class PolisService {
                 LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
                 polis = polisRepository.lees(jsonPolis.getId());
 
-                LOGGER.debug(polis);
+                LOGGER.debug("{}", polis);
             }
 
             if (polis == null) {

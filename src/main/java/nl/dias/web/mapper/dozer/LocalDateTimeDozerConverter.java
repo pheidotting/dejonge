@@ -1,12 +1,13 @@
 package nl.dias.web.mapper.dozer;
 
-import org.apache.log4j.Logger;
 import org.dozer.DozerConverter;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LocalDateTimeDozerConverter extends DozerConverter<LocalDateTime, String> {
-    private static final Logger LOGGER = Logger.getLogger(LocalDateTimeDozerConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeDozerConverter.class);
 
     public LocalDateTimeDozerConverter() {
         super(LocalDateTime.class, String.class);

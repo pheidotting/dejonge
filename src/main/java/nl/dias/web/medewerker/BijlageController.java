@@ -13,7 +13,9 @@ import nl.dias.service.*;
 import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,7 +31,7 @@ import java.util.Set;
 
 @Path("/bijlage")
 public class BijlageController {
-    private final static Logger LOGGER = Logger.getLogger(BijlageController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
 
     @InjectParam
     private PolisService polisService;
@@ -84,11 +86,33 @@ public class BijlageController {
     }
 
     @POST
+    @Path("/uploadBijlageBijRelatie")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public String uploadBijlageBijRelatie(@FormDataParam("bijlageFile") InputStream uploadedInputStream, @FormDataParam("bijlageFile") FormDataContentDisposition fileDetail, @FormDataParam("relatieId") String relatieId) {
+        LOGGER.debug("uploaden bestand 1");
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, null, null, null, relatieId);
+
+        //        return Response.status(200).entity(bijlageId).build();
+        return bijlageId;
+    }
+
+
+    @POST
+    @Path("/uploadBijlage")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public JsonBijlage uploadBijlage(@FormDataParam("bijlageFile") InputStream uploadedInputStream, @FormDataParam("bijlageFile") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("soortEntiteit") String soortEntiteit) {
+        LOGGER.debug("uploaden bestand voor {} met id {}", soortEntiteit, id);
+
+        return bijlageMapper.mapNaarJson(uploaden(uploadedInputStream, fileDetail, soortEntiteit, id));
+    }
+
+    @POST
     @Path("/uploadHypotheek1File")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public String uploadHypotheek1File(@FormDataParam("uploadHypotheek1File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek1File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek1Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         //        return Response.status(200).entity(bijlageId).build();
         return bijlageId;
@@ -99,7 +123,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek2File(@FormDataParam("uploadHypotheek2File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek2File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek2Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 2");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -109,7 +133,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek3File(@FormDataParam("uploadHypotheek3File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek3File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek3Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 3");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -119,7 +143,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek4File(@FormDataParam("uploadHypotheek4File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek4File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek4Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 4");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -129,7 +153,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek5File(@FormDataParam("uploadHypotheek5File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek5File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek5Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 5");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -139,7 +163,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek6File(@FormDataParam("uploadHypotheek6File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek6File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek6Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 6");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -149,7 +173,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek7File(@FormDataParam("uploadHypotheek7File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek7File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek7Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 7");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -159,7 +183,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek8File(@FormDataParam("uploadHypotheek8File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek8File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek8Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 8");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -169,7 +193,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek9File(@FormDataParam("uploadHypotheek9File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek9File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek9Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 9");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -179,7 +203,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadHypotheek10File(@FormDataParam("uploadHypotheek10File") InputStream uploadedInputStream, @FormDataParam("uploadHypotheek10File") FormDataContentDisposition fileDetail, @FormDataParam("id") String id, @FormDataParam("uploadHypotheek10Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 10");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, id, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -189,7 +213,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis1File(@FormDataParam("uploadPolis1File") InputStream uploadedInputStream, @FormDataParam("uploadPolis1File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis1Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -199,7 +223,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis2File(@FormDataParam("uploadPolis2File") InputStream uploadedInputStream, @FormDataParam("uploadPolis2File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis2Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -209,7 +233,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis3File(@FormDataParam("uploadPolis3File") InputStream uploadedInputStream, @FormDataParam("uploadPolis3File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis3Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -219,7 +243,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis4File(@FormDataParam("uploadPolis4File") InputStream uploadedInputStream, @FormDataParam("uploadPolis4File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis4Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -229,7 +253,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis5File(@FormDataParam("uploadPolis5File") InputStream uploadedInputStream, @FormDataParam("uploadPolis5File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis5Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -239,7 +263,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis6File(@FormDataParam("uploadPolis6File") InputStream uploadedInputStream, @FormDataParam("uploadPolis6File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis6Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -249,7 +273,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis7File(@FormDataParam("uploadPolis7File") InputStream uploadedInputStream, @FormDataParam("uploadPolis7File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis7Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -259,7 +283,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis8File(@FormDataParam("uploadPolis8File") InputStream uploadedInputStream, @FormDataParam("uploadPolis8File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis8Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -269,7 +293,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis9File(@FormDataParam("uploadPolis9File") InputStream uploadedInputStream, @FormDataParam("uploadPolis9File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis9Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -279,7 +303,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPolis10File(@FormDataParam("uploadPolis10File") InputStream uploadedInputStream, @FormDataParam("uploadPolis10File") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer, @FormDataParam("uploadPolis10Omschrijving") String omschrijving) {
         LOGGER.debug("uploaden bestand 1");
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, polisNummer, null, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -289,7 +313,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade1File(@FormDataParam("uploadSchade1File") InputStream uploadedInputStream, @FormDataParam("uploadSchade1File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade1Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -299,7 +323,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade2File(@FormDataParam("uploadSchade2File") InputStream uploadedInputStream, @FormDataParam("uploadSchade2File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade2Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -309,7 +333,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade3File(@FormDataParam("uploadSchade3File") InputStream uploadedInputStream, @FormDataParam("uploadSchade3File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade3Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -319,7 +343,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade4File(@FormDataParam("uploadSchade4File") InputStream uploadedInputStream, @FormDataParam("uploadSchade4File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade4Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -329,7 +353,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade5File(@FormDataParam("uploadSchade5File") InputStream uploadedInputStream, @FormDataParam("uploadSchade5File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade5Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -339,7 +363,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade6File(@FormDataParam("uploadSchade6File") InputStream uploadedInputStream, @FormDataParam("uploadSchade6File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade6Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -349,7 +373,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade7File(@FormDataParam("uploadSchade7File") InputStream uploadedInputStream, @FormDataParam("uploadSchade7File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade7Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -359,7 +383,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade8File(@FormDataParam("uploadSchade8File") InputStream uploadedInputStream, @FormDataParam("uploadSchade8File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade8Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -369,7 +393,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade9File(@FormDataParam("uploadSchade9File") InputStream uploadedInputStream, @FormDataParam("uploadSchade9File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade9Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -379,7 +403,7 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadSchade10File(@FormDataParam("uploadSchade10File") InputStream uploadedInputStream, @FormDataParam("uploadSchade10File") FormDataContentDisposition fileDetail, @FormDataParam("schadeNummerMaatschappij") String schadeNummerMaatschappij, @FormDataParam("uploadSchade10Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, schadeNummerMaatschappij, null, null, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
@@ -389,48 +413,96 @@ public class BijlageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadAangifte1File(@FormDataParam("uploadAangifte1File") InputStream uploadedInputStream, @FormDataParam("uploadAangifte1File") FormDataContentDisposition fileDetail, @FormDataParam("aangifteId") String aangifteId, @FormDataParam("uploadHypotheek1Omschrijving") String omschrijving) {
 
-        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, null, aangifteId, omschrijving);
+        String bijlageId = uploaden(uploadedInputStream, fileDetail, null, null, null, aangifteId, omschrijving, null);
 
         return Response.status(200).entity(bijlageId).build();
     }
 
-    private String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String polisNummer, String schadeNummerMaatschappij, String hypotheekId, String aangifteId, String omschrijving) {
+    private String uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String polisNummer, String schadeNummerMaatschappij, String hypotheekId, String aangifteId, String omschrijving, String relatieId) {
+        Bijlage bijlage = null;
 
-        String bestandsnaam = null;
+        LOGGER.debug("opslaan bijlage bij polis {}, schadeNummerMaatschappij {} of bij hypotheekId {} of bij aangifteId {} of bij relatieId {}", polisNummer, schadeNummerMaatschappij, hypotheekId, aangifteId, relatieId);
         if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
-            bestandsnaam = fileDetail.getFileName();
 
-            LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", schadeNummerMaatschappij " + schadeNummerMaatschappij + " of bij hypotheekId " + hypotheekId + " of bij aangifteId " + aangifteId + " en bestandsnaam " + bestandsnaam);
+            bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
 
             if (StringUtils.isNotBlank(polisNummer)) {
                 Polis polis = polisService.zoekOpPolisNummer(polisNummer);
 
                 LOGGER.debug("eigen database bijwerken");
-                return polisService.slaBijlageOp(polis.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail), omschrijving).toString();
+                polisService.slaBijlageOp(polis.getId(), bijlage, omschrijving);
             } else if (schadeNummerMaatschappij != null) {
                 Schade schade = schadeService.zoekOpSchadeNummerMaatschappij(schadeNummerMaatschappij);
 
                 LOGGER.debug("Opslaan schade en uploaden bijlage " + fileDetail.getFileName());
 
-                return schadeService.slaBijlageOp(schade.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail), omschrijving).toString();
+                schadeService.slaBijlageOp(schade.getId(), bijlage, omschrijving);
             } else if (aangifteId != null) {
                 Aangifte aangifte = aangifteService.lees(Long.valueOf(aangifteId));
 
                 LOGGER.debug("Opslaan bijlage bij aangifte");
 
-                return aangifteService.slaAangifteOp(aangifte, bijlageService.uploaden(uploadedInputStream, fileDetail), omschrijving).toString();
+                aangifteService.slaAangifteOp(aangifte, bijlage, omschrijving);
             } else if (hypotheekId != null) {
                 LOGGER.debug("Opslaan hypotheek en uploaden bijlage " + fileDetail.getFileName());
 
-                return hypotheekService.slaBijlageOp(Long.valueOf(hypotheekId), bijlageService.uploaden(uploadedInputStream, fileDetail), omschrijving).toString();
-            } else {
-                Bijlage bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
+                hypotheekService.slaBijlageOp(Long.valueOf(hypotheekId), bijlage, omschrijving);
+            } else if (relatieId != null) {
+                LOGGER.debug("Opslaan bijlage bij Relatie id {}", relatieId);
 
+                gebruikerService.opslaanBijlage(relatieId, bijlage);
+            } else {
                 bijlageService.opslaan(bijlage);
 
                 return bijlage.getId().toString();
             }
         }
-        return null;
+        String result = null;
+        if (bijlage != null && bijlage.getId() != null) {
+            result = bijlage.getId().toString();
+        }
+        return result;
+    }
+
+    private Bijlage uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String soortEntiteit, String id) {
+        Bijlage bijlage = null;
+
+        if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
+
+            bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
+            LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+            switch (soortEntiteit) {
+                case "Relatie":
+                    LOGGER.debug("Opslaan bijlage bij Relatie id {}", id);
+
+                    gebruikerService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Polis":
+
+                    polisService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Schade":
+
+                    schadeService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Aangifte":
+
+                    aangifteService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Hypotheek":
+
+                    hypotheekService.opslaanBijlage(id, bijlage);
+
+                    break;
+                default:
+                    bijlageService.opslaan(bijlage);
+            }
+        }
+        return bijlage;
     }
 }

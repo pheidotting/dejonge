@@ -6,7 +6,8 @@ import nl.dias.domein.Relatie;
 import nl.dias.domein.Sessie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
-    private final static Logger LOGGER = Logger.getLogger(GebruikerRepository.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerRepository.class);
     private final static int MAX_RESULTS = 30;
 
     public GebruikerRepository() {

@@ -1,22 +1,21 @@
 package nl.dias.repository;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
-
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Named;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Named
 public class HypotheekRepository extends AbstractRepository<Hypotheek> {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekRepository.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
 
     public HypotheekRepository() {
         super(Hypotheek.class);

@@ -7,14 +7,15 @@ import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 public class HypotheekService {
-    private final static Logger LOGGER = Logger.getLogger(HypotheekService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekService.class);
 
     @InjectParam
     private HypotheekRepository hypotheekRepository;
@@ -135,7 +136,21 @@ public class HypotheekService {
         return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
 
-    public Long slaBijlageOp(Long hypotheekId, Bijlage bijlage, String omschrijving) {
+    public void opslaanBijlage(String hypotheekId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), hypotheekId);
+
+        Hypotheek hypotheek = hypotheekRepository.lees(Long.valueOf(hypotheekId));
+
+        hypotheek.getBijlages().add(bijlage);
+        bijlage.setHypotheek(hypotheek);
+        bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
+
+        LOGGER.debug(org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(bijlage));
+
+        hypotheekRepository.opslaan(hypotheek);
+    }
+
+    public void slaBijlageOp(Long hypotheekId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId);
 
         bijlage.setHypotheek(leesHypotheek(hypotheekId));
@@ -145,8 +160,6 @@ public class HypotheekService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         hypotheekRepository.opslaanBijlage(bijlage);
-
-        return bijlage.getId();
     }
 
     public void setHypotheekRepository(HypotheekRepository hypotheekRepository) {
