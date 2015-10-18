@@ -1,4 +1,5 @@
-
+/.idea/*
 /target
 /.settings
 *.log
+dejonge.iml
