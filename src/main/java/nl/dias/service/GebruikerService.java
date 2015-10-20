@@ -250,7 +250,9 @@ public class GebruikerService {
                 rekeningNummer.setRelatie((Relatie) gebruiker);
             }
 
-            ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
+            if(gebruikerAanwezig!=null) {
+                ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
+            }
         }
 
         gebruikerRepository.opslaan(gebruiker);

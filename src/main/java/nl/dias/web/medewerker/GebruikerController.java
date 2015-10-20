@@ -124,7 +124,7 @@ public class GebruikerController {
             gebruikerService.opslaan(relatie);
 
             LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
-            return Response.status(202).entity(new JsonFoutmelding()).build();
+            return Response.status(202).entity(new JsonFoutmelding(relatie.getId().toString())).build();
         } catch (Exception e) {
             LOGGER.error("Fout bij opslaan Relatie", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
