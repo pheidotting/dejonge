@@ -117,8 +117,12 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (hypotheek.getEindDatumRenteVastePeriode() != null) {
             jsonHypotheek.setEindDatumRenteVastePeriode(hypotheek.getEindDatumRenteVastePeriode().toString(DATUM_FORMAAT));
         }
-        jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
-        jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
+        if (hypotheek.getHypotheekBedrag() != null) {
+            jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
+        }
+        if (hypotheek.getHypotheekVorm() != null) {
+            jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
+        }
         if (hypotheek.getIngangsDatum() != null) {
             jsonHypotheek.setIngangsDatum(hypotheek.getIngangsDatum().toString(DATUM_FORMAAT));
         }

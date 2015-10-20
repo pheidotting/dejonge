@@ -117,7 +117,7 @@ public class AuthorisatieFilter implements Filter {
                 LOGGER.debug("Stuur een UNAUTHORIZED");
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
-        } else if (cookie != null) {
+        } else if (cookie != null && sessieHeader == null) {
             init();
             Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
             req.getSession().setAttribute("sessie", sessie2.getSessie());
