@@ -5,10 +5,6 @@ import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-<<<<<<< HEAD
-
-=======
->>>>>>> 561c015bc16347b4be76e8f0
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

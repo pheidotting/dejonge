@@ -138,11 +138,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
-<<<<<<< HEAD
         LOGGER.debug("{}",polis.getBijlages());
-=======
-        LOGGER.debug("{}", polis.getBijlages());
->>>>>>> 561c015bc16347b4be76e8f0
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
 
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));

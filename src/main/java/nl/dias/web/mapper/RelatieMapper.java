@@ -3,13 +3,7 @@ package nl.dias.web.mapper;
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonRelatie;
-<<<<<<< HEAD
-import org.joda.time.LocalDate;import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-=======
 import org.joda.time.LocalDate;
->>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +35,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         try {
             relatie.setIdentificatie(jsonRelatie.getIdentificatie());
         } catch (UnsupportedEncodingException e) {
-<<<<<<< HEAD
             LOGGER.error("fout",e);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("fout",e);
-=======
-            LOGGER.error("fout", e);
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("fout", e);
->>>>>>> 561c015bc16347b4be76e8f0
         }
         relatie.setVoornaam(jsonRelatie.getVoornaam());
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());

@@ -1,11 +1,5 @@
 package nl.dias.web.mapper.dozer;
 
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-=======
->>>>>>> 561c015bc16347b4be76e8f0
 import org.dozer.DozerConverter;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;

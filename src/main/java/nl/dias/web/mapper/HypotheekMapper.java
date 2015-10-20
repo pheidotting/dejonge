@@ -6,11 +6,6 @@ import nl.dias.domein.Hypotheek;
 import nl.dias.domein.json.JsonHypotheek;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-=======
->>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;

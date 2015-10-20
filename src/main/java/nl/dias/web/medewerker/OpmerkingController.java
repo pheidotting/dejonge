@@ -8,17 +8,10 @@ import nl.dias.web.mapper.OpmerkingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.core.InjectParam;
-=======
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
->>>>>>> 561c015bc16347b4be76e8f0
 
 @Path("/opmerking")
 public class OpmerkingController {
