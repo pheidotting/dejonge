@@ -738,3 +738,9 @@ ALTER TABLE  `BIJLAGE` ADD  `UPLOADMOMENT` datetime NOT NULL AFTER  `BESTANDSNAA
 
 --changeset Patrick Heidotting:60
 ALTER TABLE `BIJLAGE` ADD COLUMN RELATIE bigint(20) DEFAULT NULL;
+<<<<<<< HEAD
+=======
+
+--changeset Patrick Heidotting:61
+ALTER TABLE  `HYPOTHEEK` CHANGE  `SOORT`  `SOORT` BIGINT( 20 ) NULL;
+>>>>>>> 561c015bc16347b4be76e8f0

@@ -6,9 +6,14 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
 import nl.dias.utils.Utils;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
+>>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.io.*;

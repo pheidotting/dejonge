@@ -15,7 +15,11 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
     @Override
     public Bijlage mapVanJson(JsonBijlage json) {
+<<<<<<< HEAD
         LOGGER.debug("{}",json);
+=======
+        LOGGER.debug("{}", json);
+>>>>>>> 561c015bc16347b4be76e8f0
 
         Bijlage bijlage = new Bijlage();
         if (json.getId() != null) {
@@ -24,7 +28,11 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
         bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
+<<<<<<< HEAD
         LOGGER.debug("{}",bijlage);
+=======
+        LOGGER.debug("{}", bijlage);
+>>>>>>> 561c015bc16347b4be76e8f0
         return bijlage;
     }
 

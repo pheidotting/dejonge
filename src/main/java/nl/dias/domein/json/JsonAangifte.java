@@ -14,6 +14,7 @@ public class JsonAangifte {
     private String idDiv;
     private String idDivLink;
     private String className;
+    private String soortEntiteit;
 
     public Long getId() {
         return id;
@@ -96,5 +97,13 @@ public class JsonAangifte {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(String soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 }

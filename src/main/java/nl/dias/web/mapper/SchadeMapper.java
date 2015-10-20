@@ -90,7 +90,11 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
             jsonSchade.setPolis(schade.getPolis().getId().toString());
         }
 
+<<<<<<< HEAD
         LOGGER.debug("{}",jsonSchade);
+=======
+        LOGGER.debug("{}", jsonSchade);
+>>>>>>> 561c015bc16347b4be76e8f0
 
         return jsonSchade;
     }

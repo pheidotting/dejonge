@@ -1,20 +1,23 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.json.JsonAangifte;
 import nl.dias.web.mapper.dozer.LocalDateDozerConverter;
 import nl.dias.web.mapper.dozer.RelatieDozerMapper;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
+>>>>>>> 561c015bc16347b4be76e8f0
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
 
 @Named
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {

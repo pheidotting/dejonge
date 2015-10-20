@@ -197,7 +197,11 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
+<<<<<<< HEAD
         LOGGER.debug("Opslaan {}" ,ReflectionToStringBuilder.toString(gebruiker));
+=======
+        LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker));
+>>>>>>> 561c015bc16347b4be76e8f0
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
@@ -444,7 +448,11 @@ public class GebruikerService {
             Long.valueOf(zoekTermNumeriek);
         } catch (NumberFormatException nfe) {
             zoekTermNumeriek = null;
+<<<<<<< HEAD
             LOGGER.trace("",nfe);
+=======
+            LOGGER.trace("", nfe);
+>>>>>>> 561c015bc16347b4be76e8f0
         }
         if (zoekTermNumeriek != null) {
             for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {

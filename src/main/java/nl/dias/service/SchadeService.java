@@ -77,7 +77,11 @@ public class SchadeService {
 
     public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
+<<<<<<< HEAD
         LOGGER.debug("{}",schadeIn);
+=======
+        LOGGER.debug("{}", schadeIn);
+>>>>>>> 561c015bc16347b4be76e8f0
 
         Schade schade = schadeIn;
 

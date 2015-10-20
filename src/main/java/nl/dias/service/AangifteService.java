@@ -4,9 +4,14 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.repository.AangifteRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
+>>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
@@ -37,7 +42,11 @@ public class AangifteService {
     public void opslaanBijlage(String aangifteId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), aangifteId);
 
+<<<<<<< HEAD
         Aangifte aangifte=aangifteRepository.lees(Long.valueOf(aangifteId));
+=======
+        Aangifte aangifte = aangifteRepository.lees(Long.valueOf(aangifteId));
+>>>>>>> 561c015bc16347b4be76e8f0
 
         aangifte.getBijlages().add(bijlage);
         bijlage.setAangifte(aangifte);
@@ -80,7 +89,11 @@ public class AangifteService {
         LOGGER.debug("Opgehaald " + aangiftes.size() + " aangiftes");
 
         for (Aangifte aangifte : aangiftes) {
+<<<<<<< HEAD
             LOGGER.debug("{}",aangifte.getJaar());
+=======
+            LOGGER.debug("{}", aangifte.getJaar());
+>>>>>>> 561c015bc16347b4be76e8f0
 
             if (aangifte.getJaar() == LocalDate.now().minusYears(1).getYear()) {
                 return true;

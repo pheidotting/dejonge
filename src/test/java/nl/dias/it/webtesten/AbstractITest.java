@@ -99,4 +99,9 @@ public class AbstractITest {
         }.getType();
         LOGGER.debug(ReflectionToStringBuilder.toString(response));
         return gson.fromJson(response.getEntity(String.class), listOfTestObject);
+<<<<<<< HEAD
     }}
+=======
+    }
+}
+>>>>>>> 561c015bc16347b4be76e8f0

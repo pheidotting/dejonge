@@ -7,6 +7,11 @@ import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+<<<<<<< HEAD
+=======
+import org.apache.commons.lang3.ArrayUtils;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+>>>>>>> 561c015bc16347b4be76e8f0
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +36,10 @@ public class HypotheekService {
 
     public Hypotheek opslaan(JsonHypotheek jsonHypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
-        SoortHypotheek soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
+        SoortHypotheek soortHypotheek = null;
+        if(isNotEmpty(hypotheekVorm)) {
+            soortHypotheek =            hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
+        }
 
         Hypotheek hypotheek = null;
         if (jsonHypotheek.getId() == null) {

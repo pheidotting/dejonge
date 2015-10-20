@@ -1,24 +1,24 @@
 package nl.dias.web.medewerker;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
+=======
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+>>>>>>> 561c015bc16347b4be76e8f0
 
 @Path("/opmerking")
 public class OpmerkingController {

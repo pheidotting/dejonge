@@ -1,21 +1,23 @@
 package nl.dias.web.mapper;
 
-import java.math.BigDecimal;
-
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.json.JsonHypotheek;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
+>>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Named;
+import java.math.BigDecimal;
 
 @Named
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
@@ -120,8 +122,12 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         if (hypotheek.getEindDatumRenteVastePeriode() != null) {
             jsonHypotheek.setEindDatumRenteVastePeriode(hypotheek.getEindDatumRenteVastePeriode().toString(DATUM_FORMAAT));
         }
-        jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
-        jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
+        if (hypotheek.getHypotheekBedrag() != null) {
+            jsonHypotheek.setHypotheekBedrag(hypotheek.getHypotheekBedrag().getBedrag().toString());
+        }
+        if (hypotheek.getHypotheekVorm() != null) {
+            jsonHypotheek.setHypotheekVorm(hypotheek.getHypotheekVorm().getId().toString());
+        }
         if (hypotheek.getIngangsDatum() != null) {
             jsonHypotheek.setIngangsDatum(hypotheek.getIngangsDatum().toString(DATUM_FORMAAT));
         }

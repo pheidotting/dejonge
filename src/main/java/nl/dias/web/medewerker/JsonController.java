@@ -1,25 +1,29 @@
 package nl.dias.web.medewerker;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonSoortSchade;
 import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.dias.web.mapper.SoortSchadeMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
+=======
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> 561c015bc16347b4be76e8f0
 
 @Path("/overig")
 public class JsonController {
@@ -50,7 +54,11 @@ public class JsonController {
             ret.add(vm.getNaam());
         }
 
+<<<<<<< HEAD
         LOGGER.debug("{}",ret);
+=======
+        LOGGER.debug("{}", ret);
+>>>>>>> 561c015bc16347b4be76e8f0
 
         return ret;
     }

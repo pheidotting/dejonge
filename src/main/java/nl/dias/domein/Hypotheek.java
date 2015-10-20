@@ -47,7 +47,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     protected Relatie relatie;
 
-    @JoinColumn(name = "SOORT", nullable = false)
+    @JoinColumn(name = "SOORT")
     @ManyToOne
     private SoortHypotheek hypotheekVorm;
     @Column(name = "OMSCHRIJVING", length = 1000, nullable = true)
