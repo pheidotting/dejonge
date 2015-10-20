@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>nl.lakedigital.as</groupId>
 			<artifactId>messaging</artifactId>
-			<version>0.0.4</version>
+			<version>0.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.jms</groupId>
@@ -160,7 +160,7 @@
 		<dependency>
 			<groupId>nl.lakedigital</groupId>
 			<artifactId>hulpmiddelen</artifactId>
-			<version>0.0.4</version>
+			<version>0.0.5-SNAPSHOT</version>
 		</dependency>
 		<!--dependency> <groupId>nl.lakedigital</groupId> <artifactId>inloggen</artifactId> 
 			<version>0.0.1-SNAPSHOT</version> </dependency -->
