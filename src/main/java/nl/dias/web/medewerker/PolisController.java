@@ -79,28 +79,15 @@ public class PolisController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonPolis jsonPolis) {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
+
+        Polis polis = polisMapper.mapVanJson(jsonPolis);
         try {
-            polisService.opslaan(polisMapper.mapVanJson(jsonPolis));
+            polisService.opslaan(polis);
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
-        return Response.status(200).entity(new JsonFoutmelding()).build();
-    }
-
-    @POST
-    @Path("/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("polisNummer") String polisNummer) {
-
-        LOGGER.debug("opslaan bijlage bij polis " + polisNummer + ", bestandsnaam " + fileDetail.getFileName());
-        Polis polis = polisService.zoekOpPolisNummer(polisNummer);
-
-        LOGGER.debug("eigen database bijwerken");
-//        polisService.slaBijlageOp(polis.getId(), bijlageService.uploaden(uploadedInputStream, fileDetail), omsch);
-
-        return Response.status(200).entity("").build();
-
+        return Response.status(200).entity(new JsonFoutmelding(polis.getId().toString())).build();
     }
 
     @GET

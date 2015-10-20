@@ -275,7 +275,7 @@ public class PolisService {
         if ("Aansprakelijkheid".equals(soort)) {
             polis = new AansprakelijkheidVerzekering();
         }
-        if ("Annulering".equals(soort) || "Doorlopende Annulering".equals(soort)) {
+        if ("Annulering".equals(soort) || "Annulerings".equals(soort) || "Doorlopende Annulering".equals(soort)) {
             polis = new AnnuleringsVerzekering();
         }
         if ("Auto".equals(soort)) {

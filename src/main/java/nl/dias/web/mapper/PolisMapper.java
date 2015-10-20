@@ -86,7 +86,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
         }
 
-        polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
+        if (jsonPolis.getMaatschappij() != null&&!"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
+            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
+        }
         polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
@@ -138,7 +140,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
-        LOGGER.debug("{}",polis.getBijlages());
+        LOGGER.debug("{}", polis.getBijlages());
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
 
         jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
