@@ -6,11 +6,6 @@ import nl.dias.domein.json.JsonAangifte;
 import nl.dias.web.mapper.dozer.LocalDateDozerConverter;
 import nl.dias.web.mapper.dozer.RelatieDozerMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-=======
->>>>>>> 561c015bc16347b4be76e8f0
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOptions;

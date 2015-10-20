@@ -9,16 +9,9 @@ import nl.dias.service.AangifteService;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.AangifteMapper;
-<<<<<<< HEAD
-
-import org.joda.time.LocalDate;import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-=======
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
->>>>>>> 561c015bc16347b4be76e8f0
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;

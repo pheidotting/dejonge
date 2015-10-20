@@ -7,11 +7,6 @@ import nl.dias.domein.polis.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-=======
->>>>>>> 561c015bc16347b4be76e8f0
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,11 +68,7 @@ public class PolisService {
 
         //        gebruikerService.opslaan(relatie);
 
-<<<<<<< HEAD
         LOGGER.debug("{}",lees(polis.getId()));
-=======
-        LOGGER.debug("{}", lees(polis.getId()));
->>>>>>> 561c015bc16347b4be76e8f0
     }
 
     private List<Bijlage> werkBijlagesBij(Polis polis) {
@@ -191,11 +182,7 @@ public class PolisService {
                 LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
                 polis = polisRepository.lees(jsonPolis.getId());
 
-<<<<<<< HEAD
                 LOGGER.debug("{}",polis);
-=======
-                LOGGER.debug("{}", polis);
->>>>>>> 561c015bc16347b4be76e8f0
             }
 
             if (polis == null) {

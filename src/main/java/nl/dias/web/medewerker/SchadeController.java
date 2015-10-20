@@ -11,19 +11,12 @@ import nl.dias.web.mapper.SchadeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-<<<<<<< HEAD
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.core.InjectParam;
-=======
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
->>>>>>> 561c015bc16347b4be76e8f0
 
 @Path("/schade")
 public class SchadeController {
@@ -41,11 +34,7 @@ public class SchadeController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonSchade jsonSchade) {
-<<<<<<< HEAD
         LOGGER.debug("{}",jsonSchade);
-=======
-        LOGGER.debug("{}", jsonSchade);
->>>>>>> 561c015bc16347b4be76e8f0
 
         Schade schade = schadeMapper.mapVanJson(jsonSchade);
         schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());

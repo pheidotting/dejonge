@@ -7,16 +7,13 @@ import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-<<<<<<< HEAD
-=======
-import org.apache.commons.lang3.ArrayUtils;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
->>>>>>> 561c015bc16347b4be76e8f0
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Named
 public class HypotheekService {
