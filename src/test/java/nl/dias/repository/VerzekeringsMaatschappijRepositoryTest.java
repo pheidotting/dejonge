@@ -1,14 +1,15 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.VerzekeringsMaatschappij;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.List;
 
-import nl.dias.domein.VerzekeringsMaatschappij;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
-
+@Ignore
 public class VerzekeringsMaatschappijRepositoryTest {
     private VerzekeringsMaatschappijRepository verzekeringsMaatschappijRepository;
 

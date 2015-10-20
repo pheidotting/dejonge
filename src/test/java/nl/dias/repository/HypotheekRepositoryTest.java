@@ -1,21 +1,17 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.*;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
-import nl.dias.domein.Bedrag;
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.HypotheekPakket;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortHypotheek;
+import static org.junit.Assert.assertEquals;
 
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-
+@Ignore
 public class HypotheekRepositoryTest {
     private HypotheekRepository hypotheekRepository;
 

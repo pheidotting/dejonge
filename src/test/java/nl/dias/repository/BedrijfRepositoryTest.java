@@ -5,10 +5,12 @@ import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class BedrijfRepositoryTest {
     private BedrijfRepository bedrijfRepository;
 

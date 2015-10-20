@@ -1,28 +1,19 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import nl.dias.domein.*;
+import nl.dias.domein.polis.*;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import nl.dias.domein.Bedrag;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.polis.AutoVerzekering;
-import nl.dias.domein.polis.CamperVerzekering;
-import nl.dias.domein.polis.FietsVerzekering;
-import nl.dias.domein.polis.OngevallenVerzekering;
-import nl.dias.domein.polis.ReisVerzekering;
-import nl.dias.domein.polis.WoonhuisVerzekering;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-
+@Ignore
 public class PolisRepositoryTest {
     private PolisRepository polisRepository;
 
