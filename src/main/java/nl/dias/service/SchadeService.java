@@ -4,6 +4,7 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,13 +82,15 @@ public class SchadeService {
 
         Schade schade = schadeIn;
 
-        LOGGER.debug("Soort schade opzoeken " + soortSchade);
-        List<SoortSchade> soorten = schadeRepository.soortenSchade(soortSchade);
+            LOGGER.debug("Soort schade opzoeken " + soortSchade);
+            List<SoortSchade> soorten = schadeRepository.soortenSchade(soortSchade);
 
-        LOGGER.debug("Status schade opzoeken " + statusSchade);
-        StatusSchade status = schadeRepository.getStatussen(statusSchade);
+        if(StringUtils.isNotEmpty(statusSchade)&&!"Kies een status uit de lijst..".equals(statusSchade)) {
+            LOGGER.debug("Status schade opzoeken " + statusSchade);
+            StatusSchade status = schadeRepository.getStatussen(statusSchade);
 
-        schade.setStatusSchade(status);
+            schade.setStatusSchade(status);
+        }
 
         if (!soorten.isEmpty()) {
             LOGGER.debug("Soort schade gevonden in database (" + soorten.size() + ")");
@@ -97,9 +100,11 @@ public class SchadeService {
             schade.setSoortSchadeOngedefinieerd(soortSchade);
         }
 
-        LOGGER.debug("Polis opzoeken, id : " + polisId);
-        Polis polis = polisService.lees(Long.valueOf(polisId));
-        schade.setPolis(polis);
+        if(polisId!=null&&!"Kies een polis uit de lijst..".equals(polisId)) {
+            LOGGER.debug("Polis opzoeken, id : " + polisId);
+            Polis polis = polisService.lees(Long.valueOf(polisId));
+            schade.setPolis(polis);
+        }
 
         // Bijlages er bij zoeken
         List<Bijlage> bijlages = schadeRepository.zoekBijlagesBijSchade(schade);

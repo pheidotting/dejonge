@@ -26,6 +26,7 @@ public class JsonSchade {
     private String idDivLink;
     private String titel;
     private List<String> errors;
+    private String soortEntiteit;
 
     public Long getId() {
         return id;
@@ -183,6 +184,14 @@ public class JsonSchade {
 
     public void setRelatie(String relatie) {
         this.relatie = relatie;
+    }
+
+    public String getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(String soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
     /**

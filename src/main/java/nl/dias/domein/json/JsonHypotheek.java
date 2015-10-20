@@ -42,6 +42,7 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
     private String titel;
     private List<String> soortenHypotheek;
     private String hypotheekVormOpgemaakt;
+    private String soortEntiteit;
 
     public String getHypotheekVormOpgemaakt() {
         return hypotheekVormOpgemaakt;
@@ -313,6 +314,14 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
 
     public void setBoxIII(String boxIII) {
         this.boxIII = boxIII;
+    }
+
+    public String getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(String soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
     /**

@@ -29,20 +29,25 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         String patternDatumTijd = "dd-MM-yyyy HH:mm";
         String patternDatum = "dd-MM-yyyy";
 
-        LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(patternDatumTijd));
-        LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(patternDatumTijd));
         LocalDate datumAfgehandeld = null;
         if (json.getDatumAfgehandeld() != null) {
             datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
         }
         Schade schade = new Schade();
-
         schade.setId(json.getId());
+
+        if (json.getDatumTijdMelding() != null) {
+            LocalDateTime datumTijdMelding = LocalDateTime.parse(json.getDatumTijdMelding(), DateTimeFormat.forPattern(patternDatumTijd));
+            schade.setDatumTijdMelding(datumTijdMelding);
+        }
+        if (json.getDatumTijdSchade() != null) {
+            LocalDateTime datumTijdSchade = LocalDateTime.parse(json.getDatumTijdSchade(), DateTimeFormat.forPattern(patternDatumTijd));
+            schade.setDatumTijdSchade(datumTijdSchade);
+        }
+
         if (datumAfgehandeld != null) {
             schade.setDatumAfgehandeld(datumAfgehandeld);
         }
-        schade.setDatumTijdMelding(datumTijdMelding);
-        schade.setDatumTijdSchade(datumTijdSchade);
         if (json.getEigenRisico() != null) {
             schade.setEigenRisico(new Bedrag(json.getEigenRisico()));
         }
@@ -85,12 +90,14 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         } else {
             jsonSchade.setSoortSchade(schade.getSoortSchadeOngedefinieerd());
         }
-        jsonSchade.setStatusSchade(schade.getStatusSchade().getStatus());
+        if (schade.getStatusSchade() != null) {
+            jsonSchade.setStatusSchade(schade.getStatusSchade().getStatus());
+        }
         if (schade.getPolis() != null && schade.getPolis().getId() != null) {
             jsonSchade.setPolis(schade.getPolis().getId().toString());
         }
 
-        LOGGER.debug("{}",jsonSchade);
+        LOGGER.debug("{}", jsonSchade);
 
         return jsonSchade;
     }

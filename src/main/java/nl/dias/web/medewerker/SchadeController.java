@@ -39,7 +39,7 @@ public class SchadeController {
         Schade schade = schadeMapper.mapVanJson(jsonSchade);
         schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());
 
-        return Response.status(202).entity(new JsonFoutmelding()).build();
+        return Response.status(202).entity(new JsonFoutmelding(schade.getId().toString())).build();
     }
 
     @GET
