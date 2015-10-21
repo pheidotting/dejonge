@@ -757,4 +757,10 @@ ALTER TABLE  `POLIS` CHANGE  `MAATSCHAPPIJ`  `MAATSCHAPPIJ` bigint(20) NULL;
 ALTER TABLE  `GEBRUIKER` CHANGE  `GEBRUIKERSNAAM`  `GEBRUIKERSNAAM` varchar(100) NULL;
 
 --changeset Patrick Heidotting:65
-ALTER TABLE  `LOGS` CHANGE  `throwable`  `throwable` VARCHAR( 5000 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
+ALTER TABLE  `LOGS` CHANGE  `throwable`  `throwable` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
+
+--changeset Patrick Heidotting:66
+UPDATE `BIJLAGE` SET `UPLOADMOMENT` = '2015-10-21 07:28:00' WHERE `BIJLAGE`.`ID` = 4;
+
+--changeset Patrick Heidotting:66a
+UPDATE `BIJLAGE` SET `UPLOADMOMENT` = '2015-10-21 07:28:00';
