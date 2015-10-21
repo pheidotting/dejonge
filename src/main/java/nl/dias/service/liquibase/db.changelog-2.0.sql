@@ -755,3 +755,6 @@ ALTER TABLE  `POLIS` CHANGE  `MAATSCHAPPIJ`  `MAATSCHAPPIJ` bigint(20) NULL;
 
 --changeset Patrick Heidotting:64
 ALTER TABLE  `GEBRUIKER` CHANGE  `GEBRUIKERSNAAM`  `GEBRUIKERSNAAM` varchar(100) NULL;
+
+--changeset Patrick Heidotting:65
+ALTER TABLE  `LOGS` CHANGE  `throwable`  `throwable` VARCHAR( 5000 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
