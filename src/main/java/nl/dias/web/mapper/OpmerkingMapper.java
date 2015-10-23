@@ -2,10 +2,7 @@ package nl.dias.web.mapper;
 
 import javax.inject.Named;
 
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
+import nl.dias.domein.*;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.GebruikerService;
@@ -14,9 +11,13 @@ import nl.dias.service.PolisService;
 import nl.dias.service.SchadeService;
 
 import com.sun.jersey.api.core.InjectParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingMapper.class);
+
     @InjectParam
     private SchadeService schadeService;
     @InjectParam
@@ -54,6 +55,10 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
         }
         opmerking.setRelatie(relatie);
+        LOGGER.debug("Opzoeken Medewerker met id {}",jsonOpmerking.getMedewerkerId());
+        opmerking.setMedewerker((Medewerker)gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
+
+        LOGGER.debug("gemapte opmerking {}",opmerking);
 
         return opmerking;
     }
@@ -66,6 +71,7 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         jsonOpmerking.setOpmerking(opmerking.getOpmerking());
         jsonOpmerking.setTijd(opmerking.getTijd().toString("dd-MM-yyyy HH:mm"));
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
+        jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
         if (opmerking.getSchade() != null) {
             jsonOpmerking.setSchade(opmerking.getSchade().getId().toString());
         }

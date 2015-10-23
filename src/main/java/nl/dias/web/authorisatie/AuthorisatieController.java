@@ -68,6 +68,7 @@ public class AuthorisatieController {
 
         IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
         if (gebruiker != null) {
+            ingelogdeGebruiker.setId(gebruiker.getId().toString());
             ingelogdeGebruiker.setGebruikersnaam(gebruiker.getNaam());
             if (gebruiker instanceof Beheerder) {
                 // Nog te doen :)

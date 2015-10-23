@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 
 public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     @InjectParam

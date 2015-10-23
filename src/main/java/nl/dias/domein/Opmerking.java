@@ -3,6 +3,8 @@ package nl.dias.domein;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -131,33 +133,29 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\nOpmerking [id=");
-        builder.append(id);
-        builder.append(", opmerking=");
-        builder.append(opmerking);
-        builder.append("]");
-        return builder.toString();
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis.getId()).append("schade", schade == null ? null : schade.getId()).append("hypotheek", hypotheek == null ? null : hypotheek.getId())
+                .append("opmerking", opmerking).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Opmerking)) {
+            return false;
+        }
+
+        Opmerking opmerking1 = (Opmerking) o;
+
+        return new EqualsBuilder().append(getId(), opmerking1.getId()).append(getTijd(), opmerking1.getTijd()).append(getRelatie(), opmerking1.getRelatie()).append(getMedewerker(), opmerking1.getMedewerker()).append(getKantoor(), opmerking1.getKantoor()).append(getPolis(), opmerking1.getPolis()).append(getSchade(), opmerking1.getSchade()).append(getHypotheek(), opmerking1.getHypotheek()).append(getOpmerking(), opmerking1.getOpmerking()).isEquals();
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((opmerking == null) ? 0 : opmerking.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Opmerking other = (Opmerking) obj;
-        return new EqualsBuilder().append(opmerking, other.opmerking).isEquals();
+        return new HashCodeBuilder(17, 37).append(getId()).append(getTijd()).append(getRelatie()).append(getMedewerker()).append(getKantoor()).append(getPolis()).append(getSchade()).append(getHypotheek()).append(getOpmerking()).toHashCode();
     }
 }

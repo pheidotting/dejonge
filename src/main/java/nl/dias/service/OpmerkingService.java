@@ -11,9 +11,11 @@ import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
+import nl.dias.domein.polis.Polis;
 import nl.dias.repository.OpmerkingRepository;
 
 import com.sun.jersey.api.core.InjectParam;
+import nl.dias.repository.PolisRepository;
 
 @Named
 public class OpmerkingService {
@@ -27,8 +29,8 @@ public class OpmerkingService {
     private HypotheekService hypotheekService;
     @InjectParam
     private GebruikerService gebruikerService;
-    @Context
-    private HttpServletRequest httpServletRequest;
+    @InjectParam
+    private PolisRepository polisRepository;
 
     public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
@@ -36,15 +38,14 @@ public class OpmerkingService {
     }
 
     public void opslaan(Opmerking opmerking) {
-        String sessie = null;
-        if (httpServletRequest.getSession().getAttribute("sessie") != null && !httpServletRequest.getSession().getAttribute("sessie").equals("")) {
-            sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
-        }
-
-        Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
-
-        opmerking.setMedewerker(medewerker);
         opmerkingRepository.opslaan(opmerking);
+
+        if(opmerking.getRelatie()!=null){
+            Relatie relatie = (Relatie)gebruikerService.lees(opmerking.getRelatie().getId());
+            relatie.getOpmerkingen().add(opmerking);
+
+            gebruikerService.opslaan(relatie);
+        }
 
         if (opmerking.getSchade() != null) {
             Schade schade = schadeService.lees(opmerking.getSchade().getId());
@@ -58,6 +59,13 @@ public class OpmerkingService {
             hypotheek.getOpmerkingen().add(opmerking);
 
             hypotheekService.opslaan(hypotheek);
+        }
+
+        if(opmerking.getPolis()!=null){
+            Polis polis=polisRepository.lees(opmerking.getPolis().getId());
+            polis.getOpmerkingen().add(opmerking);
+
+            polisRepository.opslaan(polis);
         }
     }
 
@@ -77,8 +85,5 @@ public class OpmerkingService {
         this.hypotheekService = hypotheekService;
     }
 
-    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
-    }
 
 }
