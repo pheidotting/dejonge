@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
+import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.polis.Polis;
@@ -9,10 +8,10 @@ import nl.dias.service.GebruikerService;
 import nl.dias.service.HypotheekService;
 import nl.dias.service.PolisService;
 import nl.dias.service.SchadeService;
-
-import com.sun.jersey.api.core.InjectParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Named;
 
 @Named
 public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
@@ -33,28 +32,24 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
 
         opmerking.setId(jsonOpmerking.getId());
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
-        Relatie relatie = null;
 
         if (jsonOpmerking.getSchade() != null) {
             Schade schade = schadeService.lees(Long.valueOf(jsonOpmerking.getSchade()));
             opmerking.setSchade(schade);
-            relatie = schade.getPolis().getRelatie();
         }
         if (jsonOpmerking.getHypotheek() != null) {
             Hypotheek hypotheek = hypotheekService.leesHypotheek(Long.valueOf(jsonOpmerking.getHypotheek()));
             opmerking.setHypotheek(hypotheek);
-            relatie = hypotheek.getRelatie();
         }
         if (jsonOpmerking.getPolis() != null) {
             Polis polis = polisService.lees(Long.valueOf(jsonOpmerking.getPolis()));
             opmerking.setPolis(polis);
-            relatie = polis.getRelatie();
         }
 
-        if (relatie == null && jsonOpmerking.getRelatie() != null) {
-            relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
+        if (jsonOpmerking.getRelatie() != null) {
+            Relatie relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
+            opmerking.setRelatie(relatie);
         }
-        opmerking.setRelatie(relatie);
         LOGGER.debug("Opzoeken Medewerker met id {}",jsonOpmerking.getMedewerkerId());
         opmerking.setMedewerker((Medewerker)gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
 

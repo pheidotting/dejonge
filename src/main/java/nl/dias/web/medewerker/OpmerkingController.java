@@ -1,6 +1,7 @@
 package nl.dias.web.medewerker;
 
 import com.sun.jersey.api.core.InjectParam;
+import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
@@ -34,13 +35,17 @@ public class OpmerkingController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response opslaan(JsonOpmerking jsonOpmerking) {
+        Opmerking opmerking = null;
         try {
-            opmerkingService.opslaan(opmerkingMapper.mapVanJson(jsonOpmerking));
+            opmerking = opmerkingMapper.mapVanJson(jsonOpmerking);
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Fout opgetreden bij opslaan Opmerking", e);
             return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
-        return Response.status(200).entity(new JsonFoutmelding()).build();
+        if (opmerking != null) {
+            opmerkingService.opslaan(opmerking);
+        }
+        return Response.status(200).entity(opmerking.getId()).build();
     }
 
     @GET
