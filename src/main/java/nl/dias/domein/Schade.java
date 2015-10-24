@@ -237,9 +237,9 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Override
     public int compareTo(Object object) {
         Schade myClass = (Schade) object;
-        return new CompareToBuilder().append(this.soortSchade, myClass.soortSchade).append(this.datumTijdMelding, myClass.datumTijdMelding).append(this.locatie, myClass.locatie)
+        return new CompareToBuilder().append(this.datumTijdMelding, myClass.datumTijdMelding).append(this.locatie, myClass.locatie)
                 .append(this.schadeNummerMaatschappij, myClass.schadeNummerMaatschappij).append(this.datumTijdSchade, myClass.datumTijdSchade).append(this.statusSchade, myClass.statusSchade)
-                .append(this.id, myClass.id).append(this.soortSchadeOngedefinieerd, myClass.soortSchadeOngedefinieerd).append(this.opmerkingen, myClass.opmerkingen)
+                .append(this.id, myClass.id).append(this.soortSchadeOngedefinieerd, myClass.soortSchadeOngedefinieerd)
                 .append(this.schadeNummerTussenPersoon, myClass.schadeNummerTussenPersoon).append(this.eigenRisico, myClass.eigenRisico).append(this.omschrijving, myClass.omschrijving)
                 .append(this.datumAfgehandeld, myClass.datumAfgehandeld).toComparison();
     }
@@ -249,8 +249,8 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(761314323, 831310645).appendSuper(super.hashCode()).append(this.soortSchade).append(this.datumTijdMelding).append(this.locatie)
-                .append(this.schadeNummerMaatschappij).append(this.datumTijdSchade).append(this.statusSchade).append(this.id).append(this.soortSchadeOngedefinieerd).append(this.opmerkingen)
+        return new HashCodeBuilder(761314323, 831310645).appendSuper(super.hashCode()).append(this.datumTijdMelding).append(this.locatie)
+                .append(this.schadeNummerMaatschappij).append(this.datumTijdSchade).append(this.statusSchade).append(this.id).append(this.soortSchadeOngedefinieerd)
                 .append(this.schadeNummerTussenPersoon).append(this.eigenRisico).append(this.omschrijving).append(this.datumAfgehandeld).toHashCode();
     }
 
