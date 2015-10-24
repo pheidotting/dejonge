@@ -38,6 +38,9 @@ public class Bedrijf implements Serializable, PersistenceObject {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "bedrijf")
     private Set<Adres> adressen;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bedrijf", targetEntity = Opmerking.class)
+    private Set<Opmerking> opmerkingen;
+
     @Override
     public Long getId() {
         return id;
@@ -92,6 +95,14 @@ public class Bedrijf implements Serializable, PersistenceObject {
 
     public void setAdressen(Set<Adres> adressen) {
         this.adressen = adressen;
+    }
+
+    public Set<Opmerking> getOpmerkingen() {
+        return opmerkingen;
+    }
+
+    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+        this.opmerkingen = opmerkingen;
     }
 
     @Override

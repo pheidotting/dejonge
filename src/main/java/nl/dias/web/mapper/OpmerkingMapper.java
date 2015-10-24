@@ -4,10 +4,7 @@ import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.polis.Polis;
-import nl.dias.service.GebruikerService;
-import nl.dias.service.HypotheekService;
-import nl.dias.service.PolisService;
-import nl.dias.service.SchadeService;
+import nl.dias.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +22,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     private PolisService polisService;
     @InjectParam
     private GebruikerService gebruikerService;
+    @InjectParam
+    private BedrijfService bedrijfService;
 
     @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
@@ -50,10 +49,14 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             Relatie relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
             opmerking.setRelatie(relatie);
         }
-        LOGGER.debug("Opzoeken Medewerker met id {}",jsonOpmerking.getMedewerkerId());
-        opmerking.setMedewerker((Medewerker)gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
+        if (jsonOpmerking.getBedrijf() != null) {
+            Bedrijf bedrijf = bedrijfService.lees((Long.valueOf(jsonOpmerking.getBedrijf())));
+            opmerking.setBedrijf(bedrijf);
+        }
+        LOGGER.debug("Opzoeken Medewerker met id {}", jsonOpmerking.getMedewerkerId());
+        opmerking.setMedewerker((Medewerker) gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
 
-        LOGGER.debug("gemapte opmerking {}",opmerking);
+        LOGGER.debug("gemapte opmerking {}", opmerking);
 
         return opmerking;
     }
@@ -75,6 +78,9 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         }
         if (opmerking.getHypotheek() != null) {
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
+        }
+        if (opmerking.getBedrijf() != null) {
+            jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
         }
 
         return jsonOpmerking;

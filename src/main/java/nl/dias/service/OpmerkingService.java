@@ -6,11 +6,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
+import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.OpmerkingRepository;
 
@@ -31,6 +27,8 @@ public class OpmerkingService {
     private GebruikerService gebruikerService;
     @InjectParam
     private PolisRepository polisRepository;
+    @InjectParam
+    private BedrijfService bedrijfService;
 
     public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
@@ -40,8 +38,8 @@ public class OpmerkingService {
     public void opslaan(Opmerking opmerking) {
         opmerkingRepository.opslaan(opmerking);
 
-        if(opmerking.getRelatie()!=null){
-            Relatie relatie = (Relatie)gebruikerService.lees(opmerking.getRelatie().getId());
+        if (opmerking.getRelatie() != null) {
+            Relatie relatie = (Relatie) gebruikerService.lees(opmerking.getRelatie().getId());
             relatie.getOpmerkingen().add(opmerking);
 
             gebruikerService.opslaan(relatie);
@@ -61,11 +59,18 @@ public class OpmerkingService {
             hypotheekService.opslaan(hypotheek);
         }
 
-        if(opmerking.getPolis()!=null){
-            Polis polis=polisRepository.lees(opmerking.getPolis().getId());
+        if (opmerking.getPolis() != null) {
+            Polis polis = polisRepository.lees(opmerking.getPolis().getId());
             polis.getOpmerkingen().add(opmerking);
 
             polisRepository.opslaan(polis);
+        }
+
+        if (opmerking.getBedrijf() != null) {
+            Bedrijf bedrijf = bedrijfService.lees(opmerking.getBedrijf().getId());
+            bedrijf.getOpmerkingen().add(opmerking);
+
+            bedrijfService.opslaan(bedrijf);
         }
     }
 
