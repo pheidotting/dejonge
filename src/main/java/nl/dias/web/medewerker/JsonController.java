@@ -1,6 +1,12 @@
 package nl.dias.web.medewerker;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.core.InjectParam;
+import com.sun.jersey.api.json.JSONConfiguration;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.json.JsonSoortSchade;
@@ -84,6 +90,24 @@ public class JsonController {
         }
 
         return ret;
+    }
+
+    @GET
+    @Path("/ophalenAdresOpPostcode")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String ophalenAdresOpPostcode(@QueryParam("postcode") String postcode, @QueryParam("huisnummer") String huisnummer) {
+        String adres = "http://api.postcodeapi.nu/" + postcode + "/" + huisnummer;
+
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(clientConfig);
+        WebResource webResource = client.resource(adres);
+        ClientResponse response = webResource.header("Api-Key", "0eaff635fe5d9be439582d7501027f34d5a3ca9d").accept("application/x-www-form-urlencoded; charset=UTF-8").get(ClientResponse.class);
+//        if (response.getStatus() != 200) {
+//            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+//        }
+
+        return response.getEntity(String.class);
     }
 
     public void setMaatschappijService(VerzekeringsMaatschappijService maatschappijService) {
