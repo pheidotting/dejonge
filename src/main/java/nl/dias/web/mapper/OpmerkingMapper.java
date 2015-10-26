@@ -24,6 +24,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     private GebruikerService gebruikerService;
     @InjectParam
     private BedrijfService bedrijfService;
+    @InjectParam
+    private AangifteService aangifteService;
 
     @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
@@ -49,9 +51,15 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             Relatie relatie = gebruikerService.leesRelatie(Long.valueOf(jsonOpmerking.getRelatie()));
             opmerking.setRelatie(relatie);
         }
+
         if (jsonOpmerking.getBedrijf() != null) {
             Bedrijf bedrijf = bedrijfService.lees((Long.valueOf(jsonOpmerking.getBedrijf())));
             opmerking.setBedrijf(bedrijf);
+        }
+
+        if (jsonOpmerking.getAangifte() != null) {
+            Aangifte aangifte = aangifteService.lees((Long.valueOf(jsonOpmerking.getAangifte())));
+            opmerking.setAangifte(aangifte);
         }
         LOGGER.debug("Opzoeken Medewerker met id {}", jsonOpmerking.getMedewerkerId());
         opmerking.setMedewerker((Medewerker) gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
@@ -81,6 +89,9 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         }
         if (opmerking.getBedrijf() != null) {
             jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
+        }
+        if(jsonOpmerking.getAangifte()!=null){
+            jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
         }
 
         return jsonOpmerking;

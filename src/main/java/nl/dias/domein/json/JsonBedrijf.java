@@ -1,6 +1,7 @@
 package nl.dias.domein.json;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -9,6 +10,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class JsonBedrijf {
     private String id;
     private List<JsonPolis> polissen;
+    private List<JsonOpmerking> opmerkingen;
     private String naam;
     private String kvk;
     private String straat;
@@ -38,6 +40,17 @@ public class JsonBedrijf {
 
     public void setPolissen(List<JsonPolis> polissen) {
         this.polissen = polissen;
+    }
+
+    public List<JsonOpmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new ArrayList<>();
+        }
+        return opmerkingen;
+    }
+
+    public void setOpmerkingen(List<JsonOpmerking> opmerkingen) {
+        this.opmerkingen = opmerkingen;
     }
 
     public String getNaam() {
@@ -164,9 +177,7 @@ public class JsonBedrijf {
             return false;
         }
         JsonBedrijf rhs = (JsonBedrijf) object;
-        return new EqualsBuilder().append(this.id, rhs.id).append(this.plaats, rhs.plaats).append(this.relatie, rhs.relatie).append(this.postcode, rhs.postcode).append(this.kvk, rhs.kvk)
-                .append(this.naam, rhs.naam).append(this.toevoeging, rhs.toevoeging).append(this.huisnummer, rhs.huisnummer).append(this.straat, rhs.straat)
-                .append(this.getPolissen(), rhs.getPolissen()).isEquals();
+        return new EqualsBuilder().append(this.id, rhs.id).append(this.plaats, rhs.plaats).append(this.relatie, rhs.relatie).append(this.postcode, rhs.postcode).append(this.kvk, rhs.kvk).append(this.naam, rhs.naam).append(this.toevoeging, rhs.toevoeging).append(this.huisnummer, rhs.huisnummer).append(this.straat, rhs.straat).append(this.getPolissen(), rhs.getPolissen()).isEquals();
     }
 
     /**
@@ -174,8 +185,7 @@ public class JsonBedrijf {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.id).append(this.plaats).append(this.relatie).append(this.postcode).append(this.kvk).append(this.naam).append(this.toevoeging).append(this.huisnummer)
-                .append(this.straat).append(this.getPolissen()).toHashCode();
+        return new HashCodeBuilder().append(this.id).append(this.plaats).append(this.relatie).append(this.postcode).append(this.kvk).append(this.naam).append(this.toevoeging).append(this.huisnummer).append(this.straat).append(this.getPolissen()).toHashCode();
     }
 
 }

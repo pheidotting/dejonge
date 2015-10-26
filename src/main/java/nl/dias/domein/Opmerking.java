@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "OPMERKING")
-@NamedQueries({ @NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie") })
+@NamedQueries({@NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie")})
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
 
@@ -53,6 +53,10 @@ public class Opmerking implements PersistenceObject, Serializable {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "BEDRIJF")
     private Bedrijf bedrijf;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "AANGIFTE")
+    private Aangifte aangifte;
 
     @Column(columnDefinition = "varchar(2500)", name = "OPMERKING")
     private String opmerking;
@@ -143,12 +147,17 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.bedrijf = bedrijf;
     }
 
+    public Aangifte getAangifte() {
+        return aangifte;
+    }
+
+    public void setAangifte(Aangifte aangifte) {
+        this.aangifte = aangifte;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", id)
-                .append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis.getId()).append("schade", schade == null ? null : schade.getId()).append("hypotheek", hypotheek == null ? null : hypotheek.getId())
-                .append("opmerking", opmerking).toString();
+        return new ToStringBuilder(this).append("id", id).append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis.getId()).append("schade", schade == null ? null : schade.getId()).append("hypotheek", hypotheek == null ? null : hypotheek.getId()).append("opmerking", opmerking).toString();
     }
 
     @Override

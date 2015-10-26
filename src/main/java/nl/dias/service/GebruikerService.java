@@ -64,6 +64,26 @@ public class GebruikerService {
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
 
+    public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie){
+        LOGGER.info("koppelenOnderlingeRelatie({}, {}, {})", relatieId,relatieMetId,soortRelatie);
+
+        Relatie relatie = (Relatie)gebruikerRepository.lees(relatieId);
+        Relatie relatieMet = (Relatie)gebruikerRepository.lees(relatieMetId);
+
+        OnderlingeRelatieSoort onderlingeRelatieSoort=OnderlingeRelatieSoort.valueOf(soortRelatie);
+        OnderlingeRelatieSoort onderlingeRelatieSoortTegengesteld=OnderlingeRelatieSoort.getTegenGesteld(onderlingeRelatieSoort);
+
+        OnderlingeRelatie onderlingeRelatie=new OnderlingeRelatie(relatie,relatieMet,false,onderlingeRelatieSoort);
+        OnderlingeRelatie onderlingeRelatieTegengesteld=new OnderlingeRelatie(relatieMet,relatie,false,onderlingeRelatieSoortTegengesteld);
+
+        relatie.getOnderlingeRelaties().add(onderlingeRelatie);
+        relatieMet.getOnderlingeRelaties().add(onderlingeRelatieTegengesteld);
+
+        gebruikerRepository.opslaan(relatie);
+        gebruikerRepository.opslaan(relatieMet);
+
+    }
+
     public void opslaanBijlage(String relatieId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(), relatieId);
 

@@ -32,7 +32,7 @@ public class JsonRelatie {
     private String overlijdensdatumOpgemaakt;
     private String geslacht;
     private String burgerlijkeStaat;
-    private List<Long> onderlingeRelaties;
+    private List<JsonOnderlingeRelatie> onderlingeRelaties;
     private boolean zakelijkeKlant;
     private List<String> errors;
     private List<JsonBijlage> bijlages;
@@ -218,11 +218,14 @@ public class JsonRelatie {
         this.burgerlijkeStaat = burgerlijkeStaat;
     }
 
-    public List<Long> getOnderlingeRelaties() {
+    public List<JsonOnderlingeRelatie> getOnderlingeRelaties() {
+        if (onderlingeRelaties == null) {
+            onderlingeRelaties = new ArrayList<>();
+        }
         return onderlingeRelaties;
     }
 
-    public void setOnderlingeRelaties(List<Long> onderlingeRelaties) {
+    public void setOnderlingeRelaties(List<JsonOnderlingeRelatie> onderlingeRelaties) {
         this.onderlingeRelaties = onderlingeRelaties;
     }
 

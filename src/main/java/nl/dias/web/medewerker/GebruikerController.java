@@ -5,10 +5,7 @@ import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonFoutmelding;
-import nl.dias.domein.json.JsonLijstRelaties;
-import nl.dias.domein.json.JsonRelatie;
+import nl.dias.domein.json.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.BedrijfService;
@@ -168,7 +165,7 @@ public class GebruikerController {
     @GET
     @Path("/zoekOpNaamAdresOfPolisNummer")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonLijstRelaties zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm) {
+    public JsonLijstRelaties zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm, @QueryParam("weglaten") String weglaten) {
         LOGGER.info("zoekOpNaamAdresOfPolisNummer met zoekterm " + zoekTerm);
 
         JsonLijstRelaties lijst = new JsonLijstRelaties();
@@ -181,67 +178,29 @@ public class GebruikerController {
             // r));
             // }
         } else {
-            for (Gebruiker r : gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm)) {
-                lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
+            Long idWeglaten = null;
+            if (weglaten != null) {
+                LOGGER.debug("id " + weglaten + " moet worden weggelaten");
+                idWeglaten = Long.parseLong(weglaten);
+            }
+
+            for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
+                if (idWeglaten == null || !idWeglaten.equals(r.getId())) {
+                    lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
+                }
             }
         }
         return lijst;
     }
 
-    // @GET
-    // @Path("/toevoegenRelatieRelatie")
-    // @Produces(MediaType.TEXT_PLAIN)
-    // public String toevoegenRelatieRelatie(@QueryParam("idAanToevoegen")
-    // String sidAanToevoegen, @QueryParam("idToeTeVoegen") String
-    // sidToeTeVoegen, @QueryParam("soortRelatie") String soortRelatie) {
-    // String melding = "";
-    // Long idAanToevoegen = null;
-    // Long idToeTeVoegen = null;
-    // try {
-    // idAanToevoegen = Long.parseLong(sidAanToevoegen);
-    // idToeTeVoegen = Long.parseLong(sidToeTeVoegen);
-    // } catch (NumberFormatException e) {
-    // logger.info(e.getMessage());
-    // melding = "Numeriek veld verwacht";
-    // }
-    //
-    // if (soortRelatie == null || soortRelatie.equals("")) {
-    // melding = "De soort Relatie moet worden ingevuld.";
-    // }
-    //
-    // if (melding.equals("")) {
-    // Relatie aanToevoegen = (Relatie) gebruikerService.lees(idAanToevoegen);
-    // Relatie toeTeVoegen = (Relatie) gebruikerService.lees(idToeTeVoegen);
-    //
-    // OnderlingeRelatieSoort soort = null;
-    // for (OnderlingeRelatieSoort s : OnderlingeRelatieSoort.values()) {
-    // if (soortRelatie.equals(s.toString())) {
-    // soort = s;
-    // break;
-    // }
-    // }
-    //
-    // aanToevoegen.getOnderlingeRelaties().add(new
-    // OnderlingeRelatie(aanToevoegen, toeTeVoegen, soort));
-    //
-    // gebruikerService.opslaan(aanToevoegen);
-    // }
-    //
-    // Gson gson = new Gson();
-    // String messages = null;
-    // if (melding.equals("")) {
-    // Relatie relatie = (Relatie) gebruikerService.lees(idAanToevoegen);
-    // // try {
-    // // messages = gson.toJson(new RelatieJson(relatie.clone()));
-    // // } catch (CloneNotSupportedException e) {
-    // // logger.error(e.getMessage());
-    // // }
-    // } else {
-    // messages = gson.toJson(melding);
-    // }
-    //
-    // return messages;
-    // }
+    @POST
+    @Path("/koppelenOnderlingeRelatie")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void koppelenOnderlingeRelatie(JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie) {
+
+        gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
+    }
 
     public void setGebruikerService(GebruikerService gebruikerService) {
         this.gebruikerService = gebruikerService;

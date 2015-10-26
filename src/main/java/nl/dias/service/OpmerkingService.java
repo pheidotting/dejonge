@@ -29,6 +29,8 @@ public class OpmerkingService {
     private PolisRepository polisRepository;
     @InjectParam
     private BedrijfService bedrijfService;
+    @InjectParam
+    private AangifteService aangifteService;
 
     public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
@@ -71,6 +73,13 @@ public class OpmerkingService {
             bedrijf.getOpmerkingen().add(opmerking);
 
             bedrijfService.opslaan(bedrijf);
+        }
+
+        if (opmerking.getAangifte() != null) {
+            Aangifte aangifte = aangifteService.lees(opmerking.getAangifte().getId());
+            aangifte.getOpmerkingen().add(opmerking);
+
+            aangifteService.opslaan(aangifte);
         }
     }
 

@@ -98,6 +98,9 @@ public class Bedrijf implements Serializable, PersistenceObject {
     }
 
     public Set<Opmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new HashSet<>();
+        }
         return opmerkingen;
     }
 

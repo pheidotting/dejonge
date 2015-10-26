@@ -60,7 +60,7 @@ public class BeherenRelatieTest extends AbstractSeleniumTest {
         //        jsonRelatie.setToevoeging("toevoeging");
         //        jsonRelatie.setPostcode("1234AA");
         //        jsonRelatie.setPlaats("plaats");
-        jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
+//        jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic1", "rekeningnummer1"));
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, "bic2", "rekeningnummer2"));

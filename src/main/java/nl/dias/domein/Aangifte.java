@@ -27,9 +27,7 @@ import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "AANGIFTE")
-@NamedQueries({ @NamedQuery(name = "Aangifte.openAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is null and a.relatie = :relatie"),
-        @NamedQuery(name = "Aangifte.geslotenAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is not null and a.relatie = :relatie"),
-        @NamedQuery(name = "Aangifte.alleAangiftesBijRelatie", query = "select a from Aangifte a where a.relatie = :relatie") })
+@NamedQueries({@NamedQuery(name = "Aangifte.openAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is null and a.relatie = :relatie"), @NamedQuery(name = "Aangifte.geslotenAangiftesBijRelatie", query = "select a from Aangifte a where a.datumAfgerond is not null and a.relatie = :relatie"), @NamedQuery(name = "Aangifte.alleAangiftesBijRelatie", query = "select a from Aangifte a where a.relatie = :relatie")})
 public class Aangifte implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5438273206870999491L;
 
@@ -50,15 +48,18 @@ public class Aangifte implements PersistenceObject, Serializable {
     private Date uitstelTot;
 
     @JoinColumn(name = "AFGERONDDOOR")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Medewerker.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Medewerker.class)
     private Medewerker afgerondDoor;
 
     @JoinColumn(name = "RELATIE")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", orphanRemoval = true, targetEntity = Opmerking.class)
+    private Set<Opmerking> opmerkingen;
 
     @Override
     public Long getId() {
@@ -133,6 +134,17 @@ public class Aangifte implements PersistenceObject, Serializable {
 
     public void setBijlages(Set<Bijlage> bijlages) {
         this.bijlages = bijlages;
+    }
+
+    public Set<Opmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new HashSet<>();
+        }
+        return opmerkingen;
+    }
+
+    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+        this.opmerkingen = opmerkingen;
     }
 
     public void afhandelen(Medewerker medewerker) {

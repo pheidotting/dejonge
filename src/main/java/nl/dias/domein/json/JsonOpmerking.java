@@ -17,6 +17,7 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private String polis;
     private String relatie;
     private String bedrijf;
+    private String aangifte;
     private String soort;
     private String tekstBackup;
 
@@ -98,6 +99,14 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
 
     public void setBedrijf(String bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public String getAangifte() {
+        return aangifte;
+    }
+
+    public void setAangifte(String aangifte) {
+        this.aangifte = aangifte;
     }
 
     public String getSoort() {

@@ -508,7 +508,7 @@ public class BeherenRelatieIT implements SauceOnDemandSessionIdProvider {
         //        jsonRelatie.setToevoeging(stringGeneratieUtil.genereerToevoeging());
         //        jsonRelatie.setPostcode(stringGeneratieUtil.genereerPostcode());
         //        jsonRelatie.setPlaats(stringGeneratieUtil.genereerPlaatsnaam());
-        jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
+//        jsonRelatie.setOnderlingeRelaties(new ArrayList<Long>());
         jsonRelatie.setRekeningnummers(new ArrayList<JsonRekeningNummer>());
         jsonRelatie.getRekeningnummers().add(new JsonRekeningNummer(null, stringGeneratieUtil.genereerBic(), stringGeneratieUtil.genereerIban()));
 

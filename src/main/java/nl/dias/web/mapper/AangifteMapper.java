@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Aangifte;
+import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonAangifte;
 import nl.dias.web.mapper.dozer.LocalDateDozerConverter;
 import nl.dias.web.mapper.dozer.RelatieDozerMapper;
@@ -20,6 +21,8 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
 
     @InjectParam
     private BijlageMapper bijlageMapper;
+    @InjectParam
+    private OpmerkingMapper opmerkingMapper;
 
     @Override
     public Aangifte mapVanJson(JsonAangifte json) {
@@ -28,9 +31,7 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
         mapper.addMapping(new BeanMappingBuilder() {
             @Override
             protected void configure() {
-                mapping(Aangifte.class, JsonAangifte.class).fields("datumAfgerond", "datumAfgerond", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class))
-                        .fields("uitstelTot", "uitstelTot", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class))
-                        .fields("relatie", "relatie", FieldsMappingOptions.customConverter(RelatieDozerMapper.class));
+                mapping(Aangifte.class, JsonAangifte.class).fields("datumAfgerond", "datumAfgerond", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class)).fields("uitstelTot", "uitstelTot", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class)).fields("relatie", "relatie", FieldsMappingOptions.customConverter(RelatieDozerMapper.class));
             }
         });
 
@@ -47,9 +48,7 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
         mapper.addMapping(new BeanMappingBuilder() {
             @Override
             protected void configure() {
-                mapping(JsonAangifte.class, Aangifte.class).fields("datumAfgerond", "datumAfgerond", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class))
-                        .fields("uitstelTot", "uitstelTot", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class))
-                        .fields("relatie", "relatie", FieldsMappingOptions.customConverter(RelatieDozerMapper.class));
+                mapping(JsonAangifte.class, Aangifte.class).fields("datumAfgerond", "datumAfgerond", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class)).fields("uitstelTot", "uitstelTot", FieldsMappingOptions.customConverter(LocalDateDozerConverter.class)).fields("relatie", "relatie", FieldsMappingOptions.customConverter(RelatieDozerMapper.class));
             }
         });
 
@@ -58,6 +57,8 @@ public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
             aangifte.setAfgerondDoor(object.getAfgerondDoor().getNaam());
         }
         aangifte.setBijlages(bijlageMapper.mapAllNaarJson(object.getBijlages()));
+        aangifte.setOpmerkingen(opmerkingMapper.mapAllNaarJson(object.getOpmerkingen()));
+
         LOGGER.debug("naar " + ReflectionToStringBuilder.toString(aangifte));
         return aangifte;
     }

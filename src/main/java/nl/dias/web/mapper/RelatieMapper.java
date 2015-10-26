@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
+import nl.dias.domein.json.JsonOnderlingeRelatie;
 import nl.dias.domein.json.JsonRelatie;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -36,9 +37,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         try {
             relatie.setIdentificatie(jsonRelatie.getIdentificatie());
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("fout",e);
+            LOGGER.error("fout", e);
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("fout",e);
+            LOGGER.error("fout", e);
         }
         relatie.setVoornaam(jsonRelatie.getVoornaam());
         relatie.setTussenvoegsel(jsonRelatie.getTussenvoegsel());
@@ -101,10 +102,34 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
         }
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
-            jsonRelatie.getOnderlingeRelaties().add(ol.getId());
+            jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
         }
         jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
+    }
+
+    private JsonOnderlingeRelatie jsonOnderlingeRelatie(OnderlingeRelatie onderlingeRelatie) {
+        JsonOnderlingeRelatie jsonOnderlingeRelatie = new JsonOnderlingeRelatie();
+
+        jsonOnderlingeRelatie.setIdRelatieMet(onderlingeRelatie.getRelatieMet().getId());
+
+        StringBuffer naam = new StringBuffer();
+        if(onderlingeRelatie.getRelatieMet().getRoepnaam()!=null){
+            naam.append(onderlingeRelatie.getRelatieMet().getRoepnaam());
+        }else{
+            naam.append(onderlingeRelatie.getRelatieMet().getVoornaam());
+        }
+        naam.append(" ");
+        if(onderlingeRelatie.getRelatieMet().getTussenvoegsel()!=null){
+            naam.append(onderlingeRelatie.getRelatieMet().getTussenvoegsel());
+            naam.append(" ");
+        }
+        naam.append(onderlingeRelatie.getRelatieMet().getAchternaam());
+
+        jsonOnderlingeRelatie.setRelatieMet(naam.toString());
+        jsonOnderlingeRelatie.setSoortRelatie(onderlingeRelatie.getOnderlingeRelatieSoort().getOmschrijving());
+
+        return jsonOnderlingeRelatie;
     }
 }
