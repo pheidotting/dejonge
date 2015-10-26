@@ -184,7 +184,7 @@ public class GebruikerController {
                 idWeglaten = Long.parseLong(weglaten);
             }
 
-            for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
+            for (Gebruiker r : gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm)) {
                 if (idWeglaten == null || !idWeglaten.equals(r.getId())) {
                     lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
                 }
