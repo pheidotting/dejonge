@@ -60,6 +60,9 @@
 	<logger name="nl.dias">
 		<level value="debug" />
 	</logger>
+	<logger name="nl.dias.web.medewerker.JsonController">
+		<level value="trace" />
+	</logger>
 	<logger name="org.dozer">
 		<level value="error" />
 	</logger>

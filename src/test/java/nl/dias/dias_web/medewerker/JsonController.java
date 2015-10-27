@@ -1,12 +1,11 @@
 package nl.dias.dias_web.medewerker;
 
+import nl.dias.domein.json.JsonLog4Javascript;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/overig")
@@ -99,5 +98,11 @@ public class JsonController {
         ret.add("Status 2");
 
         return ret;
+    }
+
+    @POST
+    @Path("/log4javascript")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void log4javascript(JsonLog4Javascript jsonLog4Javascript){
     }
 }

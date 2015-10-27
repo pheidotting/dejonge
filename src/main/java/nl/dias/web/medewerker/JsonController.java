@@ -9,6 +9,7 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.api.json.JSONConfiguration;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.json.JsonLog4Javascript;
 import nl.dias.domein.json.JsonSoortSchade;
 import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
@@ -16,10 +17,7 @@ import nl.dias.web.mapper.SoortSchadeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public class JsonController {
             ret.add(vm.getNaam());
         }
 
-        LOGGER.debug("{}",ret);
+        LOGGER.debug("{}", ret);
 
         return ret;
     }
@@ -103,9 +101,9 @@ public class JsonController {
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
         ClientResponse response = webResource.header("Api-Key", "0eaff635fe5d9be439582d7501027f34d5a3ca9d").accept("application/x-www-form-urlencoded; charset=UTF-8").get(ClientResponse.class);
-//        if (response.getStatus() != 200) {
-//            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//        }
+        //        if (response.getStatus() != 200) {
+        //            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        //        }
 
         return response.getEntity(String.class);
     }

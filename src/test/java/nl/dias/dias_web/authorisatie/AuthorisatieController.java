@@ -46,4 +46,5 @@ public class AuthorisatieController {
         System.out.println("isIngelogd");
         return Response.status(200).entity(true).build();
     }
+
 }
