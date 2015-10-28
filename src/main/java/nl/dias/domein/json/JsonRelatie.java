@@ -38,6 +38,7 @@ public class JsonRelatie {
     private List<JsonBijlage> bijlages;
     private String soortEntiteit;
     private JsonOpmerkingenModel opmerkingenModel;
+    private List<String> lijst;
 
     public String getRoepnaam() {
         return roepnaam;
@@ -268,6 +269,14 @@ public class JsonRelatie {
 
     public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
         this.opmerkingenModel = opmerkingenModel;
+    }
+
+    public List<String> getLijst() {
+        return lijst;
+    }
+
+    public void setLijst(List<String> lijst) {
+        this.lijst = lijst;
     }
 
     @Override
