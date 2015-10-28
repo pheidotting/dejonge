@@ -39,6 +39,7 @@
 		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
 		<class>nl.dias.domein.polis.RecreatieVerzekering</class>
 		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.SviSchadeverzekerininzittende</class>
 		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
@@ -129,6 +130,7 @@
 		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
 		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
 		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.SviSchadeverzekerininzittende</class>
 		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>

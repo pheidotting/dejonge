@@ -23,12 +23,16 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
 
         Adres adres = getFirst(bedrijf.getAdressen(), new Adres());
         result.setToevoeging(adres.getToevoeging());
-        result.setHuisnummer(adres.getHuisnummer().toString());
+        if (adres.getHuisnummer() != null) {
+            result.setHuisnummer(adres.getHuisnummer().toString());
+        }
         result.setPlaats(adres.getPlaats());
         result.setPostcode(adres.getPostcode());
         result.setStraat(adres.getStraat());
 
-        result.setRelatie(bedrijf.getRelatie().getId().toString());
+        if (bedrijf != null && bedrijf.getRelatie() != null && bedrijf.getRelatie().getId() != null) {
+            result.setRelatie(bedrijf.getRelatie().getId().toString());
+        }
 
         return result;
     }
@@ -44,7 +48,9 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
         result.setKvk(jsonBedrijf.getKvk());
         result.setNaam(jsonBedrijf.getNaam());
         result.setRelatie(relatie);
-        result.setId(Long.valueOf(jsonBedrijf.getId()));
+        if (jsonBedrijf != null && jsonBedrijf.getId() != null) {
+            result.setId(Long.valueOf(jsonBedrijf.getId()));
+        }
 
         Adres adres = new Adres();
         adres.setToevoeging(jsonBedrijf.getToevoeging());

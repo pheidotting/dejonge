@@ -22,6 +22,7 @@ public class JsonBedrijf {
     private String idDiv;
     private String idDivLink;
     private List<String> errors;
+    private JsonOpmerkingenModel opmerkingenModel;
 
     public String getId() {
         return id;
@@ -139,6 +140,14 @@ public class JsonBedrijf {
 
     public void setErrors(List<String> errors) {
         this.errors = errors;
+    }
+
+    public JsonOpmerkingenModel getOpmerkingenModel() {
+        return opmerkingenModel;
+    }
+
+    public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
+        this.opmerkingenModel = opmerkingenModel;
     }
 
     @Override

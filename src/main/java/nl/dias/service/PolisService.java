@@ -329,6 +329,9 @@ public class PolisService {
         if ("Zorg".equals(soort)) {
             polis = new ZorgVerzekering();
         }
+        if ("SVI".equals(soort)) {
+            polis = new SviSchadeverzekerininzittende();
+        }
         if (polis == null) {
             throw new IllegalArgumentException("Kies een soort verzekering");
         }

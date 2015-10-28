@@ -27,6 +27,7 @@ public class JsonSchade {
     private String titel;
     private List<String> errors;
     private String soortEntiteit;
+    private JsonOpmerkingenModel opmerkingenModel;
 
     public Long getId() {
         return id;
@@ -192,6 +193,14 @@ public class JsonSchade {
 
     public void setSoortEntiteit(String soortEntiteit) {
         this.soortEntiteit = soortEntiteit;
+    }
+
+    public JsonOpmerkingenModel getOpmerkingenModel() {
+        return opmerkingenModel;
+    }
+
+    public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
+        this.opmerkingenModel = opmerkingenModel;
     }
 
     /**

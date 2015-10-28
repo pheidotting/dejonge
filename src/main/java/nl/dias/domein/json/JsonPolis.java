@@ -31,6 +31,7 @@ public class JsonPolis {
     private String omschrijvingVerzekering;
     private List<String> errors;
     private String soortEntiteit;
+    private JsonOpmerkingenModel opmerkingenModel;
 
     public Long getId() {
         return id;
@@ -233,10 +234,20 @@ public class JsonPolis {
         this.soortEntiteit = soortEntiteit;
     }
 
+    public JsonOpmerkingenModel getOpmerkingenModel() {
+        if (opmerkingenModel == null) {
+            opmerkingenModel = new JsonOpmerkingenModel();
+        }
+        return opmerkingenModel;
+    }
+
+    public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
+        this.opmerkingenModel = opmerkingenModel;
+    }
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(bedrijf).append(betaalfrequentie).append(className).append(id).append(idDiv).append(idDivLink).append(ingangsDatum).append(maatschappij)
-                .append(opmerkingen).append(polisNummer).append(premie).append(prolongatieDatum).append(soort).append(wijzigingsDatum).toHashCode();
+        return new HashCodeBuilder().append(bedrijf).append(betaalfrequentie).append(className).append(id).append(idDiv).append(idDivLink).append(ingangsDatum).append(maatschappij).append(opmerkingen).append(polisNummer).append(premie).append(prolongatieDatum).append(soort).append(wijzigingsDatum).toHashCode();
     }
 
     @Override
@@ -252,10 +263,7 @@ public class JsonPolis {
         }
         JsonPolis other = (JsonPolis) obj;
 
-        return new EqualsBuilder().append(bedrijf, other.bedrijf).append(betaalfrequentie, other.betaalfrequentie).append(className, other.className).append(id, other.id).append(idDiv, other.idDiv)
-                .append(idDivLink, other.idDivLink).append(ingangsDatum, other.ingangsDatum).append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen)
-                .append(polisNummer, other.polisNummer).append(premie, other.premie).append(prolongatieDatum, other.prolongatieDatum).append(soort, other.soort)
-                .append(wijzigingsDatum, other.wijzigingsDatum).isEquals();
+        return new EqualsBuilder().append(bedrijf, other.bedrijf).append(betaalfrequentie, other.betaalfrequentie).append(className, other.className).append(id, other.id).append(idDiv, other.idDiv).append(idDivLink, other.idDivLink).append(ingangsDatum, other.ingangsDatum).append(maatschappij, other.maatschappij).append(opmerkingen, other.opmerkingen).append(polisNummer, other.polisNummer).append(premie, other.premie).append(prolongatieDatum, other.prolongatieDatum).append(soort, other.soort).append(wijzigingsDatum, other.wijzigingsDatum).isEquals();
     }
 
     @Override
