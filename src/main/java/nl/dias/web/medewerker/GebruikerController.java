@@ -10,6 +10,7 @@ import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
+import nl.dias.web.mapper.AdresMapper;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -36,6 +37,8 @@ public class GebruikerController {
     private RelatieMapper relatieMapper;
     @InjectParam
     private BedrijfMapper bedrijfMapper;
+    @InjectParam
+    private AdresMapper adresMapper;
     @InjectParam
     private AuthorisatieService authorisatieService;
     @Context
@@ -200,6 +203,13 @@ public class GebruikerController {
     public void koppelenOnderlingeRelatie(JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie) {
 
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
+    }
+
+    @POST
+    @Path("/opslaanAdresBijRelatie")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void opslaanAdresBijRelatie(JsonAdres jsonAdres){
+        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres),Long.valueOf(jsonAdres.getRelatie()));
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

@@ -64,6 +64,13 @@ public class GebruikerService {
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     private BsnAangevuldSender bsnAangevuldSender;
 
+    public void opslaanAdresBijRelatie(Adres adres, Long relatieId){
+        Relatie relatie = (Relatie)gebruikerRepository.lees(relatieId);
+
+        adres.setRelatie(relatie);relatie.getAdressen().add(adres);
+        gebruikerRepository.opslaan(relatie);
+    }
+
     public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie){
         LOGGER.info("koppelenOnderlingeRelatie({}, {}, {})", relatieId,relatieMetId,soortRelatie);
 
