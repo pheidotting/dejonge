@@ -24,12 +24,12 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Column(name = "BESTANDSNAAM", length = 500)
     private String bestandsNaam;
 
-    @Column(name="UPLOADMOMENT")
+    @Column(name = "UPLOADMOMENT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadMoment;
 
     @JoinColumn(name = "POLIS", nullable = true)
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
     private Polis polis;
 
     @JoinColumn(name = "HYPOTHEEK", nullable = true)
