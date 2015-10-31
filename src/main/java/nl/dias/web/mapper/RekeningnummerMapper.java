@@ -1,11 +1,10 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.json.JsonRekeningNummer;
+import org.springframework.stereotype.Component;
 
-@Named
+@Component
 public class RekeningnummerMapper extends Mapper<RekeningNummer, JsonRekeningNummer> {
     @Override
     public RekeningNummer mapVanJson(JsonRekeningNummer jsonRekeningNummer) {

@@ -6,6 +6,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<context:component-scan base-package="nl.dias" />
+	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
 
 	<!-- Activemq connection factory -->
 	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">

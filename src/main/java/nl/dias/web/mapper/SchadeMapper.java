@@ -1,6 +1,5 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonOpmerking;
@@ -10,18 +9,19 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
-@Named
+@Component
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
     private final static Logger LOGGER = LoggerFactory.getLogger(SchadeMapper.class);
 
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
+    @Inject
     private BijlageMapper bijlageMapper;
 
     @Override

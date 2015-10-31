@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.*;
@@ -10,25 +9,26 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named
+@Service
 public class PolisService {
     private final static Logger LOGGER = LoggerFactory.getLogger(PolisService.class);
 
-    @InjectParam
+    @Inject
     private PolisRepository polisRepository;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private KantoorRepository kantoorRepository;
-    @InjectParam
+    @Inject
     private BedrijfService bedrijfService;
-    @InjectParam
+    @Inject
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
 
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
@@ -68,7 +68,7 @@ public class PolisService {
 
         //        gebruikerService.opslaan(relatie);
 
-        LOGGER.debug("{}",lees(polis.getId()));
+        LOGGER.debug("{}", lees(polis.getId()));
     }
 
     private List<Bijlage> werkBijlagesBij(Polis polis) {
@@ -182,7 +182,7 @@ public class PolisService {
                 LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
                 polis = polisRepository.lees(jsonPolis.getId());
 
-                LOGGER.debug("{}",polis);
+                LOGGER.debug("{}", polis);
             }
 
             if (polis == null) {

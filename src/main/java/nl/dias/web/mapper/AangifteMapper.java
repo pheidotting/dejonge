@@ -1,8 +1,6 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Aangifte;
-import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonAangifte;
 import nl.dias.web.mapper.dozer.LocalDateDozerConverter;
 import nl.dias.web.mapper.dozer.RelatieDozerMapper;
@@ -12,16 +10,17 @@ import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 
-@Named
+@Component
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
     private final static Logger LOGGER = LoggerFactory.getLogger(AangifteMapper.class);
 
-    @InjectParam
+    @Inject
     private BijlageMapper bijlageMapper;
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
 
     @Override

@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
@@ -9,16 +8,17 @@ import nl.dias.utils.Utils;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
 
-@Named
+@Service
 public class BijlageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
-    @InjectParam
+    @Inject
     private BijlageRepository bijlageRepository;
 
     public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
@@ -39,11 +39,11 @@ public class BijlageService {
         String[] exp = fileDetail.getFileName().split("//.");
         String extensie = exp[exp.length - 1];
 
-        String identificatie = UUID.randomUUID().toString().replace("-","");
+        String identificatie = UUID.randomUUID().toString().replace("-", "");
 
         LOGGER.debug("Gevonden extensie " + extensie);
 
-        Bijlage bijlage=new Bijlage();
+        Bijlage bijlage = new Bijlage();
         bijlage.setS3Identificatie(identificatie);
         bijlage.setBestandsNaam(fileDetail.getFileName());
         bijlage.setUploadMoment(LocalDateTime.now());

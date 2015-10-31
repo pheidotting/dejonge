@@ -1,13 +1,11 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +16,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Named
+@Service
 public class AuthorisatieService {
-//    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieService.class);
+    //    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieService.class);
 
     public final static String COOKIE_DOMEIN_CODE = "lakedigitaladministratie";
 
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
 
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {

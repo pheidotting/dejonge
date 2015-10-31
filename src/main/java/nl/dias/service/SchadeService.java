@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
@@ -8,17 +7,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.util.List;
 
-@Named
+@Service
 public class SchadeService {
     private final static Logger LOGGER = LoggerFactory.getLogger(SchadeService.class);
 
-    @InjectParam
+    @Inject
     private SchadeRepository schadeRepository;
-    @InjectParam
+    @Inject
     private PolisService polisService;
 
     public List<SoortSchade> soortenSchade() {
@@ -78,14 +78,14 @@ public class SchadeService {
 
     public void opslaan(Schade schadeIn, String soortSchade, String polisId, String statusSchade) {
         LOGGER.debug("Opslaan schade");
-        LOGGER.debug("{}",schadeIn);
+        LOGGER.debug("{}", schadeIn);
 
         Schade schade = schadeIn;
 
-            LOGGER.debug("Soort schade opzoeken " + soortSchade);
-            List<SoortSchade> soorten = schadeRepository.soortenSchade(soortSchade);
+        LOGGER.debug("Soort schade opzoeken " + soortSchade);
+        List<SoortSchade> soorten = schadeRepository.soortenSchade(soortSchade);
 
-        if(StringUtils.isNotEmpty(statusSchade)&&!"Kies een status uit de lijst..".equals(statusSchade)) {
+        if (StringUtils.isNotEmpty(statusSchade) && !"Kies een status uit de lijst..".equals(statusSchade)) {
             LOGGER.debug("Status schade opzoeken " + statusSchade);
             StatusSchade status = schadeRepository.getStatussen(statusSchade);
 
@@ -100,7 +100,7 @@ public class SchadeService {
             schade.setSoortSchadeOngedefinieerd(soortSchade);
         }
 
-        if(polisId!=null&&!"Kies een polis uit de lijst..".equals(polisId)) {
+        if (polisId != null && !"Kies een polis uit de lijst..".equals(polisId)) {
             LOGGER.debug("Polis opzoeken, id : " + polisId);
             Polis polis = polisService.lees(Long.valueOf(polisId));
             schade.setPolis(polis);

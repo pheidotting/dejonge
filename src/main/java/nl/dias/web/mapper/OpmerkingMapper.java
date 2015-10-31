@@ -1,30 +1,30 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 
-@Named
+@Component
 public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingMapper.class);
 
-    @InjectParam
+    @Inject
     private SchadeService schadeService;
-    @InjectParam
+    @Inject
     private HypotheekService hypotheekService;
-    @InjectParam
+    @Inject
     private PolisService polisService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private BedrijfService bedrijfService;
-    @InjectParam
+    @Inject
     private AangifteService aangifteService;
 
     @Override
@@ -90,7 +90,7 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         if (opmerking.getBedrijf() != null) {
             jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
         }
-        if(jsonOpmerking.getAangifte()!=null){
+        if (jsonOpmerking.getAangifte() != null) {
             jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
         }
 

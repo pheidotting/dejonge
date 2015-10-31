@@ -1,14 +1,13 @@
 package nl.dias.web.mapper;
 
+import nl.dias.domein.SoortSchade;
+import nl.dias.domein.json.JsonSoortSchade;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
-import nl.dias.domein.SoortSchade;
-import nl.dias.domein.json.JsonSoortSchade;
-
-@Named
+@Component
 public class SoortSchadeMapper extends Mapper<SoortSchade, JsonSoortSchade> {
 
     @Override

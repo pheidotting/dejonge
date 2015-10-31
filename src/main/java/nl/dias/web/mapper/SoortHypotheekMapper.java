@@ -1,11 +1,10 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
 import nl.dias.domein.SoortHypotheek;
 import nl.dias.domein.json.JsonSoortHypotheek;
+import org.springframework.stereotype.Component;
 
-@Named
+@Component
 public class SoortHypotheekMapper extends Mapper<SoortHypotheek, JsonSoortHypotheek> {
 
     @Override

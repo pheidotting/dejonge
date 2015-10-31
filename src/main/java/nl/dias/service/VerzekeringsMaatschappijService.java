@@ -1,18 +1,16 @@
 package nl.dias.service;
 
+import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.repository.VerzekeringsMaatschappijRepository;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Named;
-
-import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.repository.VerzekeringsMaatschappijRepository;
-
-import com.sun.jersey.api.core.InjectParam;
-
-@Named
+@Service
 public class VerzekeringsMaatschappijService {
-    @InjectParam
+    @Inject
     private VerzekeringsMaatschappijRepository verzekeringsMaatschappijRepository;
 
     public VerzekeringsMaatschappij zoekOpNaam(String naam) {

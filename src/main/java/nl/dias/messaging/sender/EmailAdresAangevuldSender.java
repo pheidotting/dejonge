@@ -1,19 +1,17 @@
 package nl.dias.messaging.sender;
 
-import javax.inject.Named;
+import com.google.gson.Gson;
+import nl.lakedigital.as.messaging.EmailadresAangevuld;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Component;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import nl.lakedigital.as.messaging.EmailadresAangevuld;
-
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-
-import com.google.gson.Gson;
-
-@Named
+@Component
 public class EmailAdresAangevuldSender {
     private final Gson gson = new Gson();
     private final JmsTemplate jmsTemplate;

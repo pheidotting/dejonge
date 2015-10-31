@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
 import com.google.common.collect.Lists;
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
@@ -19,8 +18,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,21 +29,21 @@ import java.util.Set;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 
-@Named
+@Component
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
     private final static Logger LOGGER = LoggerFactory.getLogger(PolisMapper.class);
 
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
+    @Inject
     private BijlageMapper bijlageMapper;
-    @InjectParam
+    @Inject
     private SchadeMapper schadeMapper;
-    @InjectParam
+    @Inject
     private PolisService polisService;
-    @InjectParam
+    @Inject
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
 
     @Override
@@ -86,7 +86,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
         }
 
-        if (jsonPolis.getMaatschappij() != null&&!"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
+        if (jsonPolis.getMaatschappij() != null && !"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
             polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
         }
         polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));

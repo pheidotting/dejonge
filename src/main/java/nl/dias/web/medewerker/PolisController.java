@@ -1,8 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonPolis;
@@ -14,31 +11,35 @@ import nl.dias.web.mapper.PolisMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Path("/polis")
+@RequestMapping("/polis")
+@Controller
 public class PolisController {
     private final static Logger LOGGER = LoggerFactory.getLogger(PolisController.class);
 
-    @InjectParam
+    @Inject
     private PolisService polisService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private BijlageService bijlageService;
-    @InjectParam
+    @Inject
     private PolisMapper polisMapper;
 
-    @GET
-    @Path("/lees")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @ResponseBody
     public JsonPolis lees(@QueryParam("id") String id) {
         LOGGER.debug("ophalen Polis met id " + id);
         if (id != null && !"".equals(id) && !"0".equals(id)) {
@@ -50,17 +51,15 @@ public class PolisController {
         }
     }
 
-    @GET
-    @Path("/beeindigen")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/beeindigen")
+    @ResponseBody
     public void beeindigen(@QueryParam("id") Long id) {
         LOGGER.debug("beeindigen Polis met id " + id);
         polisService.beeindigen(id);
     }
 
-    @GET
-    @Path("/lijst")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @ResponseBody
     public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {
         LOGGER.debug("Ophalen alle polissen voor Relatie " + relatieId);
         Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
@@ -73,11 +72,9 @@ public class PolisController {
         return polisMapper.mapAllNaarJson(polissen);
     }
 
-    @POST
-    @Path("/opslaan")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonPolis jsonPolis) {
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @ResponseBody
+    public Response opslaan(@RequestBody JsonPolis jsonPolis) {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
 
         Polis polis = polisMapper.mapVanJson(jsonPolis);
@@ -90,10 +87,8 @@ public class PolisController {
         return Response.status(200).entity(new JsonFoutmelding(polis.getId().toString())).build();
     }
 
-    @GET
-    @Path("/verwijder")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @ResponseBody
     public Response verwijder(@QueryParam("id") Long id) {
         LOGGER.debug("verwijderen Polis met id " + id);
         try {

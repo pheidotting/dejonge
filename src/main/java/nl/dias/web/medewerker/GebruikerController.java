@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
@@ -16,45 +15,53 @@ import nl.dias.web.mapper.RelatieMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/gebruiker")
+@RequestMapping("/gebruiker")
+@Controller
 public class GebruikerController {
     private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerController.class);
 
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private KantoorRepository kantoorRepository;
-    @InjectParam
+    @Inject
     private BedrijfService bedrijfService;
-    @InjectParam
+    @Inject
     private RelatieMapper relatieMapper;
-    @InjectParam
+    @Inject
     private BedrijfMapper bedrijfMapper;
-    @InjectParam
+    @Inject
     private AdresMapper adresMapper;
-    @InjectParam
+    @Inject
     private AuthorisatieService authorisatieService;
-    @Context
+    @Autowired
     private HttpServletRequest httpServletRequest;
+    @Autowired
+    private HttpServletResponse httpServletResponse;
 
-    @GET
-    @Path("/converteren")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/converteren")
+    @ResponseBody
     public String converteren() {
         gebruikerService.converteren();
         return "ok";
     }
 
-    @GET
-    @Path("/lees")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @ResponseBody
     public JsonRelatie lees(@QueryParam("id") String id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);
 
@@ -74,9 +81,8 @@ public class GebruikerController {
         return jsonRelatie;
     }
 
-    @GET
-    @Path("/lijstRelaties")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstRelaties")
+    @ResponseBody
     public JsonLijstRelaties lijstRelaties(@QueryParam("weglaten") String weglaten) {
         LOGGER.debug("Ophalen lijst met alle Relaties");
 
@@ -98,11 +104,9 @@ public class GebruikerController {
         return lijst;
     }
 
-    @POST
-    @Path("/opslaan")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonRelatie jsonRelatie) {
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @ResponseBody
+    public Response opslaan(@RequestBody JsonRelatie jsonRelatie) {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         try {
@@ -131,11 +135,9 @@ public class GebruikerController {
         }
     }
 
-    @POST
-    @Path("/opslaanBedrijf")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response opslaanBedrijf(JsonBedrijf jsonBedrijf) {
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanBedrijf")
+    @ResponseBody
+    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf) {
         Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(jsonBedrijf.getRelatie()));
 
         try {
@@ -154,9 +156,8 @@ public class GebruikerController {
         }
     }
 
-    @GET
-    @Path("/verwijderen")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijderen")
+    @ResponseBody
     public Response verwijderen(@QueryParam("id") Long id) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
 
@@ -165,9 +166,8 @@ public class GebruikerController {
         return Response.status(200).build();
     }
 
-    @GET
-    @Path("/zoekOpNaamAdresOfPolisNummer")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaamAdresOfPolisNummer")
+    @ResponseBody
     public JsonLijstRelaties zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm, @QueryParam("weglaten") String weglaten) {
         LOGGER.info("zoekOpNaamAdresOfPolisNummer met zoekterm " + zoekTerm);
 
@@ -196,20 +196,17 @@ public class GebruikerController {
         return lijst;
     }
 
-    @POST
-    @Path("/koppelenOnderlingeRelatie")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void koppelenOnderlingeRelatie(JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie) {
+    @RequestMapping(method = RequestMethod.POST, value = "/koppelenOnderlingeRelatie")
+    @ResponseBody
+    public void koppelenOnderlingeRelatie(@RequestBody JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie) {
 
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
     }
 
-    @POST
-    @Path("/opslaanAdresBijRelatie")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void opslaanAdresBijRelatie(JsonAdres jsonAdres){
-        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres),Long.valueOf(jsonAdres.getRelatie()));
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanAdresBijRelatie")
+    @ResponseBody
+    public void opslaanAdresBijRelatie(@RequestBody JsonAdres jsonAdres) {
+        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres), Long.valueOf(jsonAdres.getRelatie()));
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

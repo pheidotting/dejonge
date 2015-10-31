@@ -3,11 +3,13 @@ package nl.dias.repository;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class BijlageRepository extends AbstractRepository<Bijlage> {
     public BijlageRepository() {
         super(Bijlage.class);

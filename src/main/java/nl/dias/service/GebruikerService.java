@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
@@ -23,8 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,53 +35,57 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-@Named
+@Service
 public class GebruikerService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerService.class);
 
-    @InjectParam
+    @Inject
     private GebruikerRepository gebruikerRepository;
-    @InjectParam
+    @Inject
     private DIASGebruikerRepository diasGebruikerRepository;
-    @InjectParam
+    @Inject
     private DIASAdresRepository diasAdresRepository;
-    @InjectParam
+    @Inject
     private DIASBedrijfRepository diasBedrijfRepository;
-    @InjectParam
+    @Inject
     private DIASTelefoonNummerRepository diasTelefoonNummerRepository;
-    @InjectParam
+    @Inject
     private PolisRepository polisRepository;
-    @InjectParam
+    @Inject
     private KantoorRepository kantoorRepository;
-    @InjectParam
+    @Inject
     private HypotheekRepository hypotheekRepository;
-    @InjectParam
+    @Inject
     private BedrijfRepository bedrijfService;
-
+    @Inject
     private AanmakenTaakSender aanmakenTaakSender;
+    @Inject
     private AdresAangevuldSender adresAangevuldSender;
+    @Inject
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
+    @Inject
     private BsnAangevuldSender bsnAangevuldSender;
 
-    public void opslaanAdresBijRelatie(Adres adres, Long relatieId){
-        Relatie relatie = (Relatie)gebruikerRepository.lees(relatieId);
+    public void opslaanAdresBijRelatie(Adres adres, Long relatieId) {
+        Relatie relatie = (Relatie) gebruikerRepository.lees(relatieId);
 
-        adres.setRelatie(relatie);relatie.getAdressen().add(adres);
+        adres.setRelatie(relatie);
+        relatie.getAdressen().add(adres);
         gebruikerRepository.opslaan(relatie);
     }
 
-    public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie){
-        LOGGER.info("koppelenOnderlingeRelatie({}, {}, {})", relatieId,relatieMetId,soortRelatie);
+    public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie) {
+        LOGGER.info("koppelenOnderlingeRelatie({}, {}, {})", relatieId, relatieMetId, soortRelatie);
 
-        Relatie relatie = (Relatie)gebruikerRepository.lees(relatieId);
-        Relatie relatieMet = (Relatie)gebruikerRepository.lees(relatieMetId);
+        Relatie relatie = (Relatie) gebruikerRepository.lees(relatieId);
+        Relatie relatieMet = (Relatie) gebruikerRepository.lees(relatieMetId);
 
-        OnderlingeRelatieSoort onderlingeRelatieSoort=OnderlingeRelatieSoort.valueOf(soortRelatie);
-        OnderlingeRelatieSoort onderlingeRelatieSoortTegengesteld=OnderlingeRelatieSoort.getTegenGesteld(onderlingeRelatieSoort);
+        OnderlingeRelatieSoort onderlingeRelatieSoort = OnderlingeRelatieSoort.valueOf(soortRelatie);
+        OnderlingeRelatieSoort onderlingeRelatieSoortTegengesteld = OnderlingeRelatieSoort.getTegenGesteld(onderlingeRelatieSoort);
 
-        OnderlingeRelatie onderlingeRelatie=new OnderlingeRelatie(relatie,relatieMet,false,onderlingeRelatieSoort);
-        OnderlingeRelatie onderlingeRelatieTegengesteld=new OnderlingeRelatie(relatieMet,relatie,false,onderlingeRelatieSoortTegengesteld);
+        OnderlingeRelatie onderlingeRelatie = new OnderlingeRelatie(relatie, relatieMet, false, onderlingeRelatieSoort);
+        OnderlingeRelatie onderlingeRelatieTegengesteld = new OnderlingeRelatie(relatieMet, relatie, false, onderlingeRelatieSoortTegengesteld);
 
         relatie.getOnderlingeRelaties().add(onderlingeRelatie);
         relatieMet.getOnderlingeRelaties().add(onderlingeRelatieTegengesteld);
@@ -224,7 +228,7 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
-        LOGGER.debug("Opslaan {}" ,ReflectionToStringBuilder.toString(gebruiker));
+        LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker));
         Gebruiker gebruikerAanwezig = null;
         LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
         if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
@@ -277,7 +281,7 @@ public class GebruikerService {
                 rekeningNummer.setRelatie((Relatie) gebruiker);
             }
 
-            if(gebruikerAanwezig!=null) {
+            if (gebruikerAanwezig != null) {
                 ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
             }
         }
@@ -287,19 +291,19 @@ public class GebruikerService {
         // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden
         // aangemaakt
         if (gebruiker instanceof Relatie) {
-            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            if (aanmakenTaakSender == null) {
-                aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
-            }
-            if (adresAangevuldSender == null) {
-                adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
-            }
-            if (emailAdresAangevuldSender == null) {
-                emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
-            }
-            if (bsnAangevuldSender == null) {
-                bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
-            }
+//            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//            if (aanmakenTaakSender == null) {
+//                aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
+//            }
+//            if (adresAangevuldSender == null) {
+//                adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
+//            }
+//            if (emailAdresAangevuldSender == null) {
+//                emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
+//            }
+//            if (bsnAangevuldSender == null) {
+//                bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
+//            }
 
             Relatie relatie = (Relatie) gebruiker;
             if (isBlank(relatie.getBsn())) {
@@ -473,7 +477,7 @@ public class GebruikerService {
             Long.valueOf(zoekTermNumeriek);
         } catch (NumberFormatException nfe) {
             zoekTermNumeriek = null;
-            LOGGER.trace("",nfe);
+            LOGGER.trace("", nfe);
         }
         if (zoekTermNumeriek != null) {
             for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {

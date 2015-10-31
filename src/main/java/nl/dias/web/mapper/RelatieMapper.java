@@ -1,6 +1,5 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonOnderlingeRelatie;
 import nl.dias.domein.json.JsonRelatie;
@@ -8,21 +7,23 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 
+@Component
 public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
-    @InjectParam
+    @Inject
     private TelefoonnummerMapper telefoonnummerMapper;
-    @InjectParam
+    @Inject
     private RekeningnummerMapper rekeningnummerMapper;
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
+    @Inject
     private AdresMapper adresMapper;
-    @InjectParam
+    @Inject
     private BijlageMapper bijlageMapper;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RelatieMapper.class);
@@ -115,13 +116,13 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         jsonOnderlingeRelatie.setIdRelatieMet(onderlingeRelatie.getRelatieMet().getId());
 
         StringBuffer naam = new StringBuffer();
-        if(onderlingeRelatie.getRelatieMet().getRoepnaam()!=null){
+        if (onderlingeRelatie.getRelatieMet().getRoepnaam() != null) {
             naam.append(onderlingeRelatie.getRelatieMet().getRoepnaam());
-        }else{
+        } else {
             naam.append(onderlingeRelatie.getRelatieMet().getVoornaam());
         }
         naam.append(" ");
-        if(onderlingeRelatie.getRelatieMet().getTussenvoegsel()!=null){
+        if (onderlingeRelatie.getRelatieMet().getTussenvoegsel() != null) {
             naam.append(onderlingeRelatie.getRelatieMet().getTussenvoegsel());
             naam.append(" ");
         }

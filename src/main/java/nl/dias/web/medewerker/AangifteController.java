@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
@@ -12,41 +11,45 @@ import nl.dias.web.mapper.AangifteMapper;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/aangifte")
+@RequestMapping("/aangifte")
+@Controller
 public class AangifteController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AangifteController.class);
 
-    @InjectParam
+    @Inject
     private AangifteService aangifteService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private AangifteMapper aangifteMapper;
-    @Context
+    @Autowired
     private HttpServletRequest httpServletRequest;
-    @InjectParam
+    @Inject
     private AuthorisatieService authorisatieService;
 
-    @GET
-    @Path("/openAangiftes")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/openAangiftes")
+    @ResponseBody
     public List<JsonAangifte> openAangiftes(@QueryParam("relatie") Long relatie) {
         return aangifteMapper.mapAllNaarJson(aangifteService.getOpenstaandeAangiftes((Relatie) gebruikerService.lees(relatie)));
     }
 
-    @POST
-    @Path("/afronden")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response afronden(Long id) {
+    @RequestMapping(method = RequestMethod.POST, value = "/afronden")
+    @ResponseBody
+    public Response afronden(@RequestBody Long id) {
         LOGGER.info("Afronden Aangifte met id " + id);
         try {
             aangifteService.afronden(id, LocalDate.now(), getGebruiker());
@@ -56,20 +59,17 @@ public class AangifteController {
         return Response.ok(id).build();
     }
 
-    @POST
-    @Path("/opslaan")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonAangifte jsonAangifte) {
+    @RequestMapping(method = RequestMethod.GET, value = "/opslaan")
+    @ResponseBody
+    public Response opslaan(@RequestBody JsonAangifte jsonAangifte) {
         Aangifte aangifte = aangifteMapper.mapVanJson(jsonAangifte);
         aangifteService.opslaan(aangifte);
 
         return Response.ok(aangifte.getId()).build();
     }
 
-    @GET
-    @Path("/geslotenAangiftes")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/geslotenAangiftes")
+    @ResponseBody
     public List<JsonAangifte> geslotenAangiftes(@QueryParam("relatie") Long relatie) {
         return aangifteMapper.mapAllNaarJson(aangifteService.getAfgeslotenAangiftes((Relatie) gebruikerService.lees(relatie)));
     }

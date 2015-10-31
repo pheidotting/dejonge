@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
@@ -10,28 +9,32 @@ import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Path("/bedrijf")
+@RequestMapping("/bedrijf")
+@Controller
 public class BedrijfController {
     private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfController.class);
 
-    @InjectParam
+    @Inject
     private BedrijfService bedrijfService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private BedrijfMapper bedrijfMapper;
 
-    @GET
-    @Path("/lees")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @ResponseBody
     public JsonBedrijf lees(@QueryParam("id") String id) {
         Bedrijf bedrijf = null;
         if (id == null || "0".equals(id)) {
@@ -42,9 +45,8 @@ public class BedrijfController {
         return bedrijfMapper.mapNaarJson(bedrijf);
     }
 
-    @GET
-    @Path("/lijst")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @ResponseBody
     public List<JsonBedrijf> lijst(@QueryParam("relatieId") String relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
 
@@ -56,10 +58,8 @@ public class BedrijfController {
         return bedrijfMapper.mapAllNaarJson(bedrijven);
     }
 
-    @GET
-    @Path("/verwijder")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @ResponseBody
     public Response verwijder(@QueryParam("id") Long id) {
         LOGGER.debug("verwijderen Polis met id " + id);
         try {

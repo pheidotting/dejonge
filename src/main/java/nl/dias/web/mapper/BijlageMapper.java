@@ -6,10 +6,9 @@ import nl.dias.domein.json.JsonBijlage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
-
-@Named
+@Component
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
     private final static Logger LOGGER = LoggerFactory.getLogger(BijlageMapper.class);
 
@@ -24,7 +23,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
         bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
-        LOGGER.debug("{}",bijlage);
+        LOGGER.debug("{}", bijlage);
         return bijlage;
     }
 

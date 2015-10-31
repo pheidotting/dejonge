@@ -1,18 +1,16 @@
 package nl.dias.repository;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
-
 import nl.dias.domein.Aangifte;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Named
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+@Repository
 public class AangifteRepository extends AbstractRepository<Aangifte> {
     public AangifteRepository() {
         super(Aangifte.class);

@@ -1,23 +1,23 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.repository.AangifteRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.util.List;
 
-@Named
+@Service
 public class AangifteService {
     private final static Logger LOGGER = LoggerFactory.getLogger(AangifteService.class);
 
-    @InjectParam
+    @Inject
     private AangifteRepository aangifteRepository;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
 
     public List<Aangifte> getAfgeslotenAangiftes(Relatie relatie) {
@@ -37,7 +37,7 @@ public class AangifteService {
     public void opslaanBijlage(String aangifteId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), aangifteId);
 
-        Aangifte aangifte=aangifteRepository.lees(Long.valueOf(aangifteId));
+        Aangifte aangifte = aangifteRepository.lees(Long.valueOf(aangifteId));
 
         aangifte.getBijlages().add(bijlage);
         bijlage.setAangifte(aangifte);

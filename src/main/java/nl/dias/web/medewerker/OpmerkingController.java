@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonOpmerking;
@@ -8,33 +7,35 @@ import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/opmerking")
+@RequestMapping("/opmerking")
+@Controller
 public class OpmerkingController {
     private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingController.class);
 
-    @InjectParam
+    @Inject
     private OpmerkingService opmerkingService;
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
 
-    @GET
-    @Path("/lijst")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @ResponseBody
     public List<JsonOpmerking> lijstOpmerkingen(Long relatie) {
         return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenVoorRelatie(relatie));
     }
 
-    @POST
-    @Path("/opslaan")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonOpmerking jsonOpmerking) {
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @ResponseBody
+    public Response opslaan(@RequestBody JsonOpmerking jsonOpmerking) {
         Opmerking opmerking = null;
         try {
             opmerking = opmerkingMapper.mapVanJson(jsonOpmerking);
@@ -48,9 +49,8 @@ public class OpmerkingController {
         return Response.status(200).entity(opmerking.getId()).build();
     }
 
-    @GET
-    @Path("/nieuw")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/nieuw")
+    @ResponseBody
     public JsonOpmerking nieuw() {
         return new JsonOpmerking();
     }

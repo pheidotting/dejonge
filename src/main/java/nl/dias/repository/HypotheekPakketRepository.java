@@ -1,15 +1,14 @@
 package nl.dias.repository;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
-
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.Relatie;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
-@Named
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+@Repository
 public class HypotheekPakketRepository extends AbstractRepository<HypotheekPakket> {
 
     public HypotheekPakketRepository() {

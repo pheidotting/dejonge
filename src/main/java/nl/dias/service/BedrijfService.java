@@ -1,18 +1,16 @@
 package nl.dias.service;
 
-import java.util.List;
-
-import javax.inject.Named;
-
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BedrijfRepository;
+import org.springframework.stereotype.Service;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Inject;
+import java.util.List;
 
-@Named
+@Service
 public class BedrijfService {
-    @InjectParam
+    @Inject
     private BedrijfRepository bedrijfRepository;
 
     public void opslaan(Bedrijf bedrijf) {

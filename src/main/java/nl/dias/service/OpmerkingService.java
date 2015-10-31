@@ -1,35 +1,31 @@
 package nl.dias.service;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
-
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.OpmerkingRepository;
-
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.repository.PolisRepository;
+import org.springframework.stereotype.Service;
 
-@Named
+import javax.inject.Inject;
+import java.util.List;
+
+@Service
 public class OpmerkingService {
-    @InjectParam
+    @Inject
     private OpmerkingRepository opmerkingRepository;
-    @InjectParam
+    @Inject
     private AuthorisatieService authorisatieService;
-    @InjectParam
+    @Inject
     private SchadeService schadeService;
-    @InjectParam
+    @Inject
     private HypotheekService hypotheekService;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
-    @InjectParam
+    @Inject
     private PolisRepository polisRepository;
-    @InjectParam
+    @Inject
     private BedrijfService bedrijfService;
-    @InjectParam
+    @Inject
     private AangifteService aangifteService;
 
     public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {

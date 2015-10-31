@@ -1,17 +1,16 @@
 package nl.dias.web.mapper;
 
-import javax.inject.Named;
-
+import com.ibm.icu.math.BigDecimal;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.json.JsonHypotheekPakket;
+import org.springframework.stereotype.Component;
 
-import com.ibm.icu.math.BigDecimal;
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Inject;
 
-@Named
+@Component
 public class HypotheekPakketMapper extends Mapper<HypotheekPakket, JsonHypotheekPakket> {
-    @InjectParam
+    @Inject
     private HypotheekMapper hypotheekMapper;
 
     @Override

@@ -1,7 +1,5 @@
 package nl.dias.repository;
 
-import javax.inject.Named;
-
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
 import nl.dias.domein.Relatie;
@@ -12,10 +10,10 @@ import nl.dias.exception.TelefoonnummerNietGoedException;
 import nl.dias.utils.Validatie;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Named
+@Repository
 public class KantoorRepository extends AbstractRepository<Kantoor> {
     public KantoorRepository() {
         super(Kantoor.class);

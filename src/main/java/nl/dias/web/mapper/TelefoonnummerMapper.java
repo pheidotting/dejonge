@@ -3,10 +3,9 @@ package nl.dias.web.mapper;
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
 import nl.dias.domein.json.JsonTelefoonnummer;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
-
-@Named
+@Component
 public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnummer> {
     @Override
     public Telefoonnummer mapVanJson(JsonTelefoonnummer jsonTelefoonnummer) {

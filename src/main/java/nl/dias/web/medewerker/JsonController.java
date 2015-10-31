@@ -5,37 +5,39 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.api.json.JSONConfiguration;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
-import nl.dias.domein.json.JsonLog4Javascript;
 import nl.dias.domein.json.JsonSoortSchade;
 import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.dias.web.mapper.SoortSchadeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/overig")
+@RequestMapping("/overig")
+@Controller
 public class JsonController {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonController.class);
 
-    @InjectParam
+    @Inject
     private VerzekeringsMaatschappijService maatschappijService;
-    @InjectParam
+    @Inject
     private SchadeService schadeService;
-    @InjectParam
+    @Inject
     private SoortSchadeMapper soortSchadeMapper;
 
-    @GET
-    @Path("/lijstVerzekeringsMaatschappijen")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen")
+    @ResponseBody
     public List<String> lijstVerzekeringsMaatschappijen() {
 
         LOGGER.debug("ophalen lijst met VerzekeringsMaatschappijen");
@@ -56,9 +58,8 @@ public class JsonController {
         return ret;
     }
 
-    @GET
-    @Path("/extraInfo")
-    @Produces(MediaType.TEXT_PLAIN)
+    @RequestMapping(method = RequestMethod.GET, value = "/extraInfo")
+    @ResponseBody
     public String extraInfo() {
 
         String omgeving = System.getProperty("omgeving");
@@ -68,16 +69,14 @@ public class JsonController {
         return omgeving;
     }
 
-    @GET
-    @Path("/soortenSchade")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/soortenSchade")
+    @ResponseBody
     public List<JsonSoortSchade> soortenSchade(@QueryParam("query") String query) {
         return soortSchadeMapper.mapAllNaarJson(schadeService.soortenSchade(query));
     }
 
-    @GET
-    @Path("/lijstStatusSchade")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstStatusSchade")
+    @ResponseBody
     public List<String> lijstStatusSchade() {
         List<StatusSchade> lijst = schadeService.getStatussen();
 
@@ -90,9 +89,8 @@ public class JsonController {
         return ret;
     }
 
-    @GET
-    @Path("/ophalenAdresOpPostcode")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode")
+    @ResponseBody
     public String ophalenAdresOpPostcode(@QueryParam("postcode") String postcode, @QueryParam("huisnummer") String huisnummer) {
         String adres = "http://api.postcodeapi.nu/" + postcode + "/" + huisnummer;
 

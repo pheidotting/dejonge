@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
 import nl.dias.domein.SoortHypotheek;
@@ -14,31 +13,36 @@ import nl.dias.web.mapper.HypotheekPakketMapper;
 import nl.dias.web.mapper.SoortHypotheekMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Path("/hypotheek")
+@RequestMapping("/hypotheek")
+@Controller
 public class HypotheekController {
     private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
 
-    @InjectParam
+    @Inject
     private HypotheekService hypotheekService;
-    @InjectParam
+    @Inject
     private SoortHypotheekMapper soortHypotheekMapper;
-    @InjectParam
+    @Inject
     private HypotheekMapper hypotheekMapper;
-    @InjectParam
+    @Inject
     private HypotheekPakketMapper hypotheekPakketMapper;
 
-    @GET
-    @Path("/lees")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @ResponseBody
     public JsonHypotheek lees(@QueryParam("id") String id) {
         JsonHypotheek jsonHypotheek = null;
 
@@ -51,9 +55,8 @@ public class HypotheekController {
         return jsonHypotheek;
     }
 
-    @GET
-    @Path("/alleSoortenHypotheek")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/alleSoortenHypotheek")
+    @ResponseBody
     public List<JsonSoortHypotheek> alleSoortenHypotheek() {
         Set<SoortHypotheek> soorten = new HashSet<>();
 
@@ -63,16 +66,15 @@ public class HypotheekController {
 
         List<JsonSoortHypotheek> soortenList =
 
-        soortHypotheekMapper.mapAllNaarJson(soorten);
+                soortHypotheekMapper.mapAllNaarJson(soorten);
 
         Collections.sort(soortenList);
 
         return soortenList;
     }
 
-    @GET
-    @Path("/lijstHypotheekPakketten")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypotheekPakketten")
+    @ResponseBody
     public List<JsonHypotheekPakket> alleHypotheekPakketten(@QueryParam("relatieId") Long relatieId) {
         Set<HypotheekPakket> hypotheekPakketten = new HashSet<>();
 
@@ -83,9 +85,8 @@ public class HypotheekController {
         return hypotheekPakketMapper.mapAllNaarJson(hypotheekPakketten);
     }
 
-    @GET
-    @Path("/lijstHypotheken")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypotheken")
+    @ResponseBody
     public List<JsonHypotheek> alleHypotheken(@QueryParam("relatieId") Long relatieId) {
         Set<Hypotheek> hypotheken = new HashSet<>();
 
@@ -96,9 +97,8 @@ public class HypotheekController {
         return hypotheekMapper.mapAllNaarJson(hypotheken);
     }
 
-    @GET
-    @Path("/lijstHypothekenInclDePakketten")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypothekenInclDePakketten")
+    @ResponseBody
     public List<JsonHypotheek> alleHypothekenInclDePakketten(@QueryParam("relatieId") Long relatieId) {
         hypotheekService.leesHypotheek(14L);
 
@@ -111,11 +111,9 @@ public class HypotheekController {
         return hypotheekMapper.mapAllNaarJson(hypotheken);
     }
 
-    @POST
-    @Path("/opslaan")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response opslaan(JsonHypotheek jsonHypotheek) {
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @ResponseBody
+    public Response opslaan(@RequestBody JsonHypotheek jsonHypotheek) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
 
         // Hypotheek hypotheek = new Hypotheek();
@@ -134,9 +132,8 @@ public class HypotheekController {
         return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();
     }
 
-    @GET
-    @Path("/leesHypotheekVorm")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/leesHypotheekVorm")
+    @ResponseBody
     public String leesHypotheekVorm(@QueryParam("id") Long id) {
         SoortHypotheek soortHypotheek = hypotheekService.leesSoortHypotheek(id);
 

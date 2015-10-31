@@ -7,13 +7,13 @@ import nl.dias.domein.SoortHypotheek;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Named;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Named
+@Repository
 public class HypotheekRepository extends AbstractRepository<Hypotheek> {
     private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
 

@@ -1,28 +1,24 @@
 package nl.dias.web.medewerker;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import nl.dias.repository.KantoorRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.springframework.transaction.annotation.Transactional;
+import javax.inject.Inject;
 
-import com.sun.jersey.api.core.InjectParam;
-
-@Path("/selenium")
+@RequestMapping("/selenium")
+@Controller
 public class SeleniumController {
 
-    @InjectParam
+    @Inject
     private KantoorRepository kantoorService;
 
     private static String wachtwoord;
 
-    @GET
-    @Path("/leegAlles")
-    @Produces(MediaType.TEXT_PLAIN)
-    @Transactional
+    @RequestMapping(method = RequestMethod.GET, value = "/leegAlles")
+    @ResponseBody
     public String leegAlles() {
         if (!isSeleniumOmgeving()) {
             return "false";
@@ -33,9 +29,8 @@ public class SeleniumController {
         return "true";
     }
 
-    @GET
-    @Path("/wachtwoord")
-    @Produces(MediaType.TEXT_PLAIN)
+    @RequestMapping(method = RequestMethod.GET, value = "/wachtwoord")
+    @ResponseBody
     public String wachtwoord() {
         if (!isSeleniumOmgeving()) {
             return "false";

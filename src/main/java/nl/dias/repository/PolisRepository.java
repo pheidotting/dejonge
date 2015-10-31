@@ -8,15 +8,15 @@ import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Named;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named
+@Repository
 public class PolisRepository extends AbstractRepository<Polis> {
     private final static Logger LOGGER = LoggerFactory.getLogger(PolisRepository.class);
 

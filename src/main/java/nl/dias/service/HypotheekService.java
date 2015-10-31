@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
@@ -9,21 +8,22 @@ import nl.dias.web.mapper.HypotheekMapper;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-@Named
+@Service
 public class HypotheekService {
     private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekService.class);
 
-    @InjectParam
+    @Inject
     private HypotheekRepository hypotheekRepository;
-    @InjectParam
+    @Inject
     private HypotheekPakketRepository hypotheekPakketRepository;
-    @InjectParam
+    @Inject
     private GebruikerService gebruikerService;
     private HypotheekMapper hypotheekMapper;
 
@@ -34,8 +34,8 @@ public class HypotheekService {
     public Hypotheek opslaan(JsonHypotheek jsonHypotheek, String hypotheekVorm, Long relatieId, Long gekoppeldeHypotheekId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         SoortHypotheek soortHypotheek = null;
-        if(isNotEmpty(hypotheekVorm)) {
-            soortHypotheek =            hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
+        if (isNotEmpty(hypotheekVorm)) {
+            soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
         }
 
         Hypotheek hypotheek = null;

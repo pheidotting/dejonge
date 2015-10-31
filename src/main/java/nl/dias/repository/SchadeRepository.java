@@ -1,20 +1,14 @@
 package nl.dias.repository;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
-
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Schade;
-import nl.dias.domein.SoortSchade;
-import nl.dias.domein.StatusSchade;
+import nl.dias.domein.*;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Named
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+@Repository
 public class SchadeRepository extends AbstractRepository<Schade> {
     public SchadeRepository() {
         super(Schade.class);

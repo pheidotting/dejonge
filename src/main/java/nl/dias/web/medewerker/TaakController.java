@@ -1,76 +1,68 @@
 package nl.dias.web.medewerker;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import nl.dias.service.AuthorisatieService;
 import nl.lakedigital.as.taakbeheer.client.TaakClient;
 import nl.lakedigital.as.taakbeheer.domein.json.JsonTaak;
 import nl.lakedigital.as.taakbeheer.domein.json.JsonTaakAfhandelen;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.jersey.api.core.InjectParam;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import java.util.List;
 
-@Path("/taak")
+@RequestMapping("/taak")
+@Controller
 public class TaakController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TaakController.class);
 
-    @Context
+    @Autowired
     private HttpServletRequest httpServletRequest;
 
-    @InjectParam
+    @Inject
     private TaakClient taakClient;
-
-    @InjectParam
+    @Inject
     private AuthorisatieService authorisatieService;
 
-    @GET
-    @Path("/aantalOpenTaken")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/aantalOpenTaken")
+    @ResponseBody
     public Long aantalOpenTaken() {
         return taakClient.aantalOpenTaken();
     }
 
-    @GET
-    @Path("/lees")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @ResponseBody
     public JsonTaak lees(@QueryParam("id") Long id) {
         return taakClient.lees(id);
     }
 
-    @GET
-    @Path("/lijst")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @ResponseBody
     public List<JsonTaak> alleTaken() {
         LOGGER.debug("Ophalen alle taken van TaakClient");
 
         return taakClient.alleTaken();
     }
 
-    @GET
-    @Path("/vrijgeven")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/vrijgeven")
+    @ResponseBody
     public Response vrijgeven(@QueryParam("id") Long id) {
         LOGGER.debug("Vrijgeven taak met id {} via TaakCLient", id);
 
         return taakClient.vrijgeven(id);
     }
 
-    @GET
-    @Path("/oppakken")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/oppakken")
+    @ResponseBody
     public Response oppakken(@QueryParam("id") Long id) {
         String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
@@ -83,11 +75,9 @@ public class TaakController {
         return taakClient.oppakken(id, ingelogdeGebruiker);
     }
 
-    @POST
-    @Path("/afhandelen")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void afhandelen(JsonTaakAfhandelen taak) {
+    @RequestMapping(method = RequestMethod.POST, value = "/afhandelen")
+    @ResponseBody
+    public void afhandelen(@RequestBody JsonTaakAfhandelen taak) {
         taakClient.afhandelenTaak(taak);
     }
 }

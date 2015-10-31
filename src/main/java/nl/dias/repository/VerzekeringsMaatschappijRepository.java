@@ -1,16 +1,14 @@
 package nl.dias.repository;
 
-import java.util.List;
-
-import javax.inject.Named;
-import javax.persistence.TypedQuery;
-
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
-
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Named
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+@Repository
 public class VerzekeringsMaatschappijRepository extends AbstractRepository<VerzekeringsMaatschappij> {
     public VerzekeringsMaatschappijRepository() {
         super(VerzekeringsMaatschappij.class);

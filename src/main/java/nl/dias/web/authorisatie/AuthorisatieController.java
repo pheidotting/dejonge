@@ -1,6 +1,6 @@
 package nl.dias.web.authorisatie;
 
-import com.sun.jersey.api.core.InjectParam;
+import com.sun.servicetag.UnauthorizedAccessException;
 import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
@@ -14,31 +14,35 @@ import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/authorisatie")
+@RequestMapping("/authorisatie")
+@Controller
 public class AuthorisatieController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
-    @Context
+
+    @Autowired
     private HttpServletRequest httpServletRequest;
-    @Context
+    @Autowired
     private HttpServletResponse httpServletResponse;
-    @InjectParam
+    @Inject
     private AuthorisatieService authorisatieService;
-    @InjectParam
+    @Inject
     private GebruikerRepository gebruikerRepository;
 
-    @POST
-    @Path("/inloggen")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response inloggen(Inloggen inloggen) {
+    @RequestMapping(method = RequestMethod.POST, value = "/inloggen")
+    @ResponseBody
+    public Response inloggen(@RequestBody Inloggen inloggen) {
         try {
             LOGGER.debug("Inloggen");
             authorisatieService.inloggen(inloggen.getIdentificatie().trim(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
@@ -50,18 +54,16 @@ public class AuthorisatieController {
         return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
-    @GET
-    @Path("/uitloggen")
-    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/uitloggen")
+    @ResponseBody
     public Response uitloggen() {
         authorisatieService.uitloggen(httpServletRequest);
         return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
-    @GET
-    @Path("/ingelogdeGebruiker")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getIngelogdeGebruiker() {
+    @RequestMapping(method = RequestMethod.GET, value = "/ingelogdeGebruiker")
+    @ResponseBody
+    public IngelogdeGebruiker getIngelogdeGebruiker() {
         LOGGER.debug("Ophalen ingelogde gebruiker");
 
         Gebruiker gebruiker = getGebruiker();
@@ -78,15 +80,20 @@ public class AuthorisatieController {
                 ingelogdeGebruiker.setKantoor(((Relatie) gebruiker).getKantoor().getNaam());
             }
 
-            return Response.status(200).entity(ingelogdeGebruiker).build();
+            return ingelogdeGebruiker;
         }
 
-        return Response.status(401).entity(null).build();
+//        return Response.status(401).entity(null).build();
+        throw new UnauthorizesdAccessException();
+    }
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public class UnauthorizesdAccessException extends  RuntimeException{
+
     }
 
-    @GET
-    @Path("/isIngelogd")
-    @Produces(MediaType.APPLICATION_JSON)
+
+    @RequestMapping(method = RequestMethod.GET, value = "/isIngelogd")
+    @ResponseBody
     public Response isIngelogd() {
         LOGGER.debug("is gebruiker ingelogd");
 
@@ -121,8 +128,8 @@ public class AuthorisatieController {
     }
 
 
-    @POST
-    @Path("/log4javascript")
+    @RequestMapping(method = RequestMethod.POST, value = "/log4javascript")
+    @ResponseBody
     public void log4javascript(@FormParam("logger") String logger, @FormParam("timestamp") String timestamp, @FormParam("level") String level, @FormParam("url") String url, @FormParam("message") String message, @FormParam("layout") String layout) {
 
         if ("debug".equalsIgnoreCase(level)) {

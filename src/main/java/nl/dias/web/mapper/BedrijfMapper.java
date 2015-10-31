@@ -1,17 +1,15 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonBijlage;
 import nl.dias.web.mapper.dozer.AdresDozerMapper;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 
-@Named
+@Component
 public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
 
     @Override
@@ -38,7 +36,7 @@ public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
         //        });
         //
         //        return mapper.map(object, JsonBedrijf.class);
-        JsonBedrijf jsonBedrijf=new AdresDozerMapper().convertTo(object, null);
+        JsonBedrijf jsonBedrijf = new AdresDozerMapper().convertTo(object, null);
         jsonBedrijf.setOpmerkingen(opmerkingMapper.mapAllNaarJson(object.getOpmerkingen()));
         return jsonBedrijf;
     }

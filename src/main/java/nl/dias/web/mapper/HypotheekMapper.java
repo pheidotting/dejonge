@@ -1,6 +1,5 @@
 package nl.dias.web.mapper;
 
-import com.sun.jersey.api.core.InjectParam;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.json.JsonHypotheek;
@@ -10,19 +9,20 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 
-@Named
+@Component
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
     private final static String DATUM_FORMAAT = "dd-MM-yyyy";
 
-    @InjectParam
+    @Inject
     private OpmerkingMapper opmerkingMapper;
-    @InjectParam
+    @Inject
     private BijlageMapper bijlageMapper;
 
     @Override
