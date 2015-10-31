@@ -1,6 +1,5 @@
 package nl.dias.web.authorisatie;
 
-import com.sun.servicetag.UnauthorizedAccessException;
 import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
@@ -23,7 +22,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @RequestMapping("/authorisatie")
