@@ -2,7 +2,6 @@ package nl.dias.web.filter;
 
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
-import nl.dias.domein.predicates.SessieOpSessiecodePredicate;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
@@ -18,9 +17,6 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getFirst;
 
 
 @Provider
@@ -38,29 +34,17 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        String sessieHeader = req.getHeader("sessieCode");
-
-        Gebruiker gebruiker = null;
-        Sessie sessie = null;
-        Cookie cookie = null;
-
-        LOGGER.debug("koekjes opzoeken");
-        init();
-        if (sessieHeader != null) {
-            LOGGER.debug("sessieHeader : {}", sessieHeader);
-            try {
-                gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
-
-                req.getSession().setAttribute("sessie", getFirst(filter(gebruiker.getSessies(), new SessieOpSessiecodePredicate(sessieHeader)), null));
-
-                LOGGER.debug("Gebruiker opgehaald : {}", gebruiker != null ? gebruiker.getId() : "0");
-            } catch (NietGevondenException nge) {
-                LOGGER.trace("Niet gevonden blijkbaar ", nge);
-            }
-            LOGGER.debug("Verder met het filter");
-            opruimen();
+        if (req.getSession().getAttribute("sessie") != null) {
+            LOGGER.debug("Blijkbaar heeft een vorig filter het al goed bevonden, doorgaan");
             chain.doFilter(request, response);
         } else {
+
+            Gebruiker gebruiker = null;
+            Sessie sessie = null;
+            Cookie cookie = null;
+
+            LOGGER.debug("koekjes opzoeken");
+            init();
             List<Cookie> cookies = authorisatieService.getCookies(req);
             for (Cookie koekje : cookies) {
                 LOGGER.debug(koekje.getValue());
@@ -74,56 +58,56 @@ public class AuthorisatieFilter implements Filter {
                     cookie = koekje;
                 }
             }
-        }
-        LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
-        if (cookie != null) {
-            LOGGER.debug("via cookie met code " + cookie.getValue());
-        }
+            LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
+            if (cookie != null) {
+                LOGGER.debug("via cookie met code " + cookie.getValue());
+            }
 
-        if (gebruiker == null) {
-            final String sessieId = (String) req.getSession().getAttribute("sessie");
-            final String ipAdres = req.getRemoteAddr();
+            if (gebruiker == null) {
+                final String sessieId = (String) req.getSession().getAttribute("sessie");
+                final String ipAdres = req.getRemoteAddr();
 
-            if (sessieId != null && sessieId.length() > 0) {
-                LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
-                try {
-                    init();
-                    gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
-                    LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
-                } catch (NietGevondenException e) {
-                    LOGGER.debug("Niet gevonden", e);
+                if (sessieId != null && sessieId.length() > 0) {
+                    LOGGER.debug("Sessie met id " + sessieId + " gevonden in het request");
+                    try {
+                        init();
+                        gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
+                        LOGGER.debug("Gebruiker met id " + gebruiker.getId() + " opgehaald.");
+                    } catch (NietGevondenException e) {
+                        LOGGER.debug("Niet gevonden", e);
+                    }
+                } else {
+                    LOGGER.debug("Geen sessieId gevonden in het request");
                 }
-            } else {
-                LOGGER.debug("Geen sessieId gevonden in het request");
-            }
 
-            if (gebruiker != null) {
-                LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
-                init();
-                sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
-                sessie.setDatumLaatstGebruikt(new Date());
-                LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
-                init();
-                gebruikerRepository.opslaan(sessie);
+                if (gebruiker != null) {
+                    LOGGER.debug("Sessie ophalen van de ingelogde gebruiker");
+                    init();
+                    sessie = gebruikerService.zoekSessieOp(sessieId, ipAdres, gebruiker.getSessies());
+                    sessie.setDatumLaatstGebruikt(new Date());
+                    LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
+                    init();
+                    gebruikerRepository.opslaan(sessie);
 
-                LOGGER.debug("Verder filteren");
+                    LOGGER.debug("Verder filteren");
+
+                    opruimen();
+
+                    chain.doFilter(request, response);
+                } else {
+                    opruimen();
+
+                    LOGGER.debug("Stuur een UNAUTHORIZED");
+                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                }
+            } else if (cookie != null) {
+                init();
+                Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
+                req.getSession().setAttribute("sessie", sessie2.getSessie());
 
                 opruimen();
-
                 chain.doFilter(request, response);
-            } else {
-                opruimen();
-
-                LOGGER.debug("Stuur een UNAUTHORIZED");
-                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
-        } else if (cookie != null && sessieHeader == null) {
-            init();
-            Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
-            req.getSession().setAttribute("sessie", sessie2.getSessie());
-
-            opruimen();
-            chain.doFilter(request, response);
         }
     }
 
