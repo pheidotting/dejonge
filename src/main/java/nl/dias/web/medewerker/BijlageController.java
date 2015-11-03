@@ -1,6 +1,5 @@
 package nl.dias.web.medewerker;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBijlage;
@@ -18,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -84,7 +85,7 @@ public class BijlageController {
     @ResponseBody
     @Produces("application/pdf")
     public ResponseEntity<byte[]> getFile(@QueryParam("id") String id) throws IOException {
-        LOGGER.debug("Ophalen bijlage met id " + id);
+        LOGGER.info("Ophalen bijlage met id " + id);
 
         Bijlage bijlage = polisService.leesBijlage(Long.parseLong(id));
 
@@ -100,17 +101,20 @@ public class BijlageController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage")
     @ResponseBody
-    public JsonBijlage uploadBijlage(@FormParam("bijlageFile") InputStream uploadedInputStream, @FormParam("bijlageFile") FormDataContentDisposition fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit) {
-        LOGGER.debug("uploaden bestand voor {} met id {}", soortEntiteit, id);
+    public JsonBijlage uploadBijlage(@FormParam("bijlageFile") InputStream uploadedInputStream, @RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit) {
+        LOGGER.info("uploaden bestand voor {} met id {}", soortEntiteit, id);
+
+        LOGGER.debug("{}", ReflectionToStringBuilder.toString(uploadedInputStream));
+        LOGGER.debug("{}", ReflectionToStringBuilder.toString(fileDetail));
 
         return bijlageMapper.mapNaarJson(uploaden(uploadedInputStream, fileDetail, soortEntiteit, id));
     }
 
-    private Bijlage uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String soortEntiteit, String id) {
+    private Bijlage uploaden(InputStream uploadedInputStream, MultipartFile fileDetail, String soortEntiteit, String id) {
 
         Bijlage bijlage = null;
 
-        if (fileDetail != null && fileDetail.getFileName() != null && uploadedInputStream != null) {
+        if (fileDetail != null && fileDetail.getName() != null && uploadedInputStream != null) {
 
             bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));

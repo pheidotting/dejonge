@@ -9,6 +9,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
 
 	<bean id="headerFilter" class="nl.dias.web.filter.HeaderFilter" />
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <property name="maxUploadSize" value="50000000"/>
+    </bean>
 
 	<!-- Activemq connection factory -->
 	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">

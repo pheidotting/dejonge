@@ -2,6 +2,8 @@ package nl.dias.domein.polis;
 
 import nl.dias.domein.*;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -63,17 +65,21 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
+    //    @Transient
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
 
+    //    @Transient
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     @JoinColumn(name = "MAATSCHAPPIJ")
+    //    @Transient
     private VerzekeringsMaatschappij maatschappij;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
+    //    @Transient
     private Set<Schade> schades;
 
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
@@ -257,26 +263,25 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.omschrijvingVerzekering = omschrijvingVerzekering;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
-    //    @Override
-    //    public boolean equals(Object o) {
-    //        if (this == o) {
-    //            return true;
-    //        }
-    //
-    //        if (!(o instanceof Polis)) {
-    //            return false;
-    //        }
-    //
-    //        Polis polis = (Polis) o;
-    //
-    //        return new EqualsBuilder().append(getId(), polis.getId()).append(getStatus(), polis.getStatus()).append(getPolisNummer(), polis.getPolisNummer()).append(getKenmerk(), polis.getKenmerk()).append(getIngangsDatum(), polis.getIngangsDatum()).append(getEindDatum(), polis.getEindDatum()).append(getPremie(), polis.getPremie()).append(getWijzigingsDatum(), polis.getWijzigingsDatum()).append(getProlongatieDatum(), polis.getProlongatieDatum()).append(getBetaalfrequentie(), polis.getBetaalfrequentie()).append(getRelatie(), polis.getRelatie()).append(getBedrijf(), polis.getBedrijf()).append(getMaatschappij(), polis.getMaatschappij()).append(getOmschrijvingVerzekering(), polis.getOmschrijvingVerzekering()).isEquals();
-    //    }
-    //
-    //    @Override
-    //    public int hashCode() {
-    //        return new HashCodeBuilder(17, 37).append(getId()).append(getStatus()).append(getPolisNummer()).append(getKenmerk()).append(getIngangsDatum()).append(getEindDatum()).append(getPremie()).append(getWijzigingsDatum()).append(getProlongatieDatum()).append(getBetaalfrequentie()).append(getRelatie()).append(getBedrijf()).append(getMaatschappij()).append(getOmschrijvingVerzekering()).toHashCode();
-    //    }
+        if (!(o instanceof Polis)) {
+            return false;
+        }
+
+        Polis polis = (Polis) o;
+
+        return new EqualsBuilder().append(getId(), polis.getId()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(getId()).toHashCode();
+    }
 
     @Override
     public String toString() {

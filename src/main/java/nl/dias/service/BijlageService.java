@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
@@ -9,6 +8,7 @@ import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -35,8 +35,8 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public Bijlage uploaden(InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
-        String[] exp = fileDetail.getFileName().split("//.");
+    public Bijlage uploaden(InputStream uploadedInputStream, MultipartFile fileDetail) {
+        String[] exp = fileDetail.getOriginalFilename().split("//.");
         String extensie = exp[exp.length - 1];
 
         String identificatie = UUID.randomUUID().toString().replace("-", "");
@@ -45,12 +45,16 @@ public class BijlageService {
 
         Bijlage bijlage = new Bijlage();
         bijlage.setS3Identificatie(identificatie);
-        bijlage.setBestandsNaam(fileDetail.getFileName());
+        bijlage.setBestandsNaam(fileDetail.getOriginalFilename());
         bijlage.setUploadMoment(LocalDateTime.now());
 
         bijlageRepository.opslaan(bijlage);
 
-        writeToFile(uploadedInputStream, Utils.getUploadPad() + "/" + identificatie);
+        try {
+            writeToFile(fileDetail.getInputStream(), Utils.getUploadPad() + "/" + identificatie);
+        } catch (IOException e) {
+            LOGGER.error("Fout bij uploaden", e);
+        }
 
         return bijlage;
     }
