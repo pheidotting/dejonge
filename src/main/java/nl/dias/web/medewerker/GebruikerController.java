@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @RequestMapping("/gebruiker")
@@ -52,13 +51,6 @@ public class GebruikerController {
     private HttpServletRequest httpServletRequest;
     @Autowired
     private HttpServletResponse httpServletResponse;
-
-    @RequestMapping(method = RequestMethod.GET, value = "/converteren")
-    @ResponseBody
-    public String converteren() {
-        gebruikerService.converteren();
-        return "ok";
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody

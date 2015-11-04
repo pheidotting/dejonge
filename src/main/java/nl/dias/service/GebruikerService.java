@@ -17,11 +17,8 @@ import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -42,14 +39,6 @@ public class GebruikerService {
 
     @Inject
     private GebruikerRepository gebruikerRepository;
-    @Inject
-    private DIASGebruikerRepository diasGebruikerRepository;
-    @Inject
-    private DIASAdresRepository diasAdresRepository;
-    @Inject
-    private DIASBedrijfRepository diasBedrijfRepository;
-    @Inject
-    private DIASTelefoonNummerRepository diasTelefoonNummerRepository;
     @Inject
     private PolisRepository polisRepository;
     @Inject
@@ -109,111 +98,6 @@ public class GebruikerService {
         LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
     }
 
-    @Deprecated
-    public void converteren() {
-        String patternDatum = "dd-MM-yyyy";
-
-        Kantoor kantoor = kantoorRepository.lees(1L);
-
-        for (DIASGebruiker diasGebruiker : diasGebruikerRepository.alles()) {
-            Relatie relatie = new Relatie();
-            relatie.setAchternaam(diasGebruiker.getAchternaam());
-            if (!"".equals(diasGebruiker.getBsn().trim())) {
-                relatie.setBsn(diasGebruiker.getBsn().replace(".", ""));
-            }
-            if ("gehuwd".equalsIgnoreCase(diasGebruiker.getBurgerlijkeStaat())) {
-                relatie.setBurgerlijkeStaat(BurgerlijkeStaat.G);
-            } else {
-                relatie.setBurgerlijkeStaat(BurgerlijkeStaat.O);
-            }
-            if (diasGebruiker.getGeboorteDatum() != null && !diasGebruiker.getGeboorteDatum().equals("")) {
-                relatie.setGeboorteDatum(LocalDate.parse(diasGebruiker.getGeboorteDatum(), DateTimeFormat.forPattern(patternDatum)));
-            }
-            if (!"".equals(diasGebruiker.getGeslacht())) {
-                relatie.setGeslacht(Geslacht.valueOf(diasGebruiker.getGeslacht().substring(0, 1).toUpperCase()));
-            }
-            if (diasGebruiker.getDatumOverlijden() != null && !"".equals(diasGebruiker.getDatumOverlijden())) {
-                relatie.setOverlijdensdatum(LocalDate.parse(diasGebruiker.getDatumOverlijden(), DateTimeFormat.forPattern(patternDatum)));
-            }
-            relatie.setRoepnaam(diasGebruiker.getRoepnaam());
-            relatie.setTussenvoegsel(diasGebruiker.getVoorvoegsels());
-            if (!"".equals(diasGebruiker.getVoornamen())) {
-                relatie.setVoornaam(diasGebruiker.getVoornamen());
-            } else {
-                relatie.setVoornaam(diasGebruiker.getVoorletters());
-            }
-            relatie.setKantoor(kantoor);
-
-            List<DIASAdres> adressen = diasAdresRepository.zoekOpRegistratieNummer(diasGebruiker.getNummer());
-            if (adressen != null && !adressen.isEmpty()) {
-                DIASAdres diasAdres = adressen.get(0);
-
-                relatie.getAdres().setHuisnummer(Long.valueOf(diasAdres.getHuisNummer()));
-                relatie.getAdres().setPlaats(diasAdres.getPlaats());
-                relatie.getAdres().setPostcode(diasAdres.getPostcode());
-                relatie.getAdres().setStraat(diasAdres.getPostcode());
-                relatie.getAdres().setToevoeging(diasAdres.getToevoeging());
-            }
-
-            List<DIASTelefoonNummer> diasTelefoonNummers = diasTelefoonNummerRepository.zoekOpRegistratieNummer(diasGebruiker.getNummer());
-            if (diasTelefoonNummers != null) {
-                for (DIASTelefoonNummer diasTelefoonNummer : diasTelefoonNummers) {
-                    String telNr = diasTelefoonNummer.getTelefoonummer().replace("(", "").replace(")", "");
-                    if (!"".equals(telNr.trim()) && telNr.length() <= 10) {
-                        Telefoonnummer telefoonnummer = new Telefoonnummer();
-
-                        telefoonnummer.setRelatie(relatie);
-                        telefoonnummer.setTelefoonnummer(diasTelefoonNummer.getTelefoonummer().replace("(", "").replace(")", ""));
-                        if ("priv".equalsIgnoreCase(diasTelefoonNummer.getType())) {
-                            telefoonnummer.setSoort(TelefoonnummerSoort.VAST);
-                        }
-                        if ("mobiel".equalsIgnoreCase(diasTelefoonNummer.getType())) {
-                            telefoonnummer.setSoort(TelefoonnummerSoort.MOBIEL);
-                        } else if ("zakelijk".equalsIgnoreCase(diasTelefoonNummer.getType())) {
-                            telefoonnummer.setSoort(TelefoonnummerSoort.WERK);
-                        } else {
-                            telefoonnummer.setSoort(TelefoonnummerSoort.VAST);
-                        }
-
-                        relatie.getTelefoonnummers().add(telefoonnummer);
-                    }
-                }
-            }
-
-            List<DIASBedrijf> diasBedrijven = diasBedrijfRepository.zoekOpRegistratieNummer(diasGebruiker.getNummer());
-            if (diasBedrijven != null) {
-                for (DIASBedrijf diasBedrijf : diasBedrijven) {
-                    Bedrijf bedrijf = new Bedrijf();
-                    bedrijf.setRelatie(relatie);
-                    bedrijf.setKvk(diasBedrijf.getKvk());
-                    bedrijf.setNaam(diasBedrijf.getNaam());
-
-                    relatie.getBedrijven().add(bedrijf);
-                }
-            }
-
-            Relatie aanwezigeRelatie = null;
-            try {
-                aanwezigeRelatie = gebruikerRepository.zoekOpBsn(relatie.getBsn());
-            } catch (Exception e) {
-            }
-
-            if (relatie.getBsn() != null && aanwezigeRelatie != null) {
-                relatie.setBsn(null);
-            }
-
-            boolean opgeslagen = false;
-            try {
-                opslaan(relatie);
-                opgeslagen = true;
-            } catch (Exception e) {
-            }
-
-            if (opgeslagen) {
-                diasGebruikerRepository.verwijder(diasGebruiker);
-            }
-        }
-    }
 
     public Gebruiker lees(Long id) {
         return gebruikerRepository.lees(id);
@@ -291,19 +175,6 @@ public class GebruikerService {
         // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden
         // aangemaakt
         if (gebruiker instanceof Relatie) {
-//            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//            if (aanmakenTaakSender == null) {
-//                aanmakenTaakSender = (AanmakenTaakSender) context.getBean("aanmakenTaakSender");
-//            }
-//            if (adresAangevuldSender == null) {
-//                adresAangevuldSender = (AdresAangevuldSender) context.getBean("adresAangevuldSender");
-//            }
-//            if (emailAdresAangevuldSender == null) {
-//                emailAdresAangevuldSender = (EmailAdresAangevuldSender) context.getBean("emailAdresAangevuldSender");
-//            }
-//            if (bsnAangevuldSender == null) {
-//                bsnAangevuldSender = (BsnAangevuldSender) context.getBean("bsnAangevuldSender");
-//            }
 
             Relatie relatie = (Relatie) gebruiker;
             if (isBlank(relatie.getBsn())) {

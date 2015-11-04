@@ -37,6 +37,48 @@ public class PolisRepository extends AbstractRepository<Polis> {
 
         return ret;
     }
+    //    @Override
+    //    public void opslaan(Polis polis){
+    ////        if(!getEm().getTransaction().isActive()) {
+    ////            getEm().getTransaction().begin();
+    ////        }
+    ////
+    ////        if(polis.getId()==null){
+    ////            getEm().persist(polis);
+    ////        }else{
+    ////            getEm().merge(polis);
+    ////        }
+    //        StringBuffer queryString=new StringBuffer();
+    //        queryString.append("update `POLIS` set ");
+    //
+    //        queryString.append("`STATUS` = '").append(polis.getStatus()).append("' ");
+    //        //        queryString.append("`BETAALFREQUENTIE` = '").append(polis.getBetaalfrequentie()).append("', ");
+    //        //        queryString.append("`INGANGSDATUM` = '").append(polis.getIngangsDatum()).append("', ");
+    //        //        queryString.append("`EINDDATUM` = '").append(polis.getEindDatum()).append("', ");
+    //        //        queryString.append("`POLISNUMMER` = '").append(polis.getPolisNummer()).append("', ");
+    //        //        queryString.append("`KENMERK` = '").append(polis.getKenmerk()).append("', ");
+    //        //        queryString.append("`PREMIE` = '").append(polis.getPremie().getBedrag()).append("', ");
+    //        //        queryString.append("`WIJZIGINGSDATUM` = '").append(polis.getWijzigingsDatum()).append("', ");
+    //        //        queryString.append("`PROLONGATIEDATUM` = '").append(polis.getProlongatieDatum()).append("', ");
+    //        //        queryString.append("`BEDRIJF` = '").append(polis.getBedrijf().getId()).append("', ");
+    //        //        queryString.append("`MAATSCHAPPIJ` = '").append(polis.getMaatschappij().getId()).append("', ");
+    //        //        queryString.append("`OMSCHRIJVING` = '").append(polis.getOmschrijvingVerzekering()).append("', ");
+    //
+    //        queryString.append("where `ID` = ");
+    //        queryString.append(polis.getId());
+    //
+    //        if(!getEm().getTransaction().isActive()) {
+    //            getEm().getTransaction().begin();
+    //        }
+    //        polis = null;
+    //
+    //        LOGGER.debug("Uitvoeren {}",queryString.toString());
+    //        Query query=getEm().createNativeQuery(queryString.toString());
+    //
+    //        query.executeUpdate();
+    //        getEm().getTransaction().commit();
+    //
+    //    }
 
     @Transactional
     public List<Polis> allePolissenBijMaatschappij(VerzekeringsMaatschappij maatschappij) {

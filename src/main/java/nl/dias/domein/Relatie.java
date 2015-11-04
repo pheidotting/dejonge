@@ -16,11 +16,12 @@ import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getFirst;
-import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Iterables.*;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -71,7 +72,8 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = OnderlingeRelatie.class, mappedBy = "relatie")
     private Set<OnderlingeRelatie> onderlingeRelaties;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Polis.class, mappedBy = "relatie")
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Polis.class, mappedBy = "relatie")
+    @Transient
     private Set<Polis> polissen;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Bedrijf.class, mappedBy = "relatie")

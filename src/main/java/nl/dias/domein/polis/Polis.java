@@ -65,21 +65,17 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
-    //    @Transient
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
 
-    //    @Transient
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     @JoinColumn(name = "MAATSCHAPPIJ")
-    //    @Transient
     private VerzekeringsMaatschappij maatschappij;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
-    //    @Transient
     private Set<Schade> schades;
 
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")

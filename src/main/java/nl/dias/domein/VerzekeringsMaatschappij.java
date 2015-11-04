@@ -1,23 +1,14 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "VERZEKERINGSMAATSCHAPPIJ")
-@NamedQueries({ @NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
+@NamedQueries({@NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
         @NamedQuery(name = "VerzekeringsMaatschappij.zoekOpNaam", query = "select v from VerzekeringsMaatschappij v where v.naam = :naam") })
 public class VerzekeringsMaatschappij implements PersistenceObject, Serializable, Comparable<VerzekeringsMaatschappij> {
     private static final long serialVersionUID = 1721464750949552535L;
