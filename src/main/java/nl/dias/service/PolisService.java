@@ -218,8 +218,8 @@ public class PolisService {
             }
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
-            LOGGER.debug("Maatschappij zetten" + maatschappij);
-            polis.setMaatschappij(maatschappij);
+//            LOGGER.debug("Maatschappij zetten" + maatschappij);
+//            polis.setMaatschappij(maatschappij);
             LOGGER.debug("Maatschappij gezet");
 
             relatie.getPolissen().add(polis);

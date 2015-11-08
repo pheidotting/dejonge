@@ -71,9 +71,10 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
-    @JoinColumn(name = "MAATSCHAPPIJ")
-    private VerzekeringsMaatschappij maatschappij;
+//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
+//    @JoinColumn(name = "MAATSCHAPPIJ")
+    @Column(name = "MAATSCHAPPIJ")
+    private Long maatschappij;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
     private Set<Schade> schades;
@@ -186,11 +187,11 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.opmerkingen = opmerkingen;
     }
 
-    public VerzekeringsMaatschappij getMaatschappij() {
+    public Long getMaatschappij() {
         return maatschappij;
     }
 
-    public void setMaatschappij(VerzekeringsMaatschappij maatschappij) {
+    public void setMaatschappij(Long maatschappij) {
         this.maatschappij = maatschappij;
     }
 
@@ -303,7 +304,7 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         //        sb.append(", bijlages=").append(bijlages).append("\n");
         sb.append(", opmerkingen=").append(opmerkingen).append("\n");
         if (maatschappij != null) {
-            sb.append(", maatschappij=").append(maatschappij.getNaam()).append("\n");
+            sb.append(", maatschappij=").append(maatschappij).append("\n");
         }
         sb.append(", schades=").append(schades).append("\n");
         sb.append(", omschrijvingVerzekering='").append(omschrijvingVerzekering).append('\'').append("\n");
