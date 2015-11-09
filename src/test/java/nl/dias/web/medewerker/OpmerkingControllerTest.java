@@ -47,9 +47,11 @@ public class OpmerkingControllerTest extends EasyMockSupport {
         opmerkingService.opslaan(opmerking);
         expectLastCall();
 
+        expect(opmerking.getId()).andReturn(46L);
+
         replayAll();
 
-        controller.opslaan(jsonOpmerking);
+        assertEquals(new Long(46), new Long(controller.opslaan(jsonOpmerking)));
     }
 
     @Test
