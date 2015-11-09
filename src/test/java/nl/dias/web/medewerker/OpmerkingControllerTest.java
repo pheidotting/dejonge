@@ -1,18 +1,18 @@
 package nl.dias.web.medewerker;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
-
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class OpmerkingControllerTest extends EasyMockSupport {
@@ -47,9 +47,11 @@ public class OpmerkingControllerTest extends EasyMockSupport {
         opmerkingService.opslaan(opmerking);
         expectLastCall();
 
+        expect(opmerking.getId()).andReturn(46L);
+
         replayAll();
 
-        assertEquals(200, controller.opslaan(jsonOpmerking).getStatus());
+        assertEquals(new Long(46), new Long(controller.opslaan(jsonOpmerking)));
     }
 
     @Test
@@ -60,7 +62,7 @@ public class OpmerkingControllerTest extends EasyMockSupport {
 
         replayAll();
 
-        assertEquals(500, controller.opslaan(jsonOpmerking).getStatus());
+        controller.opslaan(jsonOpmerking);
     }
 
     @Test
