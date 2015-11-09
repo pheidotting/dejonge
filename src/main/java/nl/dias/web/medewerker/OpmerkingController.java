@@ -1,20 +1,16 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestMapping("/opmerking")
@@ -35,20 +31,26 @@ public class OpmerkingController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonOpmerking jsonOpmerking) {
+    public Long opslaan(@RequestBody JsonOpmerking jsonOpmerking) {
         Opmerking opmerking = null;
         try {
             opmerking = opmerkingMapper.mapVanJson(jsonOpmerking);
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Fout opgetreden bij opslaan Opmerking", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+            throw new AlgemeneFoutException(e.getMessage());
         }
         if (opmerking != null) {
             opmerkingService.opslaan(opmerking);
         }
-        return Response.status(200).entity(opmerking.getId()).build();
+        return opmerking.getId();
     }
 
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public class AlgemeneFoutException extends RuntimeException {
+        public AlgemeneFoutException(String message) {
+            super(message);
+        }
+    }
     @RequestMapping(method = RequestMethod.GET, value = "/nieuw")
     @ResponseBody
     public JsonOpmerking nieuw() {
