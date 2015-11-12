@@ -17,6 +17,7 @@ public class JsonPolis {
     private String wijzigingsDatum;
     private String prolongatieDatum;
     private String betaalfrequentie;
+    private String dekking;
     private List<JsonOpmerking> opmerkingen;
     private String maatschappij;
     private String soort;
@@ -111,6 +112,14 @@ public class JsonPolis {
 
     public void setBetaalfrequentie(String betaalfrequentie) {
         this.betaalfrequentie = betaalfrequentie;
+    }
+
+    public String getDekking() {
+        return dekking;
+    }
+
+    public void setDekking(String dekking) {
+        this.dekking = dekking;
     }
 
     public List<JsonOpmerking> getOpmerkingen() {

@@ -57,6 +57,9 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @Column(length = 1, name = "BETAALFREQUENTIE")
     private Betaalfrequentie betaalfrequentie;
 
+    @Column(name="DEKKING",length = 250)
+    private String dekking;
+
     @JoinColumn(name = "RELATIE")
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
@@ -231,6 +234,14 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
 
     public void setBetaalfrequentie(Betaalfrequentie betaalfrequentie) {
         this.betaalfrequentie = betaalfrequentie;
+    }
+
+    public String getDekking() {
+        return dekking;
+    }
+
+    public void setDekking(String dekking) {
+        this.dekking = dekking;
     }
 
     public Bedrijf getBedrijf() {
