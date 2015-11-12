@@ -57,6 +57,12 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @Column(length = 1, name = "BETAALFREQUENTIE")
     private Betaalfrequentie betaalfrequentie;
 
+    @Column(name = "DEKKING", length = 250)
+    private String dekking;
+
+    @Column(name = "VERZEKERDEZAAK", length = 250)
+    private String verzekerdeZaak;
+
     @JoinColumn(name = "RELATIE")
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
@@ -71,8 +77,8 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
-//    @JoinColumn(name = "MAATSCHAPPIJ")
+    //    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
+    //    @JoinColumn(name = "MAATSCHAPPIJ")
     @Column(name = "MAATSCHAPPIJ")
     private Long maatschappij;
 
@@ -231,6 +237,22 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
 
     public void setBetaalfrequentie(Betaalfrequentie betaalfrequentie) {
         this.betaalfrequentie = betaalfrequentie;
+    }
+
+    public String getDekking() {
+        return dekking;
+    }
+
+    public void setDekking(String dekking) {
+        this.dekking = dekking;
+    }
+
+    public String getVerzekerdeZaak() {
+        return verzekerdeZaak;
+    }
+
+    public void setVerzekerdeZaak(String verzekerdeZaak) {
+        this.verzekerdeZaak = verzekerdeZaak;
     }
 
     public Bedrijf getBedrijf() {

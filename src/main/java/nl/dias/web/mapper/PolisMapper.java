@@ -84,14 +84,16 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setWijzigingsDatum(wijzigingsDatum);
         polis.setProlongatieDatum(prolongatieDatum);
+        polis.setDekking(jsonPolis.getDekking());
+        polis.setVerzekerdeZaak(jsonPolis.getVerzekerdeZaak());
         if (StringUtils.isNotEmpty(jsonPolis.getBetaalfrequentie())) {
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
         }
 
         polis.setMaatschappij(Long.valueOf(jsonPolis.getMaatschappij()));
-//        if (jsonPolis.getMaatschappij() != null && !"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
-//            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
-//        }
+        //        if (jsonPolis.getMaatschappij() != null && !"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
+        //            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
+        //        }
         if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
             polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
         }
@@ -145,6 +147,8 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (polis.getBetaalfrequentie() != null) {
             jsonPolis.setBetaalfrequentie(polis.getBetaalfrequentie().getOmschrijving());
         }
+        jsonPolis.setDekking(polis.getDekking());
+        jsonPolis.setVerzekerdeZaak(polis.getVerzekerdeZaak());
         LOGGER.debug("{}", polis.getBijlages());
         jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
 
