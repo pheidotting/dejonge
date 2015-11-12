@@ -33,6 +33,12 @@ public class OpmerkingService {
         return opmerkingRepository.alleOpmerkingenVoorRelatie(relatie);
     }
 
+    public void verwijder(Long id) {
+        Opmerking opmerking = opmerkingRepository.lees(id);
+
+        opmerkingRepository.verwijder(opmerking);
+    }
+
     public void opslaan(Opmerking opmerking) {
         opmerkingRepository.opslaan(opmerking);
 

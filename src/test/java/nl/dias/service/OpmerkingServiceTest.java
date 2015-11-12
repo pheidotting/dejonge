@@ -19,7 +19,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-@Ignore
 public class OpmerkingServiceTest extends EasyMockSupport {
     private OpmerkingService service;
     private OpmerkingRepository repository;
@@ -50,6 +49,7 @@ public class OpmerkingServiceTest extends EasyMockSupport {
     }
 
     @Test
+    @Ignore
     public void test() {
         Opmerking opmerking = createMock(Opmerking.class);
         HttpSession httpSession = createMock(HttpSession.class);
@@ -83,5 +83,20 @@ public class OpmerkingServiceTest extends EasyMockSupport {
         replayAll();
 
         service.opslaan(opmerking);
+    }
+
+    @Test
+    public void testVerwijder(){
+        Opmerking opmerking=new Opmerking();
+        Long id = 46L;
+
+        expect(repository.lees(id)).andReturn(opmerking);
+
+        repository.verwijder(opmerking);expectLastCall();
+
+        replayAll();
+
+        service.verwijder(id);
+
     }
 }

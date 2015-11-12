@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @RequestMapping("/opmerking")
@@ -27,6 +28,13 @@ public class OpmerkingController {
     @ResponseBody
     public List<JsonOpmerking> lijstOpmerkingen(Long relatie) {
         return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenVoorRelatie(relatie));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @ResponseBody
+    public void verwijder(@QueryParam("id") Long id) {
+        LOGGER.debug("Verwijder opmerking met id {}", id);
+        opmerkingService.verwijder(id);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
@@ -51,6 +59,7 @@ public class OpmerkingController {
             super(message);
         }
     }
+
     @RequestMapping(method = RequestMethod.GET, value = "/nieuw")
     @ResponseBody
     public JsonOpmerking nieuw() {
