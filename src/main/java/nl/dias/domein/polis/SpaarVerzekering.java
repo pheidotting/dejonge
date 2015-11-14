@@ -9,8 +9,8 @@ import javax.persistence.Table;
 @Component
 @Entity
 @Table(name = "POLIS")
-@DiscriminatorValue(value = "CR")
-public class CaravanVerzekering extends Polis {
+@DiscriminatorValue(value = "SV")
+public class SpaarVerzekering extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {
         return SoortVerzekering.PARTICULIER;
@@ -21,5 +21,5 @@ public class CaravanVerzekering extends Polis {
         String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
-
 }
+

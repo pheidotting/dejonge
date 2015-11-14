@@ -1,8 +1,14 @@
 package nl.dias.service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.*;
+import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
+import nl.dias.domein.predicates.PolissenOpSoortPredicate;
+import nl.dias.domein.transformers.PolisToSchermNaamTransformer;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -15,6 +21,10 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Iterables.transform;
 
 @Service
 public class PolisService {
@@ -30,6 +40,16 @@ public class PolisService {
     private BedrijfService bedrijfService;
     @Inject
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
+    @Inject
+    private List<Polis> polissen;
+
+    public List<String> allePolisSoorten(final SoortVerzekering soortVerzekering) {
+        Iterable<Polis> poli = filter(polissen, new PolissenOpSoortPredicate(soortVerzekering));
+
+        Iterable<String> polisString = transform(poli, new PolisToSchermNaamTransformer());
+
+        return Lists.newArrayList(polisString);
+    }
 
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
         return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
@@ -218,8 +238,8 @@ public class PolisService {
             }
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
-//            LOGGER.debug("Maatschappij zetten" + maatschappij);
-//            polis.setMaatschappij(maatschappij);
+            //            LOGGER.debug("Maatschappij zetten" + maatschappij);
+            //            polis.setMaatschappij(maatschappij);
             LOGGER.debug("Maatschappij gezet");
 
             relatie.getPolissen().add(polis);
@@ -270,73 +290,7 @@ public class PolisService {
     }
 
     public Polis definieerPolisSoort(String soort) {
-        Polis polis = null;
-
-        if ("Aansprakelijkheid".equals(soort)) {
-            polis = new AansprakelijkheidVerzekering();
-        }
-        if ("Annulering".equals(soort) || "Annulerings".equals(soort) || "Doorlopende Annulering".equals(soort)) {
-            polis = new AnnuleringsVerzekering();
-        }
-        if ("Auto".equals(soort)) {
-            polis = new AutoVerzekering();
-        }
-        if ("Brom-/Snorfiets".equals(soort)) {
-            polis = new BromSnorfietsVerzekering();
-        }
-        if ("Caravan".equals(soort)) {
-            polis = new CaravanVerzekering();
-        }
-        if ("Fiets".equals(soort)) {
-            polis = new FietsVerzekering();
-        }
-        if ("Camper".equals(soort)) {
-            polis = new CamperVerzekering();
-        }
-        if ("Inboedel".equals(soort)) {
-            polis = new InboedelVerzekering();
-        }
-        if ("Leven".equals(soort)) {
-            polis = new LevensVerzekering();
-        }
-        if ("Mobiele apparatuur".equals(soort)) {
-            polis = new MobieleApparatuurVerzekering();
-        }
-        if ("Motor".equals(soort)) {
-            polis = new MotorVerzekering();
-        }
-        if ("Ongevallen".equals(soort)) {
-            polis = new OngevallenVerzekering();
-        }
-        if ("Pakket".equals(soort)) {
-            polis = new Pakket();
-        }
-        if ("Pleziervaartuig".equals(soort)) {
-            polis = new PleziervaartuigVerzekering();
-        }
-        if ("Rechtsbijstand".equals(soort)) {
-            polis = new RechtsbijstandVerzekering();
-        }
-        if ("Reis".equals(soort)) {
-            polis = new ReisVerzekering();
-        }
-        if ("Recreatie".equals(soort)) {
-            polis = new RecreatieVerzekering();
-        }
-        if ("Woonhuis".equals(soort)) {
-            polis = new WoonhuisVerzekering();
-        }
-        if ("Zorg".equals(soort)) {
-            polis = new ZorgVerzekering();
-        }
-        if ("SVI".equals(soort)) {
-            polis = new SviSchadeverzekerininzittende();
-        }
-        if (polis == null) {
-            throw new IllegalArgumentException("Kies een soort verzekering");
-        }
-
-        return polis;
+        return getOnlyElement(filter(polissen, new PolisOpSchermNaamPredicate(soort)));
     }
 
     public void setPolisRepository(PolisRepository polisRepository) {

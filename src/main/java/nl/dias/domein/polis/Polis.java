@@ -5,6 +5,7 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joda.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
@@ -89,6 +91,8 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     private String omschrijvingVerzekering;
 
     public abstract SoortVerzekering getSoortVerzekering();
+
+    public abstract String getSchermNaam();
 
     @Override
     public Long getId() {

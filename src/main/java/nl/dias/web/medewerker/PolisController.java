@@ -1,9 +1,11 @@
 package nl.dias.web.medewerker;
 
+import com.google.common.collect.Lists;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
+import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
@@ -37,6 +39,20 @@ public class PolisController {
     private BijlageService bijlageService;
     @Inject
     private PolisMapper polisMapper;
+    @Inject
+    private List<Polis> polissen;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/alleParticulierePolisSoorten")
+    @ResponseBody
+    public List<String> alleParticulierePolisSoorten() {
+        return polisService.allePolisSoorten(SoortVerzekering.PARTICULIER);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/alleZakelijkePolisSoorten")
+    @ResponseBody
+    public List<String> alleZakelijkePolisSoorten() {
+        return polisService.allePolisSoorten(SoortVerzekering.ZAKELIJK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody
