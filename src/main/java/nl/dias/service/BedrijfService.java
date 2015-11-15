@@ -29,6 +29,10 @@ public class BedrijfService {
         return bedrijfRepository.alleBedrijvenBijRelatie(relatie);
     }
 
+    public List<Bedrijf> alles(){
+        return bedrijfRepository.alles();
+    }
+
     public void setBedrijfRepository(BedrijfRepository bedrijfRepository) {
         this.bedrijfRepository = bedrijfRepository;
     }

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import nl.dias.domein.Adres;
+import nl.dias.domein.predicates.WoonAdresPredicate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import static com.google.common.collect.Iterables.getFirst;
 
 public class JsonBedrijf {
     private String id;
@@ -23,6 +27,33 @@ public class JsonBedrijf {
     private String idDivLink;
     private List<String> errors;
     private JsonOpmerkingenModel opmerkingenModel;
+    private String adresOpgemaakt;
+    private List<JsonAdres> adressen;
+
+    public String getAdresOpgemaakt() {
+        StringBuffer sb = new StringBuffer();
+        if(getAdressen().size()>0){
+            JsonAdres adres=adressen.get(0);
+
+            if (adres.getStraat() != null) {
+                sb.append(adres.getStraat());
+                sb.append(" ");
+            }
+            if (adres.getHuisnummer() != null) {
+                sb.append(adres.getHuisnummer());
+                sb.append(" ");
+            }
+            if (adres.getToevoeging() != null) {
+                sb.append(adres.getToevoeging());
+                sb.append(" ");
+            }
+            if (adres.getPlaats() != null) {
+                sb.append(adres.getPlaats());
+            }
+        }
+
+        return sb.toString();
+    }
 
     public String getId() {
         return id;
@@ -148,6 +179,17 @@ public class JsonBedrijf {
 
     public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
         this.opmerkingenModel = opmerkingenModel;
+    }
+
+    public List<JsonAdres> getAdressen() {
+        if (adressen == null) {
+            adressen = new ArrayList<>();
+        }
+        return adressen;
+    }
+
+    public void setAdressen(List<JsonAdres> adressen) {
+        this.adressen = adressen;
     }
 
     @Override
