@@ -6,6 +6,7 @@ import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Repository
@@ -23,6 +24,13 @@ public class BedrijfRepository extends AbstractRepository<Bedrijf> {
     public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {
         TypedQuery<Bedrijf> query = getEm().createNamedQuery("Bedrijf.allesBijRelatie", Bedrijf.class);
         query.setParameter("relatie", relatie);
+
+        return query.getResultList();
+    }
+
+    public List<Bedrijf> zoekOpNaam(String zoekTerm){
+        TypedQuery<Bedrijf>query=getEm().createNamedQuery("Bedrijf.zoekOpNaam",Bedrijf.class);
+        query.setParameter("zoekTerm","%"+zoekTerm+"%");
 
         return query.getResultList();
     }

@@ -49,12 +49,19 @@ public class BedrijfController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
     @ResponseBody
-    public List<JsonBedrijf> lijst() {
+    public List<JsonBedrijf> lijst(@QueryParam("zoekTerm") String zoekTerm) {
         List<JsonBedrijf> bedrijven = new ArrayList<>();
-        for (Bedrijf bedrijf : bedrijfService.alles()) {
-            bedrijven.add((JsonBedrijf) mapper.map(bedrijf));
-        }
 
+        if (zoekTerm == null) {
+            for (Bedrijf bedrijf : bedrijfService.alles()) {
+                bedrijven.add((JsonBedrijf) mapper.map(bedrijf));
+            }
+        } else {
+            for (Bedrijf bedrijf : bedrijfService.zoekOpNaam(zoekTerm)) {
+                bedrijven.add((JsonBedrijf) mapper.map(bedrijf));
+            }
+
+        }
         return bedrijven;
     }
 

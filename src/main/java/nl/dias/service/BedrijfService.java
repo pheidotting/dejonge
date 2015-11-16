@@ -33,6 +33,10 @@ public class BedrijfService {
         return bedrijfRepository.alles();
     }
 
+    public List<Bedrijf> zoekOpNaam(String zoekTerm){
+        return bedrijfRepository.zoekOpNaam(zoekTerm);
+    }
+
     public void setBedrijfRepository(BedrijfRepository bedrijfRepository) {
         this.bedrijfRepository = bedrijfRepository;
     }

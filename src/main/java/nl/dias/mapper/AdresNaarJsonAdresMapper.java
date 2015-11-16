@@ -11,10 +11,10 @@ public class AdresNaarJsonAdresMapper extends AbstractMapper<Adres, JsonAdres> {
         JsonAdres jsonAdres = new JsonAdres();
 
         jsonAdres.setHuisnummer(adres.getHuisnummer());
-        jsonAdres.setId(adres.getHuisnummer());
-        jsonAdres.setPlaats(adres.getHuisnummer().toString());
-        adres.setPlaats(jsonAdres.getPlaats());
-        jsonAdres.setPostcode(adres.getPlaats());
+        jsonAdres.setId(adres.getId());
+        jsonAdres.setHuisnummer(adres.getHuisnummer());
+        jsonAdres.setPlaats(adres.getPlaats());
+        jsonAdres.setPostcode(adres.getPostcode());
         jsonAdres.setStraat(adres.getStraat());
         jsonAdres.setToevoeging(adres.getToevoeging());
         jsonAdres.setSoortAdres(adres.getSoortAdres().name());
