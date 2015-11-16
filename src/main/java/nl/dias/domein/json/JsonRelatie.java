@@ -39,6 +39,8 @@ public class JsonRelatie {
     private String soortEntiteit;
     private JsonOpmerkingenModel opmerkingenModel;
     private List<String> lijst;
+    private String readOnly;
+    private String notReadOnly;
 
     public String getRoepnaam() {
         return roepnaam;
@@ -277,6 +279,22 @@ public class JsonRelatie {
 
     public void setLijst(List<String> lijst) {
         this.lijst = lijst;
+    }
+
+    public String getReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(String readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public String getNotReadOnly() {
+        return notReadOnly;
+    }
+
+    public void setNotReadOnly(String notReadOnly) {
+        this.notReadOnly = notReadOnly;
     }
 
     @Override
