@@ -34,6 +34,8 @@ public class JsonPolis {
     private List<String> errors;
     private String soortEntiteit;
     private JsonOpmerkingenModel opmerkingenModel;
+    private String readOnly;
+    private String notReadOnly;
 
     public Long getId() {
         return id;
@@ -261,6 +263,22 @@ public class JsonPolis {
 
     public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
         this.opmerkingenModel = opmerkingenModel;
+    }
+
+    public String getReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(String readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public String getNotReadOnly() {
+        return notReadOnly;
+    }
+
+    public void setNotReadOnly(String notReadOnly) {
+        this.notReadOnly = notReadOnly;
     }
 
     @Override

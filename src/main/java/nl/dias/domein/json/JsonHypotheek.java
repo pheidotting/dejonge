@@ -44,6 +44,8 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
     private String hypotheekVormOpgemaakt;
     private String soortEntiteit;
     private JsonOpmerkingenModel opmerkingenModel;
+    private String readOnly;
+    private String notReadOnly;
 
     public String getHypotheekVormOpgemaakt() {
         return hypotheekVormOpgemaakt;
@@ -331,6 +333,22 @@ public class JsonHypotheek implements Comparable<JsonHypotheek> {
 
     public void setOpmerkingenModel(JsonOpmerkingenModel opmerkingenModel) {
         this.opmerkingenModel = opmerkingenModel;
+    }
+
+    public String getReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(String readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public String getNotReadOnly() {
+        return notReadOnly;
+    }
+
+    public void setNotReadOnly(String notReadOnly) {
+        this.notReadOnly = notReadOnly;
     }
 
     /**
