@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import nl.dias.domein.Adres;
 import nl.dias.domein.predicates.WoonAdresPredicate;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -29,11 +31,12 @@ public class JsonBedrijf {
     private JsonOpmerkingenModel opmerkingenModel;
     private String adresOpgemaakt;
     private List<JsonAdres> adressen;
+    private List<JsonBijlage> bijlages;
 
     public String getAdresOpgemaakt() {
         StringBuffer sb = new StringBuffer();
-        if(getAdressen().size()>0){
-            JsonAdres adres=adressen.get(0);
+        if (getAdressen().size() > 0) {
+            JsonAdres adres = adressen.get(0);
 
             if (adres.getStraat() != null) {
                 sb.append(adres.getStraat());
@@ -190,6 +193,17 @@ public class JsonBedrijf {
 
     public void setAdressen(List<JsonAdres> adressen) {
         this.adressen = adressen;
+    }
+
+    public List<JsonBijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = Lists.newArrayList();
+        }
+        return bijlages;
+    }
+
+    public void setBijlages(List<JsonBijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     @Override

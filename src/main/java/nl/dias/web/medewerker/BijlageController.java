@@ -56,6 +56,8 @@ public class BijlageController {
     private HypotheekService hypotheekService;
     @Inject
     private AangifteService aangifteService;
+    @Inject
+    private BedrijfService bedrijfService;
     @Autowired
     private HttpServletRequest httpServletRequest;
     @Autowired
@@ -144,6 +146,11 @@ public class BijlageController {
                 case "Hypotheek":
 
                     hypotheekService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "Bedrijf":
+
+                    bedrijfService.opslaanBijlage(id, bijlage);
 
                     break;
                 default:

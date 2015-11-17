@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import com.google.common.collect.Sets;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -13,10 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "BEDRIJF")
-@NamedQueries({
-    @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"),
-    @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")
-})
+@NamedQueries({@NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"), @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
 public class Bedrijf implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 4611123664803995245L;
 
@@ -43,6 +41,9 @@ public class Bedrijf implements Serializable, PersistenceObject {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bedrijf", targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = Bijlage.class)
+    private Set<Bijlage> bijlages;
 
     @Override
     public Long getId() {
@@ -105,6 +106,17 @@ public class Bedrijf implements Serializable, PersistenceObject {
             opmerkingen = new HashSet<>();
         }
         return opmerkingen;
+    }
+
+    public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = Sets.newHashSet();
+        }
+        return bijlages;
+    }
+
+    public void setBijlages(Set<Bijlage> bijlages) {
+        this.bijlages = bijlages;
     }
 
     public void setOpmerkingen(Set<Opmerking> opmerkingen) {
