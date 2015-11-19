@@ -50,7 +50,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Opmerking.class, mappedBy = "relatie")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.LAZY, targetEntity = Opmerking.class, mappedBy = "relatie")
     private Set<Opmerking> opmerkingen;
 
     @Column(name = "GEBOORTEDATUM")
