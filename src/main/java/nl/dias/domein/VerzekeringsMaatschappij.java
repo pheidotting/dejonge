@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "VERZEKERINGSMAATSCHAPPIJ")
-@NamedQueries({@NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
+@NamedQueries({
+//        @NamedQuery(name = "VerzekeringsMaatschappij.zoekAlles", query = "select v from VerzekeringsMaatschappij v where v.tonen = '1'"),
         @NamedQuery(name = "VerzekeringsMaatschappij.zoekOpNaam", query = "select v from VerzekeringsMaatschappij v where v.naam = :naam") })
 public class VerzekeringsMaatschappij implements PersistenceObject, Serializable, Comparable<VerzekeringsMaatschappij> {
     private static final long serialVersionUID = 1721464750949552535L;

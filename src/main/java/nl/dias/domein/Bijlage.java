@@ -52,6 +52,10 @@ public class Bijlage implements PersistenceObject, Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
+    @JoinColumn(name = "JAARCIJFERS", nullable = true)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
+    private JaarCijfers jaarCijfers;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50, name = "SOORTBIJLAGE")
     private SoortBijlage soortBijlage;
@@ -158,6 +162,14 @@ public class Bijlage implements PersistenceObject, Serializable {
 
     public void setBedrijf(Bedrijf bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public JaarCijfers getJaarCijfers() {
+        return jaarCijfers;
+    }
+
+    public void setJaarCijfers(JaarCijfers jaarCijfers) {
+        this.jaarCijfers = jaarCijfers;
     }
 
     @Override

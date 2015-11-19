@@ -5,10 +5,6 @@
 	<persistence-unit name="dias" transaction-type="JTA">
    		<!--provider>org.hibernate.ejb.HibernatePersistence</provider-->
   		<jta-data-source>jdbcDias</jta-data-source>
-		<class>nl.dias.domein.DIASAdres</class>
-		<class>nl.dias.domein.DIASBedrijf</class>
-		<class>nl.dias.domein.DIASGebruiker</class>
-		<class>nl.dias.domein.DIASTelefoonNummer</class>
 		<class>nl.dias.domein.Aangifte</class>
 		<class>nl.dias.domein.Adres</class>
 		<class>nl.dias.domein.Bedrijf</class>
@@ -17,29 +13,39 @@
 		<class>nl.dias.domein.Gebruiker</class>
 		<class>nl.dias.domein.Hypotheek</class>
 		<class>nl.dias.domein.HypotheekPakket</class>
+		<class>nl.dias.domein.JaarCijfers</class>
 		<class>nl.dias.domein.Kantoor</class>
 		<class>nl.dias.domein.Medewerker</class>
 		<class>nl.dias.domein.OnderlingeRelatie</class>
 		<class>nl.dias.domein.Opmerking</class>
 		<class>nl.dias.domein.polis.Polis</class>
+		<class>nl.dias.domein.polis.AanhangerVerzekering</class>
 		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
+		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
 		<class>nl.dias.domein.polis.AutoVerzekering</class>
 		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
+		<class>nl.dias.domein.polis.BankspaarVerzekering</class>
 		<class>nl.dias.domein.polis.BromSnorfietsVerzekering</class>
 		<class>nl.dias.domein.polis.CamperVerzekering</class>
 		<class>nl.dias.domein.polis.CaravanVerzekering</class>
 		<class>nl.dias.domein.polis.FietsVerzekering</class>
+		<class>nl.dias.domein.polis.GlasVerzekering</class>
 		<class>nl.dias.domein.polis.InboedelVerzekering</class>
+		<class>nl.dias.domein.polis.KostbaarhedenVerzekering</class>
 		<class>nl.dias.domein.polis.LevensVerzekering</class>
 		<class>nl.dias.domein.polis.MobieleApparatuurVerzekering</class>
 		<class>nl.dias.domein.polis.MotorVerzekering</class>
+		<class>nl.dias.domein.polis.OldtimerAutoVerzekering</class>
+		<class>nl.dias.domein.polis.OldtimerMotorVerzekering</class>
 		<class>nl.dias.domein.polis.OngevallenVerzekering</class>
 		<class>nl.dias.domein.polis.Pakket</class>
 		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
 		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
 		<class>nl.dias.domein.polis.RecreatieVerzekering</class>
 		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.SpaarVerzekering</class>
 		<class>nl.dias.domein.polis.SviSchadeverzekerininzittende</class>
+		<class>nl.dias.domein.polis.UitvaartVerzekering</class>
 		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
@@ -101,41 +107,56 @@
 
 	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>nl.dias.domein.DIASAdres</class>
-		<class>nl.dias.domein.DIASBedrijf</class>
-		<class>nl.dias.domein.DIASGebruiker</class>
-		<class>nl.dias.domein.DIASTelefoonNummer</class>
 		<class>nl.dias.domein.Aangifte</class>
 		<class>nl.dias.domein.Adres</class>
 		<class>nl.dias.domein.Bedrijf</class>
 		<class>nl.dias.domein.Beheerder</class>
 		<class>nl.dias.domein.Bijlage</class>
 		<class>nl.dias.domein.Gebruiker</class>
+		<class>nl.dias.domein.Hypotheek</class>
+		<class>nl.dias.domein.HypotheekPakket</class>
+		<class>nl.dias.domein.JaarCijfers</class>
 		<class>nl.dias.domein.Kantoor</class>
 		<class>nl.dias.domein.Medewerker</class>
 		<class>nl.dias.domein.OnderlingeRelatie</class>
 		<class>nl.dias.domein.Opmerking</class>
 		<class>nl.dias.domein.polis.Polis</class>
+		<class>nl.dias.domein.polis.AanhangerVerzekering</class>
 		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
+		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
 		<class>nl.dias.domein.polis.AutoVerzekering</class>
 		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
+		<class>nl.dias.domein.polis.BankspaarVerzekering</class>
 		<class>nl.dias.domein.polis.BromSnorfietsVerzekering</class>
 		<class>nl.dias.domein.polis.CamperVerzekering</class>
+		<class>nl.dias.domein.polis.CaravanVerzekering</class>
 		<class>nl.dias.domein.polis.FietsVerzekering</class>
+		<class>nl.dias.domein.polis.GlasVerzekering</class>
 		<class>nl.dias.domein.polis.InboedelVerzekering</class>
+		<class>nl.dias.domein.polis.KostbaarhedenVerzekering</class>
 		<class>nl.dias.domein.polis.LevensVerzekering</class>
 		<class>nl.dias.domein.polis.MobieleApparatuurVerzekering</class>
 		<class>nl.dias.domein.polis.MotorVerzekering</class>
+		<class>nl.dias.domein.polis.OldtimerAutoVerzekering</class>
+		<class>nl.dias.domein.polis.OldtimerMotorVerzekering</class>
 		<class>nl.dias.domein.polis.OngevallenVerzekering</class>
+		<class>nl.dias.domein.polis.Pakket</class>
 		<class>nl.dias.domein.polis.PleziervaartuigVerzekering</class>
 		<class>nl.dias.domein.polis.RechtsbijstandVerzekering</class>
+		<class>nl.dias.domein.polis.RecreatieVerzekering</class>
 		<class>nl.dias.domein.polis.ReisVerzekering</class>
+		<class>nl.dias.domein.polis.SpaarVerzekering</class>
 		<class>nl.dias.domein.polis.SviSchadeverzekerininzittende</class>
+		<class>nl.dias.domein.polis.UitvaartVerzekering</class>
 		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
 		<class>nl.dias.domein.Relatie</class>
+		<class>nl.dias.domein.Schade</class>
 		<class>nl.dias.domein.Sessie</class>
+		<class>nl.dias.domein.SoortHypotheek</class>
+		<class>nl.dias.domein.SoortSchade</class>
+		<class>nl.dias.domein.StatusSchade</class>
 		<class>nl.dias.domein.Telefoonnummer</class>
 		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
 		<class>nl.dias.service.envers.RevEntity</class>

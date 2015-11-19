@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "BEDRIJF")
 @NamedQueries({@NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"), @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
-public class Bedrijf implements Serializable, PersistenceObject {
+public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages, ObjectMetAdressen {
     private static final long serialVersionUID = 4611123664803995245L;
 
     @Id
@@ -44,6 +44,9 @@ public class Bedrijf implements Serializable, PersistenceObject {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = JaarCijfers.class)
+    private Set<JaarCijfers> jaarCijfers;
 
     @Override
     public Long getId() {
@@ -113,6 +116,17 @@ public class Bedrijf implements Serializable, PersistenceObject {
             bijlages = Sets.newHashSet();
         }
         return bijlages;
+    }
+
+    public Set<JaarCijfers> getJaarCijfers() {
+        if (jaarCijfers == null) {
+            jaarCijfers = Sets.newHashSet();
+        }
+        return jaarCijfers;
+    }
+
+    public void setJaarCijfers(Set<JaarCijfers> jaarCijfers) {
+        this.jaarCijfers = jaarCijfers;
     }
 
     public void setBijlages(Set<Bijlage> bijlages) {

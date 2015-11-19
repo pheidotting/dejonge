@@ -15,8 +15,6 @@ public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBe
     private AdresNaarJsonAdresMapper adresNaarJsonAdresMapper;
     @Inject
     private BijlageNaarJsonBijlageMapper bijlageNaarJsonBijlageMapper;
-    @Inject
-    private OpmerkingNaarJsonOpmerkingMapper opmerkingNaarJsonOpmerkingMapper;
 
     @Override
     public JsonBedrijf map(Bedrijf bedrijf) {
@@ -34,18 +32,6 @@ public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBe
             jsonBedrijf.setToevoeging(adres.getToevoeging());
             jsonBedrijf.setStraat(adres.getStraat());
             jsonBedrijf.setPostcode(adres.getPostcode());
-        }
-
-        for (Adres adres : bedrijf.getAdressen()) {
-            jsonBedrijf.getAdressen().add(adresNaarJsonAdresMapper.map(adres));
-        }
-
-        for (Bijlage bijlage : bedrijf.getBijlages()) {
-            jsonBedrijf.getBijlages().add(bijlageNaarJsonBijlageMapper.map(bijlage));
-        }
-
-        for (Opmerking opmerking : bedrijf.getOpmerkingen()) {
-            jsonBedrijf.getOpmerkingen().add(opmerkingNaarJsonOpmerkingMapper.map(opmerking));
         }
 
         return jsonBedrijf;

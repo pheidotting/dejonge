@@ -29,7 +29,9 @@ public class VerzekeringsMaatschappijRepository extends AbstractRepository<Verze
 
     @Override
     public List<VerzekeringsMaatschappij> alles() {
-        TypedQuery<VerzekeringsMaatschappij> query = getEm().createNamedQuery("VerzekeringsMaatschappij.zoekAlles", VerzekeringsMaatschappij.class);
-        return query.getResultList();
+//        TypedQuery<VerzekeringsMaatschappij> query = getEm().createNamedQuery("VerzekeringsMaatschappij.zoekAlles", VerzekeringsMaatschappij.class);
+//        return query.getResultList();
+        return super.alles();
     }
 }
+

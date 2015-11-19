@@ -1,19 +1,13 @@
 package nl.dias.domein.json;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import nl.dias.domein.Adres;
-import nl.dias.domein.predicates.WoonAdresPredicate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import static com.google.common.collect.Iterables.getFirst;
+import java.util.ArrayList;
+import java.util.List;
 
-public class JsonBedrijf {
+public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijlages, ObjectMetJsonAdressen {
     private String id;
     private List<JsonPolis> polissen;
     private List<JsonOpmerking> opmerkingen;
