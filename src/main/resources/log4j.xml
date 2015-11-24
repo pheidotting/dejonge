@@ -17,6 +17,28 @@
 		</layout>
 	</appender>
 
+	<appender name="debugFileAppender" class="org.apache.log4j.FileAppender">
+		<param name="file" value="\var\log\djfc\debug.log"/>
+		<param name="immediateFlush" value="true"/>
+		<param name="threshold" value="debug"/>
+		<param name="append" value="false"/>
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="errorFileAppender" class="org.apache.log4j.FileAppender">
+		<param name="file" value="\var\log\djfc\error.log"/>
+		<param name="immediateFlush" value="true"/>
+		<param name="threshold" value="error"/>
+		<param name="append" value="false"/>
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+		</layout>
+	</appender>
+
 	<appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
                 <param name="dataSource" value="jdbcDias"/>
 
@@ -68,5 +90,7 @@
 		<priority value="debug"></priority>
 		<appender-ref ref="jdbc" />
 		<appender-ref ref="console" />
+		<appender-ref ref="debugFileAppender" />
+		<appender-ref ref="errorFileAppender" />
 	</root>
 </log4j:configuration>
