@@ -159,14 +159,14 @@ public class BijlageController {
                     bedrijfService.opslaanBijlage(id, bijlage);
 
                     break;
-                case "JaarCijfers":
-
-                    jaarCijfersService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "RisicoAnalyse":
-
-                    risicoAnalyseService.opslaanBijlage(id, bijlage);
+                //                case "JaarCijfers":
+                //
+                //                    jaarCijfersService.opslaanBijlage(id, bijlage);
+                //
+                //                    break;
+                //                case "RisicoAnalyse":
+                //
+                //                    risicoAnalyseService.opslaanBijlage(id, bijlage);
 
                     break;
             }
