@@ -59,10 +59,10 @@ public class BijlageController {
     private AangifteService aangifteService;
     @Inject
     private BedrijfService bedrijfService;
-    @Inject
-    private JaarCijfersService jaarCijfersService;
-    @Inject
-    private RisicoAnalyseService risicoAnalyseService;
+    //    @Inject
+    //    private JaarCijfersService jaarCijfersService;
+    //    @Inject
+    //    private RisicoAnalyseService risicoAnalyseService;
     @Autowired
     private HttpServletRequest httpServletRequest;
     @Autowired
@@ -167,8 +167,8 @@ public class BijlageController {
                 //                case "RisicoAnalyse":
                 //
                 //                    risicoAnalyseService.opslaanBijlage(id, bijlage);
-
-                    break;
+                //
+                //                    break;
             }
             LOGGER.debug("Nogmaals opslaan Bijlage");
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
