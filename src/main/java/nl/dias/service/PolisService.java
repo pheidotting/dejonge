@@ -1,11 +1,11 @@
 package nl.dias.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import nl.dias.domein.*;
 import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.polis.*;
+import nl.dias.domein.polis.Betaalfrequentie;
+import nl.dias.domein.polis.Polis;
+import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
 import nl.dias.domein.predicates.PolissenOpSoortPredicate;
 import nl.dias.domein.transformers.PolisToSchermNaamTransformer;
@@ -22,9 +22,7 @@ import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Iterables.*;
 
 @Service
 public class PolisService {
@@ -121,18 +119,22 @@ public class PolisService {
         }
     }
 
-    public void opslaanBijlage(String polisId, Bijlage bijlage) {
+    public Bijlage opslaanBijlage(String polisId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Polis met id {}", bijlage.getId(), polisId);
 
         Polis polis = polisRepository.lees(Long.valueOf(polisId));
 
         polis.getBijlages().add(bijlage);
-        bijlage.setPolis(polis);
-        bijlage.setSoortBijlage(SoortBijlage.POLIS);
 
         LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
 
         polisRepository.opslaan(polis);
+
+        bijlage.setSoortBijlage(SoortBijlage.POLIS);
+        bijlage.setPolis(polis);
+
+        return bijlage;
     }
 
     public void slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {

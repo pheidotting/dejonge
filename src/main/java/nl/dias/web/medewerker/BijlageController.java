@@ -7,6 +7,7 @@ import nl.dias.service.*;
 import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,10 @@ public class BijlageController {
     private AangifteService aangifteService;
     @Inject
     private BedrijfService bedrijfService;
+    @Inject
+    private JaarCijfersService jaarCijfersService;
+    @Inject
+    private RisicoAnalyseService risicoAnalyseService;
     @Autowired
     private HttpServletRequest httpServletRequest;
     @Autowired
@@ -130,7 +135,8 @@ public class BijlageController {
                     break;
                 case "Polis":
 
-                    polisService.opslaanBijlage(id, bijlage);
+                    bijlage = polisService.opslaanBijlage(id, bijlage);
+                    //                    bijlage.setSoortBijlage(SoortBijlage.POLIS);
 
                     break;
                 case "Schade":
@@ -153,9 +159,20 @@ public class BijlageController {
                     bedrijfService.opslaanBijlage(id, bijlage);
 
                     break;
-                default:
-                    bijlageService.opslaan(bijlage);
+                case "JaarCijfers":
+
+                    jaarCijfersService.opslaanBijlage(id, bijlage);
+
+                    break;
+                case "RisicoAnalyse":
+
+                    risicoAnalyseService.opslaanBijlage(id, bijlage);
+
+                    break;
             }
+            LOGGER.debug("Nogmaals opslaan Bijlage");
+            LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+            bijlageService.opslaan(bijlage);
         }
         return bijlage;
     }

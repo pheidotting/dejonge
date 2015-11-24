@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
             bijlage.setId(Long.valueOf(json.getId()));
         }
         bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
-        bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
+        //        bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
 
         LOGGER.debug("{}", bijlage);
         return bijlage;
@@ -32,25 +31,21 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
         JsonBijlage json = new JsonBijlage();
         json.setId(bijlage.getId() == null ? null : bijlage.getId().toString());
-        json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());
         json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
         json.setBestandsNaam(bijlage.getBestandsNaam());
 
         String parentId = null;
-        switch (bijlage.getSoortBijlage()) {
-            case POLIS:
-                parentId = bijlage.getPolis().getPolisNummer();
-                break;
-            case SCHADE:
-                parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
-                break;
-            case HYPOTHEEK:
-                parentId = bijlage.getHypotheek().getId().toString();
-                break;
-            case IBAANGIFTE:
-                parentId = Integer.toString(bijlage.getAangifte().getJaar());
-                break;
+        if (bijlage.getPolis() != null) {
+            parentId = bijlage.getPolis().getPolisNummer();
+        } else if (bijlage.getSchade() != null) {
+            parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
+        } else if (bijlage.getHypotheek() != null) {
+            parentId = bijlage.getHypotheek().getId().toString();
+        } else if (bijlage.getAangifte() != null) {
+            parentId = Integer.toString(bijlage.getAangifte().getJaar());
+        } else if (bijlage.getJaarCijfers() != null) {
+            parentId = bijlage.getJaarCijfers().getId().toString();
         }
         json.setParentId(parentId);
 

@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.polis.AutoVerzekering;
 import org.easymock.EasyMockSupport;
@@ -32,12 +31,12 @@ public class BijlageMapperTest extends EasyMockSupport {
         bijlage.setId(1L);
         bijlage.setPolis(new AutoVerzekering());
         bijlage.setS3Identificatie(null);
-        bijlage.setSoortBijlage(SoortBijlage.POLIS);
+        //        bijlage.setSoortBijlage(SoortBijlage.POLIS);
 
         jsonBijlage = new JsonBijlage();
         jsonBijlage.setBestandsNaam(null);
         jsonBijlage.setId("1");
-        jsonBijlage.setSoortBijlage("Polis");
+        //        jsonBijlage.setSoortBijlage("Polis");
         jsonBijlage.setUrl(null);
 
         bijlages = new HashSet<Bijlage>();
