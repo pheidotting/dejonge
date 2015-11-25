@@ -5,12 +5,10 @@ import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class AangifteRepositoryTest {
     private AangifteRepository aangifteRepository;
 
