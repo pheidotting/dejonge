@@ -18,7 +18,7 @@
 	</appender>
 
 	<appender name="debugFileAppender" class="org.apache.log4j.FileAppender">
-		<param name="file" value="\var\log\djfc-debug.log"/>
+		<param name="file" value="\var\log\glassfish\djfc-debug.log"/>
 		<param name="immediateFlush" value="true"/>
 		<param name="threshold" value="debug"/>
 		<param name="append" value="false"/>
@@ -29,7 +29,7 @@
 	</appender>
 
 	<appender name="errorFileAppender" class="org.apache.log4j.FileAppender">
-		<param name="file" value="\var\log\djfc-error.log"/>
+		<param name="file" value="\var\log\glassfish\djfc-error.log"/>
 		<param name="immediateFlush" value="true"/>
 		<param name="threshold" value="error"/>
 		<param name="append" value="false"/>
