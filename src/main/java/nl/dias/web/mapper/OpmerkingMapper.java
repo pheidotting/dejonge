@@ -26,6 +26,10 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     private BedrijfService bedrijfService;
     @Inject
     private AangifteService aangifteService;
+    @Inject
+    private JaarCijfersService jaarCijfersService;
+    @Inject
+    private RisicoAnalyseService risicoAnalyseService;
 
     @Override
     public Opmerking mapVanJson(JsonOpmerking jsonOpmerking) {
@@ -61,6 +65,17 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             Aangifte aangifte = aangifteService.lees((Long.valueOf(jsonOpmerking.getAangifte())));
             opmerking.setAangifte(aangifte);
         }
+
+        if (jsonOpmerking.getJaarcijfers() != null) {
+            JaarCijfers jaarCijfers = jaarCijfersService.lees(Long.valueOf(jsonOpmerking.getJaarcijfers()));
+            opmerking.setJaarCijfers(jaarCijfers);
+        }
+
+        if (jsonOpmerking.getRisicoAnalyse() != null) {
+            RisicoAnalyse risicoAnalyse = risicoAnalyseService.lees(Long.valueOf(jsonOpmerking.getRisicoAnalyse()));
+            opmerking.setRisicoAnalyse(risicoAnalyse);
+        }
+
         LOGGER.debug("Opzoeken Medewerker met id {}", jsonOpmerking.getMedewerkerId());
         opmerking.setMedewerker((Medewerker) gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
 

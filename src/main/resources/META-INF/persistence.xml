@@ -50,6 +50,7 @@
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
 		<class>nl.dias.domein.Relatie</class>
+		<class>nl.dias.domein.RisicoAnalyse</class>
 		<class>nl.dias.domein.Schade</class>
 		<class>nl.dias.domein.Sessie</class>
 		<class>nl.dias.domein.SoortHypotheek</class>
@@ -152,6 +153,7 @@
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
 		<class>nl.dias.domein.Relatie</class>
+		<class>nl.dias.domein.RisicoAnalyse</class>
 		<class>nl.dias.domein.Schade</class>
 		<class>nl.dias.domein.Sessie</class>
 		<class>nl.dias.domein.SoortHypotheek</class>

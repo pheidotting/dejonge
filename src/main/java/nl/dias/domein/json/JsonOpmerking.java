@@ -1,8 +1,8 @@
 package nl.dias.domein.json;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import java.io.Serializable;
 
 public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private static final long serialVersionUID = -2035670222129537280L;
@@ -18,6 +18,8 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private String relatie;
     private String bedrijf;
     private String aangifte;
+    private String jaarcijfers;
+    private String risicoAnalyse;
     private String soort;
     private String tekstBackup;
 
@@ -107,6 +109,22 @@ public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
 
     public void setAangifte(String aangifte) {
         this.aangifte = aangifte;
+    }
+
+    public String getJaarcijfers() {
+        return jaarcijfers;
+    }
+
+    public void setJaarcijfers(String jaarcijfers) {
+        this.jaarcijfers = jaarcijfers;
+    }
+
+    public String getRisicoAnalyse() {
+        return risicoAnalyse;
+    }
+
+    public void setRisicoAnalyse(String risicoAnalyse) {
+        this.risicoAnalyse = risicoAnalyse;
     }
 
     public String getSoort() {

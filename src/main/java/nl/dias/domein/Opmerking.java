@@ -62,6 +62,10 @@ public class Opmerking implements PersistenceObject, Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
     private JaarCijfers jaarCijfers;
 
+    @JoinColumn(name = "RISICOANALYSE", nullable = true)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = RisicoAnalyse.class)
+    private RisicoAnalyse risicoAnalyse;
+
     @Column(columnDefinition = "varchar(2500)", name = "OPMERKING")
     private String opmerking;
 
@@ -165,6 +169,14 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     public void setJaarCijfers(JaarCijfers jaarCijfers) {
         this.jaarCijfers = jaarCijfers;
+    }
+
+    public RisicoAnalyse getRisicoAnalyse() {
+        return risicoAnalyse;
+    }
+
+    public void setRisicoAnalyse(RisicoAnalyse risicoAnalyse) {
+        this.risicoAnalyse = risicoAnalyse;
     }
 
     @Override

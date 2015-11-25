@@ -3,8 +3,11 @@ package nl.dias.service;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Bijlage;
 import nl.dias.domein.JaarCijfers;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.JaarCijfersRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.List;
 
-import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Iterables.filter;
 
 @Service
 public class JaarCijfersService {
@@ -23,6 +26,24 @@ public class JaarCijfersService {
     private JaarCijfersRepository jaarCijfersRepository;
     @Inject
     private BedrijfService bedrijfService;
+
+    public JaarCijfers lees(Long id) {
+        return jaarCijfersRepository.lees(id);
+    }
+
+    public void opslaanBijlage(String jaarCijfersId, Bijlage bijlage) {
+        LOGGER.info("Opslaan bijlage met id {}, bij JaarCijfers met id {}", bijlage.getId(), jaarCijfersId);
+
+        JaarCijfers jaarCijfers = jaarCijfersRepository.lees(Long.valueOf(jaarCijfersId));
+
+        jaarCijfers.getBijlages().add(bijlage);
+        bijlage.setJaarCijfers(jaarCijfers);
+        bijlage.setSoortBijlage(SoortBijlage.JAARCIJFERS);
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
+
+        jaarCijfersRepository.opslaan(jaarCijfers);
+    }
 
     public List<JaarCijfers> alles(Long bedrijfsId) {
         Bedrijf bedrijf = bedrijfService.lees(bedrijfsId);
@@ -39,6 +60,26 @@ public class JaarCijfersService {
         if (Lists.newArrayList(cijfersMetHuidigJaar).size() == 0) {
             JaarCijfers jaarCijfersNw = new JaarCijfers();
             jaarCijfersNw.setJaar(Long.valueOf(LocalDate.now().getYear()));
+            jaarCijfersNw.setBedrijf(bedrijf);
+
+            jaarCijfersRepository.opslaan(jaarCijfersNw);
+
+            jaarCijfers.add(jaarCijfersNw);
+        }
+
+        Iterable<JaarCijfers> cijfersMetVorigJaar = filter(jaarCijfers, new Predicate<JaarCijfers>() {
+            @Override
+            public boolean apply(JaarCijfers jaarCijfers) {
+                return jaarCijfers.getJaar().equals(Long.valueOf(LocalDate.now().minusYears(1).getYear()));
+            }
+        });
+
+        if (Lists.newArrayList(cijfersMetVorigJaar).size() == 0) {
+            JaarCijfers jaarCijfersNw = new JaarCijfers();
+            jaarCijfersNw.setJaar(Long.valueOf(LocalDate.now().minusYears(1).getYear()));
+            jaarCijfersNw.setBedrijf(bedrijf);
+
+            jaarCijfersRepository.opslaan(jaarCijfersNw);
 
             jaarCijfers.add(jaarCijfersNw);
         }

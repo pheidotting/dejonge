@@ -2,8 +2,8 @@ package nl.dias.web.medewerker;
 
 import com.google.common.collect.Lists;
 import nl.dias.domein.JaarCijfers;
-import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonJaarCijfers;
+import nl.dias.domein.json.comperators.JsonJaarCijfersComparator;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.JaarCijfersService;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
+import java.util.Collections;
 import java.util.List;
 
 @RequestMapping("/jaarcijfers")
@@ -32,6 +33,7 @@ public class JaarCijfersController {
             jsonJaarCijferses.add((JsonJaarCijfers) mapper.map(jaarCijfers));
         }
 
+        Collections.sort(jsonJaarCijferses, new JsonJaarCijfersComparator());
         return jsonJaarCijferses;
     }
 }

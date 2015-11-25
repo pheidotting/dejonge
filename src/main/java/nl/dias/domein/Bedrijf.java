@@ -48,6 +48,9 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = JaarCijfers.class)
     private Set<JaarCijfers> jaarCijfers;
 
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = RisicoAnalyse.class)
+    private Set<RisicoAnalyse> risicoAnalyses;
+
     @Override
     public Long getId() {
         return id;
@@ -135,6 +138,17 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
 
     public void setOpmerkingen(Set<Opmerking> opmerkingen) {
         this.opmerkingen = opmerkingen;
+    }
+
+    public Set<RisicoAnalyse> getRisicoAnalyses() {
+        if (risicoAnalyses == null) {
+            risicoAnalyses = new HashSet<>();
+        }
+        return risicoAnalyses;
+    }
+
+    public void setRisicoAnalyses(Set<RisicoAnalyse> risicoAnalyses) {
+        this.risicoAnalyses = risicoAnalyses;
     }
 
     @Override
