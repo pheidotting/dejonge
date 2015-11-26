@@ -2,15 +2,14 @@ package nl.dias.repository;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.RisicoAnalyse;
-import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(EasyMockRunner.class)
+@Ignore
 public class RisicoAnalyseRepositoryTest extends EasyMockSupport {
     private RisicoAnalyseRepository risicoAnalyseRepository;
 
