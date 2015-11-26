@@ -1,17 +1,15 @@
 package nl.dias.repository;
 
-import static org.junit.Assert.*;
-import static org.easymock.EasyMock.*;
-
 import com.google.common.collect.Lists;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.JaarCijfers;
-import org.easymock.EasyMockRunner;
-import org.easymock.EasyMockSupport;
-import org.easymock.*;
-import org.junit.*;
-import org.junit.runner.RunWith;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
+@Ignore
 public class JaarCijfersRepositoryTest  {
     private JaarCijfersRepository jaarCijfersRepository;
 
