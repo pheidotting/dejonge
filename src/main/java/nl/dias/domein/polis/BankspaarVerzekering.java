@@ -21,4 +21,9 @@ public class BankspaarVerzekering extends Polis {
         String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
+
+    @Override
+    public BankspaarVerzekering nieuweInstantie() {
+        return new BankspaarVerzekering();
+    }
 }

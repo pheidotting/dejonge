@@ -1,11 +1,14 @@
 package nl.dias.web.medewerker;
 
 import com.google.common.collect.Lists;
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
+import nl.dias.mapper.Mapper;
+import nl.dias.service.BedrijfService;
 import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
@@ -41,6 +44,10 @@ public class PolisController {
     private PolisMapper polisMapper;
     @Inject
     private List<Polis> polissen;
+    @Inject
+    private BedrijfService bedrijfService;
+    @Inject
+    private Mapper mapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleParticulierePolisSoorten")
     @ResponseBody
@@ -80,8 +87,22 @@ public class PolisController {
         LOGGER.debug("Ophalen alle polissen voor Relatie " + relatieId);
         Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
 
-        Set<Polis> polissen = new HashSet<>();
+        List<JsonPolis> result = Lists.newArrayList();
         for (Polis polis : polisService.allePolissenBijRelatie(relatie)) {
+            result.add(polisMapper.mapNaarJson(polis));
+        }
+
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf")
+    @ResponseBody
+    public List<JsonPolis> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
+        LOGGER.debug("Ophalen alle polissen voor Bedrijf " + bedrijfId);
+        Bedrijf bedrijf = bedrijfService.lees(bedrijfId);
+
+        Set<Polis> polissen = new HashSet<>();
+        for (Polis polis : polisService.allePolissenBijBedrijf(bedrijf)) {
             polissen.add(polis);
         }
 

@@ -186,6 +186,9 @@ public class PolisService {
         return polisRepository.allePolissenBijRelatie(relatie);
     }
 
+    public List<Polis> allePolissenBijBedrijf(Bedrijf bedrijf) {
+        return Lists.newArrayList();
+    }
     public void opslaan(JsonPolis jsonPolis) {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij());
         LOGGER.debug("maatschappij gevonden : " + maatschappij);
@@ -292,7 +295,8 @@ public class PolisService {
     }
 
     public Polis definieerPolisSoort(String soort) {
-        return getOnlyElement(filter(polissen, new PolisOpSchermNaamPredicate(soort)));
+        Polis p = getOnlyElement(filter(polissen, new PolisOpSchermNaamPredicate(soort)));
+        return p.nieuweInstantie();
     }
 
     public void setPolisRepository(PolisRepository polisRepository) {

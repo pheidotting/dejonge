@@ -23,4 +23,8 @@ public class AansprakelijkheidVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public AansprakelijkheidVerzekering nieuweInstantie() {
+        return new AansprakelijkheidVerzekering();
+    }
 }

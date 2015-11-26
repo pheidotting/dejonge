@@ -21,5 +21,10 @@ public class GlasVerzekering extends Polis {
         String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
+
+    @Override
+    public GlasVerzekering nieuweInstantie() {
+        return new GlasVerzekering();
+    }
 }
 

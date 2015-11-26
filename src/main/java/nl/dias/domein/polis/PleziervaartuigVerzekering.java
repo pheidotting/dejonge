@@ -22,4 +22,8 @@ public class PleziervaartuigVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public PleziervaartuigVerzekering nieuweInstantie() {
+        return new PleziervaartuigVerzekering();
+    }
 }

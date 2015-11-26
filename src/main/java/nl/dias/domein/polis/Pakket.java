@@ -22,4 +22,8 @@ public class Pakket extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public Pakket nieuweInstantie() {
+        return new Pakket();
+    }
 }

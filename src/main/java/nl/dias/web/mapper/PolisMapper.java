@@ -99,12 +99,12 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
-        if (polis.getId() != null && polis.getId() != 0) {
-            Polis p = polisService.lees(polis.getId());
-
-            polis.setSchades(p.getSchades());
-            polis.setOpmerkingen(p.getOpmerkingen());
-        }
+//        if (polis.getId() != null && polis.getId() != 0) {
+//            Polis p = polisService.lees(polis.getId());
+//
+//            polis.setSchades(p.getSchades());
+//            polis.setOpmerkingen(p.getOpmerkingen());
+//        }
 
         //        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
         //        for (Bijlage bijlage : polis.getBijlages()) {

@@ -22,4 +22,8 @@ public class AnnuleringsVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public AnnuleringsVerzekering nieuweInstantie() {
+        return new AnnuleringsVerzekering();
+    }
 }

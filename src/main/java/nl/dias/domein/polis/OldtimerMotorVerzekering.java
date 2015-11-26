@@ -21,5 +21,10 @@ public class OldtimerMotorVerzekering extends Polis {
         String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
+
+    @Override
+    public OldtimerMotorVerzekering nieuweInstantie() {
+        return new OldtimerMotorVerzekering();
+    }
 }
 

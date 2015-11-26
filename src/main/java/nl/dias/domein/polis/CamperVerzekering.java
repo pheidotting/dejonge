@@ -22,4 +22,8 @@ public class CamperVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public CamperVerzekering nieuweInstantie() {
+        return new CamperVerzekering();
+    }
 }

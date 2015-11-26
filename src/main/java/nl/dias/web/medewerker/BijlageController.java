@@ -134,6 +134,7 @@ public class BijlageController {
 
                     break;
                 case "Polis":
+                    LOGGER.debug("Entiteit is een Polis, dus opslaan bij Polis.");
 
                     bijlage = polisService.opslaanBijlage(id, bijlage);
                     //                    bijlage.setSoortBijlage(SoortBijlage.POLIS);

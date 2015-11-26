@@ -20,4 +20,9 @@ public class SviSchadeverzekerininzittende extends Polis {
     public String getSchermNaam() {
         return "SVI Schadeverzekeringinzittende";
     }
+
+    @Override
+    public SviSchadeverzekerininzittende nieuweInstantie() {
+        return new SviSchadeverzekerininzittende();
+    }
 }

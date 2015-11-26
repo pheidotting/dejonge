@@ -22,4 +22,8 @@ public class BromSnorfietsVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public BromSnorfietsVerzekering nieuweInstantie() {
+        return new BromSnorfietsVerzekering();
+    }
 }

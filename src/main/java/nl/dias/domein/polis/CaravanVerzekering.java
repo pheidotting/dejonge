@@ -22,4 +22,8 @@ public class CaravanVerzekering extends Polis {
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
 
+    @Override
+    public CaravanVerzekering nieuweInstantie() {
+        return new CaravanVerzekering();
+    }
 }

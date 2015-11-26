@@ -2,12 +2,10 @@ package nl.dias.repository;
 
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
-import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
@@ -56,7 +54,9 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
     @Override
     public void opslaan(Bijlage bijlage) {
         try {
-            getTx().begin();
+            if (!getTx().isActive()) {
+                getTx().begin();
+            }
         } catch (java.lang.IllegalStateException ise) {
             LOGGER.debug("Fout opgetreden", ise);
         }

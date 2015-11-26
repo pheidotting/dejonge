@@ -23,4 +23,9 @@ public class ReisVerzekering extends Polis {
         String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
         return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
     }
+
+    @Override
+    public ReisVerzekering nieuweInstantie() {
+        return new ReisVerzekering();
+    }
 }
