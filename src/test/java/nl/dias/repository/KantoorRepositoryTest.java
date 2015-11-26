@@ -7,6 +7,7 @@ import nl.dias.exception.PostcodeNietGoedException;
 import nl.dias.exception.TelefoonnummerNietGoedException;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -15,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+@Ignore
 public class KantoorRepositoryTest {
     private KantoorRepository kantoorService;
 
