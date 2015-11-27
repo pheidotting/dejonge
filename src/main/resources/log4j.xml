@@ -17,29 +17,37 @@
 		</layout>
 	</appender>
 
-	<appender name="debugFileAppender" class="org.apache.log4j.FileAppender">
+    <appender name="debugFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/var/log/glassfish/djfc-relatiebeheer-debug.log"/>
 		<param name="immediateFlush" value="true"/>
 		<param name="threshold" value="debug"/>
-		<param name="append" value="false"/>
-
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
 		</layout>
 	</appender>
 
-	<appender name="errorFileAppender" class="org.apache.log4j.FileAppender">
+    <appender name="errorFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/var/log/glassfish/djfc-relatiebeheer-error.log"/>
 		<param name="immediateFlush" value="true"/>
-		<param name="threshold" value="error"/>
-		<param name="append" value="false"/>
-
+        <param name="threshold" value="debug"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
 		</layout>
 	</appender>
 
-	<appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
+    <appender name="log4javascriptFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/var/log/glassfish/djfc-log4javascript.log"/>
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="debug"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
                 <param name="dataSource" value="jdbcDias"/>
 
                 <!-- table -->
@@ -82,6 +90,10 @@
 	<logger name="nl.dias.web.medewerker.JsonController">
 		<level value="trace" />
 	</logger>
+    <logger name="nl.dias.web.authorisatie.Log4JController">
+        <level value="trace"/>
+        <appender-ref ref="log4javascriptFileAppender"/>
+    </logger>
 	<logger name="org.dozer">
 		<level value="error" />
 	</logger>
