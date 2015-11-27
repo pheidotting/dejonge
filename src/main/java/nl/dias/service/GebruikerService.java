@@ -365,7 +365,7 @@ public class GebruikerService {
         try {
             polis = polisRepository.zoekOpPolisNummer(zoekTerm, kantoorRepository.lees(1L));
         } catch (NoResultException e) {
-            LOGGER.debug("Niks gevonden ", e);
+            LOGGER.trace("Niks gevonden ", e);
         }
         if (polis != null) {
             relaties.add(polis.getRelatie());
