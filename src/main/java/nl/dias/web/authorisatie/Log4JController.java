@@ -19,17 +19,17 @@ public class Log4JController {
     public void log4javascript(@FormParam("logger") String logger, @FormParam("timestamp") String timestamp, @FormParam("level") String level, @FormParam("url") String url, @FormParam("message") String message, @FormParam("layout") String layout) {
 
         if ("debug".equalsIgnoreCase(level)) {
-            LOGGER.debug("URL {}, Message {}", message, url);
+            LOGGER.debug("URL {}, Message {}", url, message);
         } else if ("info".equalsIgnoreCase(level)) {
-            LOGGER.info("URL {}, Message {}", message, url);
+            LOGGER.info("URL {}, Message {}", url, message);
         } else if ("warn".equalsIgnoreCase(level)) {
-            LOGGER.warn("URL {}, Message {}", message, url);
+            LOGGER.warn("URL {}, Message {}", url, message);
         } else if ("error".equalsIgnoreCase(level)) {
-            LOGGER.error("URL {}, Message {}", message, url);
+            LOGGER.error("URL {}, Message {}", url, message);
         } else if ("fatal".equalsIgnoreCase(level)) {
-            LOGGER.error("URL {}, Message {}", message, url);
+            LOGGER.error("URL {}, Message {}", url, message);
         } else {
-            LOGGER.trace("URL {}, Message {}", message, url);
+            LOGGER.trace("URL {}, Message {}", url, message);
         }
     }
 
