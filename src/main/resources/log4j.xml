@@ -30,7 +30,7 @@
     <appender name="errorFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/var/log/glassfish/djfc-relatiebeheer-error.log"/>
 		<param name="immediateFlush" value="true"/>
-        <param name="threshold" value="debug"/>
+        <param name="threshold" value="error"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
 		<layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
