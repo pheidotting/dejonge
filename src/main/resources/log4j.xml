@@ -47,6 +47,16 @@
         </layout>
     </appender>
 
+    <appender name="authorisatieFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/var/log/glassfish/djfc-authorisatie.log"/>
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="debug"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
+        </layout>
+    </appender>
+
     <appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
                 <param name="dataSource" value="jdbcDias"/>
 
@@ -77,12 +87,13 @@
 	<logger name="org.apache">
 		<level value="error" />
 	</logger>
-	<logger name="nl.dias.service.AuthorisatieService">
+    <logger name="nl.dias.service.AuthorisatieService" additivity="false">
 		<level value="info" />
-		<level value="console" />
+        <appender-ref ref="authorisatieFileAppender"/>
 	</logger>
-	<logger name="nl.dias.web.filter">
+    <logger name="nl.dias.web.filter" additivity="false">
 		<level value="debug" />
+        <appender-ref ref="authorisatieFileAppender"/>
 	</logger>
 	<logger name="nl.dias">
 		<level value="debug" />
@@ -90,7 +101,7 @@
 	<logger name="nl.dias.web.medewerker.JsonController">
 		<level value="trace" />
 	</logger>
-    <logger name="nl.dias.web.authorisatie.Log4JController">
+    <logger name="nl.dias.web.authorisatie.Log4JController" additivity="false">
         <level value="trace"/>
         <appender-ref ref="log4javascriptFileAppender"/>
     </logger>
