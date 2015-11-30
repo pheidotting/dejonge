@@ -68,9 +68,11 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
             getEm().persist(bijlage);
             LOGGER.debug("Klaar met persist");
         } else {
-            LOGGER.debug("Bijlage is al bekend, merge!") getEm().merge(bijlage);
+            LOGGER.debug("Bijlage is al bekend, merge!");
+            getEm().merge(bijlage);
             LOGGER.debug("Merge klaar");
-        } LOGGER.debug("Transactie committen");
+        }
+        LOGGER.debug("Transactie committen");
         getTx().commit();
         LOGGER.debug("Commit klaar");
     }
