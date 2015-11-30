@@ -30,6 +30,8 @@ public class BijlageService {
     public void verwijderBijlage(Long id) {
         Bijlage bijlage = bijlageRepository.lees(id);
 
+        LOGGER.debug("Verwijderen Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+
         bijlageRepository.verwijder(bijlage);
     }
 
