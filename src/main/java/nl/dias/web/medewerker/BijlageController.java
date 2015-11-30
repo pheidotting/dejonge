@@ -114,7 +114,15 @@ public class BijlageController {
         LOGGER.debug("{}", ReflectionToStringBuilder.toString(uploadedInputStream));
         LOGGER.debug("{}", ReflectionToStringBuilder.toString(fileDetail));
 
-        return bijlageMapper.mapNaarJson(uploaden(uploadedInputStream, fileDetail, soortEntiteit, id));
+        Bijlage bijlage = uploaden(uploadedInputStream, fileDetail, soortEntiteit, id);
+
+        LOGGER.debug("Geupload {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        JsonBijlage jsonBijlage = bijlageMapper.mapNaarJson(bijlage);
+
+        LOGGER.debug("Naar de front-end {}", ReflectionToStringBuilder.toString(jsonBijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        return jsonBijlage;
     }
 
     private Bijlage uploaden(InputStream uploadedInputStream, MultipartFile fileDetail, String soortEntiteit, String id) {
@@ -123,53 +131,33 @@ public class BijlageController {
 
         if (fileDetail != null && fileDetail.getName() != null && uploadedInputStream != null) {
 
+            LOGGER.debug("Naar BijlageService");
             bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
 
-            switch (soortEntiteit) {
-                case "Relatie":
-                    LOGGER.debug("Opslaan bijlage bij Relatie id {}", id);
+            if ("Relatie".equalsIgnoreCase(soortEntiteit)) {
+                LOGGER.debug("Opslaan bijlage bij Relatie id {}", id);
 
-                    gebruikerService.opslaanBijlage(id, bijlage);
+                gebruikerService.opslaanBijlage(id, bijlage);
+            } else if ("Polis".equalsIgnoreCase(soortEntiteit)) {
+                LOGGER.debug("Entiteit is een Polis, dus opslaan bij Polis.");
 
-                    break;
-                case "Polis":
-                    LOGGER.debug("Entiteit is een Polis, dus opslaan bij Polis.");
+                bijlage = polisService.opslaanBijlage(id, bijlage);
 
-                    bijlage = polisService.opslaanBijlage(id, bijlage);
-                    //                    bijlage.setSoortBijlage(SoortBijlage.POLIS);
-
-                    break;
-                case "Schade":
-
-                    schadeService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "Aangifte":
-
-                    aangifteService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "Hypotheek":
-
-                    hypotheekService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "Bedrijf":
-
-                    bedrijfService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "JaarCijfers":
-
-                    jaarCijfersService.opslaanBijlage(id, bijlage);
-
-                    break;
-                case "RisicoAnalyse":
-
+                LOGGER.debug("Bijlage opgelsagen {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+                //                    bijlage.setSoortBijlage(SoortBijlage.POLIS);
+            } else if ("Schade".equalsIgnoreCase(soortEntiteit)) {
+                schadeService.opslaanBijlage(id, bijlage);
+            } else if ("Aangifte".equalsIgnoreCase(soortEntiteit)) {
+                aangifteService.opslaanBijlage(id, bijlage);
+            } else if ("Hypotheek".equalsIgnoreCase(soortEntiteit)) {
+                hypotheekService.opslaanBijlage(id, bijlage);
+            } else if ("Bedrijf".equalsIgnoreCase(soortEntiteit)) {
+                bedrijfService.opslaanBijlage(id, bijlage);
+            } else if ("JaarCijfers".equalsIgnoreCase(soortEntiteit)) {
+                jaarCijfersService.opslaanBijlage(id, bijlage);
+            } else if ("RisicoAnalyse".equalsIgnoreCase(soortEntiteit)) {
                     risicoAnalyseService.opslaanBijlage(id, bijlage);
-
-                    break;
             }
             LOGGER.debug("Nogmaals opslaan Bijlage");
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));

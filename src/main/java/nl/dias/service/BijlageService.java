@@ -4,6 +4,8 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
 import nl.dias.utils.Utils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +51,17 @@ public class BijlageService {
         bijlage.setUploadMoment(LocalDateTime.now());
 
         bijlageRepository.opslaan(bijlage);
+        LOGGER.debug("Opslaan Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         try {
+            LOGGER.debug("Opslaan bestand op schijf");
             writeToFile(fileDetail.getInputStream(), Utils.getUploadPad() + "/" + identificatie);
+            LOGGER.debug("Bestand opgeslagen op schijft");
         } catch (IOException e) {
             LOGGER.error("Fout bij uploaden", e);
         }
+
+        LOGGER.debug("{}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         return bijlage;
     }
