@@ -1,13 +1,11 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
-import nl.dias.web.mapper.BedrijfMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,9 +17,7 @@ import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequestMapping("/bedrijf")
 @Controller
@@ -44,7 +40,7 @@ public class BedrijfController {
         } else {
             bedrijf = bedrijfService.lees(Long.valueOf(id));
         }
-        return (JsonBedrijf) mapper.map(bedrijf);
+        return mapper.map(bedrijf, JsonBedrijf.class);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
@@ -54,11 +50,11 @@ public class BedrijfController {
 
         if (zoekTerm == null) {
             for (Bedrijf bedrijf : bedrijfService.alles()) {
-                bedrijven.add((JsonBedrijf) mapper.map(bedrijf));
+                bedrijven.add(mapper.map(bedrijf, JsonBedrijf.class));
             }
         } else {
             for (Bedrijf bedrijf : bedrijfService.zoekOpNaam(zoekTerm)) {
-                bedrijven.add((JsonBedrijf) mapper.map(bedrijf));
+                bedrijven.add(mapper.map(bedrijf, JsonBedrijf.class));
             }
 
         }

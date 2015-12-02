@@ -56,6 +56,13 @@ public class SchadeRepository extends AbstractRepository<Schade> {
         return query.getResultList();
     }
 
+    public List<Schade> alleSchadesBijBedrijf(Bedrijf bedrijf) {
+        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.allesVanBedrijf", Schade.class);
+        query.setParameter("bedrijf", bedrijf);
+
+        return query.getResultList();
+    }
+
     public List<Bijlage> zoekBijlagesBijSchade(Schade schade) {
         TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijSchade", Bijlage.class);
         query.setParameter("schade", schade);

@@ -159,6 +159,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
+            jsonPolis.setBedrijfsId(polis.getBedrijf().getId());
         }
         jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {

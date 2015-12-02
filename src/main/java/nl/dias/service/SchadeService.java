@@ -122,6 +122,10 @@ public class SchadeService {
         return schadeRepository.alleSchadesBijRelatie(relatie);
     }
 
+    public List<Schade> alleSchadesBijBedrijf(Bedrijf bedrijf) {
+        return schadeRepository.alleSchadesBijBedrijf(bedrijf);
+    }
+
     public Schade lees(Long id) {
         return schadeRepository.lees(id);
     }

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Response;
 
 @RequestMapping("/authorisatie")
@@ -124,25 +123,4 @@ public class AuthorisatieController {
 
         return gebruiker;
     }
-
-
-    @RequestMapping(method = RequestMethod.POST, value = "/log4javascript")
-    @ResponseBody
-    public void log4javascript(@FormParam("logger") String logger, @FormParam("timestamp") String timestamp, @FormParam("level") String level, @FormParam("url") String url, @FormParam("message") String message, @FormParam("layout") String layout) {
-
-        if ("debug".equalsIgnoreCase(level)) {
-            LOGGER.debug("Message {}, URL {}", message, url);
-        } else if ("info".equalsIgnoreCase(level)) {
-            LOGGER.info("Message {}, URL {}", message, url);
-        } else if ("warn".equalsIgnoreCase(level)) {
-            LOGGER.warn("Message {}, URL {}", message, url);
-        } else if ("error".equalsIgnoreCase(level)) {
-            LOGGER.error("Message {}, URL {}", message, url);
-        } else if ("fatal".equalsIgnoreCase(level)) {
-            LOGGER.error("Message {}, URL {}", message, url);
-        } else {
-            LOGGER.trace("Message {}, URL {}", message, url);
-        }
-    }
-
 }

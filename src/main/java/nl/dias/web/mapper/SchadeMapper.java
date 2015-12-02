@@ -78,6 +78,9 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         //        if (schade.getPolis() != null && schade.getPolis().getRelatie() != null) {
         //            jsonSchade.setRelatie(schade.getPolis().getRelatie().getId().toString());
         //        }
+        if (schade.getPolis() != null && schade.getPolis().getBedrijf() != null) {
+            jsonSchade.setBedrijf(schade.getPolis().getBedrijf().getId());
+        }
 
         List<JsonOpmerking> opmerkingen = opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen());
         Collections.sort(opmerkingen);

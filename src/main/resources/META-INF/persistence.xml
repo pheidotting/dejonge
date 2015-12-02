@@ -19,7 +19,7 @@
 		<class>nl.dias.domein.OnderlingeRelatie</class>
 		<class>nl.dias.domein.Opmerking</class>
 		<class>nl.dias.domein.polis.Polis</class>
-		<class>nl.dias.domein.polis.AanhangerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.AanhangerVerzekering</class>
 		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
 		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
 		<class>nl.dias.domein.polis.AutoVerzekering</class>
@@ -59,8 +59,8 @@
 		<class>nl.dias.domein.Telefoonnummer</class>
 		<class>nl.dias.domein.VerzekeringsMaatschappij</class>
 		<class>nl.dias.service.envers.RevEntity</class>
-		
-		<!-- 
+
+		<!--
 		<properties>
 			<property name="hibernate.ejb.event.post-insert"
 				value="o r g . hibernate.ejb.event.EJB3PostInsertEventListener,o r g . hibernate.envers.event.Audit Event Listener" />
@@ -81,29 +81,32 @@
 		    <property name="hibernate.dialect" value="o r g . hibernate.dialect.MySQLDialect"/>
 		 -->
 
-<!-- 
-			<property name="hibernate.transaction.manager_lookup_class" value="o r g . hibernate.transaction.SunONETransactionManagerLookup"/>
-		    <property name="hibernate.show_sql" value="true"/>
-		    <property name="hibernate.generate_statistics" value="true"/>
-		    <property name="hibernate.archive.autodetection" value="class,hbm"/>
-		    <property name="hibernate.transaction.factory_class" value="o r g . hibernate.transaction.JTATransactionFactory"/>
-			<property name="hibernate.dialect" value="o r g . hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://192.168.2.20/unittest" />
-			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-			<property name="hibernate.connection.username" value="root" />
-			<property name="hibernate.connection.password" value="herman" />
- -->
-			
-			
+		<!--
+                    <property name="hibernate.transaction.manager_lookup_class" value="o r g . hibernate.transaction.SunONETransactionManagerLookup"/>
+                    <property name="hibernate.show_sql" value="true"/>
+                    <property name="hibernate.generate_statistics" value="true"/>
+                    <property name="hibernate.archive.autodetection" value="class,hbm"/>
+                    <property name="hibernate.transaction.factory_class" value="o r g . hibernate.transaction.JTATransactionFactory"/>
+                    <property name="hibernate.dialect" value="o r g . hibernate.dialect.MySQLDialect" />
+                    <property name="hibernate.connection.url" value="jdbc:mysql://192.168.2.20/unittest" />
+                    <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+                    <property name="hibernate.connection.username" value="root" />
+                    <property name="hibernate.connection.password" value="herman" />
+         -->
 
-<!-- 
-			<property name="eclipselink.debug" value="ALL" />
-			<property name="eclipselink.weaving" value="static" />
-			<property name="eclipselink.logging.level" value="FINEST" />
-			<property name="eclipselink.logging.level.sql" value="FINEST" />
-			<property name="eclipselink.logging.level.cache" value="FINEST" />
- 		</properties>
- -->
+
+		<!--
+                    <property name="eclipselink.debug" value="ALL" />
+                    <property name="eclipselink.weaving" value="static" />
+                    <property name="eclipselink.logging.level" value="FINEST" />
+                    <property name="eclipselink.logging.level.sql" value="FINEST" />
+                    <property name="eclipselink.logging.level.cache" value="FINEST" />
+                 </properties>
+                <properties>
+
+                    <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect"/>
+                </properties>
+         -->
 	</persistence-unit>
 
 	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">
@@ -122,7 +125,7 @@
 		<class>nl.dias.domein.OnderlingeRelatie</class>
 		<class>nl.dias.domein.Opmerking</class>
 		<class>nl.dias.domein.polis.Polis</class>
-		<class>nl.dias.domein.polis.AanhangerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.AanhangerVerzekering</class>
 		<class>nl.dias.domein.polis.AansprakelijkheidVerzekering</class>
 		<class>nl.dias.domein.polis.AnnuleringsVerzekering</class>
 		<class>nl.dias.domein.polis.AutoVerzekering</class>

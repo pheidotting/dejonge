@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+		 version="3.0">
 	<display-name>dejonge</display-name>
-
-	<context-param>
+	<!--context-param>
 		<param-name>liquibase.changelog</param-name>
 		<param-value>nl/dias/service/liquibase/databaseChangeLog.xml</param-value>
 	</context-param>
@@ -17,18 +16,12 @@
 
 	<listener>
 		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
-	</listener>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            /applicationContext.xml
-        </param-value>
-    </context-param>
+	</listener-->
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/applicationContext.xml
+			classpath:applicationContext-jetty.xml
 		</param-value>
 	</context-param>
 
@@ -44,6 +37,7 @@
 		<servlet-name>relatiebeheer-medewerker</servlet-name>
 		<url-pattern>/rest/medewerker/*</url-pattern>
 	</servlet-mapping>
+
 
 	<servlet>
 		<servlet-name>relatiebeheer-authorisatie</servlet-name>
@@ -61,6 +55,15 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+	<filter>
+		<filter-name>HeaderFilter</filter-name>
+		<filter-class>nl.dias.web.filter.HeaderFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HeaderFilter</filter-name>
+		<url-pattern>/rest/medewerker/*</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>Authorisatie</filter-name>

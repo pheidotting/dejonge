@@ -116,6 +116,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         return query.getResultList();
     }
 
+
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
         LOGGER.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
 

@@ -1,9 +1,11 @@
 package nl.dias.web.medewerker;
 
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.domein.json.JsonSchade;
+import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.SchadeService;
 import nl.dias.web.mapper.SchadeMapper;
@@ -33,6 +35,8 @@ public class SchadeController {
     private SchadeMapper schadeMapper;
     @Inject
     private GebruikerService gebruikerService;
+    @Inject
+    private BedrijfService bedrijfService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/opslaan")
     @ResponseBody
@@ -52,6 +56,20 @@ public class SchadeController {
 
         Set<Schade> schades = new HashSet<>();
         for (Schade schade : schadeService.alleSchadesBijRelatie(relatie)) {
+            schades.add(schade);
+        }
+
+        return schadeMapper.mapAllNaarJson(schades);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf")
+    @ResponseBody
+    public List<JsonSchade> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
+        LOGGER.debug("Opzoeken Schades bij Bedrijf met Id {}", bedrijfId);
+        Bedrijf bedrijf = bedrijfService.lees(bedrijfId);
+
+        Set<Schade> schades = new HashSet<>();
+        for (Schade schade : schadeService.alleSchadesBijBedrijf(bedrijf)) {
             schades.add(schade);
         }
 

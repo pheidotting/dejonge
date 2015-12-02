@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonPolis {
+public class JsonPolis implements ObjectMetJsonBijlages, ObjectMetJsonOpmerkingen {
     private Long id;
     private String status;
     private String polisNummer;
@@ -24,6 +24,7 @@ public class JsonPolis {
     private String soort;
     private List<JsonBijlage> bijlages;
     private String bedrijf;
+    private Long bedrijfsId;
     private String idDiv;
     private String idDivLink;
     private String className;
@@ -177,6 +178,14 @@ public class JsonPolis {
 
     public void setBedrijf(String bedrijf) {
         this.bedrijf = bedrijf;
+    }
+
+    public Long getBedrijfsId() {
+        return bedrijfsId;
+    }
+
+    public void setBedrijfsId(Long bedrijfsId) {
+        this.bedrijfsId = bedrijfsId;
     }
 
     public List<JsonSchade> getSchades() {

@@ -1,5 +1,7 @@
-package nl.dias.domein.polis;
+package nl.dias.domein.polis.zakelijk;
 
+import nl.dias.domein.polis.Polis;
+import nl.dias.domein.polis.SoortVerzekering;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.DiscriminatorValue;
@@ -15,10 +17,10 @@ public class AanhangerVerzekering extends Polis {
     public SoortVerzekering getSoortVerzekering() {
         return SoortVerzekering.PARTICULIER;
     }
+
     @Override
     public String getSchermNaam() {
-        String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
-        return this.getClass().getCanonicalName().replace("Verzekering", "").replace(pakket, "");
+        return this.getSchermNaamDefault(this.getClass().getCanonicalName());
     }
 
     @Override

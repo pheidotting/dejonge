@@ -1,10 +1,10 @@
 package nl.dias.domein.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonSchade {
     private Long id;
@@ -22,6 +22,7 @@ public class JsonSchade {
     private List<JsonOpmerking> opmerkingen;
     private List<JsonBijlage> bijlages;
     private String relatie;
+    private Long bedrijf;
     private String idDiv;
     private String idDivLink;
     private String titel;
@@ -187,6 +188,14 @@ public class JsonSchade {
 
     public void setRelatie(String relatie) {
         this.relatie = relatie;
+    }
+
+    public Long getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Long bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
     public String getSoortEntiteit() {

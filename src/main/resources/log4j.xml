@@ -57,24 +57,6 @@
         </layout>
     </appender>
 
-    <appender name="jdbc" class="org.apache.log4j.extended.jdbc.JDBCAppender">
-                <param name="dataSource" value="jdbcDias"/>
-
-                <!-- table -->
-                <param name="table" value="LOGS"/>
-
-                <param name="bufferSize" value="10"/>
-
-                <param name="column" value="date        | TIMESTAMP | %class: org.apache.log4j.extended.jdbc.DateLayout"/>
-                <param name="column" value="host        | VARCHAR   | %class: org.apache.log4j.extended.jdbc.HostLayout"/>
-                <param name="column" value="application | VARCHAR   | relatiebeheer"/>
-                <param name="column" value="thread      | VARCHAR   | %t"/>
-                <param name="column" value="category    | VARCHAR   | %c"/>
-                <param name="column" value="priority    | VARCHAR   | %p"/>
-                <param name="column" value="message     | VARCHAR   | %m"/>
-                <param name="column" value="throwable   | VARCHAR   | %class: org.apache.log4j.extended.jdbc.ThrowableLayout"/>
-        </appender>
-        
 	<logger name="javax.enterprise.system">
 		<level value="error" />
 	</logger>
@@ -111,7 +93,6 @@
 
 	<root>
 		<priority value="debug"></priority>
-		<appender-ref ref="jdbc" />
 		<appender-ref ref="console" />
 		<appender-ref ref="debugFileAppender" />
 		<appender-ref ref="errorFileAppender" />

@@ -2,7 +2,6 @@ package nl.dias.mapper;
 
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import nl.dias.domein.*;
 import nl.dias.domein.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Iterators.transform;
 
 @Component
 public class Mapper {
@@ -25,7 +23,7 @@ public class Mapper {
     @Inject
     private List<AbstractMapper> mappers;
 
-    public Object map(final Object objectIn) {
+    public <T> T map(final Object objectIn, final Class<T> clazz) {
         Object objectUit = null;
 
         LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(objectIn, ToStringStyle.SHORT_PREFIX_STYLE));
@@ -42,24 +40,24 @@ public class Mapper {
         if (objectIn instanceof ObjectMetOpmerkingen) {
             for (Opmerking opmerking : ((ObjectMetOpmerkingen) objectIn).getOpmerkingen()) {
                 LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(opmerking, ToStringStyle.SHORT_PREFIX_STYLE));
-                ((ObjectMetJsonOpmerkingen) objectUit).getOpmerkingen().add((JsonOpmerking) map(opmerking));
+                ((ObjectMetJsonOpmerkingen) objectUit).getOpmerkingen().add(map(opmerking, JsonOpmerking.class));
             }
         }
 
         if (objectIn instanceof ObjectMetBijlages) {
             for (Bijlage bijlage : ((ObjectMetBijlages) objectIn).getBijlages()) {
                 LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
-                ((ObjectMetJsonBijlages) objectUit).getBijlages().add((JsonBijlage) map(bijlage));
+                ((ObjectMetJsonBijlages) objectUit).getBijlages().add(map(bijlage, JsonBijlage.class));
             }
         }
 
         if (objectIn instanceof ObjectMetAdressen) {
             for (Adres adres : ((ObjectMetAdressen) objectIn).getAdressen()) {
                 LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(adres, ToStringStyle.SHORT_PREFIX_STYLE));
-                ((ObjectMetJsonAdressen) objectUit).getAdressen().add((JsonAdres) map(adres));
+                ((ObjectMetJsonAdressen) objectUit).getAdressen().add(map(adres, JsonAdres.class));
             }
         }
 
-        return objectUit;
+        return clazz.cast(objectUit);
     }
 }

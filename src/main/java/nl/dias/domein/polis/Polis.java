@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
-@NamedQueries({@NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"), @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"), @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie")})
+@NamedQueries({@NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"), @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"), @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie"), @NamedQuery(name = "Polis.allesVanBedrijf", query = "select p from Polis p where p.bedrijf = :bedrijf")})
 public abstract class Polis implements PersistenceObject, Serializable, Cloneable, ObjectMetBijlages, ObjectMetOpmerkingen {
     private static final long serialVersionUID = 1011438129295546984L;
 
@@ -93,6 +93,11 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     public abstract SoortVerzekering getSoortVerzekering();
 
     public abstract String getSchermNaam();
+
+    protected String getSchermNaamDefault(String canonicalName) {
+        String pakket = this.getClass().getPackage().toString().replace("package ", "") + ".";
+        return canonicalName.replace("Verzekering", "").replace(pakket, "");
+    }
 
     public abstract Polis nieuweInstantie();
 

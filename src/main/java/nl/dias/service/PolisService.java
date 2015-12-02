@@ -187,8 +187,9 @@ public class PolisService {
     }
 
     public List<Polis> allePolissenBijBedrijf(Bedrijf bedrijf) {
-        return Lists.newArrayList();
+        return polisRepository.allePolissenBijBedrijf(bedrijf);
     }
+
     public void opslaan(JsonPolis jsonPolis) {
         VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij());
         LOGGER.debug("maatschappij gevonden : " + maatschappij);

@@ -30,7 +30,7 @@ public class JaarCijfersController {
         List<JsonJaarCijfers> jsonJaarCijferses = Lists.newArrayList();
 
         for (JaarCijfers jaarCijfers : jaarCijfersService.alles(bedrijfsId)) {
-            jsonJaarCijferses.add((JsonJaarCijfers) mapper.map(jaarCijfers));
+            jsonJaarCijferses.add(mapper.map(jaarCijfers, JsonJaarCijfers.class));
         }
 
         Collections.sort(jsonJaarCijferses, new JsonJaarCijfersComparator());

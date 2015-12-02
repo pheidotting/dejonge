@@ -22,6 +22,6 @@ public class RisicoAnalyseController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody
     public JsonRisicoAnalyse lees(@QueryParam("bedrijfsId") Long bedrijfsId) {
-        return (JsonRisicoAnalyse) mapper.map(risicoAnalyseService.leesBijBedrijf(bedrijfsId));
+        return mapper.map(risicoAnalyseService.leesBijBedrijf(bedrijfsId), JsonRisicoAnalyse.class);
     }
 }
