@@ -102,10 +102,9 @@
                     <property name="eclipselink.logging.level.sql" value="FINEST" />
                     <property name="eclipselink.logging.level.cache" value="FINEST" />
                  </properties>
-                <properties>
-
-                    <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect"/>
-                </properties>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect"/>
+		</properties>
          -->
 	</persistence-unit>
 

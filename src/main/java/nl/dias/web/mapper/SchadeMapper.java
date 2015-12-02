@@ -4,6 +4,7 @@ import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
 import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.json.JsonSchade;
+import nl.dias.service.SchadeService;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -23,6 +24,8 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
     private OpmerkingMapper opmerkingMapper;
     @Inject
     private BijlageMapper bijlageMapper;
+    @Inject
+    private SchadeService schadeService;
 
     @Override
     public Schade mapVanJson(JsonSchade json) {
@@ -33,7 +36,13 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         if (json.getDatumAfgehandeld() != null) {
             datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
         }
-        Schade schade = new Schade();
+
+        Schade schade = null;
+        if (json.getId() == null) {
+            schade = new Schade();
+        } else {
+            schade = schadeService.lees(json.getId());
+        }
         schade.setId(json.getId());
 
         if (json.getDatumTijdMelding() != null) {

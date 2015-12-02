@@ -21,6 +21,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerRepository.class);
     private final static int MAX_RESULTS = 30;
 
+
     public GebruikerRepository() {
         super(Gebruiker.class);
         zetPersistenceContext("dias");

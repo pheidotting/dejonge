@@ -38,7 +38,7 @@ public class SchadeController {
     @Inject
     private BedrijfService bedrijfService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
     public Response opslaan(@RequestBody JsonSchade jsonSchade) {
         LOGGER.debug("{}", jsonSchade);

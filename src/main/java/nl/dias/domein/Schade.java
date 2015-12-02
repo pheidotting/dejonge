@@ -68,10 +68,10 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Column(length = 1000, name = "OMSCHRIJVING")
     private String omschrijving;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
     private Set<Bijlage> bijlages;
 
     @Override
