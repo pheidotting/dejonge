@@ -3,6 +3,7 @@ package nl.dias.repository;
 import nl.dias.domein.*;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class HypotheekRepositoryTest {
     private HypotheekRepository hypotheekRepository;
 
