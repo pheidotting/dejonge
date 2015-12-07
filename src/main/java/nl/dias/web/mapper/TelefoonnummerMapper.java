@@ -12,7 +12,7 @@ public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnum
         Telefoonnummer telefoonnummer = new Telefoonnummer();
 
         telefoonnummer.setId(jsonTelefoonnummer.getId());
-        telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
+        telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer().replace(" ", ""));
         telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort().toUpperCase()));
         telefoonnummer.setOmschrijving(jsonTelefoonnummer.getOmschrijving());
 
