@@ -213,24 +213,24 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     }
 
     public Set<ContactPersoon> getContactPersonen() {
+        if (contactPersonen == null) {
+            contactPersonen = Sets.newHashSet();
+        }
         return contactPersonen;
     }
 
     public void setContactPersonen(Set<ContactPersoon> contactPersonen) {
-        if (contactPersonen == null) {
-            contactPersonen = Sets.newHashSet();
-        }
         this.contactPersonen = contactPersonen;
     }
 
     public Set<Telefoonnummer> getTelefoonnummers() {
+        if (telefoonnummers == null) {
+            telefoonnummers = Sets.newHashSet();
+        }
         return telefoonnummers;
     }
 
     public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
-        if (telefoonnummers == null) {
-            telefoonnummers = Sets.newHashSet();
-        }
         this.telefoonnummers = telefoonnummers;
     }
 
