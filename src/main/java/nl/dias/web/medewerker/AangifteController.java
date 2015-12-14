@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -54,6 +53,7 @@ public class AangifteController {
         try {
             aangifteService.afronden(id, LocalDate.now(), getGebruiker());
         } catch (Exception e) {
+            LOGGER.trace("{}", e);
             return Response.status(500).build();
         }
         return Response.ok(id).build();
