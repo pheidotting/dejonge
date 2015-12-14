@@ -3,8 +3,12 @@ package nl.dias.commons;
 import ch.vorburger.exec.ManagedProcessException;
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MariaDBServer {
+    private final static Logger LOGGER = LoggerFactory.getLogger(MariaDBServer.class);
+
     public MariaDBServer() {
     }
 
@@ -17,13 +21,14 @@ public class MariaDBServer {
         configBuilder.setPort(3306); // OR, default: setPort(0); => autom. detect free port
         //        configBuilder.setDataDir("/home/theapp/db"); // just an example
         try {
+            LOGGER.info("Startin MariaDB");
             DB db = DB.newEmbeddedDB(3306);
             db.start();
-            //            db.createDB("djfc");
+            LOGGER.debug("Db started");
         } catch (ManagedProcessException mpe) {
-            System.out.println("Fout ");
-            System.out.println(mpe.getMessage());
-            System.out.println(mpe.getStackTrace());
+            LOGGER.error("Fout ");
+            LOGGER.error(mpe.getMessage());
+            LOGGER.error("{}", mpe.getStackTrace());
         }
     }
 }
