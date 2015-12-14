@@ -28,7 +28,7 @@ public class MariaDBServer {
         } catch (ManagedProcessException mpe) {
             LOGGER.error("Fout ");
             LOGGER.error(mpe.getMessage());
-            LOGGER.error("{}", mpe.getStackTrace());
+            LOGGER.error("{}", mpe);
         }
     }
 }
