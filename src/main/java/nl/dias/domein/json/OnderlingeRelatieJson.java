@@ -1,8 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.dias.domein.OnderlingeRelatie;
+
 import java.io.Serializable;
 
-import nl.dias.domein.OnderlingeRelatie;
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 
 public final class OnderlingeRelatieJson implements Serializable {
     private static final long serialVersionUID = -5853743296641464125L;

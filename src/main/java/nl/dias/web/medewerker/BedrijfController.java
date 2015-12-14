@@ -6,9 +6,13 @@ import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
+import nl.dias.web.mapper.BedrijfMapper;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +34,25 @@ public class BedrijfController {
     private GebruikerService gebruikerService;
     @Inject
     private Mapper mapper;
+    @Inject
+    private BedrijfMapper bedrijfMapper;
+
+
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @ResponseBody
+    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf) {
+        LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        try {
+            Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
+            bedrijfService.opslaan(bedrijf);
+
+            return Response.status(200).entity(new JsonFoutmelding()).build();
+        } catch (Exception e) {
+            LOGGER.error("Fout bij opslaan Bedrijf", e);
+            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        }
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody
@@ -64,7 +87,7 @@ public class BedrijfController {
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
     @ResponseBody
     public Response verwijder(@QueryParam("id") Long id) {
-        LOGGER.debug("verwijderen Polis met id " + id);
+        LOGGER.debug("verwijderen Bedrijf met id " + id);
         try {
             bedrijfService.verwijder(id);
         } catch (IllegalArgumentException e) {

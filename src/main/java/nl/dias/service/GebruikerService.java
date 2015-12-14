@@ -256,12 +256,6 @@ public class GebruikerService {
                 hypotheekRepository.verwijder(hypotheek);
                 relatie.getHypotheken().remove(hypotheek);
             }
-            for (Bedrijf bedrijf : relatie.getBedrijven()) {
-                LOGGER.debug("Verwijder Bedrijf :");
-                LOGGER.debug(ReflectionToStringBuilder.toString(bedrijf));
-                bedrijfService.verwijder(bedrijf);
-                relatie.getBedrijven().remove(bedrijf);
-            }
         }
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);

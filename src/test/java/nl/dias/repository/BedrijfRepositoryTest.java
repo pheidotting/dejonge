@@ -32,7 +32,6 @@ public class BedrijfRepositoryTest {
 
         Bedrijf bedrijf1 = new Bedrijf();
         bedrijf1.setNaam("bedrijf1");
-        bedrijf1.setRelatie(relatie1);
         Adres adres = new Adres();
         adres.setToevoeging("toevoeging");
         adres.setStraat("straat");
@@ -42,9 +41,7 @@ public class BedrijfRepositoryTest {
         bedrijf1.getAdressen().add(adres);
         Bedrijf bedrijf2 = new Bedrijf();
         bedrijf2.setNaam("bedrijf2");
-        bedrijf2.setRelatie(relatie2);
         Bedrijf bedrijf3 = new Bedrijf();
-        bedrijf3.setRelatie(relatie2);
         bedrijf3.setNaam("bedrijf3");
 
         bedrijfRepository.opslaan(bedrijf1);

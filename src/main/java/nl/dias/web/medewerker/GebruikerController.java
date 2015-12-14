@@ -1,16 +1,13 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.*;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
-import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.AdresMapper;
-import nl.dias.web.mapper.BedrijfMapper;
 import nl.dias.web.mapper.RelatieMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
@@ -38,11 +35,7 @@ public class GebruikerController {
     @Inject
     private KantoorRepository kantoorRepository;
     @Inject
-    private BedrijfService bedrijfService;
-    @Inject
     private RelatieMapper relatieMapper;
-    @Inject
-    private BedrijfMapper bedrijfMapper;
     @Inject
     private AdresMapper adresMapper;
     @Inject
@@ -127,27 +120,6 @@ public class GebruikerController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanBedrijf")
-    @ResponseBody
-    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf) {
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(jsonBedrijf.getRelatie()));
-
-        try {
-            Bedrijf bedrijf = bedrijfMapper.mapVanJson(jsonBedrijf);
-            bedrijf.setRelatie(relatie);
-            bedrijfService.opslaan(bedrijf);
-
-            relatie.getBedrijven().add(bedrijf);
-
-            gebruikerService.opslaan(relatie);
-
-            return Response.status(200).entity(new JsonFoutmelding()).build();
-        } catch (Exception e) {
-            LOGGER.error("Fout bij opslaan Bedrijf", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
-        }
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/verwijderen")
     @ResponseBody
     public Response verwijderen(@QueryParam("id") Long id) {
@@ -207,14 +179,6 @@ public class GebruikerController {
 
     public void setRelatieMapper(RelatieMapper relatieMapper) {
         this.relatieMapper = relatieMapper;
-    }
-
-    public void setBedrijfService(BedrijfService bedrijfService) {
-        this.bedrijfService = bedrijfService;
-    }
-
-    public void setBedrijfMapper(BedrijfMapper bedrijfMapper) {
-        this.bedrijfMapper = bedrijfMapper;
     }
 
     public void setKantoorRepository(KantoorRepository kantoorRepository) {

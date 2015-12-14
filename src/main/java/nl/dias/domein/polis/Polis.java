@@ -276,7 +276,7 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
 
     public Set<Schade> getSchades() {
         if (schades == null) {
-            schades = new HashSet<Schade>();
+            schades = new HashSet<>();
         }
         return schades;
     }

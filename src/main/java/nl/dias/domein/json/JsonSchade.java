@@ -1,11 +1,13 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonSchade {
     private Long id;
     private String polis;

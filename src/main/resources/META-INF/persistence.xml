@@ -10,6 +10,7 @@
 		<class>nl.dias.domein.Bedrijf</class>
 		<class>nl.dias.domein.Beheerder</class>
 		<class>nl.dias.domein.Bijlage</class>
+		<class>nl.dias.domein.ContactPersoon</class>
 		<class>nl.dias.domein.Gebruiker</class>
 		<class>nl.dias.domein.Hypotheek</class>
 		<class>nl.dias.domein.HypotheekPakket</class>
@@ -115,6 +116,7 @@
 		<class>nl.dias.domein.Bedrijf</class>
 		<class>nl.dias.domein.Beheerder</class>
 		<class>nl.dias.domein.Bijlage</class>
+		<class>nl.dias.domein.ContactPersoon</class>
 		<class>nl.dias.domein.Gebruiker</class>
 		<class>nl.dias.domein.Hypotheek</class>
 		<class>nl.dias.domein.HypotheekPakket</class>

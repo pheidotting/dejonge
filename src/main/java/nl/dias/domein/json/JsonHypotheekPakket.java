@@ -1,12 +1,14 @@
 package nl.dias.domein.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonHypotheekPakket {
     private Long id;
     private List<JsonHypotheek> hypotheken;

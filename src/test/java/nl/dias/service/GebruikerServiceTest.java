@@ -565,7 +565,6 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatieZoekOpBedrijfsnaam = new Relatie();
         Bedrijf bedrijf = new Bedrijf();
         bedrijf.setNaam("naamBedrijf");
-        relatieZoekOpBedrijfsnaam.getBedrijven().add(bedrijf);
         relatiesZoekOpBedrijfsnaam.add(relatieZoekOpBedrijfsnaam);
 
         Polis polis = new AutoVerzekering();
@@ -640,7 +639,6 @@ public class GebruikerServiceTest extends EasyMockSupport {
         Relatie relatieZoekOpBedrijfsnaam = new Relatie();
         Bedrijf bedrijf = new Bedrijf();
         bedrijf.setNaam("naamBedrijf");
-        relatieZoekOpBedrijfsnaam.getBedrijven().add(bedrijf);
         relatiesZoekOpBedrijfsnaam.add(relatieZoekOpBedrijfsnaam);
 
         expect(repository.zoekOpNaam(zoekterm)).andReturn(relatiesZoekOpNaam);

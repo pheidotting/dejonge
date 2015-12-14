@@ -172,10 +172,6 @@ public class PolisService {
         LOGGER.debug("Verwijderen Polis bij Relatie");
         relatie.getPolissen().remove(polis);
         LOGGER.debug("Kijken of de Polis nog bij een bedrijf zit");
-        for (Bedrijf bedrijf : relatie.getBedrijven()) {
-            LOGGER.debug("Bedrijf met id " + bedrijf.getId());
-            bedrijf.getPolissen().remove(polis);
-        }
 
         gebruikerService.opslaan(relatie);
 

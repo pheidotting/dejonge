@@ -66,7 +66,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
                 relatie.setBurgerlijkeStaat(bs);
             }
         }
-        relatie.getBedrijven();
         return relatie;
     }
 

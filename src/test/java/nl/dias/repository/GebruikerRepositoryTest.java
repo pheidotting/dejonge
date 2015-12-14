@@ -68,10 +68,6 @@ public class GebruikerRepositoryTest {
         Bedrijf bedrijf1 = new Bedrijf();
         bedrijf.setNaam("aabb");
         bedrijf1.setNaam("bbcc");
-        relatie.getBedrijven().add(bedrijf);
-        bedrijf.setRelatie(relatie);
-        relatie1.getBedrijven().add(bedrijf1);
-        bedrijf1.setRelatie(relatie1);
 
         gebruikerRepository.opslaan(relatie);
         gebruikerRepository.opslaan(relatie1);

@@ -55,7 +55,6 @@ public class RelatieMapperTest extends EasyMockSupport {
         relatie.setPolissen(new HashSet<Polis>());
         relatie.setRekeningnummers(new HashSet<RekeningNummer>());
         relatie.setOpmerkingen(new HashSet<Opmerking>());
-        relatie.setBedrijven(new HashSet<Bedrijf>());
 
         relaties = new HashSet<Relatie>();
         relaties.add(relatie);

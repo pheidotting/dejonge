@@ -1,5 +1,8 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonOnderlingeRelatie {
     private Long idRelatieMet;
     private String relatieMet;

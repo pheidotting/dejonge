@@ -24,6 +24,10 @@ public class Mapper {
     private List<AbstractMapper> mappers;
 
     public <T> T map(final Object objectIn, final Class<T> clazz) {
+        return map(objectIn, clazz, null);
+    }
+
+    public <T> T map(final Object objectIn, final Class<T> clazz, Object parent) {
         Object objectUit = null;
 
         LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(objectIn, ToStringStyle.SHORT_PREFIX_STYLE));
@@ -36,6 +40,8 @@ public class Mapper {
         }));
 
         objectUit = mapper.map(objectIn);
+
+        LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
 
         if (objectIn instanceof ObjectMetOpmerkingen) {
             for (Opmerking opmerking : ((ObjectMetOpmerkingen) objectIn).getOpmerkingen()) {
@@ -52,9 +58,43 @@ public class Mapper {
         }
 
         if (objectIn instanceof ObjectMetAdressen) {
+
+            LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
+
             for (Adres adres : ((ObjectMetAdressen) objectIn).getAdressen()) {
                 LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(adres, ToStringStyle.SHORT_PREFIX_STYLE));
                 ((ObjectMetJsonAdressen) objectUit).getAdressen().add(map(adres, JsonAdres.class));
+            }
+        }
+
+        if (objectIn instanceof ObjectMetJsonAdressen) {
+
+            LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
+
+            for (JsonAdres adres : ((ObjectMetJsonAdressen) objectIn).getAdressen()) {
+                LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(adres, ToStringStyle.SHORT_PREFIX_STYLE));
+                ((ObjectMetAdressen) objectUit).getAdressen().add(map(adres, Adres.class));
+            }
+        }
+
+        if (objectIn instanceof ObjectMetTelefoonnummers) {
+
+            LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
+
+            for (Telefoonnummer telefoonnummer : ((ObjectMetTelefoonnummers) objectIn).getTelefoonnummers()) {
+                LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(telefoonnummer, ToStringStyle.SHORT_PREFIX_STYLE));
+                ((ObjectMetJsonTelefoonnummers) objectUit).getTelefoonnummers().add(map(telefoonnummer, JsonTelefoonnummer.class));
+            }
+        }
+
+
+        if (objectIn instanceof ObjectMetJsonTelefoonnummers) {
+
+            LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
+
+            for (JsonTelefoonnummer telefoonnummer : ((ObjectMetJsonTelefoonnummers) objectIn).getTelefoonnummers()) {
+                LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(telefoonnummer, ToStringStyle.SHORT_PREFIX_STYLE));
+                ((ObjectMetTelefoonnummers) objectUit).getTelefoonnummers().add(map(telefoonnummer, Telefoonnummer.class));
             }
         }
 

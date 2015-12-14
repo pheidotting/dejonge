@@ -1,10 +1,10 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.List;
 
-/**
- * Created by patrickheidotting on 28-10-15.
- */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonOpmerkingenModel {
     private List<JsonOpmerking> opmerkingen;
     private String nieuweOpmerking;

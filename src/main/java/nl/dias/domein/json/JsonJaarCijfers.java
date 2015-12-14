@@ -1,20 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
-import nl.dias.domein.Opmerking;
-import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonJaarCijfers implements ObjectMetJsonBijlages, ObjectMetJsonOpmerkingen {
     private Long id;
     private Long jaar;

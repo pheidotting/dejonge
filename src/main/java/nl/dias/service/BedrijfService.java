@@ -1,7 +1,12 @@
 package nl.dias.service;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.BedrijfRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +30,13 @@ public class BedrijfService {
     }
 
     public void verwijder(Long id) {
-        bedrijfRepository.verwijder(lees(id));
+        LOGGER.debug("Verwijderen Bedrijf met id {}", id);
+
+        Bedrijf bedrijf = lees(id);
+
+        LOGGER.debug("Verwijderen : {}", ReflectionToStringBuilder.toString(bedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        bedrijfRepository.verwijder(bedrijf);
     }
 
     public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {

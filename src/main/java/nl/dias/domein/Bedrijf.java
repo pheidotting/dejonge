@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "BEDRIJF")
 @NamedQueries({@NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"), @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
-public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages, ObjectMetAdressen {
+public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages, ObjectMetAdressen, ObjectMetTelefoonnummers {
     private static final long serialVersionUID = 4611123664803995245L;
 
     @Id
@@ -36,19 +36,40 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     @Column(name = "KVK", length = 8)
     private String kvk;
 
+    @Column(name = "RECHTSVORM")
+    private String rechtsvorm;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "INTERNETADRES")
+    private String internetadres;
+
+    @Column(name = "HOEDANIGHEID")
+    private String hoedanigheid;
+
+    @Column(name = "CAOVERPLICHTINGEN")
+    private String cAoVerplichtingen;
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = ContactPersoon.class, mappedBy = "bedrijf")
+    private Set<ContactPersoon> contactPersonen;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "bedrijf")
+    private Set<Telefoonnummer> telefoonnummers;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "bedrijf")
     private Set<Adres> adressen;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bedrijf", targetEntity = Opmerking.class)
     private Set<Opmerking> opmerkingen;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = Bijlage.class)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<Bijlage> bijlages;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = JaarCijfers.class)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<JaarCijfers> jaarCijfers;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf", orphanRemoval = true, targetEntity = RisicoAnalyse.class)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<RisicoAnalyse> risicoAnalyses;
 
     @Override
@@ -149,6 +170,68 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
 
     public void setRisicoAnalyses(Set<RisicoAnalyse> risicoAnalyses) {
         this.risicoAnalyses = risicoAnalyses;
+    }
+
+    public String getRechtsvorm() {
+        return rechtsvorm;
+    }
+
+    public void setRechtsvorm(String rechtsvorm) {
+        this.rechtsvorm = rechtsvorm;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getInternetadres() {
+        return internetadres;
+    }
+
+    public void setInternetadres(String internetadres) {
+        this.internetadres = internetadres;
+    }
+
+    public String getHoedanigheid() {
+        return hoedanigheid;
+    }
+
+    public void setHoedanigheid(String hoedanigheid) {
+        this.hoedanigheid = hoedanigheid;
+    }
+
+    public String getcAoVerplichtingen() {
+        return cAoVerplichtingen;
+    }
+
+    public void setcAoVerplichtingen(String cAoVerplichtingen) {
+        this.cAoVerplichtingen = cAoVerplichtingen;
+    }
+
+    public Set<ContactPersoon> getContactPersonen() {
+        return contactPersonen;
+    }
+
+    public void setContactPersonen(Set<ContactPersoon> contactPersonen) {
+        if (contactPersonen == null) {
+            contactPersonen = Sets.newHashSet();
+        }
+        this.contactPersonen = contactPersonen;
+    }
+
+    public Set<Telefoonnummer> getTelefoonnummers() {
+        return telefoonnummers;
+    }
+
+    public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
+        if (telefoonnummers == null) {
+            telefoonnummers = Sets.newHashSet();
+        }
+        this.telefoonnummers = telefoonnummers;
     }
 
     @Override

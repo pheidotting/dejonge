@@ -5,7 +5,7 @@ import nl.dias.domein.polis.Polis;
 
 public class PolisNaarJsonPolisMapper extends AbstractMapper<Polis, JsonPolis> {
     @Override
-    public JsonPolis map(Polis polis) {
+    public JsonPolis map(Polis polis, Object parent) {
         JsonPolis jsonPolis = new JsonPolis();
 
         jsonPolis.setId(polis.getId());

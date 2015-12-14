@@ -17,7 +17,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "SCHADE")
-@NamedQueries({@NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"), @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie"), @NamedQuery(name = "Schade.allesVanBedrijf", query = "select s from Schade s where s.polis.bedrijf = :bedrijf")})
+@NamedQueries({@NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
+        //        @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie"),
+        //        @NamedQuery(name = "Schade.allesVanBedrijf", query = "select s from Schade s where s.polis.bedrijf = :bedrijf")
+})
 public class Schade implements Comparable, PersistenceObject, Serializable {
     private static final long serialVersionUID = -8340805705038811388L;
 

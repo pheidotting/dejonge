@@ -1,9 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonAdres {
     private static final long serialVersionUID = 2361944992062349932L;
 
@@ -15,6 +17,7 @@ public class JsonAdres {
     private String plaats;
     private String soortAdres;
     private String relatie;
+    private String bedrijf;
 
     public Long getId() {
         return id;
@@ -78,6 +81,14 @@ public class JsonAdres {
 
     public void setRelatie(String relatie) {
         this.relatie = relatie;
+    }
+
+    public String getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(String bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
     @Override

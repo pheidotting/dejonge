@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpmerkingNaarJsonOpmerkingMapper extends  AbstractMapper<Opmerking,JsonOpmerking>{
     @Override
-    public JsonOpmerking map(Opmerking opmerking) {
+    public JsonOpmerking map(Opmerking opmerking, Object parent) {
         JsonOpmerking jsonOpmerking = new JsonOpmerking();
 
         jsonOpmerking.setId(opmerking.getId());

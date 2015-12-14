@@ -45,18 +45,17 @@ public class BedrijfMapperTest extends EasyMockSupport{
         bedrijf.setId(1L);
         Relatie relatie = new Relatie();
         relatie.setId(2L);
-        bedrijf.setRelatie(relatie);
 
         jsonBedrijf = new JsonBedrijf();
-        jsonBedrijf.setHuisnummer("41");
-        jsonBedrijf.setPlaats("Zwartemeer");
-        jsonBedrijf.setPostcode("7894AB");
-        jsonBedrijf.setStraat("Eemslandweg");
-        jsonBedrijf.setToevoeging("toevoeging");
+        //        jsonBedrijf.setHuisnummer("41");
+        //        jsonBedrijf.setPlaats("Zwartemeer");
+        //        jsonBedrijf.setPostcode("7894AB");
+        //        jsonBedrijf.setStraat("Eemslandweg");
+        //        jsonBedrijf.setToevoeging("toevoeging");
         jsonBedrijf.setKvk("kvk");
         jsonBedrijf.setNaam("NaamBedrijf");
         jsonBedrijf.setId("1");
-        jsonBedrijf.setRelatie("2");
+        //        jsonBedrijf.setRelatie("2");
 
         bedrijven = new HashSet<Bedrijf>();
         bedrijven.add(bedrijf);
@@ -69,7 +68,6 @@ public class BedrijfMapperTest extends EasyMockSupport{
     public void testMapVanJson() {
         Bedrijf bedrijfVanJson = mapper.mapVanJson(jsonBedrijf);
         assertEquals(bedrijf, bedrijfVanJson);
-        assertEquals(bedrijf.getRelatie().getId(), bedrijfVanJson.getRelatie().getId());
     }
 
     @Test

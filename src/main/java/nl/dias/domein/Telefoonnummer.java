@@ -21,11 +21,17 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
     @Column(name = "TELEFOONNUMMERSOORT")
     @Enumerated(EnumType.STRING)
     private TelefoonnummerSoort soort;
+    @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
+    private String omschrijving;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
-    @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
-    private String omschrijving;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Bedrijf.class)
+    @JoinColumn(name = "BEDRIJF")
+    private Bedrijf bedrijf;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = ContactPersoon.class)
+    @JoinColumn(name = "CONTACTPERSOON")
+    private ContactPersoon contactPersoon;
 
     @Override
     public Long getId() {
@@ -67,6 +73,22 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
 
     public void setOmschrijving(String omschrijving) {
         this.omschrijving = omschrijving;
+    }
+
+    public ContactPersoon getContactPersoon() {
+        return contactPersoon;
+    }
+
+    public void setContactPersoon(ContactPersoon contactPersoon) {
+        this.contactPersoon = contactPersoon;
+    }
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
     @Override

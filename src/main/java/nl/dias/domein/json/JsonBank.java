@@ -1,9 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonBank {
     private Long id;
     private String naam;

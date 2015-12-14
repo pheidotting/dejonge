@@ -9,12 +9,13 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import nl.dias.domein.json.JsonBedrijf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by patrickheidotting on 13-10-15.
@@ -81,7 +82,7 @@ public class AbstractITest {
 
         if (args != null) {
             for (String arg : args) {
-                adres = adres + "/" + arg;
+                adres = adres + arg;
             }
         }
         LOGGER.info("Aanroepen via GET " + adres);
@@ -90,14 +91,50 @@ public class AbstractITest {
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
-        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+        ClientResponse response = webResource.accept("application/json").type("application/json").header("sessieCode", sessieCode).get(ClientResponse.class);
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
 
         Type listOfTestObject = new TypeToken<List<T>>() {
         }.getType();
-        LOGGER.debug(ReflectionToStringBuilder.toString(response));
+        //        LOGGER.debug(ReflectionToStringBuilder.toString(response));
+        //        LOGGER.debug("{}",    gson.fromJson(response.getEntity(String.class), listOfTestObject));
         return gson.fromJson(response.getEntity(String.class), listOfTestObject);
+    }
+
+    protected List<JsonBedrijf> uitvoerenGetLijst(String adres, String sessieCode, String... args) {
+        Gson gson = builder.create();
+
+        if (args != null) {
+            for (String arg : args) {
+                adres = adres + arg;
+            }
+        }
+        LOGGER.info("Aanroepen via GET " + adres);
+
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(clientConfig);
+        WebResource webResource = client.resource(adres);
+        ClientResponse response = webResource.accept("application/json").type("application/json").header("sessieCode", sessieCode).get(ClientResponse.class);
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        }
+
+        Type listOfTestObject = new TypeToken<List<JsonBedrijf>>() {
+        }.getType();
+        //        LOGGER.debug(ReflectionToStringBuilder.toString(response));
+        //        LOGGER.debug("{}",    gson.fromJson(response.getEntity(String.class), listOfTestObject));
+        return gson.fromJson(response.getEntity(String.class), listOfTestObject);
+    }
+
+    public String genereerRandomString(int lengte) {
+        StringBuffer sb = new StringBuffer();
+        while (sb.length() < lengte) {
+            sb.append(UUID.randomUUID().toString().replace("-", ""));
+        }
+
+        return sb.toString().substring(0, lengte - 1);
     }
 }

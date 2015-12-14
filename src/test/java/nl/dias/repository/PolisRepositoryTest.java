@@ -90,13 +90,8 @@ public class PolisRepositoryTest {
 
         Bedrijf bedrijf1 = new Bedrijf();
         bedrijf1.setNaam("Bedrijf1");
-        bedrijf1.setRelatie(relatie);
         Bedrijf bedrijf2 = new Bedrijf();
         bedrijf2.setNaam("Bedrijf2");
-        bedrijf2.setRelatie(relatie);
-
-        relatie.getBedrijven().add(bedrijf1);
-        relatie.getBedrijven().add(bedrijf2);
 
         AutoVerzekering autoVerzekering = new AutoVerzekering();
         autoVerzekering.setRelatie(relatie);

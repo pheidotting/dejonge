@@ -1,11 +1,13 @@
 package nl.dias.domein.json;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+import java.util.List;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonRekeningNummer implements Serializable {
     private static final long serialVersionUID = 7872029330278528593L;
 

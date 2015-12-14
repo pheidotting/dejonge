@@ -1,8 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonRisicoAnalyse implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijlages {
     private Long id;
     private Long bedrijf;

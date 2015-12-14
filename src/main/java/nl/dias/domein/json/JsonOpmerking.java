@@ -1,9 +1,11 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.io.Serializable;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonOpmerking implements Serializable, Comparable<JsonOpmerking> {
     private static final long serialVersionUID = -2035670222129537280L;
 

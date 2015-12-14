@@ -1,24 +1,29 @@
 package nl.dias.domein.json;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijlages, ObjectMetJsonAdressen {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijlages, ObjectMetJsonAdressen, ObjectMetJsonTelefoonnummers {
+
     private String id;
     private List<JsonPolis> polissen;
     private List<JsonOpmerking> opmerkingen;
     private String naam;
     private String kvk;
-    private String straat;
-    private String huisnummer;
-    private String toevoeging;
-    private String postcode;
-    private String plaats;
-    private String relatie;
+    private String rechtsvorm;
+    private String email;
+    private String internetadres;
+    private String hoedanigheid;
+    private String cAoVerplichtingen;
+    private List<JsonContactPersoon> contactpersonen;
+    private List<JsonTelefoonnummer> telefoonnummers;
     private String idDiv;
     private String idDivLink;
     private List<String> errors;
@@ -26,6 +31,53 @@ public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijla
     private String adresOpgemaakt;
     private List<JsonAdres> adressen;
     private List<JsonBijlage> bijlages;
+    private AdressenModel adressenModel;
+    private TelefoonnummersModel telefoonnummersModel;
+    private String soortEntiteit;
+    private boolean readOnly;
+    private boolean notReadOnly;
+
+    public class AdressenModel {
+        private List<JsonAdres> adressen;
+        private String bedrijf;
+
+        public List<JsonAdres> getAdressen() {
+            return adressen;
+        }
+
+        public void setAdressen(List<JsonAdres> adressen) {
+            this.adressen = adressen;
+        }
+
+        public String getBedrijf() {
+            return bedrijf;
+        }
+
+        public void setBedrijf(String bedrijf) {
+            this.bedrijf = bedrijf;
+        }
+    }
+
+    public class TelefoonnummersModel {
+        private List<JsonTelefoonnummer> telefoonnummers;
+        private String bedrijf;
+
+        public List<JsonTelefoonnummer> getTelefoonnummers() {
+            return telefoonnummers;
+        }
+
+        public void setTelefoonnummers(List<JsonTelefoonnummer> telefoonnummers) {
+            this.telefoonnummers = telefoonnummers;
+        }
+
+        public String getBedrijf() {
+            return bedrijf;
+        }
+
+        public void setBedrijf(String bedrijf) {
+            this.bedrijf = bedrijf;
+        }
+    }
 
     public String getAdresOpgemaakt() {
         StringBuffer sb = new StringBuffer();
@@ -98,53 +150,6 @@ public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijla
         this.kvk = kvk;
     }
 
-    public String getStraat() {
-        return straat;
-    }
-
-    public void setStraat(String straat) {
-        this.straat = straat;
-    }
-
-    public String getHuisnummer() {
-        return huisnummer;
-    }
-
-    public void setHuisnummer(String huisnummer) {
-        this.huisnummer = huisnummer;
-    }
-
-    public String getToevoeging() {
-        return toevoeging;
-    }
-
-    public void setToevoeging(String toevoeging) {
-        this.toevoeging = toevoeging;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public String getPlaats() {
-        return plaats;
-    }
-
-    public void setPlaats(String plaats) {
-        this.plaats = plaats;
-    }
-
-    public String getRelatie() {
-        return relatie;
-    }
-
-    public void setRelatie(String relatie) {
-        this.relatie = relatie;
-    }
 
     public String getIdDiv() {
         return idDiv;
@@ -200,51 +205,137 @@ public class JsonBedrijf implements ObjectMetJsonOpmerkingen, ObjectMetJsonBijla
         this.bijlages = bijlages;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\nJsonBedrijf [id=");
-        builder.append(id);
-        builder.append(", polissen=");
-        builder.append(getPolissen());
-        builder.append(", naam=");
-        builder.append(naam);
-        builder.append(", kvk=");
-        builder.append(kvk);
-        builder.append(", straat=");
-        builder.append(straat);
-        builder.append(", huisnummer=");
-        builder.append(huisnummer);
-        builder.append(", toevoeging=");
-        builder.append(toevoeging);
-        builder.append(", postcode=");
-        builder.append(postcode);
-        builder.append(", plaats=");
-        builder.append(plaats);
-        builder.append(", relatie=");
-        builder.append(relatie);
-        builder.append("]");
-        return builder.toString();
+    public String getRechtsvorm() {
+        return rechtsvorm;
     }
 
-    /**
-     * @see java.lang.Object#equals(Object)
-     */
+    public void setRechtsvorm(String rechtsvorm) {
+        this.rechtsvorm = rechtsvorm;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getInternetadres() {
+        return internetadres;
+    }
+
+    public void setInternetadres(String internetadres) {
+        this.internetadres = internetadres;
+    }
+
+    public String getHoedanigheid() {
+        return hoedanigheid;
+    }
+
+    public void setHoedanigheid(String hoedanigheid) {
+        this.hoedanigheid = hoedanigheid;
+    }
+
+    public String getcAoVerplichtingen() {
+        return cAoVerplichtingen;
+    }
+
+    public void setcAoVerplichtingen(String cAoVerplichtingen) {
+        this.cAoVerplichtingen = cAoVerplichtingen;
+    }
+
+    public List<JsonContactPersoon> getContactpersonen() {
+        if (contactpersonen == null) {
+            contactpersonen = new ArrayList<>();
+        }
+        return contactpersonen;
+    }
+
+    public void setContactpersonen(List<JsonContactPersoon> contactpersonen) {
+        this.contactpersonen = contactpersonen;
+    }
+
+    public List<JsonTelefoonnummer> getTelefoonnummers() {
+        if (telefoonnummers == null) {
+            telefoonnummers = Lists.newArrayList();
+        }
+        return telefoonnummers;
+    }
+
+    public void setTelefoonnummers(List<JsonTelefoonnummer> telefoonnummers) {
+        if (telefoonnummers == null) {
+            telefoonnummers = Lists.newArrayList();
+        }
+        this.telefoonnummers = telefoonnummers;
+    }
+
+    public void setAdresOpgemaakt(String adresOpgemaakt) {
+        this.adresOpgemaakt = adresOpgemaakt;
+    }
+
+    public AdressenModel getAdressenModel() {
+        return adressenModel;
+    }
+
+    public void setAdressenModel(AdressenModel adressenModel) {
+        this.adressenModel = adressenModel;
+    }
+
+    public TelefoonnummersModel getTelefoonnummersModel() {
+        return telefoonnummersModel;
+    }
+
+    public void setTelefoonnummersModel(TelefoonnummersModel telefoonnummersModel) {
+        this.telefoonnummersModel = telefoonnummersModel;
+    }
+
+    public String getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(String soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public boolean isNotReadOnly() {
+        return notReadOnly;
+    }
+
+    public void setNotReadOnly(boolean notReadOnly) {
+        this.notReadOnly = notReadOnly;
+    }
+
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof JsonBedrijf)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof JsonBedrijf)) {
             return false;
         }
-        JsonBedrijf rhs = (JsonBedrijf) object;
-        return new EqualsBuilder().append(this.id, rhs.id).append(this.plaats, rhs.plaats).append(this.relatie, rhs.relatie).append(this.postcode, rhs.postcode).append(this.kvk, rhs.kvk).append(this.naam, rhs.naam).append(this.toevoeging, rhs.toevoeging).append(this.huisnummer, rhs.huisnummer).append(this.straat, rhs.straat).append(this.getPolissen(), rhs.getPolissen()).isEquals();
+
+        JsonBedrijf that = (JsonBedrijf) o;
+
+        return new EqualsBuilder().append(isReadOnly(), that.isReadOnly()).append(isNotReadOnly(), that.isNotReadOnly()).append(getId(), that.getId()).append(getNaam(), that.getNaam()).append(getKvk(), that.getKvk()).append(getRechtsvorm(), that.getRechtsvorm()).append(getEmail(), that.getEmail()).append(getInternetadres(), that.getInternetadres()).append(getHoedanigheid(), that.getHoedanigheid()).append(getcAoVerplichtingen(), that.getcAoVerplichtingen()).append(getTelefoonnummers(), that.getTelefoonnummers()).append(getIdDiv(), that.getIdDiv()).append(getIdDivLink(), that.getIdDivLink()).append(getSoortEntiteit(), that.getSoortEntiteit()).isEquals();
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.id).append(this.plaats).append(this.relatie).append(this.postcode).append(this.kvk).append(this.naam).append(this.toevoeging).append(this.huisnummer).append(this.straat).append(this.getPolissen()).toHashCode();
+        return new HashCodeBuilder(17, 37).append(getId()).append(getNaam()).append(getKvk()).append(getRechtsvorm()).append(getEmail()).append(getInternetadres()).append(getHoedanigheid()).append(getcAoVerplichtingen()).append(getTelefoonnummers()).append(getIdDiv()).append(getIdDivLink()).append(getSoortEntiteit()).append(isReadOnly()).append(isNotReadOnly()).toHashCode();
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("isReadOnly()", this.isReadOnly()).append("isNotReadOnly()", isNotReadOnly()).append("getId()", getId()).append("getNaam()", getNaam()).append("getKvk()", getKvk()).append("getRechtsvorm()", getRechtsvorm()).append("getEmail()", getEmail()).append("getInternetadres()", getInternetadres()).append("getHoedanigheid()", getHoedanigheid()).append("getcAoVerplichtingen()", getcAoVerplichtingen()).append("getTelefoonnummers()", getTelefoonnummers()).append("getIdDiv()", getIdDiv()).append("getIdDivLink()", getIdDivLink()).append("getSoortEntiteit()", getSoortEntiteit()).toString();
+    }
 }
