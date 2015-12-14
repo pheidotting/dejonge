@@ -7,7 +7,10 @@ import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
-import nl.dias.repository.*;
+import nl.dias.repository.GebruikerRepository;
+import nl.dias.repository.HypotheekRepository;
+import nl.dias.repository.KantoorRepository;
+import nl.dias.repository.PolisRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.AdresAangevuld;
@@ -35,7 +38,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @Service
 public class GebruikerService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GebruikerService.class);
 
     @Inject
     private GebruikerRepository gebruikerRepository;
@@ -45,8 +48,6 @@ public class GebruikerService {
     private KantoorRepository kantoorRepository;
     @Inject
     private HypotheekRepository hypotheekRepository;
-    @Inject
-    private BedrijfRepository bedrijfService;
     @Inject
     private AanmakenTaakSender aanmakenTaakSender;
     @Inject
@@ -121,6 +122,7 @@ public class GebruikerService {
             } catch (NietGevondenException e) {
                 // niets aan de hand;
                 LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
+                LOGGER.trace("{}", e);
             }
         }
 
