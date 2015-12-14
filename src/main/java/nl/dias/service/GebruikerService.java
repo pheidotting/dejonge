@@ -149,6 +149,7 @@ public class GebruikerService {
                 } catch (NoResultException e) {
                     // niets aan de hand;
                     LOGGER.info("gebruiker met bsn " + ((Relatie) gebruiker).getBsn() + " niet gevonden");
+                    LOGGER.trace("{}", e);
                 }
 
                 if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
