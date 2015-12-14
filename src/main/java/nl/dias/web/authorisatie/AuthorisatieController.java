@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 @RequestMapping("/authorisatie")
 @Controller
 public class AuthorisatieController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
 
     @Autowired
     private HttpServletRequest httpServletRequest;

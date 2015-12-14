@@ -15,6 +15,10 @@ import java.security.NoSuchAlgorithmException;
 
 @Component
 public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
+    private static final
+
+    Logger LOGGER = LoggerFactory.getLogger(RelatieMapper.class);
+
     @Inject
     private TelefoonnummerMapper telefoonnummerMapper;
     @Inject
@@ -25,8 +29,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private AdresMapper adresMapper;
     @Inject
     private BijlageMapper bijlageMapper;
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(RelatieMapper.class);
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {

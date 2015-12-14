@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public class PolisRepository extends AbstractRepository<Polis> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(PolisRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolisRepository.class);
 
     public PolisRepository() {
         super(Polis.class);

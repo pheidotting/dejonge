@@ -12,7 +12,7 @@ import javax.ws.rs.FormParam;
 @RequestMapping("/log4j")
 @Controller
 public class Log4JController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(Log4JController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Log4JController.class);
 
     @RequestMapping(method = RequestMethod.POST, value = "/log4javascript")
     @ResponseBody

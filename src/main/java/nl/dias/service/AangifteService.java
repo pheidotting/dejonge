@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class AangifteService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AangifteService.class);
 
     @Inject
     private AangifteRepository aangifteRepository;

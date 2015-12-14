@@ -41,7 +41,7 @@ import java.util.Set;
 @RequestMapping("/bijlage")
 @Controller
 public class BijlageController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
 
     @Inject
     private PolisService polisService;

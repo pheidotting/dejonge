@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 @Component
 public class JsonBedrijfNaarBedrijfMapper extends AbstractMapper<JsonBedrijf, Bedrijf> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JsonBedrijfNaarBedrijfMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonBedrijfNaarBedrijfMapper.class);
 
     @Inject
     private BedrijfService bedrijfService;

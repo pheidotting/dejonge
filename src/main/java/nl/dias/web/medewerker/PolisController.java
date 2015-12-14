@@ -32,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/polis")
 @Controller
 public class PolisController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(PolisController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolisController.class);
 
     @Inject
     private PolisService polisService;

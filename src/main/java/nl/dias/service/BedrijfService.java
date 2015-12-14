@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 public class BedrijfService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfService.class);
 
     @Inject
     private BedrijfRepository bedrijfRepository;

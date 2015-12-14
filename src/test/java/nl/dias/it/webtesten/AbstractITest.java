@@ -17,14 +17,11 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by patrickheidotting on 13-10-15.
- */
 public class AbstractITest {
     private GsonBuilder builder = new GsonBuilder();
     protected Gson gson = new Gson();
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AbstractITest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractITest.class);
 
     protected void aanroepenUrlPost(String adres, Object object, String sessieCode) {
         Gson gson = builder.create();

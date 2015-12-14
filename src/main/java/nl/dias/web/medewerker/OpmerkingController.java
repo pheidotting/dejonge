@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/opmerking")
 @Controller
 public class OpmerkingController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpmerkingController.class);
 
     @Inject
     private OpmerkingService opmerkingService;

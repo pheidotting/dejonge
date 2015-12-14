@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public class HypotheekRepository extends AbstractRepository<Hypotheek> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
 
     public HypotheekRepository() {
         super(Hypotheek.class);

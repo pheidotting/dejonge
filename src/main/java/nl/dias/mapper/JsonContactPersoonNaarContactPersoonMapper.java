@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 @Component
 public class JsonContactPersoonNaarContactPersoonMapper extends AbstractMapper<JsonContactPersoon, ContactPersoon> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JsonContactPersoonNaarContactPersoonMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonContactPersoonNaarContactPersoonMapper.class);
 
     @Inject
     private BedrijfService bedrijfService;

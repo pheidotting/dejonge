@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 
 @Repository
 public class RisicoAnalyseRepository extends AbstractRepository<RisicoAnalyse> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RisicoAnalyseRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RisicoAnalyseRepository.class);
 
     public RisicoAnalyseRepository() {
         super(RisicoAnalyse.class);

@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 @Component
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AangifteMapper.class);
 
     @Inject
     private BijlageMapper bijlageMapper;

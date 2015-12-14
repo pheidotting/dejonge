@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 @Component
 public class ContactPersoonNaarJsonContactPersoonMapper extends AbstractMapper<ContactPersoon, JsonContactPersoon> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ContactPersoonNaarJsonContactPersoonMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactPersoonNaarJsonContactPersoonMapper.class);
 
     @Inject
     private TelefoonnummerNaarJsonTelefoonnummerMapper telefoonnummerNaarJsonTelefoonnummerMapper;

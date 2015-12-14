@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 @Ignore
 public class PolisTest extends AbstractITest {
-    private final static Logger LOGGER = LoggerFactory.getLogger(PolisTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolisTest.class);
 
     private String sessieCode = "dcd4da00-aed8-4c60-9132-d39beaa2ad72";
 

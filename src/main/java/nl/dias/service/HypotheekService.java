@@ -17,7 +17,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Service
 public class HypotheekService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekService.class);
 
     @Inject
     private HypotheekRepository hypotheekRepository;

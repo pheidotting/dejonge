@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Service
 public class AuthorisatieService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorisatieService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisatieService.class);
 
     public final static String COOKIE_DOMEIN_CODE = "lakedigitaladministratie";
 

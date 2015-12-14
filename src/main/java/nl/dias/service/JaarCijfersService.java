@@ -20,7 +20,7 @@ import static com.google.common.collect.Iterables.filter;
 
 @Service
 public class JaarCijfersService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JaarCijfersService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaarCijfersService.class);
 
     @Inject
     private JaarCijfersRepository jaarCijfersRepository;

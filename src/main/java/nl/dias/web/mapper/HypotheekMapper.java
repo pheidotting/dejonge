@@ -16,9 +16,8 @@ import java.math.BigDecimal;
 
 @Component
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
-    private final static String DATUM_FORMAAT = "dd-MM-yyyy";
+    private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
+    private static final String DATUM_FORMAAT = "dd-MM-yyyy";
 
     @Inject
     private OpmerkingMapper opmerkingMapper;

@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/aangifte")
 @Controller
 public class AangifteController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AangifteController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AangifteController.class);
 
     @Inject
     private AangifteService aangifteService;

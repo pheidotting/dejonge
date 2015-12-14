@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.collect.Iterables.getFirst;
 
 public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AdresDozerMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdresDozerMapper.class);
 
 
     public AdresDozerMapper() {

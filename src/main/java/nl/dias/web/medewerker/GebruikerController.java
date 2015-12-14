@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 @RequestMapping("/gebruiker")
 @Controller
 public class GebruikerController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(GebruikerController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GebruikerController.class);
 
     @Inject
     private GebruikerService gebruikerService;

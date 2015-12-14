@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public class BedrijfRepository extends AbstractRepository<Bedrijf> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfRepository.class);
 
     public BedrijfRepository() {
         super(Bedrijf.class);

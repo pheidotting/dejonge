@@ -16,7 +16,7 @@ import static com.google.common.collect.Iterables.getFirst;
 
 @Component
 public class JsonTelefoonnummerNaarTelefoonnummerMapper extends AbstractMapper<JsonTelefoonnummer, Telefoonnummer> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JsonTelefoonnummerNaarTelefoonnummerMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonTelefoonnummerNaarTelefoonnummerMapper.class);
 
     @Override
     public Telefoonnummer map(final JsonTelefoonnummer object, Object parent) {

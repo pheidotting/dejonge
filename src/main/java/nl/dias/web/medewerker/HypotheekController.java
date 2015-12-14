@@ -30,7 +30,7 @@ import java.util.Set;
 @RequestMapping("/hypotheek")
 @Controller
 public class HypotheekController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
 
     @Inject
     private HypotheekService hypotheekService;

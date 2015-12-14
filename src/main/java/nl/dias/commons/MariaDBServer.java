@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MariaDBServer {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MariaDBServer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MariaDBServer.class);
 
     public MariaDBServer() {
     }

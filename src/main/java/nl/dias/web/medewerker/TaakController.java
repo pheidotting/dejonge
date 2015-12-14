@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestMapping("/taak")
 @Controller
 public class TaakController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(TaakController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaakController.class);
 
     @Autowired
     private HttpServletRequest httpServletRequest;

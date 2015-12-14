@@ -26,7 +26,7 @@ import static com.google.common.collect.Iterables.*;
 
 @Service
 public class PolisService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(PolisService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolisService.class);
 
     @Inject
     private PolisRepository polisRepository;

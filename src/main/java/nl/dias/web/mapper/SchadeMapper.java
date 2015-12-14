@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchadeMapper.class);
 
     @Inject
     private OpmerkingMapper opmerkingMapper;

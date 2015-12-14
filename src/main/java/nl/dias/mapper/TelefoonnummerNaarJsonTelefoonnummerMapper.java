@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TelefoonnummerNaarJsonTelefoonnummerMapper extends AbstractMapper<Telefoonnummer, JsonTelefoonnummer> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(TelefoonnummerNaarJsonTelefoonnummerMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TelefoonnummerNaarJsonTelefoonnummerMapper.class);
 
     @Override
     public JsonTelefoonnummer map(Telefoonnummer object, Object parent) {

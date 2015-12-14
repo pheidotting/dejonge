@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/bedrijf")
 @Controller
 public class BedrijfController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfController.class);
 
     @Inject
     private BedrijfService bedrijfService;

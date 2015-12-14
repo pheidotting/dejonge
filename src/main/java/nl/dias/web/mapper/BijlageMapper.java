@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BijlageMapper.class);
 
     @Override
     public Bijlage mapVanJson(JsonBijlage json) {

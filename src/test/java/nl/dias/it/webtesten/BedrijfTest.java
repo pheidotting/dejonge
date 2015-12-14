@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class BedrijfTest extends AbstractITest {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BedrijfTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfTest.class);
 
     private String sessieCode = "dcd4da00-aed8-4c60-9132-d39beaa2ad72";
     private final String BEDRIJF_OPSLAAN = "http://localhost:8080/dejonge/rest/medewerker/bedrijf/opslaan";

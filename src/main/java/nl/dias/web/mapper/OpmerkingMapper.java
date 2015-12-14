@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 @Component
 public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(OpmerkingMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpmerkingMapper.class);
 
     @Inject
     private SchadeService schadeService;

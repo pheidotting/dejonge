@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 @Service
 public class RisicoAnalyseService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RisicoAnalyseService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RisicoAnalyseService.class);
 
     @Inject
     private RisicoAnalyseRepository risicoAnalyseRepository;

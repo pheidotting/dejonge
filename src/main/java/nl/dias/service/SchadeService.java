@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class SchadeService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchadeService.class);
 
     @Inject
     private SchadeRepository schadeRepository;

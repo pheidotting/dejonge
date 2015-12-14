@@ -27,7 +27,7 @@ import java.util.Set;
 @RequestMapping("/schade")
 @Controller
 public class SchadeController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(SchadeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchadeController.class);
 
     @Inject
     private SchadeService schadeService;

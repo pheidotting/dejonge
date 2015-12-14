@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public class BijlageRepository extends AbstractRepository<Bijlage> {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BijlageRepository.class);
 
     public BijlageRepository() {
         super(Bijlage.class);
