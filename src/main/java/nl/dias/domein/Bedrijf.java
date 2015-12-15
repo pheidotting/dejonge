@@ -117,6 +117,7 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.kvk = kvk;
     }
 
+    @Override
     public Set<Adres> getAdressen() {
         if (adressen == null) {
             adressen = new HashSet<>();
@@ -124,10 +125,12 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         return adressen;
     }
 
+    @Override
     public void setAdressen(Set<Adres> adressen) {
         this.adressen = adressen;
     }
 
+    @Override
     public Set<Opmerking> getOpmerkingen() {
         if (opmerkingen == null) {
             opmerkingen = new HashSet<>();
@@ -135,6 +138,7 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         return opmerkingen;
     }
 
+    @Override
     public Set<Bijlage> getBijlages() {
         if (bijlages == null) {
             bijlages = Sets.newHashSet();
@@ -153,10 +157,12 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.jaarCijfers = jaarCijfers;
     }
 
+    @Override
     public void setBijlages(Set<Bijlage> bijlages) {
         this.bijlages = bijlages;
     }
 
+    @Override
     public void setOpmerkingen(Set<Opmerking> opmerkingen) {
         this.opmerkingen = opmerkingen;
     }
@@ -223,6 +229,7 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.contactPersonen = contactPersonen;
     }
 
+    @Override
     public Set<Telefoonnummer> getTelefoonnummers() {
         if (telefoonnummers == null) {
             telefoonnummers = Sets.newHashSet();
@@ -230,6 +237,7 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         return telefoonnummers;
     }
 
+    @Override
     public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
         this.telefoonnummers = telefoonnummers;
     }
