@@ -25,6 +25,7 @@ public class HypotheekService {
     private HypotheekPakketRepository hypotheekPakketRepository;
     @Inject
     private GebruikerService gebruikerService;
+    @Inject
     private HypotheekMapper hypotheekMapper;
 
     public void opslaan(Hypotheek hypotheek) {
@@ -165,21 +166,5 @@ public class HypotheekService {
         LOGGER.debug("Bijlage naar repository " + bijlage);
 
         hypotheekRepository.opslaanBijlage(bijlage);
-    }
-
-    public void setHypotheekRepository(HypotheekRepository hypotheekRepository) {
-        this.hypotheekRepository = hypotheekRepository;
-    }
-
-    public void setGebruikerService(GebruikerService gebruikerService) {
-        this.gebruikerService = gebruikerService;
-    }
-
-    public void setHypotheekPakketRepository(HypotheekPakketRepository hypotheekPakketRepository) {
-        this.hypotheekPakketRepository = hypotheekPakketRepository;
-    }
-
-    public void setHypotheekMapper(HypotheekMapper hypotheekMapper) {
-        this.hypotheekMapper = hypotheekMapper;
     }
 }
