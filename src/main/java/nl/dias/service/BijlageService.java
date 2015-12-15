@@ -20,6 +20,8 @@ import java.util.UUID;
 @Service
 public class BijlageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
+    private static final String FOUTMELDINGBIJOPSLAANBIJLAGE = "fout bij opslaan bijlage nar schijf\"";
+
     @Inject
     private BijlageRepository bijlageRepository;
 
@@ -79,21 +81,21 @@ public class BijlageService {
                 out.write(bytes, 0, read);
             }
         } catch (Exception e) {
-            LOGGER.error("fout bij opslaan bijlage nar schijf", e);
+            LOGGER.error(FOUTMELDINGBIJOPSLAANBIJLAGE, e);
         } finally {
             try {
                 if (out != null) {
                     out.flush();
                 }
             } catch (IOException e) {
-                LOGGER.error("fout bij opslaan bijlage nar schijf", e);
+                LOGGER.error(FOUTMELDINGBIJOPSLAANBIJLAGE, e);
             } finally {
                 try {
                     if (out != null) {
                         out.close();
                     }
                 } catch (IOException e) {
-                    LOGGER.error("fout bij opslaan bijlage nar schijf", e);
+                    LOGGER.error(FOUTMELDINGBIJOPSLAANBIJLAGE, e);
                 }
             }
         }

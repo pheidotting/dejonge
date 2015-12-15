@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.*;
@@ -62,49 +61,11 @@ public class PolisService {
 
     public void opslaan(Polis polis) {
         LOGGER.debug(ReflectionToStringBuilder.toString(polis));
-        //        List<Bijlage> bijlages = new ArrayList<>();
-
-        // ophalen al bestanden bijlages
-        //        bijlages.addAll(polisRepository.zoekBijlagesBijPolis(polis));
-        //        LOGGER.debug(bijlages);
-        //        bijlages.addAll(werkBijlagesBij(polis));
-        //        LOGGER.debug(bijlages);
-        //
-        //        polis.setBijlages(Sets.newHashSet(bijlages));
-        //
-        //        for (Bijlage bijlage : bijlages) {
-        //            polisRepository.opslaanBijlage(bijlage);
-        //        }
-        //        polisRepository.verwijder(polisRepository.lees(polis.getId()));
-        //        polis.setBijlages(null);
-        //        polis.getBijlages();
 
         polisRepository.opslaan(polis);
 
-        //        Relatie relatie = polis.getRelatie();
-        //        relatie.getPolissen().add(polis);
-
-        //        gebruikerService.opslaan(relatie);
-
         LOGGER.debug("{}", lees(polis.getId()));
     }
-
-    private List<Bijlage> werkBijlagesBij(Polis polis) {
-        List<Bijlage> result = new ArrayList<>();
-
-        for (Bijlage bijlage : polis.getBijlages()) {
-            Bijlage uitDb = polisRepository.leesBijlage(bijlage.getId());
-
-            uitDb.setPolis(polis);
-            uitDb.setSoortBijlage(SoortBijlage.POLIS);
-            uitDb.setOmschrijving(bijlage.getOmschrijving());
-
-            result.add(uitDb);
-        }
-
-        return result;
-    }
-
 
     public Polis lees(Long id) {
         return polisRepository.lees(id);
@@ -240,8 +201,6 @@ public class PolisService {
             }
             polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
 
-            //            LOGGER.debug("Maatschappij zetten" + maatschappij);
-            //            polis.setMaatschappij(maatschappij);
             LOGGER.debug("Maatschappij gezet");
 
             relatie.getPolissen().add(polis);
@@ -294,26 +253,6 @@ public class PolisService {
     public Polis definieerPolisSoort(String soort) {
         Polis p = getOnlyElement(filter(polissen, new PolisOpSchermNaamPredicate(soort)));
         return p.nieuweInstantie();
-    }
-
-    public void setPolisRepository(PolisRepository polisRepository) {
-        this.polisRepository = polisRepository;
-    }
-
-    public void setGebruikerService(GebruikerService gebruikerService) {
-        this.gebruikerService = gebruikerService;
-    }
-
-    public void setKantoorRepository(KantoorRepository kantoorRepository) {
-        this.kantoorRepository = kantoorRepository;
-    }
-
-    public void setBedrijfService(BedrijfService bedrijfService) {
-        this.bedrijfService = bedrijfService;
-    }
-
-    public void setVerzekeringsMaatschappijService(VerzekeringsMaatschappijService verzekeringsMaatschappijService) {
-        this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
     }
 
 }
