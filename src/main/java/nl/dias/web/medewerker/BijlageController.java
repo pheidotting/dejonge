@@ -31,7 +31,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -108,13 +107,12 @@ public class BijlageController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage")
     @ResponseBody
-    public JsonBijlage uploadBijlage(@FormParam("bijlageFile") InputStream uploadedInputStream, @RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit) {
+    public JsonBijlage uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit) {
         LOGGER.info("uploaden bestand voor {} met id {}", soortEntiteit, id);
 
-        LOGGER.debug("{}", ReflectionToStringBuilder.toString(uploadedInputStream));
         LOGGER.debug("{}", ReflectionToStringBuilder.toString(fileDetail));
 
-        Bijlage bijlage = uploaden(uploadedInputStream, fileDetail, soortEntiteit, id);
+        Bijlage bijlage = uploaden(fileDetail, soortEntiteit, id);
 
         LOGGER.debug("Geupload {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
@@ -125,14 +123,14 @@ public class BijlageController {
         return jsonBijlage;
     }
 
-    private Bijlage uploaden(InputStream uploadedInputStream, MultipartFile fileDetail, String soortEntiteit, String id) {
+    private Bijlage uploaden(MultipartFile fileDetail, String soortEntiteit, String id) {
 
         Bijlage bijlage = null;
 
-        if (fileDetail != null && fileDetail.getName() != null && uploadedInputStream != null) {
+        if (fileDetail != null && fileDetail.getName() != null) {
 
             LOGGER.debug("Naar BijlageService");
-            bijlage = bijlageService.uploaden(uploadedInputStream, fileDetail);
+            bijlage = bijlageService.uploaden(fileDetail);
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
 
             if ("Relatie".equalsIgnoreCase(soortEntiteit)) {
@@ -157,7 +155,7 @@ public class BijlageController {
             } else if ("JaarCijfers".equalsIgnoreCase(soortEntiteit)) {
                 jaarCijfersService.opslaanBijlage(id, bijlage);
             } else if ("RisicoAnalyse".equalsIgnoreCase(soortEntiteit)) {
-                    risicoAnalyseService.opslaanBijlage(id, bijlage);
+                risicoAnalyseService.opslaanBijlage(id, bijlage);
             }
             LOGGER.debug("Nogmaals opslaan Bijlage");
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));

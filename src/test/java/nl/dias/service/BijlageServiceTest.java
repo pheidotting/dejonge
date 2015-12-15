@@ -45,7 +45,7 @@ public class BijlageServiceTest extends EasyMockSupport {
 
     @Test
     public void testVerwijderBijlage() {
-        Bijlage bijlage = createMock(Bijlage.class);
+        Bijlage bijlage = new Bijlage();
         expect(repository.lees(3L)).andReturn(bijlage);
 
         repository.verwijder(bijlage);

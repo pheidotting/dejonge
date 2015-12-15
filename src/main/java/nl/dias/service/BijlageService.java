@@ -39,7 +39,7 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public Bijlage uploaden(InputStream uploadedInputStream, MultipartFile fileDetail) {
+    public Bijlage uploaden(MultipartFile fileDetail) {
         String[] exp = fileDetail.getOriginalFilename().split("//.");
         String extensie = exp[exp.length - 1];
 
@@ -97,10 +97,5 @@ public class BijlageService {
                 }
             }
         }
-    }
-
-
-    public void setBijlageRepository(BijlageRepository bijlageRepository) {
-        this.bijlageRepository = bijlageRepository;
     }
 }
