@@ -7,11 +7,15 @@ import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
+import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +30,14 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@Ignore
+@RunWith(EasyMockRunner.class)
 public class AuthorisatieServiceTest extends EasyMockSupport {
-    private AuthorisatieService service;
+    @TestSubject
+    private AuthorisatieService service = new AuthorisatieService();
+
+    @Mock
     private GebruikerService gebruikerService;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession httpSession;
@@ -39,11 +47,6 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
 
     @Before
     public void setUp() throws Exception {
-        service = new AuthorisatieService();
-
-        gebruikerService = createMock(GebruikerService.class);
-        service.setGebruikerService(gebruikerService);
-
         request = createMock(HttpServletRequest.class);
         response = createMock(HttpServletResponse.class);
         httpSession = createMock(HttpSession.class);
@@ -95,6 +98,7 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
     }
 
     @Test
+    @Ignore
     public void testInloggen() throws NietGevondenException, OnjuistWachtwoordException, UnsupportedEncodingException, NoSuchAlgorithmException {
         identificatie = "identificatie";
         wachtwoord = "wachtwoord";
@@ -130,12 +134,14 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
     }
 
     @Test
+    @Ignore
     public void testUitloggen() throws NietGevondenException {
         expect(request.getSession()).andReturn(httpSession);
         expect(httpSession.getAttribute("sessie")).andReturn("sessieId");
         expect(request.getRemoteAddr()).andReturn("remoteAddr");
 
         Sessie sessie = new Sessie();
+        sessie.setId(46L);
         Relatie relatie = new Relatie();
         relatie.getSessies().add(sessie);
         expect(gebruikerService.zoekOpSessieEnIpAdres("sessieId", "remoteAddr")).andReturn(relatie);
@@ -143,8 +149,11 @@ public class AuthorisatieServiceTest extends EasyMockSupport {
         gebruikerService.opslaan(relatie);
         expectLastCall();
 
+        gebruikerService.verwijderVerlopenSessies(relatie);
+        expectLastCall();
+
         Cookie cookie = createMock(Cookie.class);
-        Cookie[] cookies = { cookie };
+        Cookie[] cookies = {cookie};
         expect(request.getCookies()).andReturn(cookies);
 
         expect(cookie.getName()).andReturn(AuthorisatieService.COOKIE_DOMEIN_CODE);

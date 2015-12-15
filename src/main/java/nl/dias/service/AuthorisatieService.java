@@ -162,7 +162,4 @@ public class AuthorisatieService {
         return cookies;
     }
 
-    public void setGebruikerService(GebruikerService gebruikerService) {
-        this.gebruikerService = gebruikerService;
-    }
 }
