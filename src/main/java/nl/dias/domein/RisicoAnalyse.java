@@ -4,6 +4,7 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -45,6 +46,9 @@ public class RisicoAnalyse implements Serializable, PersistenceObject, ObjectMet
 
     @Override
     public Set<Bijlage> getBijlages() {
+        if (bijlages == null) {
+            bijlages = new HashSet<>();
+        }
         return bijlages;
     }
 
