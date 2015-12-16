@@ -46,7 +46,9 @@ public class RelatieMapperTest extends EasyMockSupport {
     public void setUp() throws Exception {
         relatie = new Relatie();
         relatie.setAchternaam("achternaam");
-        //        relatie.getAdres().setHuisnummer(41L);
+        relatie.setVoornaam("Patrick");
+        relatie.setRoepnaam("Henk");
+        relatie.setTussenvoegsel("tussenvoegsel");
         relatie.setGeslacht(Geslacht.M);
         relatie.setBurgerlijkeStaat(BurgerlijkeStaat.C);
         relatie.setGeboorteDatum(new LocalDate(2014, 2, 3));
@@ -62,7 +64,9 @@ public class RelatieMapperTest extends EasyMockSupport {
         jsonRelatie = new JsonRelatie();
         jsonRelatie.setBurgerlijkeStaat("Samenlevingscontract");
         jsonRelatie.setAchternaam("achternaam");
-        //        jsonRelatie.setHuisnummer("41");
+        jsonRelatie.setVoornaam("Patrick");
+        jsonRelatie.setRoepnaam("Henk");
+        jsonRelatie.setTussenvoegsel("tussenvoegsel");
         jsonRelatie.setGeslacht("Man");
         jsonRelatie.setGeboorteDatum("03-02-2014");
         jsonRelatie.setOverlijdensdatum("07-06-2014");
