@@ -1,9 +1,10 @@
 package nl.dias.service;
 
 import com.google.common.collect.Lists;
-import nl.dias.domein.*;
-import nl.dias.domein.json.JsonPolis;
-import nl.dias.domein.polis.Betaalfrequentie;
+import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
@@ -12,7 +13,6 @@ import nl.dias.domein.transformers.PolisToSchermNaamTransformer;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,111 +146,6 @@ public class PolisService {
 
     public List<Polis> allePolissenBijBedrijf(Bedrijf bedrijf) {
         return polisRepository.allePolissenBijBedrijf(bedrijf);
-    }
-
-    public void opslaan(JsonPolis jsonPolis) {
-        LOGGER.info(ReflectionToStringBuilder.toString(jsonPolis, ToStringStyle.SHORT_PREFIX_STYLE));
-
-        VerzekeringsMaatschappij maatschappij = verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij());
-        LOGGER.debug("maatschappij gevonden : " + maatschappij);
-
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie()));
-        LOGGER.debug("bij relatie : " + relatie);
-
-        String messages = null;
-
-        if (maatschappij == null) {
-            messages = "Kies een verzekeringsmaatschappij";
-        } else {
-            Polis polis = null;
-
-            if (jsonPolis.getId() != null) {
-                LOGGER.debug("Polis opzoeken in database, id = " + jsonPolis.getId());
-                polis = polisRepository.lees(jsonPolis.getId());
-
-                LOGGER.debug("{}", polis);
-            }
-
-            if (polis == null) {
-                // Eerst kijken of het polisnummer al voorkomt
-                if (zoekOpPolisNummer(jsonPolis.getPolisNummer()) != null) {
-                    throw new IllegalArgumentException("Het betreffende polisnummer komt al voor.");
-                }
-
-                LOGGER.debug("Polis = null, daarom opmaken uit Request");
-                polis = definieerPolisSoort(jsonPolis.getSoort());
-            }
-
-            LOGGER.debug("polis aanvullen met ingevoerde gegevens");
-            LOGGER.debug("zet polisnummer " + jsonPolis.getPolisNummer());
-            polis.setPolisNummer(jsonPolis.getPolisNummer());
-            try {
-                polis.setIngangsDatum(stringNaarLocalDate(jsonPolis.getIngangsDatum()));
-            } catch (IllegalArgumentException e1) {
-                LOGGER.debug("Fout bij parsen datum", e1);
-                messages = messages + "Ingangsdatum : " + e1.getMessage() + "<br />";
-            }
-            try {
-                polis.setProlongatieDatum(stringNaarLocalDate(jsonPolis.getProlongatieDatum()));
-            } catch (IllegalArgumentException e1) {
-                LOGGER.debug("Fout bij parsen datum", e1);
-                messages = messages + "Prolongatiedatum : " + e1.getMessage() + "<br />";
-            }
-            try {
-                polis.setWijzigingsDatum(stringNaarLocalDate(jsonPolis.getWijzigingsDatum()));
-            } catch (IllegalArgumentException e1) {
-                LOGGER.debug("Fout bij parsen datum", e1);
-                messages = messages + "Wijzigingsdatum : " + e1.getMessage() + "<br />";
-            }
-            polis.setBetaalfrequentie(Betaalfrequentie.valueOf(jsonPolis.getBetaalfrequentie().toUpperCase().substring(0, 1)));
-
-            LOGGER.debug("Maatschappij gezet");
-
-            relatie.getPolissen().add(polis);
-            polis.setRelatie(relatie);
-
-            if (jsonPolis.getBedrijf() != null) {
-                Long bedrijfId = Long.valueOf(jsonPolis.getBedrijf());
-                if (bedrijfId != 0) {
-                    Bedrijf bedrijf = bedrijfService.lees(Long.valueOf(bedrijfId));
-                    polis.setBedrijf(bedrijf);
-                    bedrijf.getPolissen().add(polis);
-                }
-            }
-
-            try {
-                LOGGER.debug("zet premiebedrag " + jsonPolis.getPremie());
-                polis.setPremie(new Bedrag(jsonPolis.getPremie()));
-            } catch (NumberFormatException e) {
-                LOGGER.debug(e.getMessage());
-            }
-
-            LOGGER.debug("Opslaan polis : " + polis);
-            polisRepository.opslaan(polis);
-
-            relatie.getPolissen().add(polis);
-            gebruikerService.opslaan(relatie);
-        }
-
-        if (messages == null) {
-            messages = "ok";
-        } else {
-            throw new IllegalArgumentException(messages);
-        }
-    }
-
-    private LocalDate stringNaarLocalDate(String datum)  {
-        String[] d = datum.split("-");
-
-        LocalDate ld = null;
-        try {
-            ld = new LocalDate(Integer.parseInt(d[2]), Integer.parseInt(d[1]), Integer.parseInt(d[0]));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.debug("Ongeledige datum meegegeven", e);
-            throw new IllegalArgumentException("Datum bevat een ongeldige waarde.");
-        }
-
-        return ld;
     }
 
     public Polis definieerPolisSoort(String soort) {

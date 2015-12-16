@@ -1,17 +1,17 @@
 package nl.dias.service;
 
+import com.google.common.collect.Lists;
 import nl.dias.domein.*;
-import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.*;
+import nl.dias.domein.polis.zakelijk.AanhangerVerzekering;
+import nl.dias.domein.polis.zakelijk.ArbeidsongeschiktheidVerzekering;
+import nl.dias.domein.polis.zakelijk.GeldVerzekering;
+import nl.dias.domein.polis.zakelijk.MilieuSchadeVerzekering;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
-import org.easymock.EasyMockRunner;
-import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
+import org.easymock.*;
 import org.joda.time.LocalDate;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -20,10 +20,8 @@ import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -80,29 +78,20 @@ public class PolisServiceTest extends EasyMockSupport {
     }
 
     @Test
-    @Ignore
     public void testOpslaanPolis() {
-        AutoVerzekering polis = createMock(AutoVerzekering.class);
-        Relatie relatie = createMock(Relatie.class);
+        final Long id = 58L;
 
-        List<Bijlage> bijlages = new ArrayList<>();
-        Set<Bijlage> bijlagesSet = new HashSet<>();
-
-        expect(polisRepository.zoekBijlagesBijPolis(polis)).andReturn(bijlages);
-        expect(polis.getBijlages()).andReturn(bijlagesSet);
+        AutoVerzekering polis = new AutoVerzekering();
 
         polisRepository.opslaan(polis);
-        expectLastCall();
+        expectLastCall().andDelegateTo(new PolisRepository() {
+            @Override
+            public void opslaan(Polis o) {
+                o.setId(id);
+            }
+        });
 
-        expect(polis.getRelatie()).andReturn(relatie);
-        expect(polis.getId()).andReturn(1L);
-
-        expect(polisRepository.lees(1L)).andReturn(polis);
-
-        expect(relatie.getPolissen()).andReturn(new HashSet<Polis>());
-
-        gebruikerService.opslaan(relatie);
-        expectLastCall();
+        expect(polisRepository.lees(id)).andReturn(polis);
 
         replayAll();
 
@@ -190,65 +179,92 @@ public class PolisServiceTest extends EasyMockSupport {
         replayAll();
 
         polisService.verwijder(1L);
-
     }
 
     @Test
-    public void testOpslaanOpslaanPolis() {
+    public void testAllePolisSoorten() {
+        AnnuleringsVerzekering annuleringsVerzekering = new AnnuleringsVerzekering();
+        InboedelVerzekering inboedelVerzekering = new InboedelVerzekering();
+
+        AanhangerVerzekering aanhangerVerzekering = new AanhangerVerzekering();
+        GeldVerzekering geldVerzekering = new GeldVerzekering();
+
         List<Polis> polissen = new ArrayList<>();
-        polissen.add(new AutoVerzekering());
-        polissen.add(new FietsVerzekering());
+        polissen.add(annuleringsVerzekering);
+        polissen.add(inboedelVerzekering);
+        polissen.add(aanhangerVerzekering);
+        polissen.add(geldVerzekering);
+
+        List<String> verwachtParticulier = new ArrayList<>();
+        verwachtParticulier.add(annuleringsVerzekering.getSchermNaam());
+        verwachtParticulier.add(inboedelVerzekering.getSchermNaam());
+
+        List<String> verwachtZakelijk = new ArrayList<>();
+        verwachtZakelijk.add(aanhangerVerzekering.getSchermNaam());
+        verwachtZakelijk.add(geldVerzekering.getSchermNaam());
 
         ReflectionTestUtils.setField(polisService, "polissen", polissen);
 
-        JsonPolis opslaanPolis = new JsonPolis();
-        opslaanPolis.setSoort("Auto");
-        opslaanPolis.setPolisNummer("1234");
-        opslaanPolis.setMaatschappij("maatschappij");
-        opslaanPolis.setRelatie("46");
-        opslaanPolis.setIngangsDatum("01-02-2014");
-        opslaanPolis.setProlongatieDatum("02-03-2014");
-        opslaanPolis.setWijzigingsDatum("03-04-2014");
-        opslaanPolis.setBetaalfrequentie("jaar");
-        opslaanPolis.setPremie("12");
+        replayAll();
 
-        Bedrijf bedrijf = new Bedrijf();
-        bedrijf.setNaam("Fa. List & Bedrog");
-        opslaanPolis.setBedrijf("46");
+        assertEquals(verwachtParticulier, polisService.allePolisSoorten(SoortVerzekering.PARTICULIER));
+        assertEquals(verwachtZakelijk, polisService.allePolisSoorten(SoortVerzekering.ZAKELIJK));
+    }
 
-        Kantoor kantoor = new Kantoor();
-        expect(kantoorRepository.lees(1L)).andReturn(kantoor);
+    @Test
+    public void testOpslaanBijlage() {
+        String polisId = "46";
+        ArbeidsongeschiktheidVerzekering arbeidsongeschiktheidVerzekering = new ArbeidsongeschiktheidVerzekering();
+        arbeidsongeschiktheidVerzekering.setId(Long.valueOf(polisId));
 
-        expect(polisRepository.zoekOpPolisNummer("1234", kantoor)).andThrow(new NoResultException());
+        expect(polisRepository.lees(Long.valueOf(polisId))).andReturn(arbeidsongeschiktheidVerzekering);
 
-        VerzekeringsMaatschappij maatschappij = new VerzekeringsMaatschappij();
-        expect(verzekeringsMaatschappijService.zoekOpNaam("maatschappij")).andReturn(maatschappij);
+        Bijlage bijlage = new Bijlage();
+        Capture<Polis> polisCapture = newCapture();
 
-        Relatie relatie = new Relatie();
-        expect(gebruikerService.lees(46L)).andReturn(relatie);
-
-        AutoVerzekering polis = new AutoVerzekering();
-        polis.setPolisNummer("1234");
-        polis.setMaatschappij(1L);
-        polis.setRelatie(relatie);
-        polis.setIngangsDatum(new LocalDate(2014, 2, 1));
-        polis.setProlongatieDatum(new LocalDate(2014, 3, 2));
-        polis.setWijzigingsDatum(new LocalDate(2014, 4, 3));
-        polis.setBetaalfrequentie(Betaalfrequentie.J);
-        polis.setPremie(new Bedrag("12"));
-
-        expect(bedrijfService.lees(46L)).andReturn(bedrijf);
-
-        polisRepository.opslaan(polis);
-        expectLastCall();
-
-        relatie.getPolissen().add(polis);
-        gebruikerService.opslaan(relatie);
+        polisRepository.opslaan(capture(polisCapture));
         expectLastCall();
 
         replayAll();
 
-        polisService.opslaan(opslaanPolis);
+        polisService.opslaanBijlage(polisId, bijlage);
+
+        Polis polisOpgeslagen = polisCapture.getValue();
+        assertEquals(1, polisOpgeslagen.getBijlages().size());
     }
 
+    @Test
+    public void testAllePolissenBijRelatie() {
+        List<Polis> polissen = new ArrayList<>();
+        Relatie relatie = new Relatie();
+
+        expect(polisRepository.allePolissenBijRelatie(relatie)).andReturn(polissen);
+
+        replayAll();
+
+        assertEquals(polissen, polisService.allePolissenBijRelatie(relatie));
+    }
+
+    @Test
+    public void testAllePolissenBijBedrijf() {
+        List<Polis> polissen = new ArrayList<>();
+        Bedrijf bedrijf = new Bedrijf();
+
+        expect(polisRepository.allePolissenBijBedrijf(bedrijf)).andReturn(polissen);
+
+        replayAll();
+
+        assertEquals(polissen, polisService.allePolissenBijBedrijf(bedrijf));
+    }
+
+    @Test
+    public void testDefinieerPolisSoort() {
+        MilieuSchadeVerzekering milieuSchadeVerzekering = new MilieuSchadeVerzekering();
+
+        ReflectionTestUtils.setField(polisService, "polissen", Lists.newArrayList(milieuSchadeVerzekering));
+
+        replayAll();
+
+        assertEquals(milieuSchadeVerzekering, polisService.definieerPolisSoort(milieuSchadeVerzekering.getSchermNaam()));
+    }
 }

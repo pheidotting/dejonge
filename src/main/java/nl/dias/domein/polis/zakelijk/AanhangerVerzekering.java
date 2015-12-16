@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class AanhangerVerzekering extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {
-        return SoortVerzekering.PARTICULIER;
+        return SoortVerzekering.ZAKELIJK;
     }
 
     @Override
