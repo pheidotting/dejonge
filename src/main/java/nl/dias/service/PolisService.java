@@ -119,7 +119,7 @@ public class PolisService {
         return polisRepository.leesBijlage(s3);
     }
 
-    public void verwijder(Long id) throws IllegalArgumentException {
+    public void verwijder(Long id) {
         LOGGER.debug("Ophalen Polis");
         Polis polis = polisRepository.lees(id);
 
