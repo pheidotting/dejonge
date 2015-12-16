@@ -1,88 +1,211 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
-import java.util.HashSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import nl.dias.domein.Hypotheek;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Opmerking;
-import nl.dias.domein.Schade;
+import com.google.common.collect.Lists;
+import nl.dias.domein.*;
+import nl.dias.domein.polis.FietsVerzekering;
+import nl.dias.domein.polis.Polis;
 import nl.dias.repository.OpmerkingRepository;
-
-import org.easymock.EasyMockSupport;
+import nl.dias.repository.PolisRepository;
+import org.easymock.*;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+
+@RunWith(EasyMockRunner.class)
 public class OpmerkingServiceTest extends EasyMockSupport {
-    private OpmerkingService service;
-    private OpmerkingRepository repository;
+    @TestSubject
+    private OpmerkingService service = new OpmerkingService();
+
+    @Mock
     private AuthorisatieService authorisatieService;
+    @Mock
+    private OpmerkingRepository repository;
+    @Mock
     private SchadeService schadeService;
+    @Mock
     private HypotheekService hypotheekService;
+    @Mock
+    private GebruikerService gebruikerService;
+    @Mock
+    private PolisRepository polisRepository;
+    @Mock
+    private BedrijfService bedrijfService;
+    @Mock
+    private AangifteService aangifteService;
 
-    @Before
-    public void setUp() throws Exception {
-        service = new OpmerkingService();
-
-        repository = createMock(OpmerkingRepository.class);
-        service.setOpmerkingRepository(repository);
-
-        authorisatieService = createMock(AuthorisatieService.class);
-        service.setAuthorisatieService(authorisatieService);
-
-        schadeService = createMock(SchadeService.class);
-        service.setSchadeService(schadeService);
-
-        hypotheekService = createMock(HypotheekService.class);
-        service.setHypotheekService(hypotheekService);
-    }
 
     @After
     public void tearDown() throws Exception {
         verifyAll();
     }
 
+    private Medewerker maakMedewerker() {
+        Medewerker medewerker = new Medewerker();
+        medewerker.setVoornaam("Jason");
+        medewerker.setAchternaam("Voorhees");
+
+        return medewerker;
+    }
+
     @Test
-    @Ignore
-    public void test() {
-        Opmerking opmerking = createMock(Opmerking.class);
-        HttpSession httpSession = createMock(HttpSession.class);
-        Medewerker medewerker = createMock(Medewerker.class);
-        Schade schade = createMock(Schade.class);
-        Hypotheek hypotheek = createMock(Hypotheek.class);
-
+    public void testOpslaanOpmerkingBijRelatie() {
+        Opmerking opmerking = new Opmerking();
+        Relatie relatie = new Relatie();
+        relatie.setId(46L);
+        Medewerker medewerker = maakMedewerker();
         opmerking.setMedewerker(medewerker);
-        expectLastCall();
 
-        expect(opmerking.getSchade()).andReturn(schade).times(2);
-        expect(schade.getId()).andReturn(46L);
-        expect(opmerking.getHypotheek()).andReturn(hypotheek).times(2);
-        expect(hypotheek.getId()).andReturn(58L);
-
-        expect(schadeService.lees(46L)).andReturn(schade);
-        expect(schade.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
-
-        expect(hypotheekService.leesHypotheek(58L)).andReturn(hypotheek);
-        expect(hypotheek.getOpmerkingen()).andReturn(new HashSet<Opmerking>());
+        opmerking.setRelatie(relatie);
 
         repository.opslaan(opmerking);
         expectLastCall();
 
-        schadeService.opslaan(schade);
-        expectLastCall();
+        expect(gebruikerService.lees(relatie.getId())).andReturn(relatie);
 
-        hypotheekService.opslaan(hypotheek);
+        Capture<Relatie> relatieCapture = newCapture();
+        gebruikerService.opslaan(capture(relatieCapture));
         expectLastCall();
 
         replayAll();
 
         service.opslaan(opmerking);
+
+        assertEquals(1, relatieCapture.getValue().getOpmerkingen().size());
+    }
+
+    @Test
+    public void testOpslaanOpmerkingBijSchade() {
+        Opmerking opmerking = new Opmerking();
+        Schade schade = new Schade();
+        schade.setId(46L);
+        Medewerker medewerker = maakMedewerker();
+        opmerking.setMedewerker(medewerker);
+
+        opmerking.setSchade(schade);
+
+        repository.opslaan(opmerking);
+        expectLastCall();
+
+        expect(schadeService.lees(schade.getId())).andReturn(schade);
+
+        Capture<Schade> schadeCapture = newCapture();
+        schadeService.opslaan(capture(schadeCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(opmerking);
+
+        assertEquals(1, schadeCapture.getValue().getOpmerkingen().size());
+    }
+
+    @Test
+    public void testOpslaanOpmerkingBijHypotheek() {
+        Opmerking opmerking = new Opmerking();
+        Hypotheek hypotheek = new Hypotheek();
+        hypotheek.setId(46L);
+        Medewerker medewerker = maakMedewerker();
+        opmerking.setMedewerker(medewerker);
+
+        opmerking.setHypotheek(hypotheek);
+
+        repository.opslaan(opmerking);
+        expectLastCall();
+
+        expect(hypotheekService.leesHypotheek(hypotheek.getId())).andReturn(hypotheek);
+
+        Capture<Hypotheek> hypotheekCapture = newCapture();
+        hypotheekService.opslaan(capture(hypotheekCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(opmerking);
+
+        assertEquals(1, hypotheekCapture.getValue().getOpmerkingen().size());
+    }
+
+    @Test
+    public void testOpslaanOpmerkingBijPolis() {
+        Opmerking opmerking = new Opmerking();
+        Polis polis = new FietsVerzekering();
+        polis.setId(46L);
+        Medewerker medewerker = maakMedewerker();
+        opmerking.setMedewerker(medewerker);
+
+        opmerking.setPolis(polis);
+
+        repository.opslaan(opmerking);
+        expectLastCall();
+
+        expect(polisRepository.lees(polis.getId())).andReturn(polis);
+
+        Capture<Polis> polisCapture = newCapture();
+        polisRepository.opslaan(capture(polisCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(opmerking);
+
+        assertEquals(1, polisCapture.getValue().getOpmerkingen().size());
+    }
+
+    @Test
+    public void testOpslaanOpmerkingBijBedrijf() {
+        Opmerking opmerking = new Opmerking();
+        Bedrijf bedrijf = new Bedrijf();
+        bedrijf.setId(46L);
+        Medewerker medewerker = maakMedewerker();
+        opmerking.setMedewerker(medewerker);
+
+        opmerking.setBedrijf(bedrijf);
+
+        repository.opslaan(opmerking);
+        expectLastCall();
+
+        expect(bedrijfService.lees(bedrijf.getId())).andReturn(bedrijf);
+
+        Capture<Bedrijf> bedrijfCapture = newCapture();
+        bedrijfService.opslaan(capture(bedrijfCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(opmerking);
+
+        assertEquals(1, bedrijfCapture.getValue().getOpmerkingen().size());
+    }
+
+    @Test
+    public void testOpslaanOpmerkingBijAangifte() {
+        Opmerking opmerking = new Opmerking();
+        Aangifte aangifte = new Aangifte();
+        aangifte.setId(46L);
+        Medewerker medewerker = maakMedewerker();
+        opmerking.setMedewerker(medewerker);
+
+        opmerking.setAangifte(aangifte);
+
+        repository.opslaan(opmerking);
+        expectLastCall();
+
+        expect(aangifteService.lees(aangifte.getId())).andReturn(aangifte);
+
+        Capture<Aangifte> aangifteCapture = newCapture();
+        aangifteService.opslaan(capture(aangifteCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaan(opmerking);
+
+        assertEquals(1, aangifteCapture.getValue().getOpmerkingen().size());
     }
 
     @Test
@@ -97,6 +220,21 @@ public class OpmerkingServiceTest extends EasyMockSupport {
         replayAll();
 
         service.verwijder(id);
+    }
 
+    @Test
+    public void testAlleOpmerkingenVoorRelatie() {
+        Long relatieId = 58L;
+
+        Relatie relatie = new Relatie();
+        Opmerking opmerking = new Opmerking();
+        List<Opmerking> opmerkingen = Lists.newArrayList(opmerking);
+
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+        expect(repository.alleOpmerkingenVoorRelatie(relatie)).andReturn(opmerkingen);
+
+        replayAll();
+
+        assertEquals(opmerkingen, service.alleOpmerkingenVoorRelatie(relatieId));
     }
 }

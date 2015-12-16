@@ -84,22 +84,4 @@ public class OpmerkingService {
             aangifteService.opslaan(aangifte);
         }
     }
-
-    public void setOpmerkingRepository(OpmerkingRepository opmerkingRepository) {
-        this.opmerkingRepository = opmerkingRepository;
-    }
-
-    public void setAuthorisatieService(AuthorisatieService authorisatieService) {
-        this.authorisatieService = authorisatieService;
-    }
-
-    public void setSchadeService(SchadeService schadeService) {
-        this.schadeService = schadeService;
-    }
-
-    public void setHypotheekService(HypotheekService hypotheekService) {
-        this.hypotheekService = hypotheekService;
-    }
-
-
 }
