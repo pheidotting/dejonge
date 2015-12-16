@@ -1,11 +1,11 @@
 package nl.dias.mapper;
 
+import nl.dias.builders.BedrijfBuilder;
 import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.json.JsonBedrijf;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,20 +18,13 @@ public class BedrijfNaarJsonBedrijfMapperTest extends EasyMockSupport {
     @TestSubject
     private BedrijfNaarJsonBedrijfMapper mapper = new BedrijfNaarJsonBedrijfMapper();
 
-    @Mock
-    private AdresNaarJsonAdresMapper adresMapper;
 
     @Test
     public void testMap() throws Exception {
-        Bedrijf bedrijf = new Bedrijf();
-        bedrijf.setId(2L);
-        bedrijf.setNaam("Naam");
-        bedrijf.setKvk("kvk");
+        BedrijfBuilder bedrijfBuilder = new BedrijfBuilder().withId(2L).withNaam("Naam").withKvk("kvk").withCAoVerplichtingen("caoVerplichtingen").withEmail("email").withHoedanigheid("hoedanigheid").withInternetadres("internetadres").withRechtsvorm("rechtsvorm");
 
-        JsonBedrijf jsonBedrijf = new JsonBedrijf();
-        jsonBedrijf.setId("2");
-        jsonBedrijf.setNaam("Naam");
-        jsonBedrijf.setKvk("kvk");
+        Bedrijf bedrijf = bedrijfBuilder.buildBedrijf();
+        JsonBedrijf jsonBedrijf = bedrijfBuilder.buildJsonBedrijf();
 
         assertEquals(jsonBedrijf, mapper.map(bedrijf));
     }
