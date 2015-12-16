@@ -9,12 +9,9 @@ public class PostcodeService {
     public JsonAdres extraHeerAdres(String apiAntwoord) {
         JsonAdres jsonAdres = new JsonAdres();
 
-        int index = apiAntwoord.indexOf("city");
+        int index = apiAntwoord.indexOf("label", apiAntwoord.indexOf("city"));
         if (index > -1) {
-            String plaats = apiAntwoord.substring(index);
-            index = plaats.indexOf("label");
-            if (index > -1) {
-                plaats = plaats.substring(index + 8);
+            String plaats = apiAntwoord.substring(index + 8);
                 index = plaats.indexOf("\"");
                 if (index > -1) {
                     plaats = plaats.substring(0, index);
@@ -25,7 +22,6 @@ public class PostcodeService {
                     if (index > -1) {
                         straat = straat.substring(0, index);
                         jsonAdres.setStraat(straat);
-                    }
                 }
             }
         }
