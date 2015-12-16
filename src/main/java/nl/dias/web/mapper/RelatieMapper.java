@@ -79,7 +79,11 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         jsonRelatie.setRoepnaam(relatie.getRoepnaam());
         jsonRelatie.setIdentificatie(relatie.getIdentificatie());
         jsonRelatie.setVoornaam(relatie.getVoornaam());
-        jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());
+        if (relatie.getTussenvoegsel() != null) {
+            jsonRelatie.setTussenvoegsel(relatie.getTussenvoegsel());
+        } else {
+            jsonRelatie.setTussenvoegsel("");
+        }
         jsonRelatie.setAchternaam(relatie.getAchternaam());
         jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
@@ -92,6 +96,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (relatie.getGeboorteDatum() != null) {
             jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
             jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
+        } else {
+            jsonRelatie.setGeboorteDatum("");
+            jsonRelatie.setGeboorteDatumOpgemaakt("");
         }
         if (relatie.getOverlijdensdatum() != null) {
             jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
