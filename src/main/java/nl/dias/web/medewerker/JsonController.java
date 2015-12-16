@@ -8,7 +8,9 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import nl.dias.domein.StatusSchade;
 import nl.dias.domein.VerzekeringsMaatschappij;
+import nl.dias.domein.json.JsonAdres;
 import nl.dias.domein.json.JsonSoortSchade;
+import nl.dias.service.PostcodeService;
 import nl.dias.service.SchadeService;
 import nl.dias.service.VerzekeringsMaatschappijService;
 import nl.dias.web.mapper.SoortSchadeMapper;
@@ -35,6 +37,8 @@ public class JsonController {
     private SchadeService schadeService;
     @Inject
     private SoortSchadeMapper soortSchadeMapper;
+    @Inject
+    private PostcodeService postcodeService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen")
     @ResponseBody
@@ -91,19 +95,26 @@ public class JsonController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode")
     @ResponseBody
-    public String ophalenAdresOpPostcode(@QueryParam("postcode") String postcode, @QueryParam("huisnummer") String huisnummer) {
-        String adres = "http://api.postcodeapi.nu/" + postcode + "/" + huisnummer;
+    public JsonAdres ophalenAdresOpPostcode(@QueryParam("postcode") String postcode, @QueryParam("huisnummer") String huisnummer) {
+        String adres = "https://postcode-api.apiwise.nl/v2/addresses/?postcode=" + postcode + "&number=" + huisnummer;
 
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
-        ClientResponse response = webResource.header("Api-Key", "0eaff635fe5d9be439582d7501027f34d5a3ca9d").accept("application/x-www-form-urlencoded; charset=UTF-8").get(ClientResponse.class);
+        ClientResponse response = webResource.header("X-Api-Key", "FYEYGHHNFV3sZutux7LcX8ng8VizXWPk1HWxPPX9").accept("application/x-www-form-urlencoded; charset=UTF-8").get(ClientResponse.class);
         //        if (response.getStatus() != 200) {
         //            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         //        }
 
-        return response.getEntity(String.class);
+        String antwoord = response.getEntity(String.class);
+        LOGGER.debug("Antwoord van de postcode api: {}", antwoord);
+
+        JsonAdres jsonAdres = postcodeService.extraHeerAdres(antwoord);
+        jsonAdres.setPostcode(postcode);
+        jsonAdres.setHuisnummer(Long.valueOf(huisnummer));
+
+        return jsonAdres;
     }
 
     public void setMaatschappijService(VerzekeringsMaatschappijService maatschappijService) {

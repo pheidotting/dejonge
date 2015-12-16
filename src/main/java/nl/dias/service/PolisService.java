@@ -239,7 +239,7 @@ public class PolisService {
         }
     }
 
-    private LocalDate stringNaarLocalDate(String datum) throws IllegalArgumentException {
+    private LocalDate stringNaarLocalDate(String datum)  {
         String[] d = datum.split("-");
 
         LocalDate ld = null;
