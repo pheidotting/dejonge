@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 public class RisicoAnalyseRepository extends AbstractRepository<RisicoAnalyse> {
@@ -29,6 +30,17 @@ public class RisicoAnalyseRepository extends AbstractRepository<RisicoAnalyse> {
         TypedQuery<RisicoAnalyse> query = getEm().createNamedQuery("RisicoAnalyse.alleRisicoAnalysesBijBedrijf", RisicoAnalyse.class);
         query.setParameter("bedrijf", bedrijf);
 
-        return query.getSingleResult();
+        RisicoAnalyse risicoAnalyse = null;
+        List<RisicoAnalyse> result = query.getResultList();
+        if (result.size() == 0) {
+            risicoAnalyse = new RisicoAnalyse();
+            risicoAnalyse.setBedrijf(bedrijf);
+            bedrijf.getRisicoAnalyses().add(risicoAnalyse);
+
+            opslaan(risicoAnalyse);
+        } else {
+            risicoAnalyse = result.get(0);
+        }
+        return risicoAnalyse;
     }
 }

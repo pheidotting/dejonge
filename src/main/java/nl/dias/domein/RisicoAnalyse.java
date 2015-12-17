@@ -59,6 +59,9 @@ public class RisicoAnalyse implements Serializable, PersistenceObject, ObjectMet
 
     @Override
     public Set<Opmerking> getOpmerkingen() {
+        if (opmerkingen == null) {
+            opmerkingen = new HashSet<>();
+        }
         return opmerkingen;
     }
 
