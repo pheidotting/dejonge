@@ -57,13 +57,13 @@ public class BedrijfController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody
     public JsonBedrijf lees(@QueryParam("id") String id) {
-        Bedrijf bedrijf = null;
+        JsonBedrijf bedrijf = null;
         if (id == null || "0".equals(id)) {
-            bedrijf = new Bedrijf();
+            bedrijf = new JsonBedrijf();
         } else {
-            bedrijf = bedrijfService.lees(Long.valueOf(id));
+            bedrijf = mapper.map(bedrijfService.lees(Long.valueOf(id)), JsonBedrijf.class);
         }
-        return mapper.map(bedrijf, JsonBedrijf.class);
+        return bedrijf;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
