@@ -1,6 +1,5 @@
 package nl.dias.domein.json;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.dias.domein.json.predicates.JsonWoonAdresPredicate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,7 +11,6 @@ import java.util.List;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class JsonRelatie {
     private Long id;
     private String identificatie;
