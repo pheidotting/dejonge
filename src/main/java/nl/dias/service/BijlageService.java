@@ -20,10 +20,18 @@ import java.util.UUID;
 @Service
 public class BijlageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
-    private static final String FOUTMELDINGBIJOPSLAANBIJLAGE = "fout bij opslaan bijlage nar schijf\"";
+    private static final String FOUTMELDINGBIJOPSLAANBIJLAGE = "fout bij opslaan bijlage nar schijf\"   ";
 
     @Inject
     private BijlageRepository bijlageRepository;
+
+    public void wijzigOmschrijvingBijlage(Long id, String nieuweNaam) {
+        Bijlage bijlage = bijlageRepository.leesBijlage(id);
+
+        bijlage.setOmschrijving(nieuweNaam);
+
+        bijlageRepository.opslaan(bijlage);
+    }
 
     public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
         return bijlageRepository.alleBijlagesBijRelatie(relatie);

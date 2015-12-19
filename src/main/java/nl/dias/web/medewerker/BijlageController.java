@@ -3,6 +3,7 @@ package nl.dias.web.medewerker;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.json.JsonBijlage;
+import nl.dias.domein.json.WijzigenOmschrijvingBijlage;
 import nl.dias.service.*;
 import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
@@ -16,10 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
@@ -66,6 +64,14 @@ public class BijlageController {
     private HttpServletRequest httpServletRequest;
     @Autowired
     private HttpServletResponse httpServletResponse;
+
+    @RequestMapping(method = RequestMethod.POST, value = "/wijzigOmschrijvingBijlage")
+    @ResponseBody
+    public void wijzigOmschrijvingBijlage(@RequestBody WijzigenOmschrijvingBijlage wijzigenOmschrijvingBijlage) {
+        LOGGER.info("WijzigenOmschrijvingBijlage {}", ReflectionToStringBuilder.toString(wijzigenOmschrijvingBijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        bijlageService.wijzigOmschrijvingBijlage(wijzigenOmschrijvingBijlage.getBijlageId(), wijzigenOmschrijvingBijlage.getNieuweOmschrijving());
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
     @ResponseBody

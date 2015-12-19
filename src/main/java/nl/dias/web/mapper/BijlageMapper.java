@@ -31,7 +31,11 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
         JsonBijlage json = new JsonBijlage();
         json.setId(bijlage.getId() == null ? null : bijlage.getId().toString());
-        json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
+        if (bijlage.getOmschrijving() != null) {
+            json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
+        } else {
+            json.setOmschrijvingOfBestandsNaam(bijlage.getBestandsNaam());
+        }
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
         json.setBestandsNaam(bijlage.getBestandsNaam());
 
