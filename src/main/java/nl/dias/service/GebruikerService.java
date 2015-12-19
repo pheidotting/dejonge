@@ -178,61 +178,73 @@ public class GebruikerService {
         // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden
         // aangemaakt
         if (gebruiker instanceof Relatie) {
+            verstuurEvents((Relatie) gebruiker);
+        }
+    }
 
-            Relatie relatie = (Relatie) gebruiker;
-            if (isBlank(relatie.getBsn())) {
-                LOGGER.info("BSN is leeg, Taak aanmaken");
+    private void verstuurEvents(Relatie relatie) {
+        verstuurBsnEvent(relatie);
+        verstuurAdresEvent(relatie);
+        verstuurEmailEvent(relatie);
+    }
 
-                AanmakenTaak taak = new AanmakenTaak();
-                taak.setDatumTijdCreatie(LocalDateTime.now());
-                taak.setRelatie(relatie.getId());
-                taak.setSoort(SoortTaak.AANVULLEN_BSN);
+    private void verstuurBsnEvent(Relatie relatie) {
+        if (isBlank(relatie.getBsn())) {
+            LOGGER.info("BSN is leeg, Taak aanmaken");
 
-                aanmakenTaakSender.send(taak);
-            } else {
-                LOGGER.info("BSN gevuld, bericht versturen");
+            AanmakenTaak taak = new AanmakenTaak();
+            taak.setDatumTijdCreatie(LocalDateTime.now());
+            taak.setRelatie(relatie.getId());
+            taak.setSoort(SoortTaak.AANVULLEN_BSN);
 
-                BsnAangevuld bsnAangevuld = new BsnAangevuld();
-                bsnAangevuld.setRelatie(relatie.getId());
+            aanmakenTaakSender.send(taak);
+        } else {
+            LOGGER.info("BSN gevuld, bericht versturen");
 
-                bsnAangevuldSender.send(bsnAangevuld);
-            }
+            BsnAangevuld bsnAangevuld = new BsnAangevuld();
+            bsnAangevuld.setRelatie(relatie.getId());
 
-            if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
-                LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
+            bsnAangevuldSender.send(bsnAangevuld);
+        }
+    }
 
-                AanmakenTaak taak = new AanmakenTaak();
-                taak.setDatumTijdCreatie(LocalDateTime.now());
-                taak.setRelatie(relatie.getId());
-                taak.setSoort(SoortTaak.AANVULLEN_ADRES);
+    private void verstuurAdresEvent(Relatie relatie) {
+        if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
+            LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
 
-                aanmakenTaakSender.send(taak);
-            } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
-                LOGGER.info("Adres gevuld, bericht versturen");
+            AanmakenTaak taak = new AanmakenTaak();
+            taak.setDatumTijdCreatie(LocalDateTime.now());
+            taak.setRelatie(relatie.getId());
+            taak.setSoort(SoortTaak.AANVULLEN_ADRES);
 
-                AdresAangevuld adresAangevuld = new AdresAangevuld();
-                adresAangevuld.setRelatie(relatie.getId());
+            aanmakenTaakSender.send(taak);
+        } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
+            LOGGER.info("Adres gevuld, bericht versturen");
 
-                adresAangevuldSender.send(adresAangevuld);
-            }
+            AdresAangevuld adresAangevuld = new AdresAangevuld();
+            adresAangevuld.setRelatie(relatie.getId());
 
-            if (isBlank(relatie.getIdentificatie())) {
-                LOGGER.info("E-mailadres is leeg, Taak aanmaken");
+            adresAangevuldSender.send(adresAangevuld);
+        }
+    }
 
-                AanmakenTaak taak = new AanmakenTaak();
-                taak.setDatumTijdCreatie(LocalDateTime.now());
-                taak.setRelatie(relatie.getId());
-                taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
+    private void verstuurEmailEvent(Relatie relatie) {
+        if (isBlank(relatie.getIdentificatie())) {
+            LOGGER.info("E-mailadres is leeg, Taak aanmaken");
 
-                aanmakenTaakSender.send(taak);
-            } else {
-                LOGGER.info("E-mailadres gevuld, bericht versturen");
+            AanmakenTaak taak = new AanmakenTaak();
+            taak.setDatumTijdCreatie(LocalDateTime.now());
+            taak.setRelatie(relatie.getId());
+            taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
 
-                EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
-                emailadresAangevuld.setRelatie(relatie.getId());
+            aanmakenTaakSender.send(taak);
+        } else {
+            LOGGER.info("E-mailadres gevuld, bericht versturen");
 
-                emailAdresAangevuldSender.send(emailadresAangevuld);
-            }
+            EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+            emailadresAangevuld.setRelatie(relatie.getId());
+
+            emailAdresAangevuldSender.send(emailadresAangevuld);
         }
     }
 
