@@ -1,5 +1,6 @@
 package nl.dias.service;
 
+import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
@@ -24,6 +25,8 @@ public class BijlageService {
 
     @Inject
     private BijlageRepository bijlageRepository;
+    @Inject
+    private BedrijfService bedrijfService;
 
     public void wijzigOmschrijvingBijlage(Long id, String nieuweNaam) {
         Bijlage bijlage = bijlageRepository.leesBijlage(id);
@@ -42,7 +45,17 @@ public class BijlageService {
 
         LOGGER.debug("Verwijderen Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
+        if (bijlage.getBedrijf() != null) {
+            Bedrijf bedrijf = bedrijfService.lees(bijlage.getBedrijf().getId());
+            bedrijf.getBijlages().remove(bijlage);
+        }
+
         bijlageRepository.verwijder(bijlage);
+
+        //Bestand nog ff verwijderen
+        LOGGER.debug("Bestand {} verwijderen", Utils.getUploadPad() + "/" + bijlage.getS3Identificatie());
+
+        new File(Utils.getUploadPad() + "/" + bijlage.getS3Identificatie()).delete();
     }
 
     public void opslaan(Bijlage bijlage) {
