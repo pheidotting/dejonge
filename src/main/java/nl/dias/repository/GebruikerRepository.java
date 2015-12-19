@@ -88,7 +88,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         Gebruiker gebruiker = null;
 
         TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpEmail", Gebruiker.class);
-        query.setMaxResults(MAX_RESULTS);
+        query.setMaxResults(1);
         query.setParameter("emailadres", emailadres);
         try {
             gebruiker = query.getSingleResult();
