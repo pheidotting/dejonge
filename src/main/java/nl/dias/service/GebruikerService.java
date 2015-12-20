@@ -115,50 +115,12 @@ public class GebruikerService {
     public void opslaan(Gebruiker gebruiker) {
         LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker));
         Gebruiker gebruikerAanwezig = null;
-        LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " opzoeken");
-        if (gebruiker.getIdentificatie() != null && !"".equals(gebruiker.getIdentificatie())) {
-            try {
-                gebruikerAanwezig = gebruikerRepository.zoek(gebruiker.getIdentificatie());
-            } catch (NietGevondenException e) {
-                // niets aan de hand;
-                LOGGER.info("gebruiker " + gebruiker.getIdentificatie() + " niet gevonden");
-                LOGGER.trace("{}", e);
-            }
-        }
-
-        if (gebruikerAanwezig != null && !gebruikerAanwezig.getId().equals(gebruiker.getId())) {
-            LOGGER.debug("Gebruiker komt al voor");
-            LOGGER.debug("Gevonden user id : '" + gebruikerAanwezig.getId() + "', op te slaan id : '" + gebruiker.getId() + "'");
-            gebruikerAanwezig = null;
-            // throw new
-            // IllegalArgumentException("E-mailadres komt al voor bij een andere gebruiker");
-        }
 
         if (gebruikerAanwezig != null && gebruikerAanwezig instanceof Relatie) {
             LOGGER.debug("Adressen wissen bij relatie");
-            //            ((Relatie)gebruikerAanwezig).setAdressen(new ArrayList<Adres>());
-            //            gebruikerRepository.opslaan(gebruikerAanwezig);
             gebruikerRepository.verwijderAdressenBijRelatie((Relatie) gebruiker);
         }
 
-        // BSN mag ook niet al voorkomen, daarom deze ook eerst opzoeken
-        if (gebruiker instanceof Relatie) {
-            if (!"".equals(((Relatie) gebruiker).getBsn())) {
-                try {
-                    gebruikerAanwezig = gebruikerRepository.zoekOpBsn(((Relatie) gebruiker).getBsn());
-                } catch (NoResultException e) {
-                    // niets aan de hand;
-                    LOGGER.info("gebruiker met bsn " + ((Relatie) gebruiker).getBsn() + " niet gevonden");
-                    LOGGER.trace("{}", e);
-                }
-
-                if (gebruikerAanwezig != null && gebruikerAanwezig.getId() != gebruiker.getId()) {
-                    gebruikerAanwezig = null;
-                    // throw new
-                    // IllegalArgumentException("Burgerservicenummer komt al voor bij een andere gebruiker");
-                }
-            }
-        }
         // Even checken of over de connectie met de Relatie is ingevuld
         if (gebruiker instanceof Relatie) {
             for (Telefoonnummer telefoonnummer : ((Relatie) gebruiker).getTelefoonnummers()) {
@@ -175,8 +137,7 @@ public class GebruikerService {
 
         gebruikerRepository.opslaan(gebruiker);
 
-        // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden
-        // aangemaakt
+        // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden aangemaakt
         if (gebruiker instanceof Relatie) {
             verstuurEvents((Relatie) gebruiker);
         }
