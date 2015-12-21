@@ -17,10 +17,7 @@ import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.easymock.EasyMockRunner;
-import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
+import org.easymock.*;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.After;
@@ -72,6 +69,17 @@ public class GebruikerServiceTest extends EasyMockSupport {
         replayAll();
 
         assertEquals(gebruiker, service.lees(1L));
+    }
+
+    @Test
+    public void testLeesRelatie() {
+        Relatie relatie = new Relatie();
+
+        expect(repository.lees(1L)).andReturn(relatie);
+
+        replayAll();
+
+        assertEquals(relatie, service.leesRelatie(1L));
     }
 
     @Test
@@ -620,6 +628,80 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatiesVerwacht.add(relatieZoekOpBedrijfsnaam);
 
         assertEquals(relatiesVerwacht.size(), service.zoekOpNaamAdresOfPolisNummer(zoekterm).size());
+    }
+
+    @Test
+    public void testOpslaanAdresBijRelatie() {
+        Long relatieId = 46L;
+        Relatie relatie = new Relatie();
+
+        expect(repository.lees(relatieId)).andReturn(relatie);
+
+        Capture<Relatie> relatieCapture = newCapture();
+        repository.opslaan(capture(relatieCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaanAdresBijRelatie(maakAdres(), relatieId);
+
+        assertEquals(1, relatieCapture.getValue().getAdressen().size());
+    }
+
+    @Test
+    public void testOpslaanBijlage() {
+        String relatieId = "46";
+
+        Relatie relatie = new Relatie();
+
+        expect(repository.lees(Long.valueOf(relatieId))).andReturn(relatie);
+
+        Bijlage bijlage = new Bijlage();
+
+        Capture<Relatie> relatieCapture = newCapture();
+        repository.opslaan(capture(relatieCapture));
+        expectLastCall();
+
+        replayAll();
+
+        service.opslaanBijlage(relatieId, bijlage);
+
+        Relatie relatieOpgeslagen = relatieCapture.getValue();
+        assertEquals(1, relatieOpgeslagen.getBijlages().size());
+        assertEquals(bijlage, relatieOpgeslagen.getBijlages().iterator().next());
+    }
+
+    @Test
+    public void testKoppelenOnderlingeRelatie() {
+        Relatie relatie1 = new Relatie();
+        relatie1.setId(1L);
+        Relatie relatie2 = new Relatie();
+        relatie2.setId(2L);
+
+        expect(repository.lees(relatie1.getId())).andReturn(relatie1);
+        expect(repository.lees(relatie2.getId())).andReturn(relatie2);
+
+        Capture<Relatie> relatieCapture1 = newCapture();
+        Capture<Relatie> relatieCapture2 = newCapture();
+
+        repository.opslaan(capture(relatieCapture1));
+        repository.opslaan(capture(relatieCapture2));
+
+        replayAll();
+
+        service.koppelenOnderlingeRelatie(relatie1.getId(), relatie2.getId(), "O");
+
+        Relatie relatie1Opgeslagen = relatieCapture1.getValue();
+        Relatie relatie2Opgeslagen = relatieCapture2.getValue();
+
+        assertEquals(1, relatie1Opgeslagen.getOnderlingeRelaties().size());
+        OnderlingeRelatie onderlingeRelatie1 = relatie1Opgeslagen.getOnderlingeRelaties().iterator().next();
+        assertEquals(relatie2, onderlingeRelatie1.getRelatieMet());
+        assertEquals(OnderlingeRelatieSoort.O, onderlingeRelatie1.getOnderlingeRelatieSoort());
+        assertEquals(1, relatie2Opgeslagen.getOnderlingeRelaties().size());
+        OnderlingeRelatie onderlingeRelatie2 = relatie2Opgeslagen.getOnderlingeRelaties().iterator().next();
+        assertEquals(relatie1, onderlingeRelatie2.getRelatieMet());
+        assertEquals(OnderlingeRelatieSoort.K, onderlingeRelatie2.getOnderlingeRelatieSoort());
     }
 
     private Adres maakAdres() {

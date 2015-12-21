@@ -349,33 +349,4 @@ public class GebruikerService {
 
         return ret;
     }
-
-    public void setGebruikerRepository(GebruikerRepository gebruikerRepository) {
-        this.gebruikerRepository = gebruikerRepository;
-    }
-
-    public void setAanmakenTaakSender(AanmakenTaakSender aanmakenTaakSender) {
-        this.aanmakenTaakSender = aanmakenTaakSender;
-    }
-
-    public void setAdresAangevuldSender(AdresAangevuldSender adresAangevuldSender) {
-        this.adresAangevuldSender = adresAangevuldSender;
-    }
-
-    public void setEmailAdresAangevuldSender(EmailAdresAangevuldSender emailAdresAangevuldSender) {
-        this.emailAdresAangevuldSender = emailAdresAangevuldSender;
-    }
-
-    public void setBsnAangevuldSender(BsnAangevuldSender bsnAangevuldSender) {
-        this.bsnAangevuldSender = bsnAangevuldSender;
-    }
-
-    public void setPolisRepository(PolisRepository polisRepository) {
-        this.polisRepository = polisRepository;
-    }
-
-    public void setKantoorRepository(KantoorRepository kantoorRepository) {
-        this.kantoorRepository = kantoorRepository;
-    }
-
 }
