@@ -26,10 +26,23 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         zetPersistenceContext("dias");
     }
 
+
     @Override
     public void setPersistenceContext(String persistenceContext) {
         zetPersistenceContext(persistenceContext);
     }
+
+    //    @PersistenceContext(unitName = "dias")
+    //    private EntityManager entityManagerFactory;
+    //
+    //    private EntityManager entityManager;
+    //
+    //    private EntityManager getEm(){
+    //        if(entityManager==null){
+    //            entityManager = entityManagerFactory.createEntityManager();
+    //        }
+    //        return entityManagerFactory;
+    //    }
 
     public List<Relatie> zoekRelatiesOpTelefoonnummer(String telefoonnummer) {
         TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpTelefoonnummer", Relatie.class);
@@ -120,6 +133,7 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
         LOGGER.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
 
+
         Gebruiker gebruiker = null;
 
         TypedQuery<Gebruiker> query = getEm().createNamedQuery("Gebruiker.zoekOpSessieEnIpAdres", Gebruiker.class);
@@ -178,4 +192,33 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
 
         return gebruiker;
     }
+    //    @Transactional
+    //    public void verwijder(Gebruiker o) {
+    //        getEm().remove(o);
+    //    }
+    //
+    //    @Transactional
+    //    public List<Gebruiker> alles() {
+    //        Query query = getEm().createQuery("select e from Gebruiker e");
+    //        @SuppressWarnings("unchecked")
+    //        List<Gebruiker> ret = query.getResultList();
+    //
+    //        return ret;
+    //    }
+    //
+    //    @Transactional
+    //    public void opslaan(Gebruiker o) {
+    //
+    //        if (o.getId() == null) {
+    //            getEm().persist(o);
+    //        } else {
+    //            getEm().merge(o);
+    //        }
+    //    }
+    //
+    //    @Transactional
+    //    public Gebruiker lees(Long id) {
+    //        System.out.println(getEm());
+    //        return getEm().find(Gebruiker.class, id);
+    //    }
 }

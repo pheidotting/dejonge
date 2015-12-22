@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Component
 @Entity
 @Table(name = "POLIS")
-@DiscriminatorValue(value = "SV")
+@DiscriminatorValue(value = "SP")
 public class SpaarVerzekering extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {

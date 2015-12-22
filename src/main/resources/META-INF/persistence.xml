@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/persistence">
 
 	<persistence-unit name="dias" transaction-type="JTA">
-   		<!--provider>org.hibernate.ejb.HibernatePersistence</provider-->
+		<!--provider>org.hibernate.jpa.HibernatePersistenceProvider</provider-->
   		<jta-data-source>jdbcDias</jta-data-source>
 		<class>nl.dias.domein.Aangifte</class>
 		<class>nl.dias.domein.Adres</class>
@@ -103,10 +103,10 @@
                     <property name="eclipselink.logging.level.sql" value="FINEST" />
                     <property name="eclipselink.logging.level.cache" value="FINEST" />
                  </properties>
-		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect"/>
-		</properties>
          -->
+		<!--properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLMyISAMDialect"/>
+		</properties-->
 	</persistence-unit>
 
 	<persistence-unit name="unittest" transaction-type="RESOURCE_LOCAL">

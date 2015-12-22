@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Component
 @Entity
 @Table(name = "POLIS")
-@DiscriminatorValue(value = "BS")
+@DiscriminatorValue(value = "BE")
 public class BedrijfsSchadeVerzekering extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {
