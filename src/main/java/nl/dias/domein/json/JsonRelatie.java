@@ -1,6 +1,7 @@
 package nl.dias.domein.json;
 
 import nl.dias.domein.json.predicates.JsonWoonAdresPredicate;
+import nl.lakedigital.as.taakbeheer.domein.json.JsonTaak;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,6 +41,7 @@ public class JsonRelatie {
     private List<String> lijst;
     private String readOnly;
     private String notReadOnly;
+    private List<JsonTaak> openstaandeTaken;
 
     public String getRoepnaam() {
         return roepnaam;
@@ -294,6 +296,14 @@ public class JsonRelatie {
 
     public void setNotReadOnly(String notReadOnly) {
         this.notReadOnly = notReadOnly;
+    }
+
+    public List<JsonTaak> getOpenstaandeTaken() {
+        return openstaandeTaken;
+    }
+
+    public void setOpenstaandeTaken(List<JsonTaak> openstaandeTaken) {
+        this.openstaandeTaken = openstaandeTaken;
     }
 
     @Override

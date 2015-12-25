@@ -32,6 +32,12 @@ public class TaakController {
     @Inject
     private AuthorisatieService authorisatieService;
 
+    @RequestMapping(method = RequestMethod.GET, value = "/alleOpenTakenVoorRelatie")
+    @ResponseBody
+    public List<JsonTaak> alleOpenTakenBijRelatie(@QueryParam("relatieId") Long relatieId) {
+        return taakClient.alleOpenTakenBijRelatie(relatieId);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/aantalOpenTaken")
     @ResponseBody
     public Long aantalOpenTaken() {
