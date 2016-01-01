@@ -1,16 +1,16 @@
 package nl.dias.web.mapper;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
-import nl.dias.domein.json.JsonHypotheek;
-import nl.dias.domein.json.JsonHypotheekPakket;
-
+import nl.lakedigital.djfc.commons.json.JsonHypotheek;
+import nl.lakedigital.djfc.commons.json.JsonHypotheekPakket;
 import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 public class HypotheekPakketMapperTest extends EasyMockSupport {
     private HypotheekPakketMapper mapper;

@@ -1,7 +1,7 @@
 package nl.dias.builders;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 
 public class BedrijfBuilder {
     private Bedrijf bedrijf;

@@ -1,8 +1,8 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.web.mapper.dozer.AdresDozerMapper;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

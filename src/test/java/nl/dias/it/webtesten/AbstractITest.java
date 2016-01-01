@@ -9,7 +9,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-import nl.dias.domein.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

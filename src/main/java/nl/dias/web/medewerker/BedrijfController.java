@@ -1,12 +1,12 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.BedrijfMapper;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

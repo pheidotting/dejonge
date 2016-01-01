@@ -1,9 +1,9 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;

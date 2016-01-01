@@ -3,7 +3,7 @@ package nl.dias.web.mapper;
 import com.ibm.icu.math.BigDecimal;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.HypotheekPakket;
-import nl.dias.domein.json.JsonHypotheekPakket;
+import nl.lakedigital.djfc.commons.json.JsonHypotheekPakket;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

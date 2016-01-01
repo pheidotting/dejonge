@@ -3,7 +3,7 @@ package nl.dias.mapper;
 import nl.dias.builders.BedrijfBuilder;
 import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.TestSubject;

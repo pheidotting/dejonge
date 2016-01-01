@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.JaarCijfers;
-import nl.dias.domein.json.JsonJaarCijfers;
+import nl.lakedigital.djfc.commons.json.JsonJaarCijfers;
 import org.springframework.stereotype.Component;
 
 @Component

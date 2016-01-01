@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
-import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Polis;
+import nl.lakedigital.djfc.commons.json.JsonPolis;
 
 public class PolisNaarJsonPolisMapper extends AbstractMapper<Polis, JsonPolis> {
     @Override

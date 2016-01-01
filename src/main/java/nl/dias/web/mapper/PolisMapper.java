@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
-import nl.dias.domein.json.JsonPolis;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
@@ -12,6 +11,7 @@ import nl.dias.domein.predicates.StatusPolisBijStatusPredicate;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
+import nl.lakedigital.djfc.commons.json.JsonPolis;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
@@ -99,12 +99,12 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
-//        if (polis.getId() != null && polis.getId() != 0) {
-//            Polis p = polisService.lees(polis.getId());
-//
-//            polis.setSchades(p.getSchades());
-//            polis.setOpmerkingen(p.getOpmerkingen());
-//        }
+        //        if (polis.getId() != null && polis.getId() != 0) {
+        //            Polis p = polisService.lees(polis.getId());
+        //
+        //            polis.setSchades(p.getSchades());
+        //            polis.setOpmerkingen(p.getOpmerkingen());
+        //        }
 
         //        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
         //        for (Bijlage bijlage : polis.getBijlages()) {

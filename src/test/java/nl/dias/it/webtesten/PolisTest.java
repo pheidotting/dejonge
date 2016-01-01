@@ -1,7 +1,7 @@
 package nl.dias.it.webtesten;
 
-import nl.dias.domein.json.JsonBijlage;
-import nl.dias.domein.json.JsonPolis;
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.JsonPolis;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Ignore;
@@ -13,9 +13,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by patrickheidotting on 13-10-15.
- */
 @Ignore
 public class PolisTest extends AbstractITest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisTest.class);

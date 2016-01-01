@@ -1,4 +1,4 @@
-package nl.dias.domein.json.predicates;
+package nl.dias.domein.predicates;
 
 import com.google.common.base.Predicate;
 import nl.dias.domein.Adres;

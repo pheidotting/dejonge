@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import org.springframework.stereotype.Component;
 
 @Component

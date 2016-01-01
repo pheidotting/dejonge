@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonOpmerking;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.springframework.stereotype.Component;
 
 @Component

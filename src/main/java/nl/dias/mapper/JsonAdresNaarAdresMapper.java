@@ -2,9 +2,9 @@ package nl.dias.mapper;
 
 import nl.dias.domein.Adres;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonAdres;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

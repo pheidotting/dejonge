@@ -1,7 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

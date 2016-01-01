@@ -1,8 +1,8 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.*;
-import nl.dias.domein.json.JsonOnderlingeRelatie;
-import nl.dias.domein.json.JsonRelatie;
+import nl.lakedigital.djfc.commons.json.JsonOnderlingeRelatie;
+import nl.lakedigital.djfc.commons.json.JsonRelatie;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;

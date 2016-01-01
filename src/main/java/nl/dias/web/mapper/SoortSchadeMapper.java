@@ -1,7 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.SoortSchade;
-import nl.dias.domein.json.JsonSoortSchade;
+import nl.lakedigital.djfc.commons.json.JsonSoortSchade;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

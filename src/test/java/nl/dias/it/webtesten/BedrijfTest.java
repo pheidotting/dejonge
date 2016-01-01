@@ -1,9 +1,9 @@
 package nl.dias.it.webtesten;
 
-import nl.dias.domein.json.JsonAdres;
-import nl.dias.domein.json.JsonBedrijf;
-import nl.dias.domein.json.JsonContactPersoon;
-import nl.dias.domein.json.JsonTelefoonnummer;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Test;
@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
 
 public class BedrijfTest extends AbstractITest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfTest.class);

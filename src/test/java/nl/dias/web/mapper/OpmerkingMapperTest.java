@@ -2,8 +2,8 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.SchadeService;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;

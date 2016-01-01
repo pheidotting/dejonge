@@ -1,25 +1,24 @@
 package nl.dias.web.mapper;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
-import nl.dias.domein.json.JsonBijlage;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.domein.json.JsonSchade;
 import nl.dias.domein.polis.AutoVerzekering;
-
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
+import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class SchadeMapperTest extends EasyMockSupport {
     private SchadeMapper mapper;

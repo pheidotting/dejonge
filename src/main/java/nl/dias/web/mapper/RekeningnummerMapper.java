@@ -1,7 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.json.JsonRekeningNummer;
+import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
 import org.springframework.stereotype.Component;
 
 @Component

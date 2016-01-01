@@ -2,11 +2,11 @@ package nl.dias.web.medewerker;
 
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonBijlage;
-import nl.dias.domein.json.WijzigenOmschrijvingBijlage;
 import nl.dias.service.*;
 import nl.dias.utils.Utils;
 import nl.dias.web.mapper.BijlageMapper;
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.WijzigenOmschrijvingBijlage;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

@@ -1,16 +1,13 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Adres;
-import nl.dias.domein.json.JsonAdres;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by patrickheidotting on 30-09-15.
- */
 @Component
 public class AdresMapper extends Mapper<Adres, JsonAdres> {
     @Override

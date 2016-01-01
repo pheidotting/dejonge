@@ -1,17 +1,16 @@
 package nl.dias.web.mapper;
 
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.RekeningNummer;
+import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.json.JsonRekeningNummer;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class RekeningnummerMapperTest {
     private RekeningnummerMapper mapper;

@@ -1,6 +1,6 @@
 package nl.dias.service;
 
-import nl.dias.domein.json.JsonAdres;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.springframework.stereotype.Service;
 
 @Service

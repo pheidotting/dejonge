@@ -2,7 +2,7 @@ package nl.dias.web.mapper.dozer;
 
 import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.dozer.DozerBeanMapper;
 import org.dozer.DozerConverter;
 import org.slf4j.Logger;

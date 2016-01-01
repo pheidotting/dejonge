@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.ContactPersoon;
-import nl.dias.domein.json.JsonContactPersoon;
+import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

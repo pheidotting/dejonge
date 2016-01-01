@@ -1,8 +1,8 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.json.JsonRisicoAnalyse;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.RisicoAnalyseService;
+import nl.lakedigital.djfc.commons.json.JsonRisicoAnalyse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

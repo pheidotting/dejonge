@@ -2,9 +2,9 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
-import nl.dias.domein.json.JsonOpmerking;
-import nl.dias.domein.json.JsonSchade;
 import nl.dias.service.SchadeService;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
+import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;

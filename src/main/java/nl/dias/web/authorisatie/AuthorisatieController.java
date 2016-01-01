@@ -4,11 +4,11 @@ import nl.dias.domein.Beheerder;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.IngelogdeGebruiker;
-import nl.dias.domein.json.Inloggen;
-import nl.dias.domein.json.JsonFoutmelding;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
+import nl.lakedigital.djfc.commons.json.IngelogdeGebruiker;
+import nl.lakedigital.djfc.commons.json.Inloggen;
+import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 import org.slf4j.Logger;
@@ -80,11 +80,12 @@ public class AuthorisatieController {
             return ingelogdeGebruiker;
         }
 
-//        return Response.status(401).entity(null).build();
+        //        return Response.status(401).entity(null).build();
         throw new UnauthorizesdAccessException();
     }
+
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public class UnauthorizesdAccessException extends  RuntimeException{
+    public class UnauthorizesdAccessException extends RuntimeException {
 
     }
 

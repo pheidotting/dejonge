@@ -1,7 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.SoortHypotheek;
-import nl.dias.domein.json.JsonSoortHypotheek;
+import nl.lakedigital.djfc.commons.json.JsonSoortHypotheek;
 import org.springframework.stereotype.Component;
 
 @Component

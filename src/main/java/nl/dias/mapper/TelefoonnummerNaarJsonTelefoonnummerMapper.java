@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Telefoonnummer;
-import nl.dias.domein.json.JsonTelefoonnummer;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

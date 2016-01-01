@@ -1,8 +1,8 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.json.JsonBedrijf;
 import nl.dias.service.BedrijfService;
+import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

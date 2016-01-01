@@ -1,9 +1,9 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.*;
-import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.*;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

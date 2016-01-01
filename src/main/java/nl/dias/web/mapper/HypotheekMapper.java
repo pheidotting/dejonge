@@ -2,7 +2,7 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
-import nl.dias.domein.json.JsonHypotheek;
+import nl.lakedigital.djfc.commons.json.JsonHypotheek;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;

@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.RisicoAnalyse;
-import nl.dias.domein.json.JsonRisicoAnalyse;
+import nl.lakedigital.djfc.commons.json.JsonRisicoAnalyse;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -2,7 +2,7 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
-import nl.dias.domein.json.JsonTelefoonnummer;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.junit.Before;
 import org.junit.Test;
 

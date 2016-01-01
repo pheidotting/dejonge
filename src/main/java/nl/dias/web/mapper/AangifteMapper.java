@@ -1,9 +1,9 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Aangifte;
-import nl.dias.domein.json.JsonAangifte;
 import nl.dias.web.mapper.dozer.LocalDateDozerConverter;
 import nl.dias.web.mapper.dozer.RelatieDozerMapper;
+import nl.lakedigital.djfc.commons.json.JsonAangifte;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;

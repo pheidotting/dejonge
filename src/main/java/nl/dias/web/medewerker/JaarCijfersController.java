@@ -2,10 +2,10 @@ package nl.dias.web.medewerker;
 
 import com.google.common.collect.Lists;
 import nl.dias.domein.JaarCijfers;
-import nl.dias.domein.json.JsonJaarCijfers;
-import nl.dias.domein.json.comperators.JsonJaarCijfersComparator;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.JaarCijfersService;
+import nl.lakedigital.djfc.commons.json.JsonJaarCijfers;
+import nl.lakedigital.djfc.commons.json.comperators.JsonJaarCijfersComparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

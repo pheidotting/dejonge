@@ -2,7 +2,7 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Adres;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.json.JsonAdres;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package nl.dias.domein;
 
-import nl.dias.domein.json.predicates.AdresPredicate;
+import nl.dias.domein.predicates.AdresPredicate;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

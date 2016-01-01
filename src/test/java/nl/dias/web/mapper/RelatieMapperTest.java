@@ -1,8 +1,8 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.*;
-import nl.dias.domein.json.*;
 import nl.dias.domein.polis.Polis;
+import nl.lakedigital.djfc.commons.json.*;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;

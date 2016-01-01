@@ -1,9 +1,9 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Opmerking;
-import nl.dias.domein.json.JsonOpmerking;
 import nl.dias.service.OpmerkingService;
 import nl.dias.web.mapper.OpmerkingMapper;
+import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

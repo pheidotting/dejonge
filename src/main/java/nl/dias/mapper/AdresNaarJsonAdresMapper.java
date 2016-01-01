@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Adres;
-import nl.dias.domein.json.JsonAdres;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.springframework.stereotype.Component;
 
 @Component

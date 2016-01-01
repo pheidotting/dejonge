@@ -5,7 +5,7 @@
 
 	<mapping>
 		<class-a>nl.dias.domein.Bedrijf</class-a>
-		<class-b>nl.dias.domein.json.JsonBedrijf</class-b>
+		<class-b>nl.lakedigital.djfc.commons.json.JsonBedrijf</class-b>
 		<field>
 			<a>adres.straat</a>
 			<b>straat</b>

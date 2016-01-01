@@ -71,7 +71,7 @@ public class JaarCijfersServiceTest extends EasyMockSupport {
         assertEquals(Lists.newArrayList(jaarCijfersVorigJaar, jaarCijfersHuidigJaar), jaarCijfersService.alles(bedrijsId));
 
         JaarCijfers jaarCijfers = jaarCijfersCapture.getValue();
-        assertEquals(new Long(2015), jaarCijfers.getJaar());
+        assertEquals(new Long(LocalDate.now().getYear()), jaarCijfers.getJaar());
 
         verifyAll();
     }

@@ -1,8 +1,8 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.json.JsonBijlage;
 import nl.dias.domein.polis.AutoVerzekering;
+import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;

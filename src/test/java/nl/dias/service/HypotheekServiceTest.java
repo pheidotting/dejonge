@@ -1,10 +1,10 @@
 package nl.dias.service;
 
 import nl.dias.domein.*;
-import nl.dias.domein.json.JsonHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
+import nl.lakedigital.djfc.commons.json.JsonHypotheek;
 import org.easymock.*;
 import org.junit.After;
 import org.junit.Test;

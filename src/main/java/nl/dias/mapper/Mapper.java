@@ -3,7 +3,7 @@ package nl.dias.mapper;
 
 import com.google.common.base.Predicate;
 import nl.dias.domein.*;
-import nl.dias.domein.json.*;
+import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
