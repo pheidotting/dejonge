@@ -113,7 +113,7 @@ public class GebruikerService {
     }
 
     public void opslaan(Gebruiker gebruiker) {
-        LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker));
+        LOGGER.debug("Opslaan {}", gebruiker);
         Gebruiker gebruikerAanwezig = null;
 
         if (gebruikerAanwezig != null && gebruikerAanwezig instanceof Relatie) {
