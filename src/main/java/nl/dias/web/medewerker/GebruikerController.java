@@ -3,6 +3,7 @@ package nl.dias.web.medewerker;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
+import nl.dias.mapper.Mapper;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
@@ -38,6 +39,8 @@ public class GebruikerController {
     private RelatieMapper relatieMapper;
     @Inject
     private AdresMapper adresMapper;
+    @Inject
+    private Mapper mapper;
     @Inject
     private AuthorisatieService authorisatieService;
     @Autowired
@@ -95,7 +98,7 @@ public class GebruikerController {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         try {
-            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+            Relatie relatie = mapper.map(jsonRelatie, Relatie.class);
             LOGGER.debug("Uit mapper " + relatie);
             String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {

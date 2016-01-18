@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorValue(value = "AG")
-public class ArbeidsongeschiktheidVerzekering extends Polis {
+public class ArbeidsongeschiktheidVerzekeringParticulier extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {
         return SoortVerzekering.PARTICULIER;
@@ -19,7 +19,7 @@ public class ArbeidsongeschiktheidVerzekering extends Polis {
 
     @Override
     public String getSchermNaam() {
-        return this.getSchermNaamDefault(this.getClass().getCanonicalName());
+        return "Arbeidsongeschiktheid";
     }
 
     @Override

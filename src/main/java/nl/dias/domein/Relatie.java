@@ -28,7 +28,7 @@ import static com.google.common.collect.Iterables.*;
 @DiscriminatorValue(value = "R")
 @AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM"))})
 @NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"), @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"), @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"), @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"), @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")})
-public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
+public class Relatie extends Gebruiker implements Serializable, PersistenceObject, ObjectMetAdressen, ObjectMetBijlages, ObjectMetOpmerkingen, ObjectMetTelefoonnummers {
     private static final long serialVersionUID = -1920949633670770763L;
 
     @Column(name = "ROEPNAAM")
