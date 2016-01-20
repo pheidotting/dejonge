@@ -8,6 +8,7 @@ import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.PolisComperator;
 import nl.dias.domein.predicates.StatusPolisBijStatusPredicate;
+import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.service.VerzekeringsMaatschappijService;
@@ -45,6 +46,8 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
     private VerzekeringsMaatschappijService verzekeringsMaatschappijService;
     @Inject
     private GebruikerService gebruikerService;
+    @Inject
+    private BedrijfService bedrijfService;
 
     @Override
     public Polis mapVanJson(JsonPolis jsonPolis) {
@@ -96,6 +99,9 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         //        }
         if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
             polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
+        }
+        if (jsonPolis.getBedrijfsId() != null) {
+            polis.setBedrijf(bedrijfService.lees(jsonPolis.getBedrijfsId()));
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
