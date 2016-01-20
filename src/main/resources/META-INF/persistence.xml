@@ -49,6 +49,34 @@
 		<class>nl.dias.domein.polis.UitvaartVerzekering</class>
 		<class>nl.dias.domein.polis.WoonhuisVerzekering</class>
 		<class>nl.dias.domein.polis.ZorgVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.AanhangerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.AansprakelijkheidBedrijfVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.ArbeidsongeschiktheidVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.BedrijfsSchadeVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.BeroepsAansprakelijkheidsVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.CarVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.CollegaOngevalVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.ComputerEnElektronicaVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.EigenVervoerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.GarageVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.GebouewenEnOpstalVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.GeldVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.HuurdersBelangVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.InstallatieMontageVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.InventariesatieGoederenVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.LandbouwMaterieelVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.MilieuSchadeVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.MotorRijtuigenVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.TrailerAanhangerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.VervoerdersVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.VerzuimZiekengeldVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.VrachtwagenVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.WerkmaterieelVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.WGAEigenRisicoDragerVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.WGAHIaatVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.ZakelijkeGlasVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.ZakelijkeRechtsbijstandVerzekering</class>
+		<class>nl.dias.domein.polis.zakelijk.ZakelijkeReisVerzekering</class>
 		<class>nl.dias.domein.RekeningNummer</class>
 		<class>nl.dias.domein.Relatie</class>
 		<class>nl.dias.domein.RisicoAnalyse</class>
