@@ -23,7 +23,7 @@ public class JsonBedrijfNaarBedrijfMapper extends AbstractMapper<JsonBedrijf, Be
     private JsonContactPersoonNaarContactPersoonMapper jsonContactPersoonNaarContactPersoonMapper;
 
     @Override
-    public Bedrijf map(JsonBedrijf jsonBedrijf, Object parent) {
+    public Bedrijf map(JsonBedrijf jsonBedrijf, Object parent, Object bestaandOjbect) {
         LOGGER.debug("Mappen: ", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
 
         Bedrijf bedrijf = null;

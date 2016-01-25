@@ -18,7 +18,7 @@ public class ContactPersoonNaarJsonContactPersoonMapper extends AbstractMapper<C
     private TelefoonnummerNaarJsonTelefoonnummerMapper telefoonnummerNaarJsonTelefoonnummerMapper;
 
     @Override
-    public JsonContactPersoon map(ContactPersoon object, Object parent) {
+    public JsonContactPersoon map(ContactPersoon object, Object parent, Object bestaandObject) {
         LOGGER.debug("Mappen {}", ReflectionToStringBuilder.toString(object, ToStringStyle.SHORT_PREFIX_STYLE));
 
         JsonContactPersoon jsonContactPersoon = new JsonContactPersoon();

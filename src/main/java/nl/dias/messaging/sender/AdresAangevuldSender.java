@@ -16,6 +16,10 @@ public class AdresAangevuldSender {
     private final Gson gson = new Gson();
     private final JmsTemplate jmsTemplate;
 
+    public AdresAangevuldSender() {
+        this.jmsTemplate = null;
+    }
+
     public AdresAangevuldSender(final JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }

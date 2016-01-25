@@ -13,7 +13,7 @@ public class TelefoonnummerNaarJsonTelefoonnummerMapper extends AbstractMapper<T
     private static final Logger LOGGER = LoggerFactory.getLogger(TelefoonnummerNaarJsonTelefoonnummerMapper.class);
 
     @Override
-    public JsonTelefoonnummer map(Telefoonnummer object, Object parent) {
+    public JsonTelefoonnummer map(Telefoonnummer object, Object parent, Object bestaandOjbect) {
         if (object == null) {
             return null;
         }

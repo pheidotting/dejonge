@@ -22,7 +22,7 @@ public class JsonContactPersoonNaarContactPersoonMapper extends AbstractMapper<J
     private JsonTelefoonnummerNaarTelefoonnummerMapper jsonTelefoonnummerNaarTelefoonnummerMapper;
 
     @Override
-    public ContactPersoon map(JsonContactPersoon jsonContactPersoon, Object parent) {
+    public ContactPersoon map(JsonContactPersoon jsonContactPersoon, Object parent, Object bestaandOjbect) {
         if (jsonContactPersoon == null) {
             return null;
         }

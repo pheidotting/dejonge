@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.util.List;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Iterables.*;
 
 @Component
 public class Mapper {
@@ -24,10 +23,10 @@ public class Mapper {
     private List<AbstractMapper> mappers;
 
     public <T> T map(final Object objectIn, final Class<T> clazz) {
-        return map(objectIn, clazz, null);
+        return map(objectIn, clazz, null, null);
     }
 
-    public <T> T map(final Object objectIn, final Class<T> clazz, Object parent) {
+    public <T> T map(final Object objectIn, final Class<T> clazz, Object parent, final Object bestaandObject) {
         Object objectUit = null;
 
         LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(objectIn, ToStringStyle.SHORT_PREFIX_STYLE));
@@ -39,7 +38,7 @@ public class Mapper {
             }
         }));
 
-        objectUit = mapper.map(objectIn);
+        objectUit = mapper.map(objectIn, parent, bestaandObject);
 
         LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
 
@@ -94,7 +93,27 @@ public class Mapper {
 
             for (JsonTelefoonnummer telefoonnummer : ((ObjectMetJsonTelefoonnummers) objectIn).getTelefoonnummers()) {
                 LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(telefoonnummer, ToStringStyle.SHORT_PREFIX_STYLE));
-                ((ObjectMetTelefoonnummers) objectUit).getTelefoonnummers().add(map(telefoonnummer, Telefoonnummer.class));
+
+                map(telefoonnummer, Telefoonnummer.class, objectUit, null);
+                //                ((ObjectMetTelefoonnummers) objectUit).getTelefoonnummers().add(map(telefoonnummer, Telefoonnummer.class));
+            }
+        }
+
+        if (objectIn instanceof ObjectMetJsonRekeningNummers) {
+
+            LOGGER.debug("mappen van {} naar {}", objectIn.getClass(), objectUit.getClass());
+
+            for (final JsonRekeningNummer rekeningNummer : ((ObjectMetJsonRekeningNummers) objectIn).getRekeningnummers()) {
+                LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(rekeningNummer, ToStringStyle.SHORT_PREFIX_STYLE));
+
+                RekeningNummer bestaandeRekeningNummer = getFirst(filter(((ObjectMetRekeningNummers) objectUit).getRekeningnummers(), new Predicate<RekeningNummer>() {
+                    @Override
+                    public boolean apply(RekeningNummer bestaandRekeningNummer) {
+                        return bestaandRekeningNummer.getId().equals(rekeningNummer.getId());
+                    }
+                }), null);
+
+                map(rekeningNummer, RekeningNummer.class, objectUit, bestaandeRekeningNummer);
             }
         }
 

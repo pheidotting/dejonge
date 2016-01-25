@@ -1,22 +1,24 @@
 package nl.dias.messaging.sender;
 
+import com.google.gson.Gson;
+import nl.lakedigital.as.messaging.AanmakenTaak;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Component;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import nl.lakedigital.as.messaging.AanmakenTaak;
-
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
-
 @Component
 public class AanmakenTaakSender {
     private final Gson gson = new Gson();
     private final JmsTemplate jmsTemplate;
+
+    public AanmakenTaakSender() {
+        this.jmsTemplate = null;
+    }
 
     public AanmakenTaakSender(final JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;

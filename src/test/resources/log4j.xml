@@ -41,6 +41,12 @@
     <logger name="org.dozer">
         <level value="error"/>
     </logger>
+    <logger name="com.atomikos">
+        <level value="error"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="error"/>
+    </logger>
 
     <root>
         <priority value="debug"></priority>

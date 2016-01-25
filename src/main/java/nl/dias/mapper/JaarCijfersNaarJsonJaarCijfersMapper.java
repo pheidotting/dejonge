@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JaarCijfersNaarJsonJaarCijfersMapper extends AbstractMapper<JaarCijfers, JsonJaarCijfers> {
     @Override
-    public JsonJaarCijfers map(JaarCijfers object, Object parent) {
+    public JsonJaarCijfers map(JaarCijfers object, Object parent, Object bestaandObject) {
         JsonJaarCijfers json = new JsonJaarCijfers();
 
         json.setJaar(object.getJaar());

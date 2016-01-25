@@ -19,16 +19,16 @@ public class JsonTelefoonnummerNaarTelefoonnummerMapper extends AbstractMapper<J
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonTelefoonnummerNaarTelefoonnummerMapper.class);
 
     @Override
-    public Telefoonnummer map(final JsonTelefoonnummer object, Object parent) {
+    public Telefoonnummer map(final JsonTelefoonnummer object, Object parent, Object bestaandOjbect) {
         if (object == null) {
             return null;
         }
         LOGGER.debug("Mappen : {}", ReflectionToStringBuilder.toString(object, ToStringStyle.SHORT_PREFIX_STYLE));
 
         Telefoonnummer telefoonnummer = null;
+        Set<Telefoonnummer> telefoonnummers = null;
 
         if (parent != null) {
-            Set<Telefoonnummer> telefoonnummers = null;
             if (parent instanceof Relatie) {
                 telefoonnummers = ((Relatie) parent).getTelefoonnummers();
             } else if (parent instanceof ContactPersoon) {
@@ -61,7 +61,9 @@ public class JsonTelefoonnummerNaarTelefoonnummerMapper extends AbstractMapper<J
         } else if (parent instanceof Bedrijf) {
             telefoonnummer.setBedrijf((Bedrijf) parent);
         }
-
+        if (telefoonnummer.getId() == null) {
+            telefoonnummers.add(telefoonnummer);
+        }
         return telefoonnummer;
     }
 

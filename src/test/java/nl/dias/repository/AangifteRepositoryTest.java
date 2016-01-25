@@ -4,21 +4,23 @@ import nl.dias.domein.Aangifte;
 import nl.dias.domein.Medewerker;
 import nl.dias.domein.Relatie;
 import org.joda.time.LocalDate;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 
 @Ignore
-public class AangifteRepositoryTest {
+public class AangifteRepositoryTest {//extends  DatabaseTest{
+    @Inject
     private AangifteRepository aangifteRepository;
 
-    @Before
-    public void setUp() throws Exception {
-        aangifteRepository = new AangifteRepository();
-        aangifteRepository.zetPersistenceContext("unittest");
-    }
+    //    @Before
+    //    public void setUp() throws Exception {
+    //        aangifteRepository = new AangifteRepository();
+    //        aangifteRepository.zetPersistenceContext("unittest");
+    //    }
 
     @Test
     public void testGetOpenAngiftes() {

@@ -5,7 +5,7 @@ import nl.lakedigital.djfc.commons.json.JsonPolis;
 
 public class PolisNaarJsonPolisMapper extends AbstractMapper<Polis, JsonPolis> {
     @Override
-    public JsonPolis map(Polis polis, Object parent) {
+    public JsonPolis map(Polis polis, Object parent, Object bestaandOjbect) {
         JsonPolis jsonPolis = new JsonPolis();
 
         jsonPolis.setId(polis.getId());

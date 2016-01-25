@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RisicoAnalyseNaarJsonRisicoAnalyseMapper extends AbstractMapper<RisicoAnalyse, JsonRisicoAnalyse> {
     @Override
-    public JsonRisicoAnalyse map(RisicoAnalyse object, Object parent) {
+    public JsonRisicoAnalyse map(RisicoAnalyse object, Object parent, Object bestaandOjbect) {
         JsonRisicoAnalyse jsonRisicoAnalyse = new JsonRisicoAnalyse();
         jsonRisicoAnalyse.setId(object.getId());
         jsonRisicoAnalyse.setBedrijf(object.getBedrijf().getId());

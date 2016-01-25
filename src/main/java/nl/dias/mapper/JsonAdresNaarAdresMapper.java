@@ -17,7 +17,7 @@ public class JsonAdresNaarAdresMapper extends AbstractMapper<JsonAdres, Adres> {
     private BedrijfService bedrijfService;
 
     @Override
-    public Adres map(JsonAdres jsonAdres, Object parent) {
+    public Adres map(JsonAdres jsonAdres, Object parent, Object bestaandObject) {
         Adres adres = new Adres();
 
         adres.setHuisnummer(jsonAdres.getHuisnummer());

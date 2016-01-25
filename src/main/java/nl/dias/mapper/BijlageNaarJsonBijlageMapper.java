@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBijlage> {
     @Override
-    public JsonBijlage map(Bijlage bijlage, Object parent) {
+    public JsonBijlage map(Bijlage bijlage, Object parent, Object bestaandObject) {
         JsonBijlage json = new JsonBijlage();
         json.setId(bijlage.getId() == null ? null : bijlage.getId().toString());
         json.setSoortBijlage(bijlage.getSoortBijlage().getOmschrijving());

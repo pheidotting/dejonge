@@ -16,6 +16,10 @@ public class BsnAangevuldSender {
     private final Gson gson = new Gson();
     private final JmsTemplate jmsTemplate;
 
+    public BsnAangevuldSender() {
+        this.jmsTemplate = null;
+    }
+
     public BsnAangevuldSender(final JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }

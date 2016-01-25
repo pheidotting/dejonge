@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdresNaarJsonAdresMapper extends AbstractMapper<Adres, JsonAdres> {
     @Override
-    public JsonAdres map(Adres adres, Object parent) {
+    public JsonAdres map(Adres adres, Object parent, Object bestaandObject) {
         JsonAdres jsonAdres = new JsonAdres();
 
         jsonAdres.setHuisnummer(adres.getHuisnummer());

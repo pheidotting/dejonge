@@ -11,10 +11,10 @@ import java.util.Set;
 public abstract class AbstractMapper<T, Z> {
 
     public Z map(T object) {
-        return map(object, null);
+        return map(object, null, null);
     }
 
-    public abstract Z map(T object, Object parent);
+    public abstract Z map(T object, Object parent, Object bestaandObject);
 
     abstract boolean isVoorMij(Object object);
 
@@ -52,7 +52,7 @@ public abstract class AbstractMapper<T, Z> {
         if (objecten != null) {
             Set<Z> ret = new HashSet<>();
             for (T obj : objecten) {
-                ret.add(map(obj, parent));
+                ret.add(map(obj, parent, null));
             }
             return ret;
         } else {

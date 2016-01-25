@@ -1,5 +1,6 @@
 package nl.dias.mapper;
 
+import nl.dias.domein.Adres;
 import nl.dias.domein.BurgerlijkeStaat;
 import nl.dias.domein.Geslacht;
 import nl.dias.domein.Relatie;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 
 @Component
 public class JsonRelatieNaarRelatieMapper extends AbstractMapper<JsonRelatie, Relatie> {
@@ -24,7 +26,7 @@ public class JsonRelatieNaarRelatieMapper extends AbstractMapper<JsonRelatie, Re
     private GebruikerRepository gebruikerRepository;
 
     @Override
-    public Relatie map(JsonRelatie jsonRelatie, Object parent) {
+    public Relatie map(JsonRelatie jsonRelatie, Object bestaandObject, Object bestaandOjbect) {
         String patternDatum = "dd-MM-yyyy";
 
         Relatie relatie = new Relatie();
@@ -57,11 +59,15 @@ public class JsonRelatieNaarRelatieMapper extends AbstractMapper<JsonRelatie, Re
                 relatie.setBurgerlijkeStaat(bs);
             }
         }
+
+        relatie.setTelefoonnummers(null);
+        relatie.setAdressen(new HashSet<Adres>());
+
         return relatie;
     }
 
     @Override
     boolean isVoorMij(Object object) {
-        return object instanceof Relatie;
+        return object instanceof JsonRelatie;
     }
 }
