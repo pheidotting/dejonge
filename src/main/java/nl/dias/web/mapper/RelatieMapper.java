@@ -90,7 +90,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
-        //        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
+        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         if (relatie.getGeboorteDatum() != null) {
             jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
             jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
