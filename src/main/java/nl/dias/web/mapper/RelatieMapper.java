@@ -83,14 +83,14 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setTussenvoegsel("");
         }
         jsonRelatie.setAchternaam(relatie.getAchternaam());
-        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
-        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
+        //        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
+        //        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
-        jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
+        //        jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
         if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
-        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
+        //        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         if (relatie.getGeboorteDatum() != null) {
             jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
             jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
@@ -111,7 +111,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
         }
-        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
+        //        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
     }
