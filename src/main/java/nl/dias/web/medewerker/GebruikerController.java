@@ -98,7 +98,8 @@ public class GebruikerController {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         try {
-            Relatie relatie = mapper.map(jsonRelatie, Relatie.class);
+            //            Relatie relatie = mapper.map(jsonRelatie, Relatie.class);
+            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
             LOGGER.debug("Uit mapper " + relatie);
             String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
