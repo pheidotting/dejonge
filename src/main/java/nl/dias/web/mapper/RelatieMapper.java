@@ -84,7 +84,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         }
         jsonRelatie.setAchternaam(relatie.getAchternaam());
         jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
-        //        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
+        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         //        jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
         if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
