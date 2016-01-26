@@ -111,7 +111,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
         }
-        //        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
+        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
     }

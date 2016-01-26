@@ -88,23 +88,33 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
     public JsonOpmerking mapNaarJson(Opmerking opmerking) {
         JsonOpmerking jsonOpmerking = new JsonOpmerking();
 
+        LOGGER.debug("Zet id");
         jsonOpmerking.setId(opmerking.getId());
+        LOGGER.debug("Zet opmerking");
         jsonOpmerking.setOpmerking(opmerking.getOpmerking());
+        LOGGER.debug("Zet tijd");
         jsonOpmerking.setTijd(opmerking.getTijd().toString("dd-MM-yyyy HH:mm"));
+        LOGGER.debug("Zet medewerker/naam");
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
+        LOGGER.debug("Zet medewerker/id");
         jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
+        LOGGER.debug("Zet schade");
         if (opmerking.getSchade() != null) {
             jsonOpmerking.setSchade(opmerking.getSchade().getId().toString());
         }
+        LOGGER.debug("Zet polis");
         if (opmerking.getPolis() != null) {
             jsonOpmerking.setPolis(opmerking.getPolis().getId().toString());
         }
+        LOGGER.debug("Zet hypotheek");
         if (opmerking.getHypotheek() != null) {
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
         }
+        LOGGER.debug("Zet bedrijf");
         if (opmerking.getBedrijf() != null) {
             jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
         }
+        LOGGER.debug("Zet aangifte");
         if (jsonOpmerking.getAangifte() != null) {
             jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
         }
