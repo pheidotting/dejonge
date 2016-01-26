@@ -4,6 +4,8 @@ import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.service.*;
 import nl.lakedigital.djfc.commons.json.JsonOpmerking;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -119,6 +121,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
         }
 
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(jsonOpmerking, ToStringStyle.SHORT_PREFIX_STYLE));
         return jsonOpmerking;
     }
 
