@@ -83,7 +83,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setTussenvoegsel("");
         }
         jsonRelatie.setAchternaam(relatie.getAchternaam());
-        //        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
+        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
         //        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         //        jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
