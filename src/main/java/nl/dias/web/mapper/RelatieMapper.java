@@ -1,8 +1,9 @@
 package nl.dias.web.mapper;
 
+import com.google.common.base.Predicate;
 import nl.dias.domein.*;
-import nl.lakedigital.djfc.commons.json.JsonOnderlingeRelatie;
-import nl.lakedigital.djfc.commons.json.JsonRelatie;
+import nl.dias.service.GebruikerService;
+import nl.lakedigital.djfc.commons.json.*;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -12,6 +13,11 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 
 @Component
 public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
@@ -27,12 +33,17 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private AdresMapper adresMapper;
     @Inject
     private BijlageMapper bijlageMapper;
+    @Inject
+    private GebruikerService gebruikerService;
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
         String patternDatum = "dd-MM-yyyy";
 
         Relatie relatie = new Relatie();
+        if (jsonRelatie.getId() != null) {
+            relatie = (Relatie) gebruikerService.lees(jsonRelatie.getId());
+        }
         relatie.setId(jsonRelatie.getId());
         relatie.setRoepnaam(jsonRelatie.getRoepnaam());
         try {
@@ -51,14 +62,64 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (jsonRelatie.getGeboorteDatum() != null && !"".equals(jsonRelatie.getGeboorteDatum())) {
             relatie.setGeboorteDatum(LocalDate.parse(jsonRelatie.getGeboorteDatum(), DateTimeFormat.forPattern(patternDatum)));
         }
-        relatie.setAdressen(adresMapper.mapAllVanJson(jsonRelatie.getAdressen()));
-        for (Adres adres : relatie.getAdressen()) {
+
+        Set<Adres> adressen = new HashSet<>();
+        for (final JsonAdres jsonAdres : jsonRelatie.getAdressen()) {
+            Adres adres = getFirst(filter(relatie.getAdressen(), new Predicate<Adres>() {
+                @Override
+                public boolean apply(Adres adres) {
+                    return adres.getId() == jsonAdres.getId();
+                }
+            }), new Adres());
+
+            adres.setToevoeging(jsonAdres.getToevoeging());
+            adres.setHuisnummer(jsonAdres.getHuisnummer());
+            adres.setPlaats(jsonAdres.getPlaats());
+            adres.setPostcode(jsonAdres.getPostcode());
+            adres.setSoortAdres(Adres.SoortAdres.valueOf(jsonAdres.getSoortAdres()));
+            adres.setStraat(jsonAdres.getStraat());
             adres.setRelatie(relatie);
+
+            adressen.add(adres);
         }
-        relatie.setTelefoonnummers(telefoonnummerMapper.mapAllVanJson(jsonRelatie.getTelefoonnummers()));
+        relatie.setAdressen(adressen);
+
+        Set<Telefoonnummer> telefoonnummers = new HashSet<>();
+        for (final JsonTelefoonnummer jsonTelefoonnummer : jsonRelatie.getTelefoonnummers()) {
+            Telefoonnummer telefoonnummer = getFirst(filter(relatie.getTelefoonnummers(), new Predicate<Telefoonnummer>() {
+                @Override
+                public boolean apply(Telefoonnummer telefoonnummer) {
+                    return telefoonnummer.getId() == jsonTelefoonnummer.getId();
+                }
+            }), new Telefoonnummer());
+
+            telefoonnummer.setOmschrijving(jsonTelefoonnummer.getOmschrijving());
+            telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort()));
+            telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
+            telefoonnummer.setRelatie(relatie);
+
+            telefoonnummers.add(telefoonnummer);
+        }
+        relatie.setTelefoonnummers(telefoonnummers);
+
+        Set<RekeningNummer> rekeningNummers = new HashSet<>();
+        for (final JsonRekeningNummer jsonRekeningNummer : jsonRelatie.getRekeningnummers()) {
+            RekeningNummer rekeningNummer = getFirst(filter(relatie.getRekeningnummers(), new Predicate<RekeningNummer>() {
+                @Override
+                public boolean apply(RekeningNummer rekeningNummer) {
+                    return rekeningNummer.getId() == jsonRekeningNummer.getId();
+                }
+            }), new RekeningNummer());
+
+            rekeningNummer.setBic(jsonRekeningNummer.getBic());
+            rekeningNummer.setRekeningnummer(jsonRekeningNummer.getRekeningnummer());
+            rekeningNummer.setRelatie(relatie);
+
+            rekeningNummers.add(rekeningNummer);
+        }
+        relatie.setRekeningnummers(rekeningNummers);
+
         relatie.setBsn(jsonRelatie.getBsn());
-        relatie.setRekeningnummers(rekeningnummerMapper.mapAllVanJson(jsonRelatie.getRekeningnummers()));
-        relatie.setOpmerkingen(opmerkingMapper.mapAllVanJson(jsonRelatie.getOpmerkingen()));
         relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
 
         for (BurgerlijkeStaat bs : BurgerlijkeStaat.values()) {
@@ -66,6 +127,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
                 relatie.setBurgerlijkeStaat(bs);
             }
         }
+
         return relatie;
     }
 

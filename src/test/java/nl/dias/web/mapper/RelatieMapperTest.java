@@ -85,10 +85,6 @@ public class RelatieMapperTest extends EasyMockSupport {
 
     @Test
     public void testMapVanJson() {
-        expect(telefoonnummerMapper.mapAllVanJson(new ArrayList<JsonTelefoonnummer>())).andReturn(new HashSet<Telefoonnummer>());
-        expect(rekeningnummerMapper.mapAllVanJson(new ArrayList<JsonRekeningNummer>())).andReturn(new HashSet<RekeningNummer>());
-        expect(opmerkingMapper.mapAllVanJson(new ArrayList<JsonOpmerking>())).andReturn(new HashSet<Opmerking>());
-        expect(adresMapper.mapAllVanJson(new ArrayList<JsonAdres>())).andReturn(new HashSet<Adres>());
 
         replayAll();
 

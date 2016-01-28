@@ -34,7 +34,7 @@ public class Adres implements Serializable {
     @Column(name = "SOORT")
     @Enumerated(EnumType.STRING)
     private SoortAdres soortAdres;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)

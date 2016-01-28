@@ -154,6 +154,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         emailAdresAangevuldSender.send(emailadresAangevuld);
         expectLastCall();
 
+
         replayAll();
 
         service.opslaan(relatie);
@@ -178,6 +179,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
         emailAdresAangevuldSender.send(emailadresAangevuld);
         expectLastCall();
+
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -214,6 +216,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         emailAdresAangevuldSender.send(emailadresAangevuld);
         expectLastCall();
 
+
         replayAll();
 
         service.opslaan(relatie);
@@ -248,6 +251,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         adresAangevuldSender.send(adresAangevuld);
         expectLastCall();
 
+
         replayAll();
 
         service.opslaan(relatie);
@@ -281,6 +285,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         emailadresAangevuld.setRelatie(relatie.getId());
         emailAdresAangevuldSender.send(emailadresAangevuld);
         expectLastCall();
+
 
         replayAll();
 
@@ -317,6 +322,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
         emailadresAangevuld.setRelatie(relatie.getId());
         emailAdresAangevuldSender.send(emailadresAangevuld);
         expectLastCall();
+
 
         replayAll();
 

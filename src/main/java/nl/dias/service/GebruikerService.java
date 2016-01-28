@@ -114,26 +114,6 @@ public class GebruikerService {
 
     public void opslaan(Gebruiker gebruiker) {
         LOGGER.debug("Opslaan {}", gebruiker);
-        //        Gebruiker gebruikerAanwezig = null;
-
-        //        if (gebruikerAanwezig != null && gebruikerAanwezig instanceof Relatie) {
-        //            LOGGER.debug("Adressen wissen bij relatie");
-        //            gebruikerRepository.verwijderAdressenBijRelatie((Relatie) gebruiker);
-        //        }
-
-        // Even checken of over de connectie met de Relatie is ingevuld
-        if (gebruiker instanceof Relatie) {
-            for (Telefoonnummer telefoonnummer : ((Relatie) gebruiker).getTelefoonnummers()) {
-                telefoonnummer.setRelatie((Relatie) gebruiker);
-            }
-            for (RekeningNummer rekeningNummer : ((Relatie) gebruiker).getRekeningnummers()) {
-                rekeningNummer.setRelatie((Relatie) gebruiker);
-            }
-
-            //            if (gebruikerAanwezig != null) {
-            //                ((Relatie) gebruiker).setBijlages(((Relatie) gebruikerAanwezig).getBijlages());
-            //            }
-        }
 
         gebruikerRepository.opslaan(gebruiker);
 
@@ -141,6 +121,11 @@ public class GebruikerService {
         if (gebruiker instanceof Relatie) {
             verstuurEvents((Relatie) gebruiker);
         }
+    }
+
+    public void verwijderOudSpul(Relatie relatie) {
+        LOGGER.debug("Adressen wissen bij relatie");
+        gebruikerRepository.verwijderAdressenBijRelatie(relatie);
     }
 
     private void verstuurEvents(Relatie relatie) {

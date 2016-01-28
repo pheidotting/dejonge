@@ -1,25 +1,15 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "REKENINGNUMMER")
+@NamedQueries({@NamedQuery(name = "RekeningNummer.verwijderRekeningNummersBijRelatie", query = "delete from RekeningNummer a where a.relatie = :relatie")})
 public class RekeningNummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 6164849876034232194L;
 
@@ -34,7 +24,7 @@ public class RekeningNummer implements Serializable, PersistenceObject {
     @Column(name = "REKENINGNUMMER")
     private String rekeningnummer;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
 

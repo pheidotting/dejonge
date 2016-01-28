@@ -171,6 +171,16 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     public void verwijderAdressenBijRelatie(Relatie relatie) {
         getEm().getTransaction().begin();
         getEm().createNamedQuery("Adres.verwijderAdressenBijRelatie").setParameter("relatie", relatie).executeUpdate();
+        //        getEm().getTransaction().commit();
+        //    }
+        //    public void verwijderTelefoonnummersnBijRelatie(Relatie relatie) {
+        //        getEm().getTransaction().begin();
+        getEm().createNamedQuery("Telefoonnummer.verwijderTelefoonnummersBijRelatie").setParameter("relatie", relatie).executeUpdate();
+        //        getEm().getTransaction().commit();
+        //    }
+        //    public void verwijderRekeningenBijRelatie(Relatie relatie) {
+        //        getEm().getTransaction().begin();
+        getEm().createNamedQuery("RekeningNummer.verwijderRekeningNummersBijRelatie").setParameter("relatie", relatie).executeUpdate();
         getEm().getTransaction().commit();
     }
 

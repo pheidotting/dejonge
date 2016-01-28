@@ -1,8 +1,6 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Medewerker;
-import nl.dias.domein.Relatie;
+import nl.dias.domein.*;
 import nl.dias.mapper.Mapper;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
@@ -11,6 +9,7 @@ import nl.dias.web.mapper.AdresMapper;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,9 +97,13 @@ public class GebruikerController {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         try {
+            //            if (jsonRelatie.getId() != null) {
+            //                gebruikerService.verwijderOudSpul((Relatie) gebruikerService.lees(jsonRelatie.getId()));
+            //            }
+
+
             //            Relatie relatie = mapper.map(jsonRelatie, Relatie.class);
-            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
-            LOGGER.debug("Uit mapper " + relatie);
+
             String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
@@ -110,9 +113,17 @@ public class GebruikerController {
 
             LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
 
-            relatie.setKantoor(kantoorRepository.lees(medewerker.getKantoor().getId()));
+            Kantoor kantoor = kantoorRepository.lees(medewerker.getKantoor().getId());
+
+            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+            relatie.setKantoor(kantoor);
+            LOGGER.debug("Uit mapper " + relatie);
 
             LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
+
+            for (RekeningNummer rekeningNummer : relatie.getRekeningnummers()) {
+                LOGGER.debug(ReflectionToStringBuilder.toString(rekeningNummer, ToStringStyle.SHORT_PREFIX_STYLE));
+            }
 
             gebruikerService.opslaan(relatie);
 

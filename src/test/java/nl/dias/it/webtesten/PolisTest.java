@@ -17,14 +17,14 @@ import static org.junit.Assert.assertEquals;
 public class PolisTest extends AbstractITest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisTest.class);
 
-    private String sessieCode = "dcd4da00-aed8-4c60-9132-d39beaa2ad72";
+    private String sessieCode = "fckfmfjjqoyefhsxxdatfvrnuv";
 
     @Test
     public void moi() {
         //        // ff kijken of ik eerst moet inlogge
         //
         //        try {
-        //            LOGGER.debug(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=5", sessieCode));
+        //            LOGGER.debug(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=6", sessieCode));
         //        } catch (RuntimeException rte) {
         //            //Ik moet dus eerst inloggen
         //            Inloggen inloggen = new Inloggen("djfc.gerben", "gerben");
@@ -37,7 +37,7 @@ public class PolisTest extends AbstractITest {
         //        } catch (InterruptedException e) {
         //        }
         //
-        JsonPolis jsonPolis = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=5", sessieCode), JsonPolis.class);
+        JsonPolis jsonPolis = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=6", sessieCode), JsonPolis.class);
 
         LOGGER.debug("OUD : {}", jsonPolis.getKenmerk());
 
@@ -55,7 +55,7 @@ public class PolisTest extends AbstractITest {
 
         aanroepenUrlPost("http://localhost:8080/dejonge/rest/medewerker/polis/opslaan", jsonPolis, sessieCode);
 
-        JsonPolis jsonPolisOpgeslagen = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=5", sessieCode), JsonPolis.class);
+        JsonPolis jsonPolisOpgeslagen = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=6", sessieCode), JsonPolis.class);
         assertEquals(kenmerk, jsonPolisOpgeslagen.getKenmerk());
         assertEquals(ingangsDatum.toString("yyyy-MM-dd"), jsonPolisOpgeslagen.getIngangsDatum());
 
@@ -70,7 +70,7 @@ public class PolisTest extends AbstractITest {
 
         aanroepenUrlPost("http://localhost:8080/dejonge/rest/medewerker/polis/opslaan", jsonPolis, sessieCode);
 
-        jsonPolisOpgeslagen = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=5", sessieCode), JsonPolis.class);
+        jsonPolisOpgeslagen = gson.fromJson(uitvoerenGet("http://localhost:8080/dejonge/rest/medewerker/polis/lees?id=6", sessieCode), JsonPolis.class);
         LOGGER.debug("Nu {}", jsonPolisOpgeslagen.getKenmerk());
         assertEquals(kenmerk, jsonPolisOpgeslagen.getKenmerk());
         assertEquals(ingangsDatum.toString("yyyy-MM-dd"), jsonPolisOpgeslagen.getIngangsDatum());
