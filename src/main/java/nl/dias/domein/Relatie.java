@@ -34,7 +34,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @Column(name = "ROEPNAAM")
     private String roepnaam;
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "relatie")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "relatie")
     private Set<Adres> adressen;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
