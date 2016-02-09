@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "HYPOTHEEKPAKKET")
-//@NamedQueries({ @NamedQuery(name = "HypotheekPakket.allesVanRelatie", query = "select h from HypotheekPakket h where h.relatie = :relatie and size(h.hypotheken) >= 2") })
+@NamedQueries({@NamedQuery(name = "HypotheekPakket.allesVanRelatie", query = "select h from HypotheekPakket h where h.relatie = :relatie and size(h.hypotheken) >= 2")})
 public class HypotheekPakket implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2386437329178396939L;
 
