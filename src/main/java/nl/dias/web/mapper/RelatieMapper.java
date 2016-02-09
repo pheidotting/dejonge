@@ -4,6 +4,8 @@ import com.google.common.base.Predicate;
 import nl.dias.domein.*;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.djfc.commons.json.*;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -133,6 +135,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public JsonRelatie mapNaarJson(Relatie relatie) {
+        LOGGER.debug("Mappen : {}", ReflectionToStringBuilder.toString(relatie, ToStringStyle.SHORT_PREFIX_STYLE));
+
         JsonRelatie jsonRelatie = new JsonRelatie();
 
         jsonRelatie.setId(relatie.getId());

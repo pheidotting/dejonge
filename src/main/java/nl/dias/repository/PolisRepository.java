@@ -120,7 +120,7 @@ public class PolisRepository extends AbstractRepository<Polis> {
     public Polis zoekOpPolisNummer(String PolisNummer, Kantoor kantoor) {
         TypedQuery<Polis> query = getEm().createNamedQuery("Polis.zoekOpPolisNummer", Polis.class);
         query.setParameter("polisNummer", PolisNummer);
-        query.setParameter("kantoor", kantoor);
+        //        query.setParameter("kantoor", kantoor);
         return query.getSingleResult();
     }
 

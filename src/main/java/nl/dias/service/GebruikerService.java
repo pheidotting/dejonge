@@ -18,6 +18,7 @@ import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -318,7 +319,7 @@ public class GebruikerService {
         LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
         Polis polis = null;
         try {
-            polis = polisRepository.zoekOpPolisNummer(zoekTerm, kantoorRepository.lees(1L));
+            polis = polisRepository.zoekOpPolisNummer(zoekTerm, null);
         } catch (NoResultException e) {
             LOGGER.trace("Niks gevonden ", e);
         }
@@ -329,7 +330,10 @@ public class GebruikerService {
 
         List<Relatie> ret = new ArrayList<>();
         for (Relatie r : relaties) {
-            ret.add(r);
+            if (r != null) {
+                LOGGER.debug("{}", ReflectionToStringBuilder.toString(r, ToStringStyle.SHORT_PREFIX_STYLE));
+                ret.add(r);
+            }
         }
 
         return ret;
