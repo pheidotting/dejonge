@@ -1,33 +1,18 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @Table(name = "SESSIE")
-@NamedQueries({ @NamedQuery(name = "Sessie.allesVanGebruiker", query = "select s from Sessie s where s.gebruiker = :gebruiker") })
+//@NamedQueries({ @NamedQuery(name = "Sessie.allesVanGebruiker", query = "select s from Sessie s where s.gebruiker = :gebruiker") })
 public class Sessie implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -6578849306393389265L;
 

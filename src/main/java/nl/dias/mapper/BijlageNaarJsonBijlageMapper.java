@@ -22,10 +22,10 @@ public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBi
         String parentId = null;
         switch (bijlage.getSoortBijlage()) {
             case POLIS:
-                parentId = bijlage.getPolis().getPolisNummer();
+                parentId = bijlage.getPolis().toString();
                 break;
             case SCHADE:
-                parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
+                parentId = bijlage.getSchade().toString();
                 break;
             case HYPOTHEEK:
                 parentId = bijlage.getHypotheek().getId().toString();

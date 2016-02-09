@@ -1,7 +1,5 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.Schade;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
@@ -20,9 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequestMapping("/schade")
 @Controller
@@ -51,29 +47,18 @@ public class SchadeController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
     @ResponseBody
-    public List<JsonSchade> lijst(@QueryParam("relatieId") String relatieId) {
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
+    public List<JsonSchade> lijst(@QueryParam("relatieId") Long relatieId) {
+        LOGGER.debug("Opzoeken Schades bij Relatie met Id {}", relatieId);
 
-        Set<Schade> schades = new HashSet<>();
-        for (Schade schade : schadeService.alleSchadesBijRelatie(relatie)) {
-            schades.add(schade);
-        }
-
-        return schadeMapper.mapAllNaarJson(schades);
+        return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijRelatie(relatieId));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf")
     @ResponseBody
     public List<JsonSchade> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
         LOGGER.debug("Opzoeken Schades bij Bedrijf met Id {}", bedrijfId);
-        Bedrijf bedrijf = bedrijfService.lees(bedrijfId);
 
-        Set<Schade> schades = new HashSet<>();
-        for (Schade schade : schadeService.alleSchadesBijBedrijf(bedrijf)) {
-            schades.add(schade);
-        }
-
-        return schadeMapper.mapAllNaarJson(schades);
+        return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijBedrijf(bedrijfId));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees")

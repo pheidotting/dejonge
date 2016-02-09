@@ -2,8 +2,9 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Bedrag;
 import nl.dias.domein.Schade;
+import nl.dias.domein.polis.Polis;
+import nl.dias.service.PolisService;
 import nl.dias.service.SchadeService;
-import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -13,8 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class SchadeMapper extends Mapper<Schade, JsonSchade> {
@@ -26,6 +25,8 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
     private BijlageMapper bijlageMapper;
     @Inject
     private SchadeService schadeService;
+    @Inject
+    private PolisService polisService;
 
     @Override
     public Schade mapVanJson(JsonSchade json) {
@@ -71,8 +72,9 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
     @Override
     public JsonSchade mapNaarJson(Schade schade) {
         JsonSchade jsonSchade = new JsonSchade();
+        Polis polis = polisService.lees(schade.getPolis());
 
-        jsonSchade.setBijlages(bijlageMapper.mapAllNaarJson(schade.getBijlages()));
+        //        jsonSchade.setBijlages(bijlageMapper.mapAllNaarJson(schade.getBijlages()));
         if (schade.getDatumAfgehandeld() != null) {
             jsonSchade.setDatumAfgehandeld(schade.getDatumAfgehandeld().toString("dd-MM-yyyy"));
         }
@@ -84,17 +86,16 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         jsonSchade.setId(schade.getId());
         jsonSchade.setLocatie(schade.getLocatie());
         jsonSchade.setOmschrijving(schade.getOmschrijving());
-        //        if (schade.getPolis() != null && schade.getPolis().getRelatie() != null) {
-        //            jsonSchade.setRelatie(schade.getPolis().getRelatie().getId().toString());
+        //        if (polis != null && polis.getRelatie() != null) {
+        //            jsonSchade.setRelatie(polis.getRelatie().getId().toString());
         //        }
-        if (schade.getPolis() != null && schade.getPolis().getBedrijf() != null) {
-            jsonSchade.setBedrijf(schade.getPolis().getBedrijf().getId());
+        if (polis != null && polis.getBedrijf() != null) {
+            jsonSchade.setBedrijf(polis.getBedrijf());
         }
 
-        List<JsonOpmerking> opmerkingen = opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen());
-        Collections.sort(opmerkingen);
-
-        jsonSchade.setOpmerkingen(opmerkingen);
+        //        List<JsonOpmerking> opmerkingen = opmerkingMapper.mapAllNaarJson(schade.getOpmerkingen());
+        //        Collections.sort(opmerkingen);
+        //        jsonSchade.setOpmerkingen(opmerkingen);
         jsonSchade.setSchadeNummerMaatschappij(schade.getSchadeNummerMaatschappij());
         jsonSchade.setSchadeNummerTussenPersoon(schade.getSchadeNummerTussenPersoon());
         if (schade.getSoortSchade() != null) {
@@ -105,8 +106,8 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         if (schade.getStatusSchade() != null) {
             jsonSchade.setStatusSchade(schade.getStatusSchade().getStatus());
         }
-        if (schade.getPolis() != null && schade.getPolis().getId() != null) {
-            jsonSchade.setPolis(schade.getPolis().getId().toString());
+        if (polis != null && polis.getId() != null) {
+            jsonSchade.setPolis(polis.getId().toString());
         }
 
         LOGGER.debug("{}", jsonSchade);

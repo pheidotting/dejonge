@@ -16,10 +16,10 @@ public class OpmerkingNaarJsonOpmerkingMapper extends  AbstractMapper<Opmerking,
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
         jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
         if (opmerking.getSchade() != null) {
-            jsonOpmerking.setSchade(opmerking.getSchade().getId().toString());
+            jsonOpmerking.setSchade(opmerking.getSchade().toString());
         }
         if (opmerking.getPolis() != null) {
-            jsonOpmerking.setPolis(opmerking.getPolis().getId().toString());
+            jsonOpmerking.setPolis(opmerking.getPolis().toString());
         }
         if (opmerking.getHypotheek() != null) {
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());

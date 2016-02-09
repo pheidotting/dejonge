@@ -40,6 +40,14 @@ public class BijlageService {
         return bijlageRepository.alleBijlagesBijRelatie(relatie);
     }
 
+    public List<Bijlage> allesBijlagesBijPolis(Long polis) {
+        return bijlageRepository.allesBijlagesBijPolis(polis);
+    }
+
+    public List<Bijlage> alleBijlagesBijSchade(Long schade) {
+        return bijlageRepository.alleBijlagesBijSchade(schade);
+    }
+
     public void verwijderBijlage(Long id) {
         Bijlage bijlage = bijlageRepository.lees(id);
 

@@ -28,6 +28,14 @@ public class OpmerkingService {
     @Inject
     private AangifteService aangifteService;
 
+    public List<Opmerking> alleOpmerkingenBijPolis(Long polis) {
+        return opmerkingRepository.alleOpmerkingenBijPolis(polis);
+    }
+
+    public List<Opmerking> alleOpmerkingenBijSchade(Long schade) {
+        return opmerkingRepository.alleOpmerkingenBijSchade(schade);
+    }
+
     public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
         return opmerkingRepository.alleOpmerkingenVoorRelatie(relatie);
@@ -50,8 +58,8 @@ public class OpmerkingService {
         }
 
         if (opmerking.getSchade() != null) {
-            Schade schade = schadeService.lees(opmerking.getSchade().getId());
-            schade.getOpmerkingen().add(opmerking);
+            Schade schade = schadeService.lees(opmerking.getSchade());
+            //            schade.getOpmerkingen().add(opmerking);
 
             schadeService.opslaan(schade);
         }
@@ -64,8 +72,7 @@ public class OpmerkingService {
         }
 
         if (opmerking.getPolis() != null) {
-            Polis polis = polisRepository.lees(opmerking.getPolis().getId());
-            polis.getOpmerkingen().add(opmerking);
+            Polis polis = polisRepository.lees(opmerking.getPolis());
 
             polisRepository.opslaan(polis);
         }

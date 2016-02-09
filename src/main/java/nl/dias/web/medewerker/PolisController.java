@@ -1,8 +1,6 @@
 package nl.dias.web.medewerker;
 
 import com.google.common.collect.Lists;
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.mapper.Mapper;
@@ -25,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequestMapping("/polis")
 @Controller
@@ -85,7 +81,8 @@ public class PolisController {
     @ResponseBody
     public List<JsonPolis> lijst(@QueryParam("relatieId") String relatieId) {
         LOGGER.debug("Ophalen alle polissen voor Relatie " + relatieId);
-        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
+        //        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
+        Long relatie = Long.valueOf(relatieId);
 
         List<JsonPolis> result = Lists.newArrayList();
         for (Polis polis : polisService.allePolissenBijRelatie(relatie)) {
@@ -99,14 +96,14 @@ public class PolisController {
     @ResponseBody
     public List<JsonPolis> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
         LOGGER.debug("Ophalen alle polissen voor Bedrijf " + bedrijfId);
-        Bedrijf bedrijf = bedrijfService.lees(bedrijfId);
+        //        Bedrijf bedrijf = bedrijfService.lees(bedrijfId);
 
-        Set<Polis> polissen = new HashSet<>();
-        for (Polis polis : polisService.allePolissenBijBedrijf(bedrijf)) {
-            polissen.add(polis);
-        }
+        //        Set<Polis> polissen = new HashSet<>();
+        //        for (Polis polis : polisService.allePolissenBijBedrijf(bedrijfId)) {
+        //            polissen.add(polis);
+        //        }
 
-        return polisMapper.mapAllNaarJson(polissen);
+        return polisMapper.mapAllNaarJson(polisService.allePolissenBijBedrijf(bedrijfId));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")

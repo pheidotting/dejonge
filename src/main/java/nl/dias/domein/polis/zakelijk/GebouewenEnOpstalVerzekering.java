@@ -25,6 +25,6 @@ public class GebouewenEnOpstalVerzekering extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new GebouewenEnOpstalVerzekering();
     }
 }

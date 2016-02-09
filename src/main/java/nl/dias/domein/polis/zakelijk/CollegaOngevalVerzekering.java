@@ -25,6 +25,6 @@ public class CollegaOngevalVerzekering extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new CollegaOngevalVerzekering();
     }
 }

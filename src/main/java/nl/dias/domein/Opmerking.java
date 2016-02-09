@@ -1,6 +1,5 @@
 package nl.dias.domein;
 
-import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,7 +12,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "OPMERKING")
-@NamedQueries({@NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie")})
+@NamedQueries({@NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie"),//
+        @NamedQuery(name = "Opmerking.allesVoorPolis", query = "select o from Opmerking o where o.polis = :polis"),//
+        @NamedQuery(name = "Opmerking.allesVoorSchade", query = "select o from Opmerking o where o.schade = :schade")//
+})
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
 
@@ -38,13 +40,11 @@ public class Opmerking implements PersistenceObject, Serializable {
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "POLIS")
-    private Polis polis;
+    @Column(name = "POLIS")
+    private Long polis;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "SCHADE")
-    private Schade schade;
+    @Column(name = "SCHADE")
+    private Long schade;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "HYPOTHEEK")
@@ -123,19 +123,19 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.opmerking = opmerking;
     }
 
-    public Polis getPolis() {
+    public Long getPolis() {
         return polis;
     }
 
-    public void setPolis(Polis polis) {
+    public void setPolis(Long polis) {
         this.polis = polis;
     }
 
-    public Schade getSchade() {
+    public Long getSchade() {
         return schade;
     }
 
-    public void setSchade(Schade schade) {
+    public void setSchade(Long schade) {
         this.schade = schade;
     }
 
@@ -181,7 +181,7 @@ public class Opmerking implements PersistenceObject, Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis.getId()).append("schade", schade == null ? null : schade.getId()).append("hypotheek", hypotheek == null ? null : hypotheek.getId()).append("opmerking", opmerking).toString();
+        return new ToStringBuilder(this).append("id", id).append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis).append("hypotheek", hypotheek == null ? null : hypotheek.getId()).append("opmerking", opmerking).toString();
     }
 
     @Override

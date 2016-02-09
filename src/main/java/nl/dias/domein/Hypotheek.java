@@ -1,40 +1,23 @@
 package nl.dias.domein;
 
+import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.LocalDate;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.joda.time.LocalDate;
-
 @Entity
 @Table(name = "HYPOTHEEK")
-@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) = 1"),
-        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie"),
-        @NamedQuery(name = "Hypotheek.allesVanRelatieInEenPakket", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2") })
+//@NamedQueries({ @NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) = 1"),
+//        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie"),
+//        @NamedQuery(name = "Hypotheek.allesVanRelatieInEenPakket", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2") })
 public class Hypotheek implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8709743283669873667L;
 

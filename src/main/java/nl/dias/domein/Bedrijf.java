@@ -1,7 +1,6 @@
 package nl.dias.domein;
 
 import com.google.common.collect.Sets;
-import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,7 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "BEDRIJF")
-@NamedQueries({@NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"), @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
+@NamedQueries({
+        //        @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"),
+        @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
 public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages, ObjectMetAdressen, ObjectMetTelefoonnummers {
     private static final long serialVersionUID = 4611123664803995245L;
 
@@ -27,8 +28,8 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Polis.class, mappedBy = "bedrijf")
-    private Set<Polis> polissen;
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Polis.class, mappedBy = "bedrijf")
+    //    private Set<Polis> polissen;
 
     @Column(name = "NAAM")
     private String naam;
@@ -97,17 +98,17 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     public void setNaam(String naam) {
         this.naam = naam;
     }
-
-    public Set<Polis> getPolissen() {
-        if (polissen == null) {
-            polissen = new HashSet<>();
-        }
-        return polissen;
-    }
-
-    public void setPolissen(Set<Polis> polissen) {
-        this.polissen = polissen;
-    }
+    //
+    //    public Set<Polis> getPolissen() {
+    //        if (polissen == null) {
+    //            polissen = new HashSet<>();
+    //        }
+    //        return polissen;
+    //    }
+    //
+    //    public void setPolissen(Set<Polis> polissen) {
+    //        this.polissen = polissen;
+    //    }
 
     public String getKvk() {
         return kvk;
@@ -264,6 +265,6 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("relatie", relatie).append("polissen", polissen).append("naam", naam).append("kvk", kvk).append("adressen", adressen).toString();
+        return new ToStringBuilder(this).append("id", id).append("relatie", relatie).append("naam", naam).append("kvk", kvk).append("adressen", adressen).toString();
     }
 }

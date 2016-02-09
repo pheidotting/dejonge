@@ -41,9 +41,9 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
 
         String parentId = null;
         if (bijlage.getPolis() != null) {
-            parentId = bijlage.getPolis().getPolisNummer();
+            parentId = bijlage.getPolis().toString();
         } else if (bijlage.getSchade() != null) {
-            parentId = bijlage.getSchade().getSchadeNummerMaatschappij();
+            parentId = bijlage.getSchade().toString();
         } else if (bijlage.getHypotheek() != null) {
             parentId = bijlage.getHypotheek().getId().toString();
         } else if (bijlage.getAangifte() != null) {

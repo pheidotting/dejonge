@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "JAARCIJFERS")
-@NamedQueries({@NamedQuery(name = "JaarCijfers.allesJaarCijfersBijBedrijf", query = "select jc from JaarCijfers jc where jc.bedrijf = :bedrijf")})
+//@NamedQueries({@NamedQuery(name = "JaarCijfers.allesJaarCijfersBijBedrijf", query = "select jc from JaarCijfers jc where jc.bedrijf = :bedrijf")})
 public class JaarCijfers implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

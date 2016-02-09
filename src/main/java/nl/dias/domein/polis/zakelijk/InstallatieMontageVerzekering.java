@@ -25,6 +25,6 @@ public class InstallatieMontageVerzekering extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new InstallatieMontageVerzekering();
     }
 }

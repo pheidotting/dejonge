@@ -4,6 +4,7 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.service.*;
 import nl.dias.utils.Utils;
+import nl.dias.web.SoortEntiteit;
 import nl.dias.web.mapper.BijlageMapper;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import nl.lakedigital.djfc.commons.json.WijzigenOmschrijvingBijlage;
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -93,6 +95,21 @@ public class BijlageController {
         return bijlageMapper.mapAllNaarJson(bijlages);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstBijlages")
+    @ResponseBody
+    public List<JsonBijlage> lijstBijlages(@QueryParam("soortentiteit") String soortentiteit, @QueryParam("parentid") Long parentid) {
+        SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
+
+        switch (soortEntiteit) {
+            case POLIS:
+                return bijlageMapper.mapAllNaarJson(bijlageService.allesBijlagesBijPolis(parentid));
+            case SCHADE:
+                return bijlageMapper.mapAllNaarJson(bijlageService.alleBijlagesBijSchade(parentid));
+            default:
+                return new ArrayList<>();
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/download")
     @ResponseBody
     @Produces("application/pdf")
@@ -144,14 +161,15 @@ public class BijlageController {
 
                 gebruikerService.opslaanBijlage(id, bijlage);
             } else if ("Polis".equalsIgnoreCase(soortEntiteit)) {
-                LOGGER.debug("Entiteit is een Polis, dus opslaan bij Polis.");
-
-                bijlage = polisService.opslaanBijlage(id, bijlage);
-
-                LOGGER.debug("Bijlage opgelsagen {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+                bijlage.setPolis(Long.valueOf(id));
+                //                LOGGER.debug("Entiteit is een Polis, dus opslaan bij Polis.");
+                //
+                //                bijlage = polisService.opslaanBijlage(id, bijlage);
+                //
+                //                LOGGER.debug("Bijlage opgelsagen {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
                 //                    bijlage.setSoortBijlage(SoortBijlage.POLIS);
             } else if ("Schade".equalsIgnoreCase(soortEntiteit)) {
-                schadeService.opslaanBijlage(id, bijlage);
+                bijlage.setSchade(Long.valueOf(id));
             } else if ("Aangifte".equalsIgnoreCase(soortEntiteit)) {
                 aangifteService.opslaanBijlage(id, bijlage);
             } else if ("Hypotheek".equalsIgnoreCase(soortEntiteit)) {

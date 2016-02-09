@@ -1,6 +1,5 @@
 package nl.dias.domein;
 
-import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -12,14 +11,14 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "SCHADE")
-@NamedQueries({@NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
+@NamedQueries({
+        // @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
         //        @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie"),
-        //        @NamedQuery(name = "Schade.allesVanBedrijf", query = "select s from Schade s where s.polis.bedrijf = :bedrijf")
+        //                @NamedQuery(name = "Schade.allesVanBedrijf", query = "select s from Schade s where s.polis.bedrijf = :bedrijf")
+        @NamedQuery(name = "Schade.allesBijPolis", query = "select s from Schade s where s.polis = :polis")
 })
 public class Schade implements Comparable, PersistenceObject, Serializable {
     private static final long serialVersionUID = -8340805705038811388L;
@@ -29,9 +28,9 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @JoinColumn(name = "POLIS", nullable = true)
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
-    private Polis polis;
+    @Column(name = "POLIS", nullable = true)
+    //    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
+    private Long polis;
 
     @Column(length = 25, name = "SCHADENUMMERMAATSCHAPPIJ", nullable = false)
     private String schadeNummerMaatschappij;
@@ -71,11 +70,11 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Column(length = 1000, name = "OMSCHRIJVING")
     private String omschrijving;
 
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
-
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
-    private Set<Bijlage> bijlages;
+    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
+    //    private Set<Opmerking> opmerkingen;
+    //
+    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
+    //    private Set<Bijlage> bijlages;
 
     @Override
     public Long getId() {
@@ -87,11 +86,11 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
         this.id = id;
     }
 
-    public Polis getPolis() {
+    public Long getPolis() {
         return polis;
     }
 
-    public void setPolis(Polis polis) {
+    public void setPolis(Long polis) {
         this.polis = polis;
     }
 
@@ -183,27 +182,27 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
         this.omschrijving = omschrijving;
     }
 
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<Opmerking>();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
-    }
-
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = new HashSet<Bijlage>();
-        }
-        return bijlages;
-    }
-
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
-    }
+    //    public Set<Opmerking> getOpmerkingen() {
+    //        if (opmerkingen == null) {
+    //            opmerkingen = new HashSet<Opmerking>();
+    //        }
+    //        return opmerkingen;
+    //    }
+    //
+    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+    //        this.opmerkingen = opmerkingen;
+    //    }
+    //
+    //    public Set<Bijlage> getBijlages() {
+    //        if (bijlages == null) {
+    //            bijlages = new HashSet<Bijlage>();
+    //        }
+    //        return bijlages;
+    //    }
+    //
+    //    public void setBijlages(Set<Bijlage> bijlages) {
+    //        this.bijlages = bijlages;
+    //    }
 
     /**
      * @see java.lang.Object#toString()
@@ -211,8 +210,7 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("soortSchade", this.soortSchade).append("datumTijdMelding", this.datumTijdMelding).append("locatie", this.locatie)
-                .append("schadeNummerMaatschappij", this.schadeNummerMaatschappij).append("datumTijdSchade", this.datumTijdSchade).append("statusSchade", this.statusSchade).append("id", this.id)
-                .append("soortSchadeOngedefinieerd", this.soortSchadeOngedefinieerd).append("opmerkingen", this.opmerkingen).append("schadeNummerTussenPersoon", this.schadeNummerTussenPersoon)
+                .append("schadeNummerMaatschappij", this.schadeNummerMaatschappij).append("datumTijdSchade", this.datumTijdSchade).append("statusSchade", this.statusSchade).append("id", this.id).append("soortSchadeOngedefinieerd", this.soortSchadeOngedefinieerd).append("schadeNummerTussenPersoon", this.schadeNummerTussenPersoon)
                 .append("eigenRisico", this.eigenRisico).append("omschrijving", this.omschrijving).append("datumAfgehandeld", this.datumAfgehandeld).toString();
     }
 
@@ -249,9 +247,7 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
         }
         Schade rhs = (Schade) object;
         return new EqualsBuilder().appendSuper(super.equals(object)).append(this.soortSchade, rhs.soortSchade).append(this.datumTijdMelding, rhs.datumTijdMelding).append(this.locatie, rhs.locatie)
-                .append(this.polis, rhs.polis).append(this.schadeNummerMaatschappij, rhs.schadeNummerMaatschappij).append(this.datumTijdSchade, rhs.datumTijdSchade)
-                .append(this.statusSchade, rhs.statusSchade).append(this.id, rhs.id).append(this.soortSchadeOngedefinieerd, rhs.soortSchadeOngedefinieerd).append(this.opmerkingen, rhs.opmerkingen)
-                .append(this.bijlages, rhs.bijlages).append(this.schadeNummerTussenPersoon, rhs.schadeNummerTussenPersoon).append(this.eigenRisico, rhs.eigenRisico)
+                .append(this.polis, rhs.polis).append(this.schadeNummerMaatschappij, rhs.schadeNummerMaatschappij).append(this.datumTijdSchade, rhs.datumTijdSchade).append(this.statusSchade, rhs.statusSchade).append(this.id, rhs.id).append(this.soortSchadeOngedefinieerd, rhs.soortSchadeOngedefinieerd).append(this.schadeNummerTussenPersoon, rhs.schadeNummerTussenPersoon).append(this.eigenRisico, rhs.eigenRisico)
                 .append(this.omschrijving, rhs.omschrijving).append(this.datumAfgehandeld, rhs.datumAfgehandeld).isEquals();
     }
 }

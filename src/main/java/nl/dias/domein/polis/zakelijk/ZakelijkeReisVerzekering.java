@@ -20,11 +20,11 @@ public class ZakelijkeReisVerzekering extends Polis {
 
     @Override
     public String getSchermNaam() {
-        return "Reis";
+        return "Zakelijke Reis";
     }
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new ZakelijkeReisVerzekering();
     }
 }

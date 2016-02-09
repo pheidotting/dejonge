@@ -25,6 +25,6 @@ public class MilieuSchadeVerzekering extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new MilieuSchadeVerzekering();
     }
 }

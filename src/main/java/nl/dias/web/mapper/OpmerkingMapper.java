@@ -1,7 +1,6 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.*;
-import nl.dias.domein.polis.Polis;
 import nl.dias.service.*;
 import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.slf4j.Logger;
@@ -39,16 +38,18 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
 
         if (jsonOpmerking.getSchade() != null) {
-            Schade schade = schadeService.lees(Long.valueOf(jsonOpmerking.getSchade()));
-            opmerking.setSchade(schade);
+            opmerking.setSchade(Long.valueOf(jsonOpmerking.getSchade()));
+            //            Schade schade = schadeService.lees(Long.valueOf(jsonOpmerking.getSchade()));
+            //            opmerking.setSchade(schade);
         }
         if (jsonOpmerking.getHypotheek() != null) {
             Hypotheek hypotheek = hypotheekService.leesHypotheek(Long.valueOf(jsonOpmerking.getHypotheek()));
             opmerking.setHypotheek(hypotheek);
         }
         if (jsonOpmerking.getPolis() != null) {
-            Polis polis = polisService.lees(Long.valueOf(jsonOpmerking.getPolis()));
-            opmerking.setPolis(polis);
+            opmerking.setPolis(Long.valueOf(jsonOpmerking.getPolis()));
+            //            Polis polis = polisService.lees(Long.valueOf(jsonOpmerking.getPolis()));
+            //            opmerking.setPolis(polis);
         }
 
         if (jsonOpmerking.getRelatie() != null) {
@@ -94,10 +95,10 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
         jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
         if (opmerking.getSchade() != null) {
-            jsonOpmerking.setSchade(opmerking.getSchade().getId().toString());
+            jsonOpmerking.setSchade(opmerking.getSchade().toString());
         }
         if (opmerking.getPolis() != null) {
-            jsonOpmerking.setPolis(opmerking.getPolis().getId().toString());
+            jsonOpmerking.setPolis(opmerking.getPolis().toString());
         }
         if (opmerking.getHypotheek() != null) {
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());

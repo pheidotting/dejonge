@@ -1,27 +1,15 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "M")
 @AttributeOverrides({ @AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM")) })
-@NamedQueries({ @NamedQuery(name = "Medewerker.zoekOpEmail", query = "select m from Medewerker m where m.identificatie = :emailadres") })
+//@NamedQueries({ @NamedQuery(name = "Medewerker.zoekOpEmail", query = "select m from Medewerker m where m.identificatie = :emailadres") })
 public class Medewerker extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -4313251874716582151L;
 

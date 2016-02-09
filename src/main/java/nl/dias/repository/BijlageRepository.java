@@ -27,6 +27,20 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
         zetPersistenceContext(persistenceContext);
     }
 
+    public List<Bijlage> allesBijlagesBijPolis(Long polis) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijPolis", Bijlage.class);
+        query.setParameter("polis", polis);
+
+        return query.getResultList();
+    }
+
+    public List<Bijlage> alleBijlagesBijSchade(Long schade) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijSchade", Bijlage.class);
+        query.setParameter("schade", schade);
+
+        return query.getResultList();
+    }
+
     public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
         List<Bijlage> bijlages = new ArrayList<>();
 

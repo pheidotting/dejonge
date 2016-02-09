@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "TELEFOONNUMMER")
-@NamedQueries({@NamedQuery(name = "Telefoonnummer.verwijderTelefoonnummersBijRelatie", query = "delete from Telefoonnummer a where a.relatie = :relatie")})
+//@NamedQueries({@NamedQuery(name = "Telefoonnummer.verwijderTelefoonnummersBijRelatie", query = "delete from Telefoonnummer a where a.relatie = :relatie")})
 public class Telefoonnummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -8991287195295458633L;
 

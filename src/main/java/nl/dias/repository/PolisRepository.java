@@ -1,6 +1,9 @@
 package nl.dias.repository;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Bijlage;
+import nl.dias.domein.Kantoor;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.slf4j.Logger;
@@ -85,14 +88,14 @@ public class PolisRepository extends AbstractRepository<Polis> {
         return query.getResultList();
     }
 
-    public List<Polis> allePolissenBijRelatie(Relatie relatie) {
+    public List<Polis> allePolissenBijRelatie(Long relatie) {
         TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesVanRelatie", Polis.class);
         query.setParameter("relatie", relatie);
 
         return query.getResultList();
     }
 
-    public List<Polis> allePolissenBijBedrijf(Bedrijf bedrijf) {
+    public List<Polis> allePolissenBijBedrijf(Long bedrijf) {
         TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesVanBedrijf", Polis.class);
         query.setParameter("bedrijf", bedrijf);
 

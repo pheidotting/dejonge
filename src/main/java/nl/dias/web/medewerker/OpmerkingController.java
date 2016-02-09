@@ -2,6 +2,7 @@ package nl.dias.web.medewerker;
 
 import nl.dias.domein.Opmerking;
 import nl.dias.service.OpmerkingService;
+import nl.dias.web.SoortEntiteit;
 import nl.dias.web.mapper.OpmerkingMapper;
 import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/opmerking")
@@ -23,6 +25,21 @@ public class OpmerkingController {
     private OpmerkingService opmerkingService;
     @Inject
     private OpmerkingMapper opmerkingMapper;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstOpmerkingen")
+    @ResponseBody
+    public List<JsonOpmerking> lijstOpmerkingen(@QueryParam("soortentiteit") String soortentiteit, @QueryParam("parentid") Long parentid) {
+        SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
+
+        switch (soortEntiteit) {
+            case POLIS:
+                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijPolis(parentid));
+            case SCHADE:
+                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijSchade(parentid));
+            default:
+                return new ArrayList<>();
+        }
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
     @ResponseBody

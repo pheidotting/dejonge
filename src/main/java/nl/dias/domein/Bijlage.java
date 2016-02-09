@@ -1,6 +1,5 @@
 package nl.dias.domein;
 
-import nl.dias.domein.polis.Polis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -12,7 +11,13 @@ import java.util.Date;
 
 @Entity
 @Table(name = "BIJLAGE")
-@NamedQueries({@NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"), @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"), @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie"), @NamedQuery(name = "Bijlage.zoekBijlagesBijPolis", query = "select b from Bijlage b where b.polis = :polis"), @NamedQuery(name = "Bijlage.zoekBijlagesBijSchade", query = "select b from Bijlage b where b.schade = :schade")})
+@NamedQueries({@NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"), //
+        //        @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"), //
+        //         @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"), //
+        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"), //
+        @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie"),//
+        @NamedQuery(name = "Bijlage.zoekBijlagesBijPolis", query = "select b from Bijlage b where b.polis = :polis"), //
+        @NamedQuery(name = "Bijlage.zoekBijlagesBijSchade", query = "select b from Bijlage b where b.schade = :schade")})
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
 
@@ -28,17 +33,18 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadMoment;
 
-    @JoinColumn(name = "POLIS", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
-    private Polis polis;
+    @Column(name = "POLIS", nullable = true)
+    //    @JoinColumn(name = "POLIS", nullable = true)
+    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
+    private Long polis;
 
     @JoinColumn(name = "HYPOTHEEK", nullable = true)
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Hypotheek.class)
     private Hypotheek hypotheek;
 
-    @JoinColumn(name = "SCHADE", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Schade.class)
-    private Schade schade;
+    @Column(name = "SCHADE", nullable = true)
+    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Schade.class)
+    private Long schade;
 
     @JoinColumn(name = "AANGIFTE", nullable = true)
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Aangifte.class)
@@ -96,11 +102,11 @@ public class Bijlage implements PersistenceObject, Serializable {
         this.uploadMoment = uploadMoment.toDate();
     }
 
-    public Polis getPolis() {
+    public Long getPolis() {
         return polis;
     }
 
-    public void setPolis(Polis polis) {
+    public void setPolis(Long polis) {
         this.polis = polis;
     }
 
@@ -112,11 +118,11 @@ public class Bijlage implements PersistenceObject, Serializable {
         this.hypotheek = hypotheek;
     }
 
-    public Schade getSchade() {
+    public Long getSchade() {
         return schade;
     }
 
-    public void setSchade(Schade schade) {
+    public void setSchade(Long schade) {
         this.schade = schade;
     }
 
@@ -189,13 +195,13 @@ public class Bijlage implements PersistenceObject, Serializable {
         final StringBuilder sb = new StringBuilder("Bijlage{");
         sb.append("id=").append(id);
         if (polis != null) {
-            sb.append(", polis=").append(polis.getId());
+            sb.append(", polis=").append(polis);
         }
         if (hypotheek != null) {
             sb.append(", hypotheek=").append(hypotheek.getId());
         }
         if (schade != null) {
-            sb.append(", schade=").append(schade.getId());
+            sb.append(", schade=").append(schade);
         }
         if (aangifte != null) {
             sb.append(", aangifte=").append(aangifte.getId());

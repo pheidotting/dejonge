@@ -1,7 +1,6 @@
 package nl.dias.service;
 
 import com.google.common.collect.Lists;
-import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortBijlage;
@@ -84,17 +83,17 @@ public class PolisService {
     public Bijlage opslaanBijlage(String polisId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Polis met id {}", bijlage.getId(), polisId);
 
-        Polis polis = polisRepository.lees(Long.valueOf(polisId));
+        //        Polis polis = polisRepository.lees(Long.valueOf(polisId));
 
-        polis.getBijlages().add(bijlage);
+        //        polis.getBijlages().add(bijlage);
 
         LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
+        //        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
 
-        polisRepository.opslaan(polis);
+        //        polisRepository.opslaan(polis);
 
         bijlage.setSoortBijlage(SoortBijlage.POLIS);
-        bijlage.setPolis(polis);
+        //        bijlage.setPolis(polis);
 
         return bijlage;
     }
@@ -102,7 +101,7 @@ public class PolisService {
     public void slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
 
-        bijlage.setPolis(polisRepository.lees(polisId));
+        //        bijlage.setPolis(polisRepository.lees(polisId));
         bijlage.setSoortBijlage(SoortBijlage.POLIS);
         bijlage.setOmschrijving(omschrijving);
 
@@ -128,23 +127,23 @@ public class PolisService {
         }
         LOGGER.debug("Polis gevonden : " + polis);
 
-        LOGGER.debug("Ophalen Relatie");
-        Relatie relatie = (Relatie) gebruikerService.lees(polis.getRelatie().getId());
-
-        LOGGER.debug("Verwijderen Polis bij Relatie");
-        relatie.getPolissen().remove(polis);
-        LOGGER.debug("Kijken of de Polis nog bij een bedrijf zit");
-
-        gebruikerService.opslaan(relatie);
+        //        LOGGER.debug("Ophalen Relatie");
+        //        Relatie relatie = (Relatie) gebruikerService.lees(polis.getRelatie().getId());
+        //
+        //        LOGGER.debug("Verwijderen Polis bij Relatie");
+        //        relatie.getPolissen().remove(polis);
+        //        LOGGER.debug("Kijken of de Polis nog bij een bedrijf zit");
+        //
+        //        gebruikerService.opslaan(relatie);
 
         polisRepository.verwijder(polis);
     }
 
-    public List<Polis> allePolissenBijRelatie(Relatie relatie) {
+    public List<Polis> allePolissenBijRelatie(Long relatie) {
         return polisRepository.allePolissenBijRelatie(relatie);
     }
 
-    public List<Polis> allePolissenBijBedrijf(Bedrijf bedrijf) {
+    public List<Polis> allePolissenBijBedrijf(Long bedrijf) {
         return polisRepository.allePolissenBijBedrijf(bedrijf);
     }
 

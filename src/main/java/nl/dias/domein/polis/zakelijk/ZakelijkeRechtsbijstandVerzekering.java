@@ -25,6 +25,6 @@ public class ZakelijkeRechtsbijstandVerzekering extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new ZakelijkeRechtsbijstandVerzekering();
     }
 }

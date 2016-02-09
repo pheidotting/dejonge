@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,21 +50,22 @@ public class SchadeService {
     public void opslaanBijlage(String schadeId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Schade met id {}", bijlage.getId(), schadeId);
 
-        Schade schade = schadeRepository.lees(Long.valueOf(schadeId));
+        //        Schade schade = schadeRepository.lees(Long.valueOf(schadeId));
 
-        schade.getBijlages().add(bijlage);
-        bijlage.setSchade(schade);
+        //        schade.getBijlages().add(bijlage);
+        bijlage.setSchade(Long.valueOf(schadeId));
         bijlage.setSoortBijlage(SoortBijlage.SCHADE);
 
         LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
 
-        schadeRepository.opslaan(schade);
+        schadeRepository.opslaanBijlage(bijlage);
     }
 
     public void slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
         LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId);
 
-        bijlage.setSchade(schadeRepository.lees(schadeId));
+        //        bijlage.setSchade(schadeRepository.lees(schadeId));
+        bijlage.setSchade(schadeId);
         bijlage.setSoortBijlage(SoortBijlage.SCHADE);
         bijlage.setOmschrijving(omschrijving);
 
@@ -101,33 +103,53 @@ public class SchadeService {
         }
 
         if (polisId != null && !"Kies een polis uit de lijst..".equals(polisId)) {
-            LOGGER.debug("Polis opzoeken, id : " + polisId);
-            Polis polis = polisService.lees(Long.valueOf(polisId));
-            schade.setPolis(polis);
+            //            LOGGER.debug("Polis opzoeken, id : " + polisId);
+            //            Polis polis = polisService.lees(Long.valueOf(polisId));
+            //            schade.setPolis(polis);
+            schade.setPolis(Long.valueOf(polisId));
         }
 
         // Bijlages er bij zoeken
-        List<Bijlage> bijlages = schadeRepository.zoekBijlagesBijSchade(schade);
-        schade.getBijlages().addAll(bijlages);
+        //        List<Bijlage> bijlages = schadeRepository.zoekBijlagesBijSchade(schade);
+        //        schade.getBijlages().addAll(bijlages);
 
         LOGGER.debug("Schade opslaan");
         schadeRepository.opslaan(schade);
 
-        LOGGER.debug("Opmerkingen bij de schade zoeken en er weer bij plaatsen");
-        Schade schadeOorspronkelijk = schadeRepository.lees(schade.getId());
-        schade.setOpmerkingen(schadeOorspronkelijk.getOpmerkingen());
+        //        LOGGER.debug("Opmerkingen bij de schade zoeken en er weer bij plaatsen");
+        //        Schade schadeOorspronkelijk = schadeRepository.lees(schade.getId());
+        //        schade.setOpmerkingen(schadeOorspronkelijk.getOpmerkingen());
     }
 
-    public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
-        return schadeRepository.alleSchadesBijRelatie(relatie);
+    public List<Schade> alleSchadesBijRelatie(Long relatie) {
+        List<Schade> schades = new ArrayList<>();
+
+        List<Polis> polissen = polisService.allePolissenBijRelatie(relatie);
+
+        for (Polis polis : polissen) {
+            schades.addAll(schadeRepository.allesBijPolis(polis.getId()));
+        }
+
+        return schades;
     }
 
-    public List<Schade> alleSchadesBijBedrijf(Bedrijf bedrijf) {
-        return schadeRepository.alleSchadesBijBedrijf(bedrijf);
+    public List<Schade> alleSchadesBijBedrijf(Long bedrijf) {
+        List<Schade> schades = new ArrayList<>();
+
+        List<Polis> polissen = polisService.allePolissenBijBedrijf(bedrijf);
+
+        for (Polis polis : polissen) {
+            schades.addAll(schadeRepository.allesBijPolis(polis.getId()));
+        }
+
+        return schades;
     }
 
     public Schade lees(Long id) {
-        return schadeRepository.lees(id);
+        LOGGER.debug("{}", id);
+        Schade schade = schadeRepository.lees(id);
+        LOGGER.debug(ReflectionToStringBuilder.toString(schade));
+        return schade;
     }
 
     public void setSchadeRepository(SchadeRepository schadeRepository) {

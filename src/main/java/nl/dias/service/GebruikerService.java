@@ -205,12 +205,12 @@ public class GebruikerService {
 
         if (gebruiker instanceof Relatie) {
             Relatie relatie = (Relatie) gebruiker;
-            for (Polis polis : relatie.getPolissen()) {
-                LOGGER.debug("Verwijder Polis :");
-                LOGGER.debug(ReflectionToStringBuilder.toString(polis));
-                polisRepository.verwijder(polis);
-                relatie.getPolissen().remove(polis);
-            }
+            //            for (Polis polis : relatie.getPolissen()) {
+            //                LOGGER.debug("Verwijder Polis :");
+            //                LOGGER.debug(ReflectionToStringBuilder.toString(polis));
+            //                polisRepository.verwijder(polis);
+            //                relatie.getPolissen().remove(polis);
+            //            }
             for (Hypotheek hypotheek : relatie.getHypotheken()) {
                 LOGGER.debug("Verwijder Hypotheek :");
                 LOGGER.debug(ReflectionToStringBuilder.toString(hypotheek));
@@ -323,7 +323,7 @@ public class GebruikerService {
             LOGGER.trace("Niks gevonden ", e);
         }
         if (polis != null) {
-            relaties.add(polis.getRelatie());
+            relaties.add((Relatie) lees(polis.getRelatie()));
         }
         LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
 

@@ -19,6 +19,20 @@ public class OpmerkingRepository extends AbstractRepository<Opmerking> {
         zetPersistenceContext("dias");
     }
 
+    public List<Opmerking> alleOpmerkingenBijPolis(Long polis) {
+        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorPolis", Opmerking.class);
+        query.setParameter("polis", polis);
+
+        return query.getResultList();
+    }
+
+    public List<Opmerking> alleOpmerkingenBijSchade(Long schade) {
+        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorSchade", Opmerking.class);
+        query.setParameter("schade", schade);
+
+        return query.getResultList();
+    }
+
     @Override
     public void setPersistenceContext(String persistenceContext) {
         zetPersistenceContext(persistenceContext);

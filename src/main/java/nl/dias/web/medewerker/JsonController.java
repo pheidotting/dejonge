@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/overig")
 @Controller
@@ -42,7 +44,7 @@ public class JsonController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen")
     @ResponseBody
-    public List<String> lijstVerzekeringsMaatschappijen() {
+    public Map<Long, String> lijstVerzekeringsMaatschappijen() {
 
         LOGGER.debug("ophalen lijst met VerzekeringsMaatschappijen");
 
@@ -50,11 +52,11 @@ public class JsonController {
 
         LOGGER.debug("Gevonden, " + lijst.size() + " VerzekeringsMaatschappijen");
 
-        List<String> ret = new ArrayList<>();
-        ret.add("Kies een maatschappij...");
+        Map<Long, String> ret = new HashMap<>();
+        ret.put(0L, "Kies een maatschappij...");
 
         for (VerzekeringsMaatschappij vm : lijst) {
-            ret.add(vm.getNaam());
+            ret.put(vm.getId(), vm.getNaam());
         }
 
         LOGGER.debug("{}", ret);

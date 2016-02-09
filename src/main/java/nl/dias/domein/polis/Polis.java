@@ -1,6 +1,7 @@
 package nl.dias.domein.polis;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Bedrag;
+import nl.dias.domein.StatusPolis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,15 +11,17 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorColumn(name = "SOORT", length = 2)
-@NamedQueries({@NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"), @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"), @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie"), @NamedQuery(name = "Polis.allesVanBedrijf", query = "select p from Polis p where p.bedrijf = :bedrijf")})
-public abstract class Polis implements PersistenceObject, Serializable, Cloneable, ObjectMetBijlages, ObjectMetOpmerkingen {
+@NamedQueries({@NamedQuery(name = "Polis.allesBijMaatschappij", query = "select p from Polis p where p.maatschappij = :maatschappij"),//
+        //        @NamedQuery(name = "Polis.zoekOpPolisNummer", query = "select p from Polis p where p.polisNummer = :polisNummer and p.relatie.kantoor = :kantoor"),//
+        @NamedQuery(name = "Polis.allesVanRelatie", query = "select p from Polis p where p.relatie = :relatie"),//
+        @NamedQuery(name = "Polis.allesVanBedrijf", query = "select p from Polis p where p.bedrijf = :bedrijf")//
+})
+public abstract class Polis implements PersistenceObject, Serializable, Cloneable {
     private static final long serialVersionUID = 1011438129295546984L;
 
     @Id
@@ -65,27 +68,27 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @Column(name = "VERZEKERDEZAAK", length = 250)
     private String verzekerdeZaak;
 
-    @JoinColumn(name = "RELATIE")
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
-    private Relatie relatie;
+    @Column(name = "RELATIE")
+    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    private Long relatie;
 
-    @JoinColumn(name = "BEDRIJF")
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
-    private Bedrijf bedrijf;
+    @Column(name = "BEDRIJF")
+    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
+    private Long bedrijf;
 
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
-    private Set<Bijlage> bijlages;
+    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
+    //    private Set<Bijlage> bijlages;
 
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
+    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
+    //    private Set<Opmerking> opmerkingen;
 
     //    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
     //    @JoinColumn(name = "MAATSCHAPPIJ")
     @Column(name = "MAATSCHAPPIJ")
     private Long maatschappij;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
-    private Set<Schade> schades;
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
+    //    private Set<Schade> schades;
 
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
     private String omschrijvingVerzekering;
@@ -174,35 +177,35 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.premie = premie;
     }
 
-    public Relatie getRelatie() {
+    public Long getRelatie() {
         return relatie;
     }
 
-    public void setRelatie(Relatie relatie) {
+    public void setRelatie(Long relatie) {
         this.relatie = relatie;
     }
 
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = new HashSet<>();
-        }
-        return bijlages;
-    }
-
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
-    }
-
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<>();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
-    }
+    //    public Set<Bijlage> getBijlages() {
+    //        if (bijlages == null) {
+    //            bijlages = new HashSet<>();
+    //        }
+    //        return bijlages;
+    //    }
+    //
+    //    public void setBijlages(Set<Bijlage> bijlages) {
+    //        this.bijlages = bijlages;
+    //    }
+    //
+    //    public Set<Opmerking> getOpmerkingen() {
+    //        if (opmerkingen == null) {
+    //            opmerkingen = new HashSet<>();
+    //        }
+    //        return opmerkingen;
+    //    }
+    //
+    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+    //        this.opmerkingen = opmerkingen;
+    //    }
 
     public Long getMaatschappij() {
         return maatschappij;
@@ -266,24 +269,24 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.verzekerdeZaak = verzekerdeZaak;
     }
 
-    public Bedrijf getBedrijf() {
+    public Long getBedrijf() {
         return bedrijf;
     }
 
-    public void setBedrijf(Bedrijf bedrijf) {
+    public void setBedrijf(Long bedrijf) {
         this.bedrijf = bedrijf;
     }
 
-    public Set<Schade> getSchades() {
-        if (schades == null) {
-            schades = new HashSet<>();
-        }
-        return schades;
-    }
-
-    public void setSchades(Set<Schade> schades) {
-        this.schades = schades;
-    }
+    //    public Set<Schade> getSchades() {
+    //        if (schades == null) {
+    //            schades = new HashSet<>();
+    //        }
+    //        return schades;
+    //    }
+    //
+    //    public void setSchades(Set<Schade> schades) {
+    //        this.schades = schades;
+    //    }
 
     public String getOmschrijvingVerzekering() {
         return omschrijvingVerzekering;
@@ -332,14 +335,14 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         //            sb.append(", relatie=").append(relatie.getIdentificatie()).append("\n");
         //        }
         if (bedrijf != null) {
-            sb.append(", bedrijf=").append(bedrijf.getNaam()).append("\n");
+            sb.append(", bedrijf=").append(bedrijf).append("\n");
         }
         //        sb.append(", bijlages=").append(bijlages).append("\n");
-        sb.append(", opmerkingen=").append(opmerkingen).append("\n");
+        //        sb.append(", opmerkingen=").append(opmerkingen).append("\n");
         if (maatschappij != null) {
             sb.append(", maatschappij=").append(maatschappij).append("\n");
         }
-        sb.append(", schades=").append(schades).append("\n");
+        //        sb.append(", schades=").append(schades).append("\n");
         sb.append(", omschrijvingVerzekering='").append(omschrijvingVerzekering).append('\'').append("\n");
         sb.append('}');
         return sb.toString();

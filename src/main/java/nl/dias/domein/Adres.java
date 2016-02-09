@@ -9,7 +9,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Entity
 @Table(name = "ADRES")
-@NamedQueries({@NamedQuery(name = "Adres.verwijderAdressenBijRelatie", query = "delete from Adres a where a.relatie = :relatie")})
+//@NamedQueries({@NamedQuery(name = "Adres.verwijderAdressenBijRelatie", query = "delete from Adres a where a.relatie = :relatie")})
 public class Adres implements Serializable {
     private static final long serialVersionUID = 2361944992062349932L;
 

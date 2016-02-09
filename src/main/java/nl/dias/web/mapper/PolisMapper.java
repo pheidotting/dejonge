@@ -2,7 +2,6 @@ package nl.dias.web.mapper;
 
 import com.google.common.collect.Lists;
 import nl.dias.domein.Bedrag;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.StatusPolis;
 import nl.dias.domein.polis.Betaalfrequentie;
 import nl.dias.domein.polis.Polis;
@@ -98,10 +97,10 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         //            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
         //        }
         if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
-            polis.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonPolis.getRelatie())));
+            polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
         }
         if (jsonPolis.getBedrijfsId() != null) {
-            polis.setBedrijf(bedrijfService.lees(jsonPolis.getBedrijfsId()));
+            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijfsId()));
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
@@ -155,21 +154,21 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         jsonPolis.setDekking(polis.getDekking());
         jsonPolis.setVerzekerdeZaak(polis.getVerzekerdeZaak());
-        LOGGER.debug("{}", polis.getBijlages());
-        jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
+        //        LOGGER.debug("{}", polis.getBijlages());
+        //        jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
 
-        jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
+        //        jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         if (polis.getMaatschappij() != null) {
             jsonPolis.setMaatschappij(polis.getMaatschappij().toString());
         }
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
-            jsonPolis.setBedrijf(polis.getBedrijf().getNaam());
-            jsonPolis.setBedrijfsId(polis.getBedrijf().getId());
+            jsonPolis.setBedrijf(polis.getBedrijf().toString());
+            jsonPolis.setBedrijfsId(polis.getBedrijf());
         }
-        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
+        //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {
-            jsonPolis.setRelatie(polis.getRelatie().getId().toString());
+            jsonPolis.setRelatie(polis.getRelatie().toString());
         }
         jsonPolis.setOmschrijvingVerzekering(polis.getOmschrijvingVerzekering());
 
