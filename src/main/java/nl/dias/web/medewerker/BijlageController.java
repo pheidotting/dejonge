@@ -101,8 +101,14 @@ public class BijlageController {
         SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
 
         switch (soortEntiteit) {
+            case BEDRIJF:
+                return bijlageMapper.mapAllNaarJson(bijlageService.alleBijlagesBijBedrijf(parentid));
+            case JAARCIJFERS:
+                return bijlageMapper.mapAllNaarJson(bijlageService.alleBijlagesBijJaarCijfers(parentid));
             case POLIS:
                 return bijlageMapper.mapAllNaarJson(bijlageService.allesBijlagesBijPolis(parentid));
+            case RELATIE:
+                return bijlageMapper.mapAllNaarJson(bijlageService.alleBijlagesBijRelatie(parentid));
             case SCHADE:
                 return bijlageMapper.mapAllNaarJson(bijlageService.alleBijlagesBijSchade(parentid));
             default:

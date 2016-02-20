@@ -1,7 +1,6 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.ContactPersoon;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,14 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-
 @Component
 public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBedrijf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfNaarJsonBedrijfMapper.class);
 
-    @Inject
-    private ContactPersoonNaarJsonContactPersoonMapper contactPersoonNaarJsonContactPersoonMapper;
+    //    @Inject
+    //    private ContactPersoonNaarJsonContactPersoonMapper contactPersoonNaarJsonContactPersoonMapper;
 
     @Override
     public JsonBedrijf map(Bedrijf bedrijf, Object parent, Object bestaandObject) {
@@ -33,9 +30,9 @@ public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBe
         jsonBedrijf.setRechtsvorm(bedrijf.getRechtsvorm());
         jsonBedrijf.setInternetadres(bedrijf.getInternetadres());
 
-        for (ContactPersoon contactPersoon : bedrijf.getContactPersonen()) {
-            jsonBedrijf.getContactpersonen().add(contactPersoonNaarJsonContactPersoonMapper.map(contactPersoon));
-        }
+        //        for (ContactPersoon contactPersoon : bedrijf.getContactPersonen()) {
+        //            jsonBedrijf.getContactpersonen().add(contactPersoonNaarJsonContactPersoonMapper.map(contactPersoon));
+        //        }
 
         LOGGER.debug("Gemapt naar {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
 

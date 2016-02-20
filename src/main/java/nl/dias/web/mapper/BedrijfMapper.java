@@ -37,7 +37,7 @@ public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
         //
         //        return mapper.map(object, JsonBedrijf.class);
         JsonBedrijf jsonBedrijf = new AdresDozerMapper().convertTo(object, null);
-        jsonBedrijf.setOpmerkingen(opmerkingMapper.mapAllNaarJson(object.getOpmerkingen()));
+        //        jsonBedrijf.setOpmerkingen(opmerkingMapper.mapAllNaarJson(object.getOpmerkingen()));
         return jsonBedrijf;
     }
 }

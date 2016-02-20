@@ -1,6 +1,5 @@
 package nl.dias.domein;
 
-import com.google.common.collect.Sets;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -8,12 +7,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "JAARCIJFERS")
 @NamedQueries({@NamedQuery(name = "JaarCijfers.allesJaarCijfersBijBedrijf", query = "select jc from JaarCijfers jc where jc.bedrijf = :bedrijf")})
-public class JaarCijfers implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages {
+public class JaarCijfers implements Serializable, PersistenceObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -26,11 +24,11 @@ public class JaarCijfers implements Serializable, PersistenceObject, ObjectMetOp
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Bijlage.class)
-    private Set<Bijlage> bijlages;
-
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
+    //    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Bijlage.class)
+    //    private Set<Bijlage> bijlages;
+    //
+    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Opmerking.class)
+    //    private Set<Opmerking> opmerkingen;
 
     @Override
     public Long getId() {
@@ -58,27 +56,27 @@ public class JaarCijfers implements Serializable, PersistenceObject, ObjectMetOp
         this.bedrijf = bedrijf;
     }
 
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = Sets.newHashSet();
-        }
-        return bijlages;
-    }
-
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
-    }
-
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = Sets.newHashSet();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
-    }
+    //    public Set<Bijlage> getBijlages() {
+    //        if (bijlages == null) {
+    //            bijlages = Sets.newHashSet();
+    //        }
+    //        return bijlages;
+    //    }
+    //
+    //    public void setBijlages(Set<Bijlage> bijlages) {
+    //        this.bijlages = bijlages;
+    //    }
+    //
+    //    public Set<Opmerking> getOpmerkingen() {
+    //        if (opmerkingen == null) {
+    //            opmerkingen = Sets.newHashSet();
+    //        }
+    //        return opmerkingen;
+    //    }
+    //
+    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+    //        this.opmerkingen = opmerkingen;
+    //    }
 
     @Override
     public boolean equals(Object o) {

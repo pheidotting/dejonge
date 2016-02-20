@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Entity
 @Table(name = "ADRES")
 //@NamedQueries({@NamedQuery(name = "Adres.verwijderAdressenBijRelatie", query = "delete from Adres a where a.relatie = :relatie")})
-public class Adres implements Serializable {
+public class Adres implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 2361944992062349932L;
 
     public enum SoortAdres {
@@ -37,9 +38,9 @@ public class Adres implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
-    @JoinColumn(name = "BEDRIJF")
-    private Bedrijf bedrijf;
+    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
+    @Column(name = "BEDRIJF")
+    private Long bedrijf;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Kantoor.class)
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
@@ -110,11 +111,11 @@ public class Adres implements Serializable {
         this.relatie = relatie;
     }
 
-    public Bedrijf getBedrijf() {
+    public Long getBedrijf() {
         return bedrijf;
     }
 
-    public void setBedrijf(Bedrijf bedrijf) {
+    public void setBedrijf(Long bedrijf) {
         this.bedrijf = bedrijf;
     }
 

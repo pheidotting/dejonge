@@ -2,7 +2,7 @@ package nl.dias.mapper;
 
 import nl.dias.domein.Adres;
 import nl.dias.domein.Relatie;
-import nl.dias.service.BedrijfService;
+import nl.dias.service.AdresService;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,14 @@ public class JsonAdresNaarAdresMapper extends AbstractMapper<JsonAdres, Adres> {
     @Inject
     private GebruikerService gebruikerService;
     @Inject
-    private BedrijfService bedrijfService;
+    private AdresService adresService;
 
     @Override
     public Adres map(JsonAdres jsonAdres, Object parent, Object bestaandObject) {
         Adres adres = new Adres();
+        if (jsonAdres.getId() != null) {
+            adres = adresService.lees(jsonAdres.getId());
+        }
 
         adres.setHuisnummer(jsonAdres.getHuisnummer());
         adres.setId(jsonAdres.getId());
@@ -30,7 +33,7 @@ public class JsonAdresNaarAdresMapper extends AbstractMapper<JsonAdres, Adres> {
         adres.setSoortAdres(Adres.SoortAdres.valueOf(jsonAdres.getSoortAdres()));
 
         if (jsonAdres.getBedrijf() != null) {
-            adres.setBedrijf(bedrijfService.lees(Long.valueOf(jsonAdres.getBedrijf())));
+            adres.setBedrijf(Long.valueOf(jsonAdres.getBedrijf()));
         }
         if (jsonAdres.getRelatie() != null) {
             adres.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonAdres.getRelatie())));

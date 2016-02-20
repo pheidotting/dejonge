@@ -58,8 +58,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         }
 
         if (jsonOpmerking.getBedrijf() != null) {
-            Bedrijf bedrijf = bedrijfService.lees((Long.valueOf(jsonOpmerking.getBedrijf())));
-            opmerking.setBedrijf(bedrijf);
+            //            Bedrijf bedrijf = bedrijfService.lees((Long.valueOf(jsonOpmerking.getBedrijf())));
+            opmerking.setBedrijf(Long.valueOf(jsonOpmerking.getBedrijf()));
         }
 
         if (jsonOpmerking.getAangifte() != null) {
@@ -68,8 +68,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         }
 
         if (jsonOpmerking.getJaarcijfers() != null) {
-            JaarCijfers jaarCijfers = jaarCijfersService.lees(Long.valueOf(jsonOpmerking.getJaarcijfers()));
-            opmerking.setJaarCijfers(jaarCijfers);
+            //            JaarCijfers jaarCijfers = jaarCijfersService.lees(Long.valueOf(jsonOpmerking.getJaarcijfers()));
+            opmerking.setJaarCijfers(Long.valueOf(jsonOpmerking.getJaarcijfers()));
         }
 
         if (jsonOpmerking.getRisicoAnalyse() != null) {
@@ -104,7 +104,7 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
         }
         if (opmerking.getBedrijf() != null) {
-            jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
+            jsonOpmerking.setBedrijf(opmerking.getBedrijf().toString());
         }
         if (jsonOpmerking.getAangifte() != null) {
             jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());

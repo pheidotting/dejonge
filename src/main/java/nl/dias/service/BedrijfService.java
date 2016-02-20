@@ -58,15 +58,15 @@ public class BedrijfService {
     public void opslaanBijlage(String bedrijfId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij Bedrijf met id {}", bijlage.getId(), bedrijfId);
 
-        Bedrijf bedrijf = bedrijfRepository.lees(Long.valueOf(bedrijfId));
+        //        Bedrijf bedrijf = bedrijfRepository.lees(Long.valueOf(bedrijfId));
 
-        bedrijf.getBijlages().add(bijlage);
-        bijlage.setBedrijf(bedrijf);
+        //        bedrijf.getBijlages().add(bijlage);
+        bijlage.setBedrijf(Long.valueOf(bedrijfId));
         bijlage.setSoortBijlage(SoortBijlage.BEDRIJF);
 
         LOGGER.debug(org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(bijlage));
 
-        bedrijfRepository.opslaan(bedrijf);
+        //        bedrijfRepository.opslaan(bedrijf);
     }
 
 }

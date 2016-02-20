@@ -156,9 +156,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
             jsonRelatie.setKantoor(relatie.getKantoor().getId());
         }
-        LOGGER.debug("Opmerkingen mappen");
-        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
-        LOGGER.debug("Einde opmerkingen mappen");
+        //        LOGGER.debug("Opmerkingen mappen");
+        //        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
+        //        LOGGER.debug("Einde opmerkingen mappen");
         if (relatie.getGeboorteDatum() != null) {
             jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
             jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
@@ -179,7 +179,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
             jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
         }
-        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
+        //        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         return jsonRelatie;
     }

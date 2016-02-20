@@ -41,6 +41,29 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
         return query.getResultList();
     }
 
+    public List<Bijlage> alleBijlagesBijJaarCijfers(Long jaarCijfers) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijJaarCijfers", Bijlage.class);
+        query.setParameter("jaarCijfers", jaarCijfers);
+
+        return query.getResultList();
+    }
+
+    public List<Bijlage> alleBijlagesBijBedrijf(Long bedrijf) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijBedrijf", Bijlage.class);
+        query.setParameter("bedrijf", bedrijf);
+
+        return query.getResultList();
+    }
+
+    public List<Bijlage> alleBijlagesBijRelatie(Long relatieId) {
+        Relatie relatie = getEm().find(Relatie.class, relatieId);
+
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijRelatie", Bijlage.class);
+        query.setParameter("relatie", relatie);
+
+        return query.getResultList();
+    }
+
     public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
         List<Bijlage> bijlages = new ArrayList<>();
 

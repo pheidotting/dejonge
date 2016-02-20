@@ -32,8 +32,14 @@ public class OpmerkingController {
         SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
 
         switch (soortEntiteit) {
+            case BEDRIJF:
+                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijBedrijf(parentid));
+            case JAARCIJFERS:
+                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijJaarCijfers(parentid));
             case POLIS:
                 return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijPolis(parentid));
+            case RELATIE:
+                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijRelatie(parentid));
             case SCHADE:
                 return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijSchade(parentid));
             default:
@@ -44,7 +50,7 @@ public class OpmerkingController {
     @RequestMapping(method = RequestMethod.GET, value = "/lijst")
     @ResponseBody
     public List<JsonOpmerking> lijstOpmerkingen(Long relatie) {
-        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenVoorRelatie(relatie));
+        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijRelatie(relatie));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")

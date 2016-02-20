@@ -24,14 +24,14 @@ public class ContactPersoonNaarJsonContactPersoonMapper extends AbstractMapper<C
         JsonContactPersoon jsonContactPersoon = new JsonContactPersoon();
 
         jsonContactPersoon.setId(object.getId());
-        jsonContactPersoon.setBedrijf(object.getBedrijf().getId());
+        jsonContactPersoon.setBedrijf(object.getBedrijf());
         jsonContactPersoon.setAchternaam(object.getAchternaam());
         jsonContactPersoon.setEmailadres(object.getEmailadres());
         jsonContactPersoon.setFunctie(object.getFunctie());
         jsonContactPersoon.setTussenvoegsel(object.getTussenvoegsel());
         jsonContactPersoon.setVoornaam(object.getVoornaam());
 
-        jsonContactPersoon.setTelefoonnummers(telefoonnummerNaarJsonTelefoonnummerMapper.mapAll(object.getTelefoonnummers()));
+        //        jsonContactPersoon.setTelefoonnummers(telefoonnummerNaarJsonTelefoonnummerMapper.mapAll(object.getTelefoonnummers()));
 
         //        JsonTelefoonnummer jsonTelefoonnummer=telefoonnummerNaarJsonTelefoonnummerMapper.map(getFirst(object.getTelefoonnummers(), null));
         //

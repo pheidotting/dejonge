@@ -1,8 +1,11 @@
 package nl.dias.service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
+import nl.dias.mapper.Mapper;
 import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
@@ -11,11 +14,14 @@ import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
+import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -32,8 +38,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -57,6 +63,14 @@ public class GebruikerService {
     private EmailAdresAangevuldSender emailAdresAangevuldSender;
     @Inject
     private BsnAangevuldSender bsnAangevuldSender;
+    @Inject
+    private Mapper mapper;
+    @Inject
+    private TelefoonnummerService telefoonnummerService;
+
+    public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
+        return gebruikerRepository.alleContactPersonen(bedrijfsId);
+    }
 
     public void opslaanAdresBijRelatie(Adres adres, Long relatieId) {
         Relatie relatie = (Relatie) gebruikerRepository.lees(relatieId);
@@ -121,6 +135,64 @@ public class GebruikerService {
         // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden aangemaakt
         if (gebruiker instanceof Relatie) {
             verstuurEvents((Relatie) gebruiker);
+        }
+    }
+
+    public void opslaan(final List<JsonContactPersoon> jsonContactPersonen, Long bedrijfId) {
+        LOGGER.debug("Opslaan ContactPersonen, aantal {}, bedrijfId {}", jsonContactPersonen.size(), bedrijfId);
+
+        LOGGER.debug("Ophalen bestaande ContactPersonen bij bedrijf");
+        List<Long> bestaandeContactPersonen = newArrayList(transform(alleContactPersonen(bedrijfId), new Function<ContactPersoon, Long>() {
+            @Override
+            public Long apply(ContactPersoon contactPersoon) {
+                return contactPersoon.getId();
+            }
+        }));
+        LOGGER.debug("Ids bestaande ContactPersonen {}", bestaandeContactPersonen);
+
+        final List<Long> lijstIdsBewaren = newArrayList(filter(transform(jsonContactPersonen, new Function<JsonContactPersoon, Long>() {
+            @Override
+            public Long apply(JsonContactPersoon contactPersoon) {
+                return contactPersoon.getId();
+            }
+        }), new Predicate<Long>() {
+            @Override
+            public boolean apply(Long id) {
+                return id != null;
+            }
+        }));
+        LOGGER.debug("Ids ContactPersonen uit front-end {}", lijstIdsBewaren);
+
+        //Verwijderen wat niet (meer) voorkomt
+        Iterable<Long> teVerwijderen = filter(bestaandeContactPersonen, new Predicate<Long>() {
+            @Override
+            public boolean apply(Long contactPersoon) {
+                return !lijstIdsBewaren.contains(contactPersoon);
+            }
+        });
+
+        LOGGER.debug("Ids die dus weg kunnen {}", teVerwijderen);
+        for (Long id : teVerwijderen) {
+            gebruikerRepository.verwijder(lees(id));
+        }
+
+        LOGGER.debug("Opslaan ContactPersonen");
+        for (JsonContactPersoon jsonContactPersoon : jsonContactPersonen) {
+            jsonContactPersoon.setBedrijf(bedrijfId);
+            LOGGER.debug("opslaan {}", ReflectionToStringBuilder.toString(jsonContactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
+            ContactPersoon contactPersoon = mapper.map(jsonContactPersoon, ContactPersoon.class);
+
+            LOGGER.debug("opslaan {}", ReflectionToStringBuilder.toString(contactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
+
+            gebruikerRepository.opslaan(contactPersoon);
+
+            List<Telefoonnummer> telefoonnummers = new ArrayList<>();
+            for (JsonTelefoonnummer jsonTelefoonnummer : jsonContactPersoon.getTelefoonnummers()) {
+                telefoonnummers.add(mapper.map(jsonTelefoonnummer, Telefoonnummer.class));
+            }
+            telefoonnummerService.opslaan(telefoonnummers, contactPersoon.getId(), SoortEntiteit.CONTACTPERSOON);
+
+
         }
     }
 

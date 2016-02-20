@@ -17,10 +17,10 @@ public class JsonBedrijfNaarBedrijfMapper extends AbstractMapper<JsonBedrijf, Be
 
     @Inject
     private BedrijfService bedrijfService;
-    @Inject
-    private JsonTelefoonnummerNaarTelefoonnummerMapper jsonTelefoonnummerNaarTelefoonnummerMapper;
-    @Inject
-    private JsonContactPersoonNaarContactPersoonMapper jsonContactPersoonNaarContactPersoonMapper;
+    //    @Inject
+    //    private JsonTelefoonnummerNaarTelefoonnummerMapper jsonTelefoonnummerNaarTelefoonnummerMapper;
+    //    @Inject
+    //    private JsonContactPersoonNaarContactPersoonMapper jsonContactPersoonNaarContactPersoonMapper;
 
     @Override
     public Bedrijf map(JsonBedrijf jsonBedrijf, Object parent, Object bestaandOjbect) {
@@ -41,8 +41,8 @@ public class JsonBedrijfNaarBedrijfMapper extends AbstractMapper<JsonBedrijf, Be
         bedrijf.setInternetadres(jsonBedrijf.getInternetadres());
         bedrijf.setRechtsvorm(jsonBedrijf.getRechtsvorm());
 
-        bedrijf.setTelefoonnummers(jsonTelefoonnummerNaarTelefoonnummerMapper.mapAllNaarSet(jsonBedrijf.getTelefoonnummers(), bedrijf));
-        bedrijf.setContactPersonen(jsonContactPersoonNaarContactPersoonMapper.mapAllNaarSet(jsonBedrijf.getContactpersonen(), bedrijf));
+        //        bedrijf.setTelefoonnummers(jsonTelefoonnummerNaarTelefoonnummerMapper.mapAllNaarSet(jsonBedrijf.getTelefoonnummers(), bedrijf));
+        //        bedrijf.setContactPersonen(jsonContactPersoonNaarContactPersoonMapper.mapAllNaarSet(jsonBedrijf.getContactpersonen(), bedrijf));
 
 
         return bedrijf;

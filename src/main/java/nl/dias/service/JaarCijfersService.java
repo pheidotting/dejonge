@@ -34,15 +34,15 @@ public class JaarCijfersService {
     public void opslaanBijlage(String jaarCijfersId, Bijlage bijlage) {
         LOGGER.info("Opslaan bijlage met id {}, bij JaarCijfers met id {}", bijlage.getId(), jaarCijfersId);
 
-        JaarCijfers jaarCijfers = jaarCijfersRepository.lees(Long.valueOf(jaarCijfersId));
+        //        JaarCijfers jaarCijfers = jaarCijfersRepository.lees(Long.valueOf(jaarCijfersId));
 
-        jaarCijfers.getBijlages().add(bijlage);
-        bijlage.setJaarCijfers(jaarCijfers);
+        //        jaarCijfers.getBijlages().add(bijlage);
+        bijlage.setJaarCijfers(Long.valueOf(jaarCijfersId));
         bijlage.setSoortBijlage(SoortBijlage.JAARCIJFERS);
 
         LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
 
-        jaarCijfersRepository.opslaan(jaarCijfers);
+        //        jaarCijfersRepository.opslaan(jaarCijfers);
     }
 
     public List<JaarCijfers> alles(Long bedrijfsId) {

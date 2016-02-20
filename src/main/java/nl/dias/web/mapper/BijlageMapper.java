@@ -49,7 +49,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         } else if (bijlage.getAangifte() != null) {
             parentId = Integer.toString(bijlage.getAangifte().getJaar());
         } else if (bijlage.getJaarCijfers() != null) {
-            parentId = bijlage.getJaarCijfers().getId().toString();
+            parentId = bijlage.getJaarCijfers().toString();
         }
         json.setParentId(parentId);
 

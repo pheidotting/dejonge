@@ -27,12 +27,12 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Relatie.class)
     @JoinColumn(name = "RELATIE")
     private Relatie relatie;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Bedrijf.class)
-    @JoinColumn(name = "BEDRIJF")
-    private Bedrijf bedrijf;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = ContactPersoon.class)
-    @JoinColumn(name = "CONTACTPERSOON")
-    private ContactPersoon contactPersoon;
+    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Bedrijf.class)
+    @Column(name = "BEDRIJF")
+    private Long bedrijf;
+    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = ContactPersoon.class)
+    @Column(name = "CONTACTPERSOON")
+    private Long contactPersoon;
 
     @Override
     public Long getId() {
@@ -76,19 +76,19 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         this.omschrijving = omschrijving;
     }
 
-    public ContactPersoon getContactPersoon() {
+    public Long getContactPersoon() {
         return contactPersoon;
     }
 
-    public void setContactPersoon(ContactPersoon contactPersoon) {
+    public void setContactPersoon(Long contactPersoon) {
         this.contactPersoon = contactPersoon;
     }
 
-    public Bedrijf getBedrijf() {
+    public Long getBedrijf() {
         return bedrijf;
     }
 
-    public void setBedrijf(Bedrijf bedrijf) {
+    public void setBedrijf(Long bedrijf) {
         this.bedrijf = bedrijf;
     }
 

@@ -16,8 +16,8 @@ import java.util.Set;
 @Entity
 @Table(name = "HYPOTHEEK")
 @NamedQueries({@NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) = 1"),//
-        //        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie"),//
-        //        @NamedQuery(name = "Hypotheek.allesVanRelatieInEenPakket", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2")//
+        @NamedQuery(name = "Hypotheek.allesVanRelatieInclDePakketten", query = "select h from Hypotheek h where h.relatie = :relatie"),//
+        @NamedQuery(name = "Hypotheek.allesVanRelatieInEenPakket", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) >= 2")//
 })
 public class Hypotheek implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -8709743283669873667L;
@@ -28,7 +28,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
     protected Long id;
 
     @JoinColumn(name = "RELATIE")
-    @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     protected Relatie relatie;
 
     @JoinColumn(name = "SOORT")
@@ -357,12 +357,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
             return false;
         }
         Hypotheek rhs = (Hypotheek) object;
-        return new EqualsBuilder().append(this.taxatieDatum, rhs.taxatieDatum).append(this.eindDatum, rhs.eindDatum).append(this.koopsom, rhs.koopsom).append(this.relatie, rhs.relatie)
-                .append(this.hypotheekBedrag, rhs.hypotheekBedrag).append(this.rente, rhs.rente).append(this.hypotheekVorm, rhs.hypotheekVorm).append(this.duur, rhs.duur)
-                .append(this.waardeVoorVerbouwing, rhs.waardeVoorVerbouwing).append(this.id, rhs.id).append(this.onderpand, rhs.onderpand)
-                .append(this.duurRenteVastePeriode, rhs.duurRenteVastePeriode).append(this.vrijeVerkoopWaarde, rhs.vrijeVerkoopWaarde).append(this.ingangsDatum, rhs.ingangsDatum)
-                .append(this.ingangsDatumRenteVastePeriode, rhs.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing, rhs.waardeNaVerbouwing).append(this.marktWaarde, rhs.marktWaarde)
-                .append(this.wozWaarde, rhs.wozWaarde).append(this.omschrijving, rhs.omschrijving).append(this.eindDatumRenteVastePeriode, rhs.eindDatumRenteVastePeriode).isEquals();
+        return new EqualsBuilder().append(this.taxatieDatum, rhs.taxatieDatum).append(this.eindDatum, rhs.eindDatum).append(this.koopsom, rhs.koopsom).append(this.relatie, rhs.relatie).append(this.hypotheekBedrag, rhs.hypotheekBedrag).append(this.rente, rhs.rente).append(this.hypotheekVorm, rhs.hypotheekVorm).append(this.duur, rhs.duur).append(this.waardeVoorVerbouwing, rhs.waardeVoorVerbouwing).append(this.id, rhs.id).append(this.onderpand, rhs.onderpand).append(this.duurRenteVastePeriode, rhs.duurRenteVastePeriode).append(this.vrijeVerkoopWaarde, rhs.vrijeVerkoopWaarde).append(this.ingangsDatum, rhs.ingangsDatum).append(this.ingangsDatumRenteVastePeriode, rhs.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing, rhs.waardeNaVerbouwing).append(this.marktWaarde, rhs.marktWaarde).append(this.wozWaarde, rhs.wozWaarde).append(this.omschrijving, rhs.omschrijving).append(this.eindDatumRenteVastePeriode, rhs.eindDatumRenteVastePeriode).isEquals();
     }
 
     /**
@@ -370,10 +365,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.taxatieDatum).append(this.eindDatum).append(this.koopsom).append(this.relatie).append(this.hypotheekBedrag).append(this.rente)
-                .append(this.hypotheekVorm).append(this.duur).append(this.waardeVoorVerbouwing).append(this.id).append(this.onderpand).append(this.duurRenteVastePeriode)
-                .append(this.vrijeVerkoopWaarde).append(this.ingangsDatum).append(this.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing).append(this.marktWaarde).append(this.wozWaarde)
-                .append(this.omschrijving).append(this.eindDatumRenteVastePeriode).toHashCode();
+        return new HashCodeBuilder().append(this.taxatieDatum).append(this.eindDatum).append(this.koopsom).append(this.relatie).append(this.hypotheekBedrag).append(this.rente).append(this.hypotheekVorm).append(this.duur).append(this.waardeVoorVerbouwing).append(this.id).append(this.onderpand).append(this.duurRenteVastePeriode).append(this.vrijeVerkoopWaarde).append(this.ingangsDatum).append(this.ingangsDatumRenteVastePeriode).append(this.waardeNaVerbouwing).append(this.marktWaarde).append(this.wozWaarde).append(this.omschrijving).append(this.eindDatumRenteVastePeriode).toHashCode();
     }
 
     /**
@@ -381,14 +373,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("taxatieDatum", this.taxatieDatum + "\n").append("eindDatum", this.eindDatum + "\n").append("koopsom", this.koopsom + "\n")
-                .append("hypotheekBedrag", this.hypotheekBedrag + "\n").append("rente", this.rente + "\n").append("hypotheekVorm", this.hypotheekVorm + "\n").append("duur", this.duur + "\n")
-                .append("waardeVoorVerbouwing", this.waardeVoorVerbouwing + "\n").append("id", this.id + "\n").append("onderpand", this.onderpand + "\n")
-                .append("duurRenteVastePeriode", this.duurRenteVastePeriode + "\n").append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde + "\n").append("ingangsDatum", this.ingangsDatum + "\n")
-                .append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode + "\n").append("waardeNaVerbouwing", this.waardeNaVerbouwing + "\n")
-                .append("marktWaarde", this.marktWaarde + "\n").append("wozWaarde", this.wozWaarde + "\n").append("omschrijving", this.omschrijving + "\n")
-                .append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").append("leningNummer", this.leningNummer + "\n").append("hypotheekPakket", this.hypotheekPakket + "\n")
-                .toString();
+        return new ToStringBuilder(this).append("taxatieDatum", this.taxatieDatum + "\n").append("eindDatum", this.eindDatum + "\n").append("koopsom", this.koopsom + "\n").append("hypotheekBedrag", this.hypotheekBedrag + "\n").append("rente", this.rente + "\n").append("hypotheekVorm", this.hypotheekVorm + "\n").append("duur", this.duur + "\n").append("waardeVoorVerbouwing", this.waardeVoorVerbouwing + "\n").append("id", this.id + "\n").append("onderpand", this.onderpand + "\n").append("duurRenteVastePeriode", this.duurRenteVastePeriode + "\n").append("vrijeVerkoopWaarde", this.vrijeVerkoopWaarde + "\n").append("ingangsDatum", this.ingangsDatum + "\n").append("ingangsDatumRenteVastePeriode", this.ingangsDatumRenteVastePeriode + "\n").append("waardeNaVerbouwing", this.waardeNaVerbouwing + "\n").append("marktWaarde", this.marktWaarde + "\n").append("wozWaarde", this.wozWaarde + "\n").append("omschrijving", this.omschrijving + "\n").append("eindDatumRenteVastePeriode", this.eindDatumRenteVastePeriode + "\n").append("leningNummer", this.leningNummer + "\n").append("hypotheekPakket", this.hypotheekPakket + "\n").toString();
     }
 
 }

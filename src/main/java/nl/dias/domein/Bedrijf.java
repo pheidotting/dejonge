@@ -16,7 +16,7 @@ import java.util.Set;
 @NamedQueries({
         //        @NamedQuery(name = "Bedrijf.allesBijRelatie", query = "select b from Bedrijf b where b.relatie = :relatie"),
         @NamedQuery(name = "Bedrijf.zoekOpNaam", query = "select b from Bedrijf b where b.naam like :zoekTerm")})
-public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerkingen, ObjectMetBijlages, ObjectMetAdressen, ObjectMetTelefoonnummers {
+public class Bedrijf implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 4611123664803995245L;
 
     @Id
@@ -52,20 +52,20 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
     @Column(name = "CAOVERPLICHTINGEN")
     private String cAoVerplichtingen;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = ContactPersoon.class, mappedBy = "bedrijf")
-    private Set<ContactPersoon> contactPersonen;
+    //    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, targetEntity = ContactPersoon.class, mappedBy = "bedrijf")
+    //    private Set<ContactPersoon> contactPersonen;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "bedrijf")
-    private Set<Telefoonnummer> telefoonnummers;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "bedrijf")
-    private Set<Adres> adressen;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bedrijf", targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
-
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
-    private Set<Bijlage> bijlages;
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "bedrijf")
+    //    private Set<Telefoonnummer> telefoonnummers;
+    //
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "bedrijf")
+    //    private Set<Adres> adressen;
+    //
+    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bedrijf", targetEntity = Opmerking.class)
+    //    private Set<Opmerking> opmerkingen;
+    //
+    //    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
+    //    private Set<Bijlage> bijlages;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<JaarCijfers> jaarCijfers;
@@ -118,35 +118,35 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.kvk = kvk;
     }
 
-    @Override
-    public Set<Adres> getAdressen() {
-        if (adressen == null) {
-            adressen = new HashSet<>();
-        }
-        return adressen;
-    }
-
-    @Override
-    public void setAdressen(Set<Adres> adressen) {
-        this.adressen = adressen;
-    }
-
-    @Override
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<>();
-        }
-        return opmerkingen;
-    }
-
-    @Override
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = Sets.newHashSet();
-        }
-        return bijlages;
-    }
-
+    //    @Override
+    //    public Set<Adres> getAdressen() {
+    //        if (adressen == null) {
+    //            adressen = new HashSet<>();
+    //        }
+    //        return adressen;
+    //    }
+    //
+    //    @Override
+    //    public void setAdressen(Set<Adres> adressen) {
+    //        this.adressen = adressen;
+    //    }
+    //
+    //    @Override
+    //    public Set<Opmerking> getOpmerkingen() {
+    //        if (opmerkingen == null) {
+    //            opmerkingen = new HashSet<>();
+    //        }
+    //        return opmerkingen;
+    //    }
+    //
+    //    @Override
+    //    public Set<Bijlage> getBijlages() {
+    //        if (bijlages == null) {
+    //            bijlages = Sets.newHashSet();
+    //        }
+    //        return bijlages;
+    //    }
+    //
     public Set<JaarCijfers> getJaarCijfers() {
         if (jaarCijfers == null) {
             jaarCijfers = Sets.newHashSet();
@@ -158,15 +158,15 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.jaarCijfers = jaarCijfers;
     }
 
-    @Override
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
-    }
-
-    @Override
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
-    }
+    //    @Override
+    //    public void setBijlages(Set<Bijlage> bijlages) {
+    //        this.bijlages = bijlages;
+    //    }
+    //
+    //    @Override
+    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
+    //        this.opmerkingen = opmerkingen;
+    //    }
 
     public Set<RisicoAnalyse> getRisicoAnalyses() {
         if (risicoAnalyses == null) {
@@ -219,29 +219,29 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
         this.cAoVerplichtingen = cAoVerplichtingen;
     }
 
-    public Set<ContactPersoon> getContactPersonen() {
-        if (contactPersonen == null) {
-            contactPersonen = Sets.newHashSet();
-        }
-        return contactPersonen;
-    }
-
-    public void setContactPersonen(Set<ContactPersoon> contactPersonen) {
-        this.contactPersonen = contactPersonen;
-    }
-
-    @Override
-    public Set<Telefoonnummer> getTelefoonnummers() {
-        if (telefoonnummers == null) {
-            telefoonnummers = Sets.newHashSet();
-        }
-        return telefoonnummers;
-    }
-
-    @Override
-    public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
-        this.telefoonnummers = telefoonnummers;
-    }
+    //    public Set<ContactPersoon> getContactPersonen() {
+    //        if (contactPersonen == null) {
+    //            contactPersonen = Sets.newHashSet();
+    //        }
+    //        return contactPersonen;
+    //    }
+    //
+    //    public void setContactPersonen(Set<ContactPersoon> contactPersonen) {
+    //        this.contactPersonen = contactPersonen;
+    //    }
+    //
+    //    @Override
+    //    public Set<Telefoonnummer> getTelefoonnummers() {
+    //        if (telefoonnummers == null) {
+    //            telefoonnummers = Sets.newHashSet();
+    //        }
+    //        return telefoonnummers;
+    //    }
+    //
+    //    @Override
+    //    public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
+    //        this.telefoonnummers = telefoonnummers;
+    //    }
 
     @Override
     public boolean equals(Object o) {
@@ -255,16 +255,16 @@ public class Bedrijf implements Serializable, PersistenceObject, ObjectMetOpmerk
 
         Bedrijf bedrijf = (Bedrijf) o;
 
-        return new EqualsBuilder().append(getId(), bedrijf.getId()).append(getRelatie(), bedrijf.getRelatie()).append(getNaam(), bedrijf.getNaam()).append(getKvk(), bedrijf.getKvk()).append(getAdressen(), bedrijf.getAdressen()).isEquals();
+        return new EqualsBuilder().append(getId(), bedrijf.getId()).append(getRelatie(), bedrijf.getRelatie()).append(getNaam(), bedrijf.getNaam()).append(getKvk(), bedrijf.getKvk()).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getId()).append(getRelatie()).append(getNaam()).append(getKvk()).append(getAdressen()).toHashCode();
+        return new HashCodeBuilder(17, 37).append(getId()).append(getRelatie()).append(getNaam()).append(getKvk()).toHashCode();
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("relatie", relatie).append("naam", naam).append("kvk", kvk).append("adressen", adressen).toString();
+        return new ToStringBuilder(this).append("id", id).append("relatie", relatie).append("naam", naam).append("kvk", kvk).toString();
     }
 }

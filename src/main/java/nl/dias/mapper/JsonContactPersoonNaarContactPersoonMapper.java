@@ -1,6 +1,5 @@
 package nl.dias.mapper;
 
-import nl.dias.domein.Bedrijf;
 import nl.dias.domein.ContactPersoon;
 import nl.dias.service.BedrijfService;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
@@ -36,12 +35,10 @@ public class JsonContactPersoonNaarContactPersoonMapper extends AbstractMapper<J
         contactPersoon.setFunctie(jsonContactPersoon.getFunctie());
         contactPersoon.setTussenvoegsel(jsonContactPersoon.getTussenvoegsel());
         contactPersoon.setVoornaam(jsonContactPersoon.getVoornaam());
+        contactPersoon.setBedrijf(jsonContactPersoon.getBedrijf());
 
-        if (parent != null) {
-            contactPersoon.setBedrijf((Bedrijf) parent);
-        }
 
-        contactPersoon.setTelefoonnummers(jsonTelefoonnummerNaarTelefoonnummerMapper.mapAllNaarSet(jsonContactPersoon.getTelefoonnummers(), jsonContactPersoon));
+        //        contactPersoon.setTelefoonnummers(jsonTelefoonnummerNaarTelefoonnummerMapper.mapAllNaarSet(jsonContactPersoon.getTelefoonnummers(), jsonContactPersoon));
 
         return contactPersoon;
     }

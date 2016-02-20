@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
@@ -48,15 +47,27 @@ public class BijlageService {
         return bijlageRepository.alleBijlagesBijSchade(schade);
     }
 
+    public List<Bijlage> alleBijlagesBijBedrijf(Long bedrijf) {
+        return bijlageRepository.alleBijlagesBijBedrijf(bedrijf);
+    }
+
+    public List<Bijlage> alleBijlagesBijJaarCijfers(Long jaarCijfers) {
+        return bijlageRepository.alleBijlagesBijJaarCijfers(jaarCijfers);
+    }
+
+    public List<Bijlage> alleBijlagesBijRelatie(Long relatie) {
+        return bijlageRepository.alleBijlagesBijRelatie(relatie);
+    }
+
     public void verwijderBijlage(Long id) {
         Bijlage bijlage = bijlageRepository.lees(id);
 
         LOGGER.debug("Verwijderen Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
-        if (bijlage.getBedrijf() != null) {
-            Bedrijf bedrijf = bedrijfService.lees(bijlage.getBedrijf().getId());
-            bedrijf.getBijlages().remove(bijlage);
-        }
+        //        if (bijlage.getBedrijf() != null) {
+        //            Bedrijf bedrijf = bedrijfService.lees(bijlage.getBedrijf().getId());
+        //            bedrijf.getBijlages().remove(bijlage);
+        //        }
 
         bijlageRepository.verwijder(bijlage);
 

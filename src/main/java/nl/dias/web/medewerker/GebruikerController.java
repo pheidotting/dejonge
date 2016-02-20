@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("/gebruiker")
 @Controller
@@ -46,6 +48,18 @@ public class GebruikerController {
     private HttpServletRequest httpServletRequest;
     @Autowired
     private HttpServletResponse httpServletResponse;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen")
+    @ResponseBody
+    public List<JsonContactPersoon> alleContactPersonen(@QueryParam("bedrijfsId") Long bedrijfsId) {
+        List<JsonContactPersoon> result = new ArrayList<>();
+
+        for (ContactPersoon contactPersoon : gebruikerService.alleContactPersonen(bedrijfsId)) {
+            result.add(mapper.map(contactPersoon, JsonContactPersoon.class));
+        }
+
+        return result;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody

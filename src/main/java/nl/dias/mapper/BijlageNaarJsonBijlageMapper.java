@@ -34,10 +34,10 @@ public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBi
                 parentId = Integer.toString(bijlage.getAangifte().getJaar());
                 break;
             case BEDRIJF:
-                parentId = bijlage.getBedrijf().getId().toString();
+                parentId = bijlage.getBedrijf().toString();
                 break;
             case JAARCIJFERS:
-                parentId = bijlage.getJaarCijfers().getId().toString();
+                parentId = bijlage.getJaarCijfers().toString();
                 break;
         }
         json.setParentId(parentId);

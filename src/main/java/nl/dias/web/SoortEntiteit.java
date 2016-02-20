@@ -1,5 +1,5 @@
 package nl.dias.web;
 
 public enum SoortEntiteit {
-    POLIS, SCHADE;
+    BEDRIJF, CONTACTPERSOON, JAARCIJFERS, POLIS, RELATIE, SCHADE;
 }

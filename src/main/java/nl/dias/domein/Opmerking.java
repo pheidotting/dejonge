@@ -14,7 +14,10 @@ import java.util.Date;
 @Table(name = "OPMERKING")
 @NamedQueries({@NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie"),//
         @NamedQuery(name = "Opmerking.allesVoorPolis", query = "select o from Opmerking o where o.polis = :polis"),//
-        @NamedQuery(name = "Opmerking.allesVoorSchade", query = "select o from Opmerking o where o.schade = :schade")//
+        @NamedQuery(name = "Opmerking.allesVoorSchade", query = "select o from Opmerking o where o.schade = :schade"),//
+        @NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie"),//
+        @NamedQuery(name = "Opmerking.allesVoorBedrijf", query = "select o from Opmerking o where o.bedrijf = :bedrijf"),//
+        @NamedQuery(name = "Opmerking.allesVoorJaarCijfers", query = "select o from Opmerking o where o.jaarCijfers = :jaarCijfers")//
 })
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
@@ -50,17 +53,17 @@ public class Opmerking implements PersistenceObject, Serializable {
     @JoinColumn(name = "HYPOTHEEK")
     private Hypotheek hypotheek;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "BEDRIJF")
-    private Bedrijf bedrijf;
+    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
+    @Column(name = "BEDRIJF")
+    private Long bedrijf;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "AANGIFTE")
     private Aangifte aangifte;
 
-    @JoinColumn(name = "JAARCIJFERS", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
-    private JaarCijfers jaarCijfers;
+    @Column(name = "JAARCIJFERS", nullable = true)
+    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
+    private Long jaarCijfers;
 
     @JoinColumn(name = "RISICOANALYSE", nullable = true)
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = RisicoAnalyse.class)
@@ -147,11 +150,11 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.hypotheek = hypotheek;
     }
 
-    public Bedrijf getBedrijf() {
+    public Long getBedrijf() {
         return bedrijf;
     }
 
-    public void setBedrijf(Bedrijf bedrijf) {
+    public void setBedrijf(Long bedrijf) {
         this.bedrijf = bedrijf;
     }
 
@@ -163,11 +166,11 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.aangifte = aangifte;
     }
 
-    public JaarCijfers getJaarCijfers() {
+    public Long getJaarCijfers() {
         return jaarCijfers;
     }
 
-    public void setJaarCijfers(JaarCijfers jaarCijfers) {
+    public void setJaarCijfers(Long jaarCijfers) {
         this.jaarCijfers = jaarCijfers;
     }
 

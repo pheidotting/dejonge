@@ -36,9 +36,16 @@ public class OpmerkingService {
         return opmerkingRepository.alleOpmerkingenBijSchade(schade);
     }
 
-    public List<Opmerking> alleOpmerkingenVoorRelatie(Long relatieId) {
-        Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
-        return opmerkingRepository.alleOpmerkingenVoorRelatie(relatie);
+    public List<Opmerking> alleOpmerkingenBijRelatie(Long relatie) {
+        return opmerkingRepository.alleOpmerkingenBijRelatie(relatie);
+    }
+
+    public List<Opmerking> alleOpmerkingenBijBedrijf(Long bedrijf) {
+        return opmerkingRepository.alleOpmerkingenBijBedrijf(bedrijf);
+    }
+
+    public List<Opmerking> alleOpmerkingenBijJaarCijfers(Long jaarCijfers) {
+        return opmerkingRepository.alleOpmerkingenBijJaarCijfers(jaarCijfers);
     }
 
     public void verwijder(Long id) {
@@ -78,8 +85,8 @@ public class OpmerkingService {
         }
 
         if (opmerking.getBedrijf() != null) {
-            Bedrijf bedrijf = bedrijfService.lees(opmerking.getBedrijf().getId());
-            bedrijf.getOpmerkingen().add(opmerking);
+            Bedrijf bedrijf = bedrijfService.lees(opmerking.getBedrijf());
+            //            bedrijf.getOpmerkingen().add(opmerking);
 
             bedrijfService.opslaan(bedrijf);
         }

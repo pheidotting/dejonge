@@ -1,9 +1,6 @@
 package nl.dias.repository;
 
-import nl.dias.domein.Gebruiker;
-import nl.dias.domein.Kantoor;
-import nl.dias.domein.Relatie;
-import nl.dias.domein.Sessie;
+import nl.dias.domein.*;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.slf4j.Logger;
@@ -26,6 +23,12 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
         zetPersistenceContext("dias");
     }
 
+    public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
+        TypedQuery<ContactPersoon> query = getEm().createNamedQuery("ContactPersoon.alleContactPersonen", ContactPersoon.class);
+        query.setParameter("bedrijf", bedrijfsId);
+
+        return query.getResultList();
+    }
 
     @Override
     public void setPersistenceContext(String persistenceContext) {

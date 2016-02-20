@@ -8,8 +8,6 @@ import org.dozer.DozerConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.common.collect.Iterables.getFirst;
-
 public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdresDozerMapper.class);
 
@@ -24,7 +22,7 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
 
         JsonBedrijf result = mapper.map(bedrijf, JsonBedrijf.class);
 
-        Adres adres = getFirst(bedrijf.getAdressen(), new Adres());
+        //        Adres adres = getFirst(bedrijf.getAdressen(), new Adres());
         //        result.setToevoeging(adres.getToevoeging());
         //        if (adres.getHuisnummer() != null) {
         //            result.setHuisnummer(adres.getHuisnummer().toString());
@@ -57,7 +55,7 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
         //        adres.setPlaats(jsonBedrijf.getPlaats());
         //        adres.setPostcode(jsonBedrijf.getPostcode());
         //        adres.setStraat(jsonBedrijf.getStraat());
-        result.getAdressen().add(adres);
+        //        result.getAdressen().add(adres);
 
         return result;
     }

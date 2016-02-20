@@ -1,12 +1,20 @@
 package nl.dias.web.medewerker;
 
+import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.ContactPersoon;
+import nl.dias.domein.Telefoonnummer;
 import nl.dias.mapper.Mapper;
+import nl.dias.service.AdresService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
+import nl.dias.service.TelefoonnummerService;
+import nl.dias.web.SoortEntiteit;
 import nl.dias.web.mapper.BedrijfMapper;
+import nl.lakedigital.djfc.commons.json.JsonAdres;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -36,7 +44,10 @@ public class BedrijfController {
     private Mapper mapper;
     @Inject
     private BedrijfMapper bedrijfMapper;
-
+    @Inject
+    private AdresService adresService;
+    @Inject
+    private TelefoonnummerService telefoonnummerService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
@@ -46,6 +57,21 @@ public class BedrijfController {
         try {
             Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
             bedrijfService.opslaan(bedrijf);
+
+            List<Adres> adressen = new ArrayList<>();
+            for (JsonAdres jsonAdres : jsonBedrijf.getAdressen()) {
+                adressen.add(mapper.map(jsonAdres, Adres.class));
+            }
+            adresService.opslaan(adressen, bedrijf.getId());
+
+            List<Telefoonnummer> telefoonnummers = new ArrayList<>();
+            List<ContactPersoon> contactPersoons = new ArrayList<>();
+            for (JsonTelefoonnummer jsonTelefoonnummer : jsonBedrijf.getTelefoonnummers()) {
+                telefoonnummers.add(mapper.map(jsonTelefoonnummer, Telefoonnummer.class));
+            }
+            telefoonnummerService.opslaan(telefoonnummers, bedrijf.getId(), SoortEntiteit.BEDRIJF);
+
+            gebruikerService.opslaan(jsonBedrijf.getContactpersonen(), bedrijf.getId());
 
             return Response.status(200).entity(new JsonFoutmelding()).build();
         } catch (Exception e) {

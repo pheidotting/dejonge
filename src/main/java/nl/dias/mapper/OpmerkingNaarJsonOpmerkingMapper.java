@@ -25,7 +25,7 @@ public class OpmerkingNaarJsonOpmerkingMapper extends  AbstractMapper<Opmerking,
             jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
         }
         if (opmerking.getBedrijf() != null) {
-            jsonOpmerking.setBedrijf(opmerking.getBedrijf().getId().toString());
+            jsonOpmerking.setBedrijf(opmerking.getBedrijf().toString());
         }
         if (jsonOpmerking.getAangifte() != null) {
             jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
