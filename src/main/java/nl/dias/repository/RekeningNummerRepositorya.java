@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public class RekeningNummerRepository extends AbstractRepository<RekeningNummer> {
+
     public RekeningNummerRepository() {
         super(RekeningNummer.class);
         zetPersistenceContext("dias");
@@ -34,4 +35,5 @@ public class RekeningNummerRepository extends AbstractRepository<RekeningNummer>
         TypedQuery<RekeningNummer> query = getEm().createQuery("select t from RekeningNummer t where t." + where + parentId, RekeningNummer.class);
         return query.getResultList();
     }
+
 }
