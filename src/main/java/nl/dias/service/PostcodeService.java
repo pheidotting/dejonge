@@ -21,6 +21,7 @@ public class PostcodeService {
                     index = straat.indexOf("\"");
                     if (index > -1) {
                         straat = straat.substring(0, index);
+                        straat = straat.substring(0, 1).toUpperCase() + straat.substring(1).toLowerCase();
                         jsonAdres.setStraat(straat);
                 }
             }
