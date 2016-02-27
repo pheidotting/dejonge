@@ -1,9 +1,7 @@
 package nl.dias.service;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.RisicoAnalyse;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.RisicoAnalyseRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -21,21 +19,6 @@ public class RisicoAnalyseService {
     private RisicoAnalyseRepository risicoAnalyseRepository;
     @Inject
     private BedrijfService bedrijfService;
-
-
-    public void opslaanBijlage(String risicoAnalyseId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij risicoAnalyse met id {}", bijlage.getId(), risicoAnalyseId);
-
-        RisicoAnalyse risicoAnalyse = risicoAnalyseRepository.lees(Long.valueOf(risicoAnalyseId));
-
-        risicoAnalyse.getBijlages().add(bijlage);
-        bijlage.setRisicoAnalyse(risicoAnalyse);
-        bijlage.setSoortBijlage(SoortBijlage.RISICOANALYSE);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-
-        risicoAnalyseRepository.opslaan(risicoAnalyse);
-    }
 
     public RisicoAnalyse lees(Long id) {
         return risicoAnalyseRepository.lees(id);

@@ -24,12 +24,6 @@ public class JaarCijfers implements Serializable, PersistenceObject {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Bedrijf bedrijf;
 
-    //    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Bijlage.class)
-    //    private Set<Bijlage> bijlages;
-    //
-    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "jaarCijfers", orphanRemoval = true, targetEntity = Opmerking.class)
-    //    private Set<Opmerking> opmerkingen;
-
     @Override
     public Long getId() {
         return id;
@@ -55,28 +49,6 @@ public class JaarCijfers implements Serializable, PersistenceObject {
     public void setBedrijf(Bedrijf bedrijf) {
         this.bedrijf = bedrijf;
     }
-
-    //    public Set<Bijlage> getBijlages() {
-    //        if (bijlages == null) {
-    //            bijlages = Sets.newHashSet();
-    //        }
-    //        return bijlages;
-    //    }
-    //
-    //    public void setBijlages(Set<Bijlage> bijlages) {
-    //        this.bijlages = bijlages;
-    //    }
-    //
-    //    public Set<Opmerking> getOpmerkingen() {
-    //        if (opmerkingen == null) {
-    //            opmerkingen = Sets.newHashSet();
-    //        }
-    //        return opmerkingen;
-    //    }
-    //
-    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-    //        this.opmerkingen = opmerkingen;
-    //    }
 
     @Override
     public boolean equals(Object o) {

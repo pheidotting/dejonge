@@ -1,6 +1,9 @@
 package nl.dias.service;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
@@ -201,29 +204,6 @@ public class HypotheekServiceTest extends EasyMockSupport {
         replayAll();
 
         assertEquals(soortHypotheek, service.leesSoortHypotheek(2L));
-    }
-
-    @Test
-    public void testSlaBijlageOp() {
-        // Bijlage bijlage = createMock(Bijlage.class);
-        Hypotheek hypotheek = createMock(Hypotheek.class);
-
-        expect(hypotheekRepository.lees(3L)).andReturn(hypotheek);
-
-        expect(hypotheek.getId()).andReturn(4L);
-
-        Bijlage bijlage = new Bijlage();
-        bijlage.setHypotheek(hypotheek);
-        bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
-        bijlage.setS3Identificatie("s3Identificatie");
-        bijlage.setOmschrijving("omschrijving");
-
-        hypotheekRepository.opslaanBijlage(bijlage);
-        expectLastCall();
-
-        replayAll();
-
-        service.slaBijlageOp(3L, bijlage, "omschrijving");
     }
 
 }

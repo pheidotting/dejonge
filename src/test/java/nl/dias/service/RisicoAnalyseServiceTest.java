@@ -1,14 +1,16 @@
 package nl.dias.service;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.RisicoAnalyse;
 import nl.dias.repository.RisicoAnalyseRepository;
-import org.easymock.*;
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(EasyMockRunner.class)
@@ -19,29 +21,6 @@ public class RisicoAnalyseServiceTest extends EasyMockSupport {
     private RisicoAnalyseRepository risicoAnalyseRepository;
     @Mock
     private BedrijfService bedrijfService;
-
-    @Test
-    public void testOpslaanBijlage() throws Exception {
-        String analyseId = "46";
-
-        RisicoAnalyse risicoAnalyse = new RisicoAnalyse();
-        Bijlage bijlage = new Bijlage();
-
-        expect(risicoAnalyseRepository.lees(Long.valueOf(analyseId))).andReturn(risicoAnalyse);
-
-        Capture<RisicoAnalyse> risicoAnalyseCapture = newCapture();
-        risicoAnalyseRepository.opslaan(capture(risicoAnalyseCapture));
-        expectLastCall();
-
-        replayAll();
-
-        service.opslaanBijlage(analyseId, bijlage);
-
-        verifyAll();
-
-        RisicoAnalyse analyse = risicoAnalyseCapture.getValue();
-        assertEquals(1, analyse.getBijlages().size());
-    }
 
     @Test
     public void testLees() throws Exception {

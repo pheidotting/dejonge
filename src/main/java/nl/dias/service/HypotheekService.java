@@ -1,6 +1,9 @@
 package nl.dias.service;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Hypotheek;
+import nl.dias.domein.HypotheekPakket;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.SoortHypotheek;
 import nl.dias.repository.HypotheekPakketRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.web.mapper.HypotheekMapper;
@@ -140,31 +143,5 @@ public class HypotheekService {
         Relatie relatie = (Relatie) gebruikerService.lees(relatieId);
 
         return hypotheekPakketRepository.allesVanRelatie(relatie);
-    }
-
-    public void opslaanBijlage(String hypotheekId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), hypotheekId);
-
-        Hypotheek hypotheek = hypotheekRepository.lees(Long.valueOf(hypotheekId));
-
-        hypotheek.getBijlages().add(bijlage);
-        bijlage.setHypotheek(hypotheek);
-        bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
-
-        LOGGER.debug(org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(bijlage));
-
-        hypotheekRepository.opslaan(hypotheek);
-    }
-
-    public void slaBijlageOp(Long hypotheekId, Bijlage bijlage, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Hypotheek, hypotheekId " + hypotheekId);
-
-        bijlage.setHypotheek(leesHypotheek(hypotheekId));
-        bijlage.setSoortBijlage(SoortBijlage.HYPOTHEEK);
-        bijlage.setOmschrijving(omschrijving);
-
-        LOGGER.debug("Bijlage naar repository " + bijlage);
-
-        hypotheekRepository.opslaanBijlage(bijlage);
     }
 }

@@ -1,6 +1,8 @@
 package nl.dias.service;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Schade;
+import nl.dias.domein.SoortSchade;
+import nl.dias.domein.StatusSchade;
 import nl.dias.domein.polis.Polis;
 import nl.dias.repository.SchadeRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -45,33 +47,6 @@ public class SchadeService {
     public void verwijder(Long id) {
         Schade schade = lees(id);
         schadeRepository.verwijder(schade);
-    }
-
-    public void opslaanBijlage(String schadeId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Schade met id {}", bijlage.getId(), schadeId);
-
-        //        Schade schade = schadeRepository.lees(Long.valueOf(schadeId));
-
-        //        schade.getBijlages().add(bijlage);
-        bijlage.setSchade(Long.valueOf(schadeId));
-        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-
-        schadeRepository.opslaanBijlage(bijlage);
-    }
-
-    public void slaBijlageOp(Long schadeId, Bijlage bijlage, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Schade, schadeId " + schadeId);
-
-        //        bijlage.setSchade(schadeRepository.lees(schadeId));
-        bijlage.setSchade(schadeId);
-        bijlage.setSoortBijlage(SoortBijlage.SCHADE);
-        bijlage.setOmschrijving(omschrijving);
-
-        LOGGER.debug("Bijlage naar repository " + bijlage);
-
-        schadeRepository.opslaanBijlage(bijlage);
     }
 
     public void opslaan(Schade schade) {

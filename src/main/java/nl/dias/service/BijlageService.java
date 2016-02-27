@@ -1,9 +1,9 @@
 package nl.dias.service;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.Relatie;
 import nl.dias.repository.BijlageRepository;
 import nl.dias.utils.Utils;
+import nl.dias.web.SoortEntiteit;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDateTime;
@@ -35,28 +35,8 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
-        return bijlageRepository.alleBijlagesBijRelatie(relatie);
-    }
-
-    public List<Bijlage> allesBijlagesBijPolis(Long polis) {
-        return bijlageRepository.allesBijlagesBijPolis(polis);
-    }
-
-    public List<Bijlage> alleBijlagesBijSchade(Long schade) {
-        return bijlageRepository.alleBijlagesBijSchade(schade);
-    }
-
-    public List<Bijlage> alleBijlagesBijBedrijf(Long bedrijf) {
-        return bijlageRepository.alleBijlagesBijBedrijf(bedrijf);
-    }
-
-    public List<Bijlage> alleBijlagesBijJaarCijfers(Long jaarCijfers) {
-        return bijlageRepository.alleBijlagesBijJaarCijfers(jaarCijfers);
-    }
-
-    public List<Bijlage> alleBijlagesBijRelatie(Long relatie) {
-        return bijlageRepository.alleBijlagesBijRelatie(relatie);
+    public List<Bijlage> alleBijlagesBijEntiteit(SoortEntiteit soortEntiteit, Long entiteitId) {
+        return bijlageRepository.alleBijlagesBijEntiteit(soortEntiteit, entiteitId);
     }
 
     public void verwijderBijlage(Long id) {

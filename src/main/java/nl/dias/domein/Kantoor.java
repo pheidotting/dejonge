@@ -59,9 +59,6 @@ public class Kantoor implements Serializable, PersistenceObject {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "kantoor", targetEntity = Relatie.class)
     private Set<Relatie> relaties;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "kantoor", targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = RekeningNummer.class, mappedBy = "kantoor")
     private Set<RekeningNummer> rekeningnummers;
 
@@ -123,17 +120,6 @@ public class Kantoor implements Serializable, PersistenceObject {
 
     public void setRelaties(Set<Relatie> relaties) {
         this.relaties = relaties;
-    }
-
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<>();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
     }
 
     public Long getKvk() {
@@ -214,7 +200,6 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(kvk);
         builder.append(medewerkers);
         builder.append(naam);
-        builder.append(opmerkingen);
         builder.append(rechtsvorm);
         builder.append(rekeningnummers);
         builder.append(soortKantoor);
@@ -232,7 +217,7 @@ public class Kantoor implements Serializable, PersistenceObject {
             return false;
         }
         Kantoor other = (Kantoor) obj;
-        return new EqualsBuilder().append(adressen, other.adressen).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm).append(opmerkingen, other.opmerkingen).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers).append(relaties, other.relaties).append(afkorting,other.afkorting).isEquals();
+        return new EqualsBuilder().append(adressen, other.adressen).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers).append(relaties, other.relaties).append(afkorting, other.afkorting).isEquals();
     }
 
     @Override
@@ -260,8 +245,6 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(medewerkers);
         builder.append(", relaties=");
         builder.append(relaties);
-        builder.append(", opmerkingen=");
-        builder.append(opmerkingen);
         builder.append(", rekeningnummers=");
         builder.append(rekeningnummers);
         builder.append(", afkorting=");

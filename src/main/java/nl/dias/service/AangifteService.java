@@ -1,8 +1,10 @@
 package nl.dias.service;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Aangifte;
+import nl.dias.domein.Gebruiker;
+import nl.dias.domein.Medewerker;
+import nl.dias.domein.Relatie;
 import nl.dias.repository.AangifteRepository;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,32 +34,6 @@ public class AangifteService {
 
     public Aangifte lees(Long id) {
         return aangifteRepository.lees(id);
-    }
-
-    public void opslaanBijlage(String aangifteId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Aangifte met id {}", bijlage.getId(), aangifteId);
-
-        Aangifte aangifte = aangifteRepository.lees(Long.valueOf(aangifteId));
-
-        aangifte.getBijlages().add(bijlage);
-        bijlage.setAangifte(aangifte);
-        bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-
-        aangifteRepository.opslaan(aangifte);
-    }
-
-    public void slaAangifteOp(Aangifte aangifte, Bijlage bijlage, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Aangifte, aangifteId " + aangifte.getId());
-
-        bijlage.setAangifte(aangifte);
-        bijlage.setSoortBijlage(SoortBijlage.IBAANGIFTE);
-        bijlage.setOmschrijving(omschrijving);
-
-        LOGGER.debug("Bijlage naar repository " + bijlage);
-
-        aangifteRepository.opslaanBijlage(bijlage);
     }
 
     public List<Aangifte> getOpenstaandeAangiftes(Relatie relatie) {

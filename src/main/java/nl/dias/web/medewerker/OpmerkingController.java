@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/opmerking")
@@ -31,26 +30,7 @@ public class OpmerkingController {
     public List<JsonOpmerking> lijstOpmerkingen(@QueryParam("soortentiteit") String soortentiteit, @QueryParam("parentid") Long parentid) {
         SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
 
-        switch (soortEntiteit) {
-            case BEDRIJF:
-                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijBedrijf(parentid));
-            case JAARCIJFERS:
-                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijJaarCijfers(parentid));
-            case POLIS:
-                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijPolis(parentid));
-            case RELATIE:
-                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijRelatie(parentid));
-            case SCHADE:
-                return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijSchade(parentid));
-            default:
-                return new ArrayList<>();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
-    @ResponseBody
-    public List<JsonOpmerking> lijstOpmerkingen(Long relatie) {
-        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijRelatie(relatie));
+        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijEntiteit(soortEntiteit, parentid));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")

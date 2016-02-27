@@ -1,6 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.Bijlage;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
             bijlage.setId(Long.valueOf(json.getId()));
         }
         bijlage.setOmschrijving(json.getOmschrijvingOfBestandsNaam());
-        //        bijlage.setSoortBijlage(SoortBijlage.valueOf(json.getSoortBijlage().toUpperCase()));
+        bijlage.setSoortBijlage(SoortEntiteit.valueOf(json.getSoortBijlage().toUpperCase()));
 
         LOGGER.debug("{}", bijlage);
         return bijlage;
@@ -38,20 +39,8 @@ public class BijlageMapper extends Mapper<Bijlage, JsonBijlage> {
         }
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
         json.setBestandsNaam(bijlage.getBestandsNaam());
-
-        String parentId = null;
-        if (bijlage.getPolis() != null) {
-            parentId = bijlage.getPolis().toString();
-        } else if (bijlage.getSchade() != null) {
-            parentId = bijlage.getSchade().toString();
-        } else if (bijlage.getHypotheek() != null) {
-            parentId = bijlage.getHypotheek().getId().toString();
-        } else if (bijlage.getAangifte() != null) {
-            parentId = Integer.toString(bijlage.getAangifte().getJaar());
-        } else if (bijlage.getJaarCijfers() != null) {
-            parentId = bijlage.getJaarCijfers().toString();
-        }
-        json.setParentId(parentId);
+        json.setParentId(bijlage.getEntiteitId());
+        json.setSoortBijlage(bijlage.getSoortBijlage().toString());
 
         LOGGER.debug("In  : " + ReflectionToStringBuilder.toString(bijlage));
         LOGGER.debug("Uit : " + ReflectionToStringBuilder.toString(json));

@@ -2,6 +2,7 @@ package nl.dias.repository;
 
 import nl.dias.domein.Opmerking;
 import nl.dias.domein.Relatie;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,39 +20,10 @@ public class OpmerkingRepository extends AbstractRepository<Opmerking> {
         zetPersistenceContext("dias");
     }
 
-    public List<Opmerking> alleOpmerkingenBijPolis(Long polis) {
-        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorPolis", Opmerking.class);
-        query.setParameter("polis", polis);
-
-        return query.getResultList();
-    }
-
-    public List<Opmerking> alleOpmerkingenBijBedrijf(Long bedrijf) {
-        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorBedrijf", Opmerking.class);
-        query.setParameter("bedrijf", bedrijf);
-
-        return query.getResultList();
-    }
-
-    public List<Opmerking> alleOpmerkingenBijSchade(Long schade) {
-        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorSchade", Opmerking.class);
-        query.setParameter("schade", schade);
-
-        return query.getResultList();
-    }
-
-    public List<Opmerking> alleOpmerkingenBijJaarCijfers(Long jaarCijfers) {
-        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorJaarCijfers", Opmerking.class);
-        query.setParameter("jaarCijfers", jaarCijfers);
-
-        return query.getResultList();
-    }
-
-    public List<Opmerking> alleOpmerkingenBijRelatie(Long relatieId) {
-        Relatie relatie = getEm().find(Relatie.class, relatieId);
-
-        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.allesVoorRelatie", Opmerking.class);
-        query.setParameter("relatie", relatie);
+    public List<Opmerking> alleOpmerkingenBijEntiteit(SoortEntiteit soortEntiteit, Long entiteitId) {
+        TypedQuery<Opmerking> query = getEm().createNamedQuery("Opmerking.zoekOpmerkingenBijEntiteit", Opmerking.class);
+        query.setParameter("soortEntiteit", soortEntiteit);
+        query.setParameter("entiteitId", entiteitId);
 
         return query.getResultList();
     }
@@ -67,6 +39,7 @@ public class OpmerkingRepository extends AbstractRepository<Opmerking> {
 
         return query.getResultList();
     }
+
     @Override
     public void opslaan(Opmerking opmerking) {
         try {

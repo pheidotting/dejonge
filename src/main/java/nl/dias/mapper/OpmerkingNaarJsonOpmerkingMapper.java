@@ -15,21 +15,8 @@ public class OpmerkingNaarJsonOpmerkingMapper extends  AbstractMapper<Opmerking,
         jsonOpmerking.setTijd(opmerking.getTijd().toString("dd-MM-yyyy HH:mm"));
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
         jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
-        if (opmerking.getSchade() != null) {
-            jsonOpmerking.setSchade(opmerking.getSchade().toString());
-        }
-        if (opmerking.getPolis() != null) {
-            jsonOpmerking.setPolis(opmerking.getPolis().toString());
-        }
-        if (opmerking.getHypotheek() != null) {
-            jsonOpmerking.setHypotheek(opmerking.getHypotheek().getId().toString());
-        }
-        if (opmerking.getBedrijf() != null) {
-            jsonOpmerking.setBedrijf(opmerking.getBedrijf().toString());
-        }
-        if (jsonOpmerking.getAangifte() != null) {
-            jsonOpmerking.setAangifte(opmerking.getAangifte().getId().toString());
-        }
+        jsonOpmerking.setEntiteitId(opmerking.getEntiteitId());
+        jsonOpmerking.setSoort(opmerking.getSoortEntiteit().toString());
 
         return jsonOpmerking;
     }

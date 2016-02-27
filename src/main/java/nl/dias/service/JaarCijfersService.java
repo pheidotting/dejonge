@@ -3,11 +3,8 @@ package nl.dias.service;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.JaarCijfers;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.JaarCijfersRepository;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,20 +26,6 @@ public class JaarCijfersService {
 
     public JaarCijfers lees(Long id) {
         return jaarCijfersRepository.lees(id);
-    }
-
-    public void opslaanBijlage(String jaarCijfersId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij JaarCijfers met id {}", bijlage.getId(), jaarCijfersId);
-
-        //        JaarCijfers jaarCijfers = jaarCijfersRepository.lees(Long.valueOf(jaarCijfersId));
-
-        //        jaarCijfers.getBijlages().add(bijlage);
-        bijlage.setJaarCijfers(Long.valueOf(jaarCijfersId));
-        bijlage.setSoortBijlage(SoortBijlage.JAARCIJFERS);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-
-        //        jaarCijfersRepository.opslaan(jaarCijfers);
     }
 
     public List<JaarCijfers> alles(Long bedrijfsId) {

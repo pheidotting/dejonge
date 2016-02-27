@@ -51,7 +51,6 @@ public class KantoorJson extends Kantoor {
         this.setRechtsvorm(kantoor.getRechtsvorm());
         this.setSoortKantoor(kantoor.getSoortKantoor());
         this.setMedewerkers(kantoor.getMedewerkers());
-        this.setOpmerkingen(kantoor.getOpmerkingen());
         this.setRekeningnummers(kantoor.getRekeningnummers());
     }
 

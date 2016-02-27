@@ -4,9 +4,7 @@ import nl.dias.domein.Bedrag;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
-import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import nl.lakedigital.djfc.commons.json.JsonHypotheek;
-import nl.lakedigital.djfc.commons.json.JsonOpmerking;
 import org.easymock.EasyMockSupport;
 import org.joda.time.LocalDate;
 import org.junit.After;
@@ -15,11 +13,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
-import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 @Ignore
 public class HypotheekMapperTest extends EasyMockSupport {
@@ -109,17 +104,6 @@ public class HypotheekMapperTest extends EasyMockSupport {
         hypotheek.setRelatie(null);
 
         assertEquals(hypotheek, mapper.mapVanJson(jsonHypotheek));
-    }
-
-    @Test
-    public void testMapNaarJson() {
-        fail();
-        expect(opmerkingMapper.mapAllNaarJson(hypotheek.getOpmerkingen())).andReturn(new ArrayList<JsonOpmerking>());
-        expect(bijlageMapper.mapAllNaarJson(hypotheek.getBijlages())).andReturn(new ArrayList<JsonBijlage>());
-
-        replayAll();
-
-        assertEquals(jsonHypotheek, mapper.mapNaarJson(hypotheek));
     }
 
 }

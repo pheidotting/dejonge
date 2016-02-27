@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,12 +13,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "OPMERKING")
-@NamedQueries({@NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie"),//
-        @NamedQuery(name = "Opmerking.allesVoorPolis", query = "select o from Opmerking o where o.polis = :polis"),//
-        @NamedQuery(name = "Opmerking.allesVoorSchade", query = "select o from Opmerking o where o.schade = :schade"),//
-        @NamedQuery(name = "Opmerking.allesVoorRelatie", query = "select o from Opmerking o where o.relatie = :relatie"),//
-        @NamedQuery(name = "Opmerking.allesVoorBedrijf", query = "select o from Opmerking o where o.bedrijf = :bedrijf"),//
-        @NamedQuery(name = "Opmerking.allesVoorJaarCijfers", query = "select o from Opmerking o where o.jaarCijfers = :jaarCijfers")//
+@NamedQueries({//
+        @NamedQuery(name = "Opmerking.zoekOpmerkingenBijEntiteit", query = "select o from Opmerking o where o.soortEntiteit = :soortEntiteit and o.entiteitId = :entiteitId")//
 })
 public class Opmerking implements PersistenceObject, Serializable {
     private static final long serialVersionUID = -2928569293026238403L;
@@ -31,43 +28,16 @@ public class Opmerking implements PersistenceObject, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date tijd;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "RELATIE")
-    private Relatie relatie;
-
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "MEDEWERKER")
     private Medewerker medewerker;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "KANTOOR")
-    private Kantoor kantoor;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, name = "SOORTENTITEIT")
+    private SoortEntiteit soortEntiteit;
 
-    @Column(name = "POLIS")
-    private Long polis;
-
-    @Column(name = "SCHADE")
-    private Long schade;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "HYPOTHEEK")
-    private Hypotheek hypotheek;
-
-    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @Column(name = "BEDRIJF")
-    private Long bedrijf;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "AANGIFTE")
-    private Aangifte aangifte;
-
-    @Column(name = "JAARCIJFERS", nullable = true)
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
-    private Long jaarCijfers;
-
-    @JoinColumn(name = "RISICOANALYSE", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = RisicoAnalyse.class)
-    private RisicoAnalyse risicoAnalyse;
+    @Column(name = "ENTITEITID")
+    private Long entiteitId;
 
     @Column(columnDefinition = "varchar(2500)", name = "OPMERKING")
     private String opmerking;
@@ -94,14 +64,6 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.tijd = tijd.toDateTime().toDate();
     }
 
-    public Relatie getRelatie() {
-        return relatie;
-    }
-
-    public void setRelatie(Relatie relatie) {
-        this.relatie = relatie;
-    }
-
     public Medewerker getMedewerker() {
         return medewerker;
     }
@@ -110,12 +72,20 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.medewerker = medewerker;
     }
 
-    public Kantoor getKantoor() {
-        return kantoor;
+    public Long getEntiteitId() {
+        return entiteitId;
     }
 
-    public void setKantoor(Kantoor kantoor) {
-        this.kantoor = kantoor;
+    public void setEntiteitId(Long entiteitId) {
+        this.entiteitId = entiteitId;
+    }
+
+    public SoortEntiteit getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(SoortEntiteit soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
     public String getOpmerking() {
@@ -126,65 +96,9 @@ public class Opmerking implements PersistenceObject, Serializable {
         this.opmerking = opmerking;
     }
 
-    public Long getPolis() {
-        return polis;
-    }
-
-    public void setPolis(Long polis) {
-        this.polis = polis;
-    }
-
-    public Long getSchade() {
-        return schade;
-    }
-
-    public void setSchade(Long schade) {
-        this.schade = schade;
-    }
-
-    public Hypotheek getHypotheek() {
-        return hypotheek;
-    }
-
-    public void setHypotheek(Hypotheek hypotheek) {
-        this.hypotheek = hypotheek;
-    }
-
-    public Long getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Long bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Aangifte getAangifte() {
-        return aangifte;
-    }
-
-    public void setAangifte(Aangifte aangifte) {
-        this.aangifte = aangifte;
-    }
-
-    public Long getJaarCijfers() {
-        return jaarCijfers;
-    }
-
-    public void setJaarCijfers(Long jaarCijfers) {
-        this.jaarCijfers = jaarCijfers;
-    }
-
-    public RisicoAnalyse getRisicoAnalyse() {
-        return risicoAnalyse;
-    }
-
-    public void setRisicoAnalyse(RisicoAnalyse risicoAnalyse) {
-        this.risicoAnalyse = risicoAnalyse;
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("tijd", tijd).append("relatie", relatie == null ? null : relatie.getId()).append("medewerker", medewerker == null ? null : medewerker.getId()).append("kantoor", kantoor == null ? null : kantoor.getId()).append("polis", polis == null ? null : polis).append("hypotheek", hypotheek == null ? null : hypotheek.getId()).append("opmerking", opmerking).toString();
+        return new ToStringBuilder(this).append("id", id).append("tijd", tijd).append("opmerking", opmerking).toString();
     }
 
     @Override
@@ -199,11 +113,11 @@ public class Opmerking implements PersistenceObject, Serializable {
 
         Opmerking opmerking1 = (Opmerking) o;
 
-        return new EqualsBuilder().append(getId(), opmerking1.getId()).append(getTijd(), opmerking1.getTijd()).append(getRelatie(), opmerking1.getRelatie()).append(getMedewerker(), opmerking1.getMedewerker()).append(getKantoor(), opmerking1.getKantoor()).append(getPolis(), opmerking1.getPolis()).append(getSchade(), opmerking1.getSchade()).append(getHypotheek(), opmerking1.getHypotheek()).append(getOpmerking(), opmerking1.getOpmerking()).isEquals();
+        return new EqualsBuilder().append(getId(), opmerking1.getId()).append(getTijd(), opmerking1.getTijd()).append(getOpmerking(), opmerking1.getOpmerking()).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getId()).append(getTijd()).append(getRelatie()).append(getMedewerker()).append(getKantoor()).append(getPolis()).append(getSchade()).append(getHypotheek()).append(getOpmerking()).toHashCode();
+        return new HashCodeBuilder(17, 37).append(getId()).append(getTijd()).append(getOpmerking()).toHashCode();
     }
 }

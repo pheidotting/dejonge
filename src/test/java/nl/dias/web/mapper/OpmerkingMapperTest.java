@@ -28,7 +28,6 @@ public class OpmerkingMapperTest extends EasyMockSupport {
         mapper = new OpmerkingMapper();
 
         schadeService = createMock(SchadeService.class);
-        mapper.setSchadeService(schadeService);
     }
 
     @Test
@@ -80,7 +79,6 @@ public class OpmerkingMapperTest extends EasyMockSupport {
         jsonOpmerking.setOpmerking("opmerking");
         jsonOpmerking.setTijd("03-05-2014 07:05");
         jsonOpmerking.setMedewerker("voornaam achternaam");
-        jsonOpmerking.setSchade("2");
 
         return jsonOpmerking;
     }

@@ -70,12 +70,6 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     @Column(length = 1000, name = "OMSCHRIJVING")
     private String omschrijving;
 
-    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Opmerking.class)
-    //    private Set<Opmerking> opmerkingen;
-    //
-    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "schade", orphanRemoval = true, targetEntity = Bijlage.class)
-    //    private Set<Bijlage> bijlages;
-
     @Override
     public Long getId() {
         return id;
@@ -181,28 +175,6 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
     public void setOmschrijving(String omschrijving) {
         this.omschrijving = omschrijving;
     }
-
-    //    public Set<Opmerking> getOpmerkingen() {
-    //        if (opmerkingen == null) {
-    //            opmerkingen = new HashSet<Opmerking>();
-    //        }
-    //        return opmerkingen;
-    //    }
-    //
-    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-    //        this.opmerkingen = opmerkingen;
-    //    }
-    //
-    //    public Set<Bijlage> getBijlages() {
-    //        if (bijlages == null) {
-    //            bijlages = new HashSet<Bijlage>();
-    //        }
-    //        return bijlages;
-    //    }
-    //
-    //    public void setBijlages(Set<Bijlage> bijlages) {
-    //        this.bijlages = bijlages;
-    //    }
 
     /**
      * @see java.lang.Object#toString()

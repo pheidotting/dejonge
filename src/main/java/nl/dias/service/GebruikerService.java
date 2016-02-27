@@ -100,21 +100,6 @@ public class GebruikerService {
 
     }
 
-    public void opslaanBijlage(String relatieId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Relatie met id {}", bijlage.getId(), relatieId);
-
-        Relatie relatie = (Relatie) gebruikerRepository.lees(Long.valueOf(relatieId));
-
-        relatie.getBijlages().add(bijlage);
-        bijlage.setRelatie(relatie);
-        bijlage.setSoortBijlage(SoortBijlage.RELATIE);
-
-        gebruikerRepository.opslaan(relatie);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-    }
-
-
     public Gebruiker lees(Long id) {
         return gebruikerRepository.lees(id);
     }

@@ -1,7 +1,7 @@
 package nl.dias.repository;
 
 import nl.dias.domein.Bijlage;
-import nl.dias.domein.Relatie;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,63 +26,12 @@ public class BijlageRepository extends AbstractRepository<Bijlage> {
         zetPersistenceContext(persistenceContext);
     }
 
-    public List<Bijlage> allesBijlagesBijPolis(Long polis) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijPolis", Bijlage.class);
-        query.setParameter("polis", polis);
+    public List<Bijlage> alleBijlagesBijEntiteit(SoortEntiteit soortEntiteit, Long entiteitId) {
+        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijEntiteit", Bijlage.class);
+        query.setParameter("soortBijlage", soortEntiteit);
+        query.setParameter("entiteitId", entiteitId);
 
         return query.getResultList();
-    }
-
-    public List<Bijlage> alleBijlagesBijSchade(Long schade) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijSchade", Bijlage.class);
-        query.setParameter("schade", schade);
-
-        return query.getResultList();
-    }
-
-    public List<Bijlage> alleBijlagesBijJaarCijfers(Long jaarCijfers) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijJaarCijfers", Bijlage.class);
-        query.setParameter("jaarCijfers", jaarCijfers);
-
-        return query.getResultList();
-    }
-
-    public List<Bijlage> alleBijlagesBijBedrijf(Long bedrijf) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijBedrijf", Bijlage.class);
-        query.setParameter("bedrijf", bedrijf);
-
-        return query.getResultList();
-    }
-
-    public List<Bijlage> alleBijlagesBijRelatie(Long relatieId) {
-        Relatie relatie = getEm().find(Relatie.class, relatieId);
-
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijRelatie", Bijlage.class);
-        query.setParameter("relatie", relatie);
-
-        return query.getResultList();
-    }
-
-    public List<Bijlage> alleBijlagesBijRelatie(Relatie relatie) {
-        List<Bijlage> bijlages = new ArrayList<>();
-
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.allesVanRelatiePolis", Bijlage.class);
-        query.setParameter("relatie", relatie);
-        bijlages.addAll(query.getResultList());
-
-        query = getEm().createNamedQuery("Bijlage.allesVanRelatieSchade", Bijlage.class);
-        query.setParameter("relatie", relatie);
-        bijlages.addAll(query.getResultList());
-
-        query = getEm().createNamedQuery("Bijlage.allesVanRelatieHypotheek", Bijlage.class);
-        query.setParameter("relatie", relatie);
-        bijlages.addAll(query.getResultList());
-
-        query = getEm().createNamedQuery("Bijlage.allesVanRelatieAangifte", Bijlage.class);
-        query.setParameter("relatie", relatie);
-        bijlages.addAll(query.getResultList());
-
-        return bijlages;
     }
 
     public Bijlage leesBijlage(Long id) {

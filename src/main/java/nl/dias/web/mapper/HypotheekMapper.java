@@ -158,8 +158,6 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
             jsonHypotheek.setWozWaarde(hypotheek.getWozWaarde().getBedrag().toString());
         }
 
-        jsonHypotheek.setOpmerkingen(opmerkingMapper.mapAllNaarJson(hypotheek.getOpmerkingen()));
-        jsonHypotheek.setBijlages(bijlageMapper.mapAllNaarJson(hypotheek.getBijlages()));
         jsonHypotheek.setLeningNummer(hypotheek.getLeningNummer());
         jsonHypotheek.setBank(hypotheek.getBank());
         if (hypotheek.getBoxI() != null) {

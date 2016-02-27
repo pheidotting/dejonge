@@ -1,9 +1,7 @@
 package nl.dias.service;
 
 import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.repository.BedrijfRepository;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -54,19 +52,4 @@ public class BedrijfService {
     public void setBedrijfRepository(BedrijfRepository bedrijfRepository) {
         this.bedrijfRepository = bedrijfRepository;
     }
-
-    public void opslaanBijlage(String bedrijfId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Bedrijf met id {}", bijlage.getId(), bedrijfId);
-
-        //        Bedrijf bedrijf = bedrijfRepository.lees(Long.valueOf(bedrijfId));
-
-        //        bedrijf.getBijlages().add(bijlage);
-        bijlage.setBedrijf(Long.valueOf(bedrijfId));
-        bijlage.setSoortBijlage(SoortBijlage.BEDRIJF);
-
-        LOGGER.debug(org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(bijlage));
-
-        //        bedrijfRepository.opslaan(bedrijf);
-    }
-
 }

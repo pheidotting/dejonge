@@ -6,8 +6,6 @@ import org.joda.time.LocalDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "AANGIFTE")
@@ -42,12 +40,6 @@ public class Aangifte implements PersistenceObject, Serializable {
     @JoinColumn(name = "RELATIE")
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Relatie relatie;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", orphanRemoval = true, targetEntity = Bijlage.class)
-    private Set<Bijlage> bijlages;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "aangifte", orphanRemoval = true, targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
 
     @Override
     public Long getId() {
@@ -111,28 +103,6 @@ public class Aangifte implements PersistenceObject, Serializable {
 
     public void setAfgerondDoor(Medewerker afgerondDoor) {
         this.afgerondDoor = afgerondDoor;
-    }
-
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = new HashSet<Bijlage>();
-        }
-        return bijlages;
-    }
-
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
-    }
-
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<>();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
     }
 
     public void afhandelen(Medewerker medewerker) {

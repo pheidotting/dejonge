@@ -10,8 +10,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "HYPOTHEEK")
@@ -73,10 +71,6 @@ public class Hypotheek implements PersistenceObject, Serializable {
     private Date eindDatumRenteVastePeriode;
     @Column(name = "DUURRENTEVASTEPERIODE")
     private Long duurRenteVastePeriode;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", targetEntity = Opmerking.class)
-    private Set<Opmerking> opmerkingen;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hypotheek", targetEntity = Bijlage.class)
-    private Set<Bijlage> bijlages;
     @Column(name = "LENINGNUMMER", length = 50)
     private String leningNummer;
     @Column(name = "BANK", nullable = true, length = 25)
@@ -284,28 +278,6 @@ public class Hypotheek implements PersistenceObject, Serializable {
 
     public void setRelatie(Relatie relatie) {
         this.relatie = relatie;
-    }
-
-    public Set<Opmerking> getOpmerkingen() {
-        if (opmerkingen == null) {
-            opmerkingen = new HashSet<>();
-        }
-        return opmerkingen;
-    }
-
-    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-        this.opmerkingen = opmerkingen;
-    }
-
-    public Set<Bijlage> getBijlages() {
-        if (bijlages == null) {
-            bijlages = new HashSet<>();
-        }
-        return bijlages;
-    }
-
-    public void setBijlages(Set<Bijlage> bijlages) {
-        this.bijlages = bijlages;
     }
 
     public String getLeningNummer() {

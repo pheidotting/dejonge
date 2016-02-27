@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -11,16 +12,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "BIJLAGE")
-@NamedQueries({@NamedQuery(name = "Bijlage.zoekBijlagenBijPolis", query = "select b from Bijlage b where b.polis = :polis"), //
-        //        @NamedQuery(name = "Bijlage.allesVanRelatieSchade", query = "select b from Bijlage b where b.schade.polis.relatie = :relatie"), //
-        //         @NamedQuery(name = "Bijlage.allesVanRelatiePolis", query = "select b from Bijlage b where b.polis.relatie = :relatie"), //
-        @NamedQuery(name = "Bijlage.allesVanRelatieHypotheek", query = "select b from Bijlage b where b.hypotheek.relatie = :relatie"), //
-        @NamedQuery(name = "Bijlage.allesVanRelatieAangifte", query = "select b from Bijlage b where b.aangifte.relatie = :relatie"),//
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijPolis", query = "select b from Bijlage b where b.polis = :polis"), //
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijSchade", query = "select b from Bijlage b where b.schade = :schade"),//
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijRelatie", query = "select b from Bijlage b where b.relatie = :relatie"),//
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijBedrijf", query = "select b from Bijlage b where b.bedrijf = :bedrijf"),//
-        @NamedQuery(name = "Bijlage.zoekBijlagesBijJaarCijfers", query = "select b from Bijlage b where b.jaarCijfers = :jaarCijfers")//
+@NamedQueries({//
+        @NamedQuery(name = "Bijlage.zoekBijlagesBijEntiteit", query = "select b from Bijlage b where b.soortBijlage = :soortBijlage and b.entiteitId = :entiteitId")//
 })
 public class Bijlage implements PersistenceObject, Serializable {
     private static final long serialVersionUID = 5743959281799187372L;
@@ -37,42 +30,12 @@ public class Bijlage implements PersistenceObject, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadMoment;
 
-    @Column(name = "POLIS", nullable = true)
-    //    @JoinColumn(name = "POLIS", nullable = true)
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Polis.class)
-    private Long polis;
-
-    @JoinColumn(name = "HYPOTHEEK", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Hypotheek.class)
-    private Hypotheek hypotheek;
-
-    @Column(name = "SCHADE", nullable = true)
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Schade.class)
-    private Long schade;
-
-    @JoinColumn(name = "AANGIFTE", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Aangifte.class)
-    private Aangifte aangifte;
-
-    @JoinColumn(name = "RELATIE", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
-    private Relatie relatie;
-
-    @Column(name = "BEDRIJF", nullable = true)
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
-    private Long bedrijf;
-
-    @Column(name = "JAARCIJFERS", nullable = true)
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = JaarCijfers.class)
-    private Long jaarCijfers;
-
-    @JoinColumn(name = "RISICOANALYSE", nullable = true)
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = RisicoAnalyse.class)
-    private RisicoAnalyse risicoAnalyse;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 50, name = "SOORTBIJLAGE")
-    private SoortBijlage soortBijlage;
+    private SoortEntiteit soortBijlage;
+
+    @Column(name = "ENTITEITID")
+    private Long entiteitId;
 
     @Column(name = "S3")
     private String s3Identificatie;
@@ -106,51 +69,11 @@ public class Bijlage implements PersistenceObject, Serializable {
         this.uploadMoment = uploadMoment.toDate();
     }
 
-    public Long getPolis() {
-        return polis;
-    }
-
-    public void setPolis(Long polis) {
-        this.polis = polis;
-    }
-
-    public Hypotheek getHypotheek() {
-        return hypotheek;
-    }
-
-    public void setHypotheek(Hypotheek hypotheek) {
-        this.hypotheek = hypotheek;
-    }
-
-    public Long getSchade() {
-        return schade;
-    }
-
-    public void setSchade(Long schade) {
-        this.schade = schade;
-    }
-
-    public Aangifte getAangifte() {
-        return aangifte;
-    }
-
-    public void setAangifte(Aangifte aangifte) {
-        this.aangifte = aangifte;
-    }
-
-    public Relatie getRelatie() {
-        return relatie;
-    }
-
-    public void setRelatie(Relatie relatie) {
-        this.relatie = relatie;
-    }
-
-    public SoortBijlage getSoortBijlage() {
+    public SoortEntiteit getSoortBijlage() {
         return soortBijlage;
     }
 
-    public void setSoortBijlage(SoortBijlage soortBijlage) {
+    public void setSoortBijlage(SoortEntiteit soortBijlage) {
         this.soortBijlage = soortBijlage;
     }
 
@@ -170,46 +93,18 @@ public class Bijlage implements PersistenceObject, Serializable {
         this.omschrijving = omschrijving;
     }
 
-    public Long getBedrijf() {
-        return bedrijf;
+    public Long getEntiteitId() {
+        return entiteitId;
     }
 
-    public void setBedrijf(Long bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Long getJaarCijfers() {
-        return jaarCijfers;
-    }
-
-    public void setJaarCijfers(Long jaarCijfers) {
-        this.jaarCijfers = jaarCijfers;
-    }
-
-    public RisicoAnalyse getRisicoAnalyse() {
-        return risicoAnalyse;
-    }
-
-    public void setRisicoAnalyse(RisicoAnalyse risicoAnalyse) {
-        this.risicoAnalyse = risicoAnalyse;
+    public void setEntiteitId(Long entiteitId) {
+        this.entiteitId = entiteitId;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Bijlage{");
         sb.append("id=").append(id);
-        if (polis != null) {
-            sb.append(", polis=").append(polis);
-        }
-        if (hypotheek != null) {
-            sb.append(", hypotheek=").append(hypotheek.getId());
-        }
-        if (schade != null) {
-            sb.append(", schade=").append(schade);
-        }
-        if (aangifte != null) {
-            sb.append(", aangifte=").append(aangifte.getId());
-        }
         sb.append(", soortBijlage=").append(soortBijlage);
         sb.append(", s3Identificatie='").append(s3Identificatie).append('\'');
         sb.append(", omschrijving='").append(omschrijving).append('\'');

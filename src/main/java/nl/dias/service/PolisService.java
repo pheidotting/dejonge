@@ -3,7 +3,6 @@ package nl.dias.service;
 import com.google.common.collect.Lists;
 import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.SoortBijlage;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
@@ -11,6 +10,7 @@ import nl.dias.domein.predicates.PolissenOpSoortPredicate;
 import nl.dias.domein.transformers.PolisToSchermNaamTransformer;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
+import nl.dias.web.SoortEntiteit;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -92,7 +92,7 @@ public class PolisService {
 
         //        polisRepository.opslaan(polis);
 
-        bijlage.setSoortBijlage(SoortBijlage.POLIS);
+        bijlage.setSoortBijlage(SoortEntiteit.POLIS);
         //        bijlage.setPolis(polis);
 
         return bijlage;
@@ -102,7 +102,7 @@ public class PolisService {
         LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
 
         //        bijlage.setPolis(polisRepository.lees(polisId));
-        bijlage.setSoortBijlage(SoortBijlage.POLIS);
+        bijlage.setSoortBijlage(SoortEntiteit.POLIS);
         bijlage.setOmschrijving(omschrijving);
 
         LOGGER.debug("Bijlage naar repository " + bijlage);
