@@ -164,7 +164,7 @@ public class BedrijfTest extends AbstractITest {
         jsonAdres.setSoortAdres("WOONADRES");
         jsonAdres.setStraat(genereerRandomString(255));
         jsonAdres.setToevoeging(genereerRandomString(255));
-        jsonAdres.setBedrijf(bedrijfsId);
+        //        jsonAdres.setBedrijf(bedrijfsId);
 
         return jsonAdres;
     }

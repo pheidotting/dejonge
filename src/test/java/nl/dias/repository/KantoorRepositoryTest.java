@@ -37,8 +37,8 @@ public class KantoorRepositoryTest {
         adres.setStraat("Straaaaaaaaaaaaaaaaat");
         adres.setToevoeging("toevoeging");
         adres.setSoortAdres(Adres.SoortAdres.POSTADRES);
-        adres.setKantoor(kantoor);
-        kantoor.getAdressen().add(adres);
+        //        adres.setKantoor(kantoor);
+        //        kantoor.getAdressen().add(adres);
         kantoor.setKvk(138383838L);
         kantoor.setBtwNummer("btwNummer");
         kantoor.setDatumOprichting(new LocalDate());
@@ -53,7 +53,7 @@ public class KantoorRepositoryTest {
         factuurAdres.setStraat("Stroate");
         factuurAdres.setToevoeging("toevoeg");
         factuurAdres.setSoortAdres(Adres.SoortAdres.FACTUURADRES);
-        kantoor.getAdressen().add(factuurAdres);
+        //        kantoor.getAdressen().add(factuurAdres);
 
         Medewerker medewerker = new Medewerker();
         medewerker.setIdentificatie("pp");

@@ -34,8 +34,8 @@ public class AdresService {
         adresRepository.opslaan(adres);
     }
 
-    public void opslaan(final List<Adres> adressen, Long bedrijfId) {
-        List<Adres> lijstBestaandeNummer = adresRepository.alles(SoortEntiteit.BEDRIJF, bedrijfId);
+    public void opslaan(final List<Adres> adressen, SoortEntiteit soortEntiteit, Long entiteitId) {
+        List<Adres> lijstBestaandeNummer = adresRepository.alles(soortEntiteit, entiteitId);
 
         //Verwijderen wat niet (meer) voorkomt
         Iterable<Adres> teVerwijderen = filter(lijstBestaandeNummer, new Predicate<Adres>() {

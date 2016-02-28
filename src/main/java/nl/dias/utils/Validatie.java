@@ -26,7 +26,6 @@ public final class Validatie {
 
     public static void valideer(Relatie relatie) throws TelefoonnummerNietGoedException, IbanNietGoedException, PostcodeNietGoedException, BsnNietGoedException {
         Validatie.checkBsn(relatie.getBsn());
-        validate(relatie.getAdres());
 
         for (RekeningNummer rekeningNummer : relatie.getRekeningnummers()) {
             Validatie.checkIban(rekeningNummer.getRekeningnummer());
@@ -55,13 +54,6 @@ public final class Validatie {
     }
 
     public static void valideer(Kantoor kantoor) throws PostcodeNietGoedException, IbanNietGoedException {
-        if (kantoor.getPostAdres() != null) {
-            validate(kantoor.getPostAdres());
-        }
-        if (kantoor.getFactuurAdres() != null) {
-            validate(kantoor.getFactuurAdres());
-        }
-
         for (RekeningNummer rekeningNummer : kantoor.getRekeningnummers()) {
             Validatie.checkIban(rekeningNummer.getRekeningnummer());
         }

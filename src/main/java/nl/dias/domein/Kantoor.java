@@ -1,6 +1,5 @@
 package nl.dias.domein;
 
-import nl.dias.domein.predicates.AdresPredicate;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,9 +8,6 @@ import org.joda.time.LocalDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
-
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getFirst;
 
 @Entity
 @Table(name = "KANTOOR")
@@ -25,9 +21,6 @@ public class Kantoor implements Serializable, PersistenceObject {
 
     @Column(name = "NAAM")
     private String naam;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "kantoor")
-    private Set<Adres> adressen;
 
     @Column(name = "KVK", length = 8)
     private Long kvk;
@@ -50,7 +43,7 @@ public class Kantoor implements Serializable, PersistenceObject {
     @Column(name = "EMAILADRES")
     private String emailadres;
 
-    @Column(name="AFKORTING",length = 10)
+    @Column(name = "AFKORTING", length = 10)
     private String afkorting;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "kantoor", targetEntity = Medewerker.class)
@@ -79,26 +72,6 @@ public class Kantoor implements Serializable, PersistenceObject {
     public void setNaam(String naam) {
         this.naam = naam;
     }
-
-    public Set<Adres> getAdressen() {
-        if (adressen == null) {
-            adressen = new HashSet<>();
-        }
-        return adressen;
-    }
-
-    public void setAdressen(Set<Adres> adressen) {
-        this.adressen = adressen;
-    }
-
-    public Adres getPostAdres() {
-        return getFirst(filter(adressen, new AdresPredicate(Adres.SoortAdres.POSTADRES)), null);
-    }
-
-    public Adres getFactuurAdres() {
-        return getFirst(filter(adressen, new AdresPredicate(Adres.SoortAdres.FACTUURADRES)), null);
-    }
-
 
     public List<Medewerker> getMedewerkers() {
         if (medewerkers == null) {
@@ -192,7 +165,6 @@ public class Kantoor implements Serializable, PersistenceObject {
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(adressen);
         builder.append(btwNummer);
         builder.append(datumOprichting);
         builder.append(emailadres);
@@ -217,7 +189,7 @@ public class Kantoor implements Serializable, PersistenceObject {
             return false;
         }
         Kantoor other = (Kantoor) obj;
-        return new EqualsBuilder().append(adressen, other.adressen).append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers).append(relaties, other.relaties).append(afkorting, other.afkorting).isEquals();
+        return new EqualsBuilder().append(btwNummer, other.btwNummer).append(datumOprichting, other.datumOprichting).append(emailadres, other.emailadres).append(id, other.id).append(kvk, other.kvk).append(naam, other.naam).append(rechtsvorm, other.rechtsvorm).append(soortKantoor, other.soortKantoor).append(medewerkers, other.medewerkers).append(rekeningnummers, other.rekeningnummers).append(relaties, other.relaties).append(afkorting, other.afkorting).isEquals();
     }
 
     @Override
@@ -227,8 +199,6 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(id);
         builder.append(", naam=");
         builder.append(naam);
-        builder.append(", adressen=");
-        builder.append(adressen);
         builder.append(", kvk=");
         builder.append(kvk);
         builder.append(", btwNummer=");

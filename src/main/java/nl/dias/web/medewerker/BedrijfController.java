@@ -62,7 +62,7 @@ public class BedrijfController {
             for (JsonAdres jsonAdres : jsonBedrijf.getAdressen()) {
                 adressen.add(mapper.map(jsonAdres, Adres.class));
             }
-            adresService.opslaan(adressen, bedrijf.getId());
+            adresService.opslaan(adressen, SoortEntiteit.BEDRIJF, bedrijf.getId());
 
             List<Telefoonnummer> telefoonnummers = new ArrayList<>();
             List<ContactPersoon> contactPersoons = new ArrayList<>();

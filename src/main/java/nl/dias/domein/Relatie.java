@@ -1,7 +1,5 @@
 package nl.dias.domein;
 
-import com.google.common.collect.Sets;
-import nl.dias.domein.predicates.WoonAdresPredicate;
 import nl.dias.domein.transformers.BedrijfToStringTransformer;
 import nl.dias.domein.transformers.SessieToStringTransformer;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
@@ -14,10 +12,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Iterables.transform;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -26,18 +23,14 @@ import static com.google.common.collect.Iterables.*;
 @NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"), //
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"), //
         @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), //
-        @NamedQuery(name = "Relatie.zoekOpAdres", query = "select a.relatie from Adres a where a.straat like :adres or a.plaats like :adres"), //
         @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"), //
         @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")//
 })
-public class Relatie extends Gebruiker implements Serializable, PersistenceObject, ObjectMetAdressen, ObjectMetTelefoonnummers, ObjectMetRekeningNummers {
+public class Relatie extends Gebruiker implements Serializable, PersistenceObject, ObjectMetTelefoonnummers, ObjectMetRekeningNummers {
     private static final long serialVersionUID = -1920949633670770763L;
 
     @Column(name = "ROEPNAAM")
     private String roepnaam;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Adres.class, mappedBy = "relatie")
-    private Set<Adres> adressen;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
     private Set<Telefoonnummer> telefoonnummers;
@@ -86,35 +79,6 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     public void setRoepnaam(String roepnaam) {
         this.roepnaam = roepnaam;
     }
-
-    public Set<Adres> getAdressen() {
-        if (adressen == null) {
-            adressen = new HashSet<>();
-        }
-        return adressen;
-    }
-
-    public void setAdressen(List<Adres> adressen) {
-        this.adressen = Sets.newHashSet(adressen);
-    }
-
-    public void setAdressen(Set<Adres> adressen) {
-        this.adressen = adressen;
-    }
-
-    public Adres getAdres() {
-        return (Adres) getFirst(filter(getAdressen(), new WoonAdresPredicate()), null);
-    }
-
-    public String getAdresOpgemaakt() {
-        Adres adres = (Adres) getFirst(getAdressen(), new WoonAdresPredicate());
-        if (adres != null) {
-            return adres.getStraat() + " " + adres.getHuisnummer() + " " + adres.getToevoeging() + ", " + adres.getPlaats();
-        } else {
-            return null;
-        }
-    }
-
 
     public Set<Telefoonnummer> getTelefoonnummers() {
         if (telefoonnummers == null) {
@@ -241,7 +205,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.burgerlijkeStaat).append(this.getAdressen()).append(this.bsn).append(this.geboorteDatum).append(this.geslacht).append(this.overlijdensdatum).toHashCode();
+        return new HashCodeBuilder().append(this.burgerlijkeStaat).append(this.bsn).append(this.geboorteDatum).append(this.geslacht).append(this.overlijdensdatum).toHashCode();
     }
 
     /**
@@ -253,7 +217,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
             return false;
         }
         Relatie rhs = (Relatie) object;
-        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.getAdressen(), rhs.getAdressen()).append(this.bsn, rhs.bsn).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum).isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(object)).append(this.burgerlijkeStaat, rhs.burgerlijkeStaat).append(this.bsn, rhs.bsn).append(this.geboorteDatum, rhs.geboorteDatum).append(this.geslacht, rhs.geslacht).append(this.overlijdensdatum, rhs.overlijdensdatum).isEquals();
     }
 
     /**
@@ -266,7 +230,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
             kantoorId = kantoor.getId();
         }
 
-        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("adressen", this.getAdressen()).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
     }
 
     @Override

@@ -10,14 +10,10 @@ import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
-import nl.dias.repository.GebruikerRepository;
-import nl.dias.repository.HypotheekRepository;
-import nl.dias.repository.KantoorRepository;
-import nl.dias.repository.PolisRepository;
+import nl.dias.repository.*;
 import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
-import nl.lakedigital.as.messaging.AdresAangevuld;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
@@ -67,17 +63,18 @@ public class GebruikerService {
     private Mapper mapper;
     @Inject
     private TelefoonnummerService telefoonnummerService;
+    @Inject
+    private AdresRepository adresRepository;
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
     }
 
     public void opslaanAdresBijRelatie(Adres adres, Long relatieId) {
-        Relatie relatie = (Relatie) gebruikerRepository.lees(relatieId);
+        adres.setEntiteitId(relatieId);
+        adres.setSoortEntiteit(SoortEntiteit.RELATIE);
 
-        adres.setRelatie(relatie);
-        relatie.getAdressen().add(adres);
-        gebruikerRepository.opslaan(relatie);
+        adresRepository.opslaan(adres);
     }
 
     public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie) {
@@ -213,23 +210,23 @@ public class GebruikerService {
     }
 
     private void verstuurAdresEvent(Relatie relatie) {
-        if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
-            LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
-
-            AanmakenTaak taak = new AanmakenTaak();
-            taak.setDatumTijdCreatie(LocalDateTime.now());
-            taak.setRelatie(relatie.getId());
-            taak.setSoort(SoortTaak.AANVULLEN_ADRES);
-
-            aanmakenTaakSender.send(taak);
-        } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
-            LOGGER.info("Adres gevuld, bericht versturen");
-
-            AdresAangevuld adresAangevuld = new AdresAangevuld();
-            adresAangevuld.setRelatie(relatie.getId());
-
-            adresAangevuldSender.send(adresAangevuld);
-        }
+        //        if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
+        //            LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
+        //
+        //            AanmakenTaak taak = new AanmakenTaak();
+        //            taak.setDatumTijdCreatie(LocalDateTime.now());
+        //            taak.setRelatie(relatie.getId());
+        //            taak.setSoort(SoortTaak.AANVULLEN_ADRES);
+        //
+        //            aanmakenTaakSender.send(taak);
+        //        } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
+        //            LOGGER.info("Adres gevuld, bericht versturen");
+        //
+        //            AdresAangevuld adresAangevuld = new AdresAangevuld();
+        //            adresAangevuld.setRelatie(relatie.getId());
+        //
+        //            adresAangevuldSender.send(adresAangevuld);
+        //        }
     }
 
     private void verstuurEmailEvent(Relatie relatie) {

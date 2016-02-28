@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -10,7 +11,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Entity
 @Table(name = "ADRES")
-//@NamedQueries({@NamedQuery(name = "Adres.verwijderAdressenBijRelatie", query = "delete from Adres a where a.relatie = :relatie")})
+@NamedQueries({//
+        @NamedQuery(name = "Adres.zoekAdressgenBijEntiteit", query = "select a from Adres a where a.soortEntiteit = :soortEntiteit and a.entiteitId = :entiteitId"),//
+        @NamedQuery(name = "Adres.zoekAdres", query = "select a from Adres a where a.straat like :adres or a.plaats like :adres"), //
+})
 public class Adres implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 2361944992062349932L;
 
@@ -35,15 +39,11 @@ public class Adres implements Serializable, PersistenceObject {
     @Column(name = "SOORT")
     @Enumerated(EnumType.STRING)
     private SoortAdres soortAdres;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
-    @JoinColumn(name = "RELATIE")
-    private Relatie relatie;
-    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
-    @Column(name = "BEDRIJF")
-    private Long bedrijf;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Kantoor.class)
-    @JoinColumn(name = "KANTOOR")
-    private Kantoor kantoor;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, name = "SOORTENTITEIT")
+    private SoortEntiteit soortEntiteit;
+    @Column(name = "ENTITEITID")
+    private Long entiteitId;
 
     public Long getId() {
         return id;
@@ -103,33 +103,24 @@ public class Adres implements Serializable, PersistenceObject {
         this.soortAdres = soortAdres;
     }
 
-    public Relatie getRelatie() {
-        return relatie;
-    }
-
-    public void setRelatie(Relatie relatie) {
-        this.relatie = relatie;
-    }
-
-    public Long getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Long bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Kantoor getKantoor() {
-        return kantoor;
-    }
-
-    public void setKantoor(Kantoor kantoor) {
-        this.kantoor = kantoor;
-    }
-
     public boolean isCompleet() {
         return isNotBlank(straat) && huisnummer != null && isNotBlank(postcode) && isNotBlank(plaats);
+    }
 
+    public SoortEntiteit getSoortEntiteit() {
+        return soortEntiteit;
+    }
+
+    public void setSoortEntiteit(SoortEntiteit soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
+    }
+
+    public Long getEntiteitId() {
+        return entiteitId;
+    }
+
+    public void setEntiteitId(Long entiteitId) {
+        this.entiteitId = entiteitId;
     }
 
     @Override

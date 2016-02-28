@@ -3,7 +3,10 @@ package nl.dias.web.mapper;
 import com.google.common.base.Predicate;
 import nl.dias.domein.*;
 import nl.dias.service.GebruikerService;
-import nl.lakedigital.djfc.commons.json.*;
+import nl.lakedigital.djfc.commons.json.JsonOnderlingeRelatie;
+import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
+import nl.lakedigital.djfc.commons.json.JsonRelatie;
+import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
@@ -65,26 +68,27 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             relatie.setGeboorteDatum(LocalDate.parse(jsonRelatie.getGeboorteDatum(), DateTimeFormat.forPattern(patternDatum)));
         }
 
-        Set<Adres> adressen = new HashSet<>();
-        for (final JsonAdres jsonAdres : jsonRelatie.getAdressen()) {
-            Adres adres = getFirst(filter(relatie.getAdressen(), new Predicate<Adres>() {
-                @Override
-                public boolean apply(Adres adres) {
-                    return adres.getId() == jsonAdres.getId();
-                }
-            }), new Adres());
-
-            adres.setToevoeging(jsonAdres.getToevoeging());
-            adres.setHuisnummer(jsonAdres.getHuisnummer());
-            adres.setPlaats(jsonAdres.getPlaats());
-            adres.setPostcode(jsonAdres.getPostcode());
-            adres.setSoortAdres(Adres.SoortAdres.valueOf(jsonAdres.getSoortAdres()));
-            adres.setStraat(jsonAdres.getStraat());
-            adres.setRelatie(relatie);
-
-            adressen.add(adres);
-        }
-        relatie.setAdressen(adressen);
+        //        Set<Adres> adressen = new HashSet<>();
+        //        for (final JsonAdres jsonAdres : jsonRelatie.getAdressen()) {
+        //            Adres adres = getFirst(filter(relatie.getAdressen(), new Predicate<Adres>() {
+        //                @Override
+        //                public boolean apply(Adres adres) {
+        //                    return adres.getId() == jsonAdres.getId();
+        //                }
+        //            }), new Adres());
+        //
+        //            adres.setToevoeging(jsonAdres.getToevoeging());
+        //            adres.setHuisnummer(jsonAdres.getHuisnummer());
+        //            adres.setPlaats(jsonAdres.getPlaats());
+        //            adres.setPostcode(jsonAdres.getPostcode());
+        //            adres.setSoortAdres(Adres.SoortAdres.valueOf(jsonAdres.getSoortAdres()));
+        //            adres.setStraat(jsonAdres.getStraat());
+        //            adres.setEntiteitId(relatie.getId());
+        //            adres.setSoortEntiteit(SoortEntiteit.RELATIE);
+        //
+        //            adressen.add(adres);
+        //        }
+        //        relatie.setAdressen(adressen);
 
         Set<Telefoonnummer> telefoonnummers = new HashSet<>();
         for (final JsonTelefoonnummer jsonTelefoonnummer : jsonRelatie.getTelefoonnummers()) {
@@ -149,7 +153,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setTussenvoegsel("");
         }
         jsonRelatie.setAchternaam(relatie.getAchternaam());
-        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
+        //        jsonRelatie.setAdressen(adresMapper.mapAllNaarJson(relatie.getAdressen()));
         jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));

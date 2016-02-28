@@ -27,20 +27,20 @@ public class KantoorJson extends Kantoor {
     private String datumOprichtingString;
 
     public KantoorJson(Kantoor kantoor) {
-        Adres postAdres = kantoor.getPostAdres();
-        Adres factuurAdres = kantoor.getFactuurAdres();
+        //        Adres postAdres = kantoor.getPostAdres();
+        //        Adres factuurAdres = kantoor.getFactuurAdres();
 
-        this.adresHuisnummer = postAdres.getHuisnummer();
-        this.adresPlaats = postAdres.getPlaats();
-        this.adresPostcode = postAdres.getPostcode();
-        this.adresStraat = postAdres.getStraat();
-        this.adresToevoeging = postAdres.getToevoeging();
-
-        this.factuurAdresHuisnummer = factuurAdres.getHuisnummer();
-        this.factuurAdresPlaats = factuurAdres.getPlaats();
-        this.factuurAdresPostcode = factuurAdres.getPostcode();
-        this.factuurAdresStraat = factuurAdres.getStraat();
-        this.factuurAdresToevoeging = factuurAdres.getToevoeging();
+        //        this.adresHuisnummer = postAdres.getHuisnummer();
+        //        this.adresPlaats = postAdres.getPlaats();
+        //        this.adresPostcode = postAdres.getPostcode();
+        //        this.adresStraat = postAdres.getStraat();
+        //        this.adresToevoeging = postAdres.getToevoeging();
+        //
+        //        this.factuurAdresHuisnummer = factuurAdres.getHuisnummer();
+        //        this.factuurAdresPlaats = factuurAdres.getPlaats();
+        //        this.factuurAdresPostcode = factuurAdres.getPostcode();
+        //        this.factuurAdresStraat = factuurAdres.getStraat();
+        //        this.factuurAdresToevoeging = factuurAdres.getToevoeging();
 
         this.setBtwNummer(kantoor.getBtwNummer());
         this.setDatumOprichtingString(kantoor.getDatumOprichting().toString("dd-MM-yyyy"));
@@ -70,7 +70,6 @@ public class KantoorJson extends Kantoor {
         postAdres.setStraat(this.getAdresStraat());
         postAdres.setToevoeging(this.getAdresToevoeging());
         postAdres.setSoortAdres(Adres.SoortAdres.POSTADRES);
-        ret.getAdressen().add(postAdres);
 
         Adres factuurAdres = new Adres();
         factuurAdres.setHuisnummer(this.getFactuurAdresHuisnummer());
@@ -79,7 +78,6 @@ public class KantoorJson extends Kantoor {
         factuurAdres.setStraat(this.getFactuurAdresStraat());
         factuurAdres.setToevoeging(this.getFactuurAdresToevoeging());
         factuurAdres.setSoortAdres(Adres.SoortAdres.FACTUURADRES);
-        ret.getAdressen().add(factuurAdres);
 
         ret.setBtwNummer(this.getBtwNummer());
         if (this.getDatumOprichtingString() != null && !"".equals(this.getDatumOprichtingString())) {

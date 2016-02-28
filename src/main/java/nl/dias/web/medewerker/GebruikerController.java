@@ -199,7 +199,7 @@ public class GebruikerController {
     @RequestMapping(method = RequestMethod.POST, value = "/opslaanAdresBijRelatie")
     @ResponseBody
     public void opslaanAdresBijRelatie(@RequestBody JsonAdres jsonAdres) {
-        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres), Long.valueOf(jsonAdres.getRelatie()));
+        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres), Long.valueOf(jsonAdres.getEntiteitId()));
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

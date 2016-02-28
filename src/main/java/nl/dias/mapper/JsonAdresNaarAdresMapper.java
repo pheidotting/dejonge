@@ -1,9 +1,9 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.Adres;
-import nl.dias.domein.Relatie;
 import nl.dias.service.AdresService;
 import nl.dias.service.GebruikerService;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.springframework.stereotype.Component;
 
@@ -32,12 +32,8 @@ public class JsonAdresNaarAdresMapper extends AbstractMapper<JsonAdres, Adres> {
         adres.setToevoeging(jsonAdres.getToevoeging());
         adres.setSoortAdres(Adres.SoortAdres.valueOf(jsonAdres.getSoortAdres()));
 
-        if (jsonAdres.getBedrijf() != null) {
-            adres.setBedrijf(Long.valueOf(jsonAdres.getBedrijf()));
-        }
-        if (jsonAdres.getRelatie() != null) {
-            adres.setRelatie((Relatie) gebruikerService.lees(Long.valueOf(jsonAdres.getRelatie())));
-        }
+        adres.setEntiteitId(jsonAdres.getEntiteitId());
+        adres.setSoortEntiteit(SoortEntiteit.BEDRIJF);
 
         return adres;
     }

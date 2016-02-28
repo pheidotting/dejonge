@@ -1,6 +1,9 @@
 package nl.dias.repository;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import nl.dias.domein.*;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.slf4j.Logger;
@@ -11,7 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.google.common.collect.Iterables.filter;
+
 
 @Repository
 public class GebruikerRepository extends AbstractRepository<Gebruiker> {
@@ -125,11 +133,24 @@ public class GebruikerRepository extends AbstractRepository<Gebruiker> {
     }
 
     public List<Relatie> zoekOpAdres(String adres) {
-        TypedQuery<Relatie> query = getEm().createNamedQuery("Relatie.zoekOpAdres", Relatie.class);
+        TypedQuery<Adres> query = getEm().createNamedQuery("Adres.zoekAdres", Adres.class);
         query.setMaxResults(MAX_RESULTS);
         query.setParameter("adres", "%" + adres + "%");
 
-        return query.getResultList();
+        Set<Relatie> result = new HashSet<>();
+
+
+        for (Adres adr : filter(query.getResultList(), new Predicate<Adres>() {
+            @Override
+            public boolean apply(Adres adres) {
+                return adres.getSoortEntiteit().equals(SoortEntiteit.RELATIE);
+            }
+        })) {
+            result.add(getEm().find(Relatie.class, adr.getEntiteitId()));
+        }
+
+
+        return Lists.newArrayList(result);
     }
 
 

@@ -6,7 +6,6 @@ import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -21,23 +20,11 @@ public class AdresRepository extends AbstractRepository<Adres> {
         zetPersistenceContext(persistenceContext);
     }
 
-    public List<Adres> alles(SoortEntiteit soortEntiteit, Long parentId) {
-        String where = null;
-        switch (soortEntiteit) {
-            case BEDRIJF:
-                where = "bedrijf = ";
-                break;
-            case RELATIE:
-                where = "relatie = ";
-                break;
-            case CONTACTPERSOON:
-                where = "contactPersoon = ";
-                break;
-            default:
-                return new ArrayList<>();
-        }
+    public List<Adres> alles(SoortEntiteit soortEntiteit, Long entiteitId) {
+        TypedQuery<Adres> query = getEm().createNamedQuery("Adres.zoekAdressgenBijEntiteit", Adres.class);
+        query.setParameter("soortEntiteit", soortEntiteit);
+        query.setParameter("entiteitId", entiteitId);
 
-        TypedQuery<Adres> query = getEm().createQuery("select t from Adres t where t." + where + parentId, Adres.class);
         return query.getResultList();
     }
 }
