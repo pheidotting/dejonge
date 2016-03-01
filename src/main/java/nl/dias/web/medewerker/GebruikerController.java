@@ -9,7 +9,6 @@ import nl.dias.web.mapper.AdresMapper;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,10 +133,6 @@ public class GebruikerController {
             LOGGER.debug("Uit mapper " + relatie);
 
             LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
-
-            for (RekeningNummer rekeningNummer : relatie.getRekeningnummers()) {
-                LOGGER.debug(ReflectionToStringBuilder.toString(rekeningNummer, ToStringStyle.SHORT_PREFIX_STYLE));
-            }
 
             gebruikerService.opslaan(relatie);
 

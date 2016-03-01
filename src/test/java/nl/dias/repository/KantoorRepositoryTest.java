@@ -66,13 +66,11 @@ public class KantoorRepositoryTest {
         rekeningNummer.setBic("bic");
         rekeningNummer.setRekeningnummer("NL96SNSB0907007406");
 
-        kantoor.getRekeningnummers().add(rekeningNummer);
 
         RekeningNummer rekeningNummer1 = new RekeningNummer();
         rekeningNummer1.setBic("bic");
         rekeningNummer1.setRekeningnummer("NL96SNSB0907007406");
 
-        kantoor.getRekeningnummers().add(rekeningNummer1);
 
         try {
             kantoorService.opslaanKantoor(kantoor);

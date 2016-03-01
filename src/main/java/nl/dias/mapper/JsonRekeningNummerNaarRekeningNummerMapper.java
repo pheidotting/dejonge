@@ -1,8 +1,6 @@
 package nl.dias.mapper;
 
-import nl.dias.domein.Kantoor;
 import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
 import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -27,17 +25,17 @@ public class JsonRekeningNummerNaarRekeningNummerMapper extends AbstractMapper<J
         rekeningNummer.setRekeningnummer(jsonRekeningNummer.getRekeningnummer());
         rekeningNummer.setBic(jsonRekeningNummer.getBic());
 
-        if (parent instanceof Relatie) {
-            rekeningNummer.setRelatie((Relatie) parent);
-            if (jsonRekeningNummer.getId() == null) {
-                ((Relatie) parent).getRekeningnummers().add(rekeningNummer);
-            }
-        } else if (parent instanceof Kantoor) {
-            rekeningNummer.setKantoor((Kantoor) parent);
-            if (jsonRekeningNummer.getId() == null) {
-                ((Kantoor) parent).getRekeningnummers().add(rekeningNummer);
-            }
-        }
+        //        if (parent instanceof Relatie) {
+        //            rekeningNummer.setRelatie((Relatie) parent);
+        //            if (jsonRekeningNummer.getId() == null) {
+        //                ((Relatie) parent).getRekeningnummers().add(rekeningNummer);
+        //            }
+        //        } else if (parent instanceof Kantoor) {
+        //            rekeningNummer.setKantoor((Kantoor) parent);
+        //            if (jsonRekeningNummer.getId() == null) {
+        //                ((Kantoor) parent).getRekeningnummers().add(rekeningNummer);
+        //            }
+        //        }
 
         return rekeningNummer;
     }

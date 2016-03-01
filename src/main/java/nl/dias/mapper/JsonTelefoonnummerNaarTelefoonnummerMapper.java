@@ -35,7 +35,7 @@ public class JsonTelefoonnummerNaarTelefoonnummerMapper extends AbstractMapper<J
 
         if (parent != null) {
             if (parent instanceof Relatie) {
-                telefoonnummers = ((Relatie) parent).getTelefoonnummers();
+                //                telefoonnummers = ((Relatie) parent).getTelefoonnummers();
             } else if (parent instanceof ContactPersoon) {
                 //                telefoonnummers = ((ContactPersoon) parent).getTelefoonnummers();
             } else if (parent instanceof Bedrijf) {
@@ -61,15 +61,15 @@ public class JsonTelefoonnummerNaarTelefoonnummerMapper extends AbstractMapper<J
         telefoonnummer.setOmschrijving(object.getOmschrijving());
         telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(object.getSoort()));
         telefoonnummer.setTelefoonnummer(object.getTelefoonnummer());
-        if (object.getBedrijf() != null) {
-            telefoonnummer.setBedrijf(Long.valueOf(object.getBedrijf()));
-        }
-
-        if (parent instanceof Relatie) {
-            telefoonnummer.setRelatie((Relatie) parent);
+        //        if (object.getBedrijf() != null) {
+        //            telefoonnummer.setBedrijf(Long.valueOf(object.getBedrijf()));
+        //        }
+        //
+        //        if (parent instanceof Relatie) {
+        //            telefoonnummer.setRelatie((Relatie) parent);
             //        } else if (parent instanceof ContactPersoon) {
             //            telefoonnummer.setContactPersoon((ContactPersoon) parent);
-        }
+        //        }
         if (telefoonnummer.getId() == null && telefoonnummers != null) {
             telefoonnummers.add(telefoonnummer);
         }

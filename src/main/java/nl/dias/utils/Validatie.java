@@ -1,6 +1,8 @@
 package nl.dias.utils;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Adres;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.Telefoonnummer;
 import nl.dias.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +28,6 @@ public final class Validatie {
 
     public static void valideer(Relatie relatie) throws TelefoonnummerNietGoedException, IbanNietGoedException, PostcodeNietGoedException, BsnNietGoedException {
         Validatie.checkBsn(relatie.getBsn());
-
-        for (RekeningNummer rekeningNummer : relatie.getRekeningnummers()) {
-            Validatie.checkIban(rekeningNummer.getRekeningnummer());
-        }
-        for (Telefoonnummer telefoonnummer : relatie.getTelefoonnummers()) {
-            validate(telefoonnummer);
-        }
-
     }
 
     public static void validate(Telefoonnummer telefoonnummer) throws TelefoonnummerNietGoedException {
@@ -50,12 +44,6 @@ public final class Validatie {
         } catch (NumberFormatException e) {
             LOGGER.debug(e.getMessage());
             throw new TelefoonnummerNietGoedException();
-        }
-    }
-
-    public static void valideer(Kantoor kantoor) throws PostcodeNietGoedException, IbanNietGoedException {
-        for (RekeningNummer rekeningNummer : kantoor.getRekeningnummers()) {
-            Validatie.checkIban(rekeningNummer.getRekeningnummer());
         }
     }
 

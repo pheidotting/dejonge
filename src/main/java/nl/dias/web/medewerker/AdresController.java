@@ -9,10 +9,7 @@ import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
@@ -40,9 +37,19 @@ public class AdresController {
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
     public void opslaan(@RequestBody List<JsonAdres> jsonAdressen) {
-        JsonAdres eersteAdres = jsonAdressen.get(0);
+        if (jsonAdressen != null && jsonAdressen.size() > 0) {
+            JsonAdres eersteAdres = jsonAdressen.get(0);
 
-        Set<Adres> adressen = adresMapper.mapAllVanJson(jsonAdressen);
-        adresService.opslaan(Lists.newArrayList(adressen), SoortEntiteit.valueOf(eersteAdres.getSoortEntiteit()), eersteAdres.getEntiteitId());
+            Set<Adres> adressen = adresMapper.mapAllVanJson(jsonAdressen);
+            adresService.opslaan(Lists.newArrayList(adressen), SoortEntiteit.valueOf(eersteAdres.getSoortEntiteit()), eersteAdres.getEntiteitId());
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
+    @ResponseBody
+    public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
+        LOGGER.debug("Verwijderen adressen bij {} en {}", soortentiteit, parentid);
+
+        adresService.verwijderen(SoortEntiteit.valueOf(soortentiteit), parentid);
     }
 }

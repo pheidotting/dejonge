@@ -6,7 +6,6 @@ import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,17 +21,11 @@ public class RekeningNummerRepository extends AbstractRepository<RekeningNummer>
         zetPersistenceContext(persistenceContext);
     }
 
-    public List<RekeningNummer> alles(SoortEntiteit soortEntiteit, Long parentId) {
-        String where = null;
-        switch (soortEntiteit) {
-            case RELATIE:
-                where = "relatie = ";
-                break;
-            default:
-                return new ArrayList<>();
-        }
+    public List<RekeningNummer> alles(SoortEntiteit soortEntiteit, Long entiteitId) {
+        TypedQuery<RekeningNummer> query = getEm().createNamedQuery("RekeningNummer.zoekRekeningNummersBijEntiteit", RekeningNummer.class);
+        query.setParameter("soortEntiteit", soortEntiteit);
+        query.setParameter("entiteitId", entiteitId);
 
-        TypedQuery<RekeningNummer> query = getEm().createQuery("select t from RekeningNummer t where t." + where + parentId, RekeningNummer.class);
         return query.getResultList();
     }
 

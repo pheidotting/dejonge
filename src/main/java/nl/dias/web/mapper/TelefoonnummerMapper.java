@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,8 @@ public class TelefoonnummerMapper extends Mapper<Telefoonnummer, JsonTelefoonnum
         telefoonnummer.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer().replace(" ", ""));
         telefoonnummer.setSoort(TelefoonnummerSoort.valueOf(jsonTelefoonnummer.getSoort().toUpperCase()));
         telefoonnummer.setOmschrijving(jsonTelefoonnummer.getOmschrijving());
+        telefoonnummer.setEntiteitId(jsonTelefoonnummer.getEntiteitId());
+        telefoonnummer.setSoortEntiteit(SoortEntiteit.valueOf(jsonTelefoonnummer.getSoortEntiteit()));
 
         return telefoonnummer;
     }

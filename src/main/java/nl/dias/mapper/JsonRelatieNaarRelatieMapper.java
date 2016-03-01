@@ -58,8 +58,6 @@ public class JsonRelatieNaarRelatieMapper extends AbstractMapper<JsonRelatie, Re
             }
         }
 
-        relatie.setTelefoonnummers(null);
-
         return relatie;
     }
 

@@ -54,4 +54,11 @@ public class AdresService {
         }
     }
 
+    public void verwijderen(SoortEntiteit soortEntiteit, Long entiteitId) {
+        List<Adres> teVerwijderen = adresRepository.alles(soortEntiteit, entiteitId);
+
+        for (Adres adres : teVerwijderen) {
+            adresRepository.verwijder(adres);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,7 +10,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "TELEFOONNUMMER")
-//@NamedQueries({@NamedQuery(name = "Telefoonnummer.verwijderTelefoonnummersBijRelatie", query = "delete from Telefoonnummer a where a.relatie = :relatie")})
+@NamedQueries({//
+        @NamedQuery(name = "Telefoonnummer.zoekTelefoonnummersBijEntiteit", query = "select t from Telefoonnummer t where t.soortEntiteit = :soortEntiteit and t.entiteitId = :entiteitId"),//
+})
 public class Telefoonnummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -8991287195295458633L;
 
@@ -24,15 +27,11 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
     private TelefoonnummerSoort soort;
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
     private String omschrijving;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Relatie.class)
-    @JoinColumn(name = "RELATIE")
-    private Relatie relatie;
-    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = Bedrijf.class)
-    @Column(name = "BEDRIJF")
-    private Long bedrijf;
-    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false, targetEntity = ContactPersoon.class)
-    @Column(name = "CONTACTPERSOON")
-    private Long contactPersoon;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, name = "SOORTENTITEIT")
+    private SoortEntiteit soortEntiteit;
+    @Column(name = "ENTITEITID")
+    private Long entiteitId;
 
     @Override
     public Long getId() {
@@ -60,14 +59,6 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         this.soort = soort;
     }
 
-    public Relatie getRelatie() {
-        return relatie;
-    }
-
-    public void setRelatie(Relatie relatie) {
-        this.relatie = relatie;
-    }
-
     public String getOmschrijving() {
         return omschrijving;
     }
@@ -76,25 +67,25 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         this.omschrijving = omschrijving;
     }
 
-    public Long getContactPersoon() {
-        return contactPersoon;
+    public SoortEntiteit getSoortEntiteit() {
+        return soortEntiteit;
     }
 
-    public void setContactPersoon(Long contactPersoon) {
-        this.contactPersoon = contactPersoon;
+    public void setSoortEntiteit(SoortEntiteit soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
-    public Long getBedrijf() {
-        return bedrijf;
+    public Long getEntiteitId() {
+        return entiteitId;
     }
 
-    public void setBedrijf(Long bedrijf) {
-        this.bedrijf = bedrijf;
+    public void setEntiteitId(Long entiteitId) {
+        this.entiteitId = entiteitId;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(relatie).append(soort).append(telefoonnummer).append(omschrijving).toHashCode();
+        return new HashCodeBuilder().append(id).append(soort).append(telefoonnummer).append(omschrijving).toHashCode();
     }
 
     @Override
@@ -110,7 +101,7 @@ public class Telefoonnummer implements Serializable, PersistenceObject {
         }
         Telefoonnummer other = (Telefoonnummer) obj;
 
-        return new EqualsBuilder().append(id, other.id).append(relatie, other.relatie).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).append(omschrijving, other.omschrijving).isEquals();
+        return new EqualsBuilder().append(id, other.id).append(soort, other.soort).append(telefoonnummer, other.telefoonnummer).append(omschrijving, other.omschrijving).isEquals();
     }
 
     @Override

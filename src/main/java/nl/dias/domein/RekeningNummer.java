@@ -1,5 +1,6 @@
 package nl.dias.domein;
 
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,7 +10,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "REKENINGNUMMER")
-//@NamedQueries({@NamedQuery(name = "RekeningNummer.verwijderRekeningNummersBijRelatie", query = "delete from RekeningNummer a where a.relatie = :relatie")})
+@NamedQueries({//
+        @NamedQuery(name = "RekeningNummer.zoekRekeningNummersBijEntiteit", query = "select r from RekeningNummer r where r.soortEntiteit = :soortEntiteit and r.entiteitId = :entiteitId"),//
+})
 public class RekeningNummer implements Serializable, PersistenceObject {
     private static final long serialVersionUID = 6164849876034232194L;
 
@@ -17,20 +20,15 @@ public class RekeningNummer implements Serializable, PersistenceObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-
     @Column(name = "BIC")
     private String bic;
-
     @Column(name = "REKENINGNUMMER")
     private String rekeningnummer;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
-    @JoinColumn(name = "RELATIE")
-    private Relatie relatie;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true, targetEntity = Kantoor.class)
-    @JoinColumn(name = "KANTOOR")
-    private Kantoor kantoor;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50, name = "SOORTENTITEIT")
+    private SoortEntiteit soortEntiteit;
+    @Column(name = "ENTITEITID")
+    private Long entiteitId;
 
     @Override
     public Long getId() {
@@ -58,20 +56,20 @@ public class RekeningNummer implements Serializable, PersistenceObject {
         this.rekeningnummer = rekeningnummer;
     }
 
-    public Relatie getRelatie() {
-        return relatie;
+    public SoortEntiteit getSoortEntiteit() {
+        return soortEntiteit;
     }
 
-    public void setRelatie(Relatie relatie) {
-        this.relatie = relatie;
+    public void setSoortEntiteit(SoortEntiteit soortEntiteit) {
+        this.soortEntiteit = soortEntiteit;
     }
 
-    public Kantoor getKantoor() {
-        return kantoor;
+    public Long getEntiteitId() {
+        return entiteitId;
     }
 
-    public void setKantoor(Kantoor kantoor) {
-        this.kantoor = kantoor;
+    public void setEntiteitId(Long entiteitId) {
+        this.entiteitId = entiteitId;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class RekeningNummer implements Serializable, PersistenceObject {
         }
         RekeningNummer other = (RekeningNummer) obj;
 
-        return new EqualsBuilder().append(bic, other.bic).append(id, other.id).append(kantoor, other.kantoor).append(rekeningnummer, other.rekeningnummer).append(relatie, other.relatie).isEquals();
+        return new EqualsBuilder().append(bic, other.bic).append(id, other.id).append(rekeningnummer, other.rekeningnummer).isEquals();
     }
 
     @Override

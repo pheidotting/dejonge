@@ -23,23 +23,17 @@ import static com.google.common.collect.Iterables.transform;
 @NamedQueries({@NamedQuery(name = "Relatie.zoekAllesVoorKantoor", query = "select r from Relatie r where r.kantoor = :kantoor"), //
         @NamedQuery(name = "Relatie.zoekOpEmail", query = "select r from Relatie r where r.identificatie = :emailadres"), //
         @NamedQuery(name = "Relatie.zoekOpBsn", query = "select r from Relatie r where r.bsn = :bsn"), //
-        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"), //
+        //        @NamedQuery(name = "Relatie.zoekOpTelefoonnummer", query = "select r from Relatie r inner join r.telefoonnummers t where t.telefoonnummer = :telefoonnummer"), //
         @NamedQuery(name = "Relatie.zoekOpBedrijfsnaam", query = "select r from Relatie r inner join r.bedrijven b where b.naam LIKE :bedrijfsnaam")//
 })
-public class Relatie extends Gebruiker implements Serializable, PersistenceObject, ObjectMetTelefoonnummers, ObjectMetRekeningNummers {
+public class Relatie extends Gebruiker implements Serializable, PersistenceObject {
     private static final long serialVersionUID = -1920949633670770763L;
 
     @Column(name = "ROEPNAAM")
     private String roepnaam;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "relatie")
-    private Set<Telefoonnummer> telefoonnummers;
-
     @Column(name = "BSN")
     private String bsn;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = RekeningNummer.class, mappedBy = "relatie")
-    private Set<RekeningNummer> rekeningnummers;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false, targetEntity = Kantoor.class)
     @JoinColumn(name = "KANTOOR")
@@ -80,34 +74,12 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
         this.roepnaam = roepnaam;
     }
 
-    public Set<Telefoonnummer> getTelefoonnummers() {
-        if (telefoonnummers == null) {
-            telefoonnummers = new HashSet<>();
-        }
-        return telefoonnummers;
-    }
-
-    public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
-        this.telefoonnummers = telefoonnummers;
-    }
-
     public String getBsn() {
         return bsn;
     }
 
     public void setBsn(String bsn) {
         this.bsn = bsn;
-    }
-
-    public Set<RekeningNummer> getRekeningnummers() {
-        if (rekeningnummers == null) {
-            rekeningnummers = new HashSet<>();
-        }
-        return rekeningnummers;
-    }
-
-    public void setRekeningnummers(Set<RekeningNummer> rekeningnummers) {
-        this.rekeningnummers = rekeningnummers;
     }
 
     public Kantoor getKantoor() {
@@ -230,7 +202,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
             kantoorId = kantoor.getId();
         }
 
-        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("telefoonnummers", this.telefoonnummers).append("identificatie", this.getIdentificatie()).append("rekeningnummers", this.rekeningnummers).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("identificatie", this.getIdentificatie()).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
     }
 
     @Override

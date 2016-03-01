@@ -192,12 +192,12 @@ public class BedrijfTest extends AbstractITest {
         jsonTelefoonnummer.setSoort("MOBIEL");
         jsonTelefoonnummer.setOmschrijving(genereerRandomString(2500));
 
-        if (bedrijfsId != null) {
-            jsonTelefoonnummer.setBedrijf(bedrijfsId);
-        }
-        if (contactpersoonId != null) {
-            jsonTelefoonnummer.setContactpersoon(Long.valueOf(contactpersoonId));
-        }
+        //        if (bedrijfsId != null) {
+        //            jsonTelefoonnummer.setBedrijf(bedrijfsId);
+        //        }
+        //        if (contactpersoonId != null) {
+        //            jsonTelefoonnummer.setContactpersoon(Long.valueOf(contactpersoonId));
+        //        }
 
         return jsonTelefoonnummer;
     }

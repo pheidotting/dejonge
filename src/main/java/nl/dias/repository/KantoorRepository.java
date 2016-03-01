@@ -1,13 +1,10 @@
 package nl.dias.repository;
 
 import nl.dias.domein.Kantoor;
-import nl.dias.domein.RekeningNummer;
-import nl.dias.domein.Relatie;
 import nl.dias.exception.BsnNietGoedException;
 import nl.dias.exception.IbanNietGoedException;
 import nl.dias.exception.PostcodeNietGoedException;
 import nl.dias.exception.TelefoonnummerNietGoedException;
-import nl.dias.utils.Validatie;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
 import org.springframework.stereotype.Repository;
@@ -27,18 +24,6 @@ public class KantoorRepository extends AbstractRepository<Kantoor> {
 
     @Transactional
     public void opslaanKantoor(Kantoor o) throws PostcodeNietGoedException, TelefoonnummerNietGoedException, BsnNietGoedException, IbanNietGoedException {
-        Validatie.valideer(o);
-
-        for (Relatie relatie : o.getRelaties()) {
-            Validatie.valideer(relatie);
-        }
-
-        for (RekeningNummer rekening : o.getRekeningnummers()) {
-            rekening.setBic(rekening.getBic().toUpperCase());
-            rekening.setRekeningnummer(rekening.getRekeningnummer().toUpperCase());
-            rekening.setKantoor(o);
-        }
-
         getTx().begin();
         if (((PersistenceObject) o).getId() == null) {
             getEm().persist(o);
