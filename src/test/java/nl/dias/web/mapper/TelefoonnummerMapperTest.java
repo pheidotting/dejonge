@@ -2,6 +2,7 @@ package nl.dias.web.mapper;
 
 import nl.dias.domein.Telefoonnummer;
 import nl.dias.domein.TelefoonnummerSoort;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +55,7 @@ public class TelefoonnummerMapperTest {
         telefoonnummer.setTelefoonnummer("0123456789");
         telefoonnummer.setSoort(TelefoonnummerSoort.MOBIEL);
         telefoonnummer.setOmschrijving("Lorem ipsum");
+        telefoonnummer.setSoortEntiteit(SoortEntiteit.RELATIE);
 
         return telefoonnummer;
     }
@@ -65,6 +67,7 @@ public class TelefoonnummerMapperTest {
         telefoonnummer.setTelefoonnummer("0123456789");
         telefoonnummer.setSoort("Mobiel");
         telefoonnummer.setOmschrijving("Lorem ipsum");
+        telefoonnummer.setSoortEntiteit("RELATIE");
 
         return telefoonnummer;
     }

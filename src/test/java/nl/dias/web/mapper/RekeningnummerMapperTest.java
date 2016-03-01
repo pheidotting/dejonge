@@ -1,6 +1,7 @@
 package nl.dias.web.mapper;
 
 import nl.dias.domein.RekeningNummer;
+import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,7 @@ public class RekeningnummerMapperTest {
         rekeningNummer.setBic("bic");
         rekeningNummer.setId(1L);
         rekeningNummer.setRekeningnummer("rekeningnummer");
+        rekeningNummer.setSoortEntiteit(SoortEntiteit.RELATIE);
 
         return rekeningNummer;
     }
@@ -59,6 +61,7 @@ public class RekeningnummerMapperTest {
         jsonRekeningNummer.setBic("bic");
         jsonRekeningNummer.setId(1L);
         jsonRekeningNummer.setRekeningnummer("rekeningnummer");
+        jsonRekeningNummer.setSoortEntiteit("RELATIE");
 
         return jsonRekeningNummer;
     }
