@@ -104,6 +104,16 @@ public class GebruikerController {
         return lijst;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon")
+    @ResponseBody
+    public Long opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon) {
+        ContactPersoon contactPersoon = mapper.map(jsonContactPersoon, ContactPersoon.class);
+
+        gebruikerService.opslaan(contactPersoon);
+
+        return contactPersoon.getId();
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
     public Response opslaan(@RequestBody JsonRelatie jsonRelatie) {

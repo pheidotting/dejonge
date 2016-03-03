@@ -15,11 +15,7 @@ public class ContactPersoon extends Gebruiker implements Serializable, Persisten
     private static final long serialVersionUID = -4313251874716582151L;
 
     @Column(name = "BEDRIJF")
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Long bedrijf;
-
-    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Telefoonnummer.class, mappedBy = "contactPersoon")
-    //    private Set<Telefoonnummer> telefoonnummers;
 
     @Column(name = "FUNCTIE")
     private String functie;
@@ -31,17 +27,6 @@ public class ContactPersoon extends Gebruiker implements Serializable, Persisten
     public void setBedrijf(Long bedrijf) {
         this.bedrijf = bedrijf;
     }
-
-    //    public Set<Telefoonnummer> getTelefoonnummers() {
-    //        if (telefoonnummers == null) {
-    //            telefoonnummers = Sets.newHashSet();
-    //        }
-    //        return telefoonnummers;
-    //    }
-    //
-    //    public void setTelefoonnummers(Set<Telefoonnummer> telefoonnummers) {
-    //        this.telefoonnummers = telefoonnummers;
-    //    }
 
     public String getFunctie() {
         return functie;
