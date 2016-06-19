@@ -7,10 +7,11 @@ import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.inject.Inject;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +23,11 @@ import java.util.Date;
 public class HeaderFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HeaderFilter.class);
 
-    @Inject
-    private GebruikerRepository gebruikerRepository = new GebruikerRepository();
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        GebruikerRepository gebruikerRepository = (GebruikerRepository) applicationContext.getBean("gebruikerRepository");
+
         LOGGER.debug("In HeaderFilter");
         HttpServletRequest req = (HttpServletRequest) httpServletRequest;
 

@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/overig")
 @Controller
@@ -42,6 +39,11 @@ public class JsonController {
     @Inject
     private PostcodeService postcodeService;
 
+    @RequestMapping(method = RequestMethod.GET, value = "/getTrackAndTraceId")
+    @ResponseBody
+    public String getTrackAndTraceId() {
+        return UUID.randomUUID().toString();
+    }
     @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen")
     @ResponseBody
     public Map<Long, String> lijstVerzekeringsMaatschappijen() {

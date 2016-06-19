@@ -144,4 +144,5 @@ public class HypotheekService {
 
         return hypotheekPakketRepository.allesVanRelatie(relatie);
     }
+
 }

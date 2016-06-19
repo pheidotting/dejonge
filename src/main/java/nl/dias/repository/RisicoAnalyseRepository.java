@@ -2,36 +2,52 @@ package nl.dias.repository;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.RisicoAnalyse;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class RisicoAnalyseRepository extends AbstractRepository<RisicoAnalyse> {
+public class RisicoAnalyseRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(RisicoAnalyseRepository.class);
 
-    public RisicoAnalyseRepository() {
-        super(RisicoAnalyse.class);
-        zetPersistenceContext("dias");
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    protected Transaction getTransaction() {
+        Transaction transaction = getSession().getTransaction();
+        if (transaction.getStatus() != TransactionStatus.ACTIVE) {
+            transaction.begin();
+        }
+
+        return transaction;
     }
 
     public RisicoAnalyse leesBijBedrijf(Bedrijf bedrijf) {
         LOGGER.debug("leesBijBedrijf met id {}", bedrijf.getId());
 
-        TypedQuery<RisicoAnalyse> query = getEm().createNamedQuery("RisicoAnalyse.alleRisicoAnalysesBijBedrijf", RisicoAnalyse.class);
+        Query query = getSession().getNamedQuery("RisicoAnalyse.alleRisicoAnalysesBijBedrijf");
         query.setParameter("bedrijf", bedrijf);
 
         RisicoAnalyse risicoAnalyse = null;
-        List<RisicoAnalyse> result = query.getResultList();
+        List<RisicoAnalyse> result = query.list();
         if (result.size() == 0) {
             risicoAnalyse = new RisicoAnalyse();
             risicoAnalyse.setBedrijf(bedrijf);
@@ -43,4 +59,48 @@ public class RisicoAnalyseRepository extends AbstractRepository<RisicoAnalyse> {
         }
         return risicoAnalyse;
     }
+
+    public RisicoAnalyse lees(Long id) {
+        getTransaction();
+
+        RisicoAnalyse risicoAnalyse = getSession().get(RisicoAnalyse.class, id);
+
+        getTransaction().commit();
+
+        return risicoAnalyse;
+    }
+
+    public void opslaan(RisicoAnalyse risicoAnalyse) {
+        getTransaction();
+
+        LOGGER.info("Opslaan {}", ReflectionToStringBuilder.toString(risicoAnalyse, ToStringStyle.SHORT_PREFIX_STYLE));
+        if (risicoAnalyse.getId() == null) {
+            getSession().save(risicoAnalyse);
+        } else {
+            getSession().merge(risicoAnalyse);
+        }
+
+        getTransaction().commit();
+    }
+
+    public void verwijder(RisicoAnalyse risicoAnalyse) {
+        getTransaction();
+
+        getSession().delete(risicoAnalyse);
+
+        getTransaction().commit();
+    }
+
+    public List<RisicoAnalyse> alles() {
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("RisicoAnalyse.alles");
+
+        List<RisicoAnalyse> risicoAnalyses = query.list();
+
+        getTransaction().commit();
+
+        return risicoAnalyses;
+    }
+
 }

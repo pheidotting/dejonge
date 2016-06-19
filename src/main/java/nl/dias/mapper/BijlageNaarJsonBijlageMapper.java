@@ -2,6 +2,7 @@ package nl.dias.mapper;
 
 import nl.dias.domein.Bijlage;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.SoortEntiteit;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,7 +10,7 @@ public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBi
     @Override
     public JsonBijlage map(Bijlage bijlage, Object parent, Object bestaandObject) {
         JsonBijlage json = new JsonBijlage();
-        json.setId(bijlage.getId() == null ? null : bijlage.getId().toString());
+        json.setId(bijlage.getId());
         if (bijlage.getOmschrijving() != null) {
             json.setOmschrijvingOfBestandsNaam(bijlage.getOmschrijving());
         } else {
@@ -17,7 +18,9 @@ public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBi
         }
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
         json.setBestandsNaam(bijlage.getBestandsNaam());
-        json.setParentId(bijlage.getEntiteitId());
+        json.setEntiteitId(bijlage.getEntiteitId());
+        json.setSoortEntiteit(SoortEntiteit.RELATIE.toString());
+        json.setS3Identificatie(bijlage.getS3Identificatie());
 
         return json;
     }

@@ -18,7 +18,7 @@
 	</appender>
 
     <appender name="debugFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/var/log/glassfish/djfc-relatiebeheer-debug.log"/>
+		<param name="file" value="/var/log/djfc/djfc-relatiebeheer-debug.log"/>
 		<param name="immediateFlush" value="true"/>
 		<param name="threshold" value="debug"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
@@ -28,7 +28,7 @@
 	</appender>
 
     <appender name="errorFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/var/log/glassfish/djfc-relatiebeheer-error.log"/>
+		<param name="file" value="/var/log/djfc/djfc-relatiebeheer-error.log"/>
 		<param name="immediateFlush" value="true"/>
         <param name="threshold" value="error"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
@@ -38,7 +38,7 @@
 	</appender>
 
     <appender name="log4javascriptFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/var/log/glassfish/djfc-log4javascript.log"/>
+		<param name="file" value="/var/log/djfc/djfc-log4javascript.log"/>
         <param name="immediateFlush" value="true"/>
         <param name="threshold" value="debug"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
@@ -48,7 +48,7 @@
     </appender>
 
     <appender name="authorisatieFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/var/log/glassfish/djfc-authorisatie.log"/>
+		<param name="file" value="/var/log/djfc/djfc-authorisatie.log"/>
         <param name="immediateFlush" value="true"/>
         <param name="threshold" value="debug"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
@@ -58,16 +58,22 @@
     </appender>
 
 	<logger name="javax.enterprise.system">
-		<level value="error" />
+		<level value="error"/>
 	</logger>
 	<logger name="javax.persistence">
-		<level value="info" />
+		<level value="info"/>
 	</logger>
 	<logger name="org.springframework">
-		<level value="error" />
+		<level value="info"/>
 	</logger>
 	<logger name="org.apache">
-		<level value="error" />
+		<level value="error"/>
+	</logger>
+	<logger name="org.hibernate">
+		<level value="error"/>
+	</logger>
+	<logger name="ch.vorburger">
+		<level value="off"/>
 	</logger>
     <logger name="nl.dias.service.AuthorisatieService" additivity="false">
 		<level value="info" />

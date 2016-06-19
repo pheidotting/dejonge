@@ -61,8 +61,8 @@ public class PolisTest extends AbstractITest {
 
         JsonBijlage jsonBijlage = new JsonBijlage();
         jsonBijlage.setBestandsNaam(UUID.randomUUID().toString());
-        jsonBijlage.setSoortBijlage("Polis");
-        jsonPolis.getBijlages().add(jsonBijlage);
+        //        jsonBijlage.setSoortBijlage("Polis");
+        //        jsonPolis.getBijlages().add(jsonBijlage);
         kenmerk = LocalDateTime.now().toString("dd-MM-yyyy HH:mm");
         jsonPolis.setKenmerk(kenmerk);
 

@@ -198,8 +198,8 @@ public class Kantoor implements Serializable, PersistenceObject {
         builder.append(emailadres);
         builder.append(", medewerkers=");
         builder.append(medewerkers);
-        builder.append(", relaties=");
-        builder.append(relaties);
+        //        builder.append(", relaties=");
+        //        builder.append(relaties);
         builder.append(", afkorting=");
         builder.append(afkorting);
         builder.append("]");

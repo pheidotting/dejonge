@@ -42,7 +42,6 @@ public class PolisNaarJsonPolisMapper extends AbstractMapper<Polis, JsonPolis> {
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().toString());
-            jsonPolis.setBedrijfsId(polis.getBedrijf());
         }
         //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {

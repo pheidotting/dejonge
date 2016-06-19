@@ -13,7 +13,6 @@ import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import nl.lakedigital.loginsystem.exception.OnjuistWachtwoordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +27,10 @@ import javax.ws.rs.core.Response;
 public class AuthorisatieController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-    @Autowired
-    private HttpServletResponse httpServletResponse;
+    //    @Autowired
+    //    private HttpServletRequest httpServletRequest;
+    //    @Autowired
+    //    private HttpServletResponse httpServletResponse;
     @Inject
     private AuthorisatieService authorisatieService;
     @Inject
@@ -39,7 +38,7 @@ public class AuthorisatieController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/inloggen")
     @ResponseBody
-    public Response inloggen(@RequestBody Inloggen inloggen) {
+    public Response inloggen(@RequestBody Inloggen inloggen, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
         try {
             LOGGER.debug("Inloggen");
             authorisatieService.inloggen(inloggen.getIdentificatie().trim(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
@@ -53,17 +52,17 @@ public class AuthorisatieController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/uitloggen")
     @ResponseBody
-    public Response uitloggen() {
+    public Response uitloggen(HttpServletRequest httpServletRequest) {
         authorisatieService.uitloggen(httpServletRequest);
         return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/ingelogdeGebruiker")
     @ResponseBody
-    public IngelogdeGebruiker getIngelogdeGebruiker() {
+    public IngelogdeGebruiker getIngelogdeGebruiker(HttpServletRequest httpServletRequest) {
         LOGGER.debug("Ophalen ingelogde gebruiker");
 
-        Gebruiker gebruiker = getGebruiker();
+        Gebruiker gebruiker = getGebruiker(httpServletRequest);
 
         IngelogdeGebruiker ingelogdeGebruiker = new IngelogdeGebruiker();
         if (gebruiker != null) {
@@ -92,10 +91,10 @@ public class AuthorisatieController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/isIngelogd")
     @ResponseBody
-    public Response isIngelogd() {
+    public Response isIngelogd(HttpServletRequest httpServletRequest) {
         LOGGER.debug("is gebruiker ingelogd");
 
-        Gebruiker gebruiker = getGebruiker();
+        Gebruiker gebruiker = getGebruiker(httpServletRequest);
 
         if (gebruiker == null) {
             return Response.status(401).entity(false).build();
@@ -104,7 +103,7 @@ public class AuthorisatieController {
         }
     }
 
-    private Gebruiker getGebruiker() {
+    private Gebruiker getGebruiker(HttpServletRequest httpServletRequest) {
         String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();

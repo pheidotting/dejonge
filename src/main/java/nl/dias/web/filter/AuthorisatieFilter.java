@@ -8,6 +8,8 @@ import nl.dias.service.GebruikerService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -29,15 +31,16 @@ public class AuthorisatieFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        init();
-
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
         if (req.getSession().getAttribute("sessie") != null) {
             LOGGER.debug("Blijkbaar heeft een vorig filter het al goed bevonden, doorgaan");
+
+            opruimen();
             chain.doFilter(request, response);
         } else {
+            init();
 
             Gebruiker gebruiker = null;
             Sessie sessie = null;
@@ -112,15 +115,10 @@ public class AuthorisatieFilter implements Filter {
     }
 
     private void init() {
-        if (gebruikerService == null) {
-            gebruikerService = new GebruikerService();
-        }
-        if (gebruikerRepository == null) {
-            gebruikerRepository = new GebruikerRepository();
-        }
-        if (authorisatieService == null) {
-            authorisatieService = new AuthorisatieService();
-        }
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        gebruikerRepository = (GebruikerRepository) applicationContext.getBean("gebruikerRepository");
+        gebruikerService = (GebruikerService) applicationContext.getBean("gebruikerService");
+        authorisatieService = (AuthorisatieService) applicationContext.getBean("authorisatieService");
     }
 
     private void opruimen() {

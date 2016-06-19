@@ -4,65 +4,145 @@ import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class HypotheekRepository extends AbstractRepository<Hypotheek> {
+public class HypotheekRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekRepository.class);
 
-    public HypotheekRepository() {
-        super(Hypotheek.class);
-        zetPersistenceContext("dias");
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    protected Transaction getTransaction() {
+        Transaction transaction = getSession().getTransaction();
+        if (transaction.getStatus() != TransactionStatus.ACTIVE) {
+            transaction.begin();
+        }
+
+        return transaction;
     }
 
     public List<SoortHypotheek> alleSoortenHypotheekInGebruik() {
         LOGGER.debug("Ophalen alleSoortenHypotheekInGebruik");
-        TypedQuery<SoortHypotheek> query = getEm().createNamedQuery("SoortHypotheek.allesInGebruik", SoortHypotheek.class);
-        return query.getResultList();
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("SoortHypotheek.allesInGebruik");
+
+        List<SoortHypotheek> soortHypotheeks = query.list();
+
+        getTransaction().commit();
+
+        return soortHypotheeks;
     }
 
     public SoortHypotheek leesSoortHypotheek(Long id) {
-        return getEm().find(SoortHypotheek.class, id);
+        return getSession().get(SoortHypotheek.class, id);
+    }
+
+    public Hypotheek lees(Long id) {
+        return getSession().get(Hypotheek.class, id);
     }
 
     public List<Hypotheek> allesVanRelatie(Relatie relatie) {
-        TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatie", Hypotheek.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Hypotheek.allesVanRelatie");
         query.setParameter("relatie", relatie);
 
-        return query.getResultList();
+        List<Hypotheek> hypotheeks = query.list();
+
+        getTransaction().commit();
+
+        return hypotheeks;
     }
 
     public List<Hypotheek> allesVanRelatieInEenPakket(Relatie relatie) {
-        TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatieInEenPakket", Hypotheek.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Hypotheek.allesVanRelatieInEenPakket");
         query.setParameter("relatie", relatie);
 
-        return query.getResultList();
+        List<Hypotheek> hypotheeks = query.list();
+
+        getTransaction().commit();
+
+        return hypotheeks;
     }
 
     public List<Hypotheek> allesVanRelatieInclDePakketten(Relatie relatie) {
-        TypedQuery<Hypotheek> query = getEm().createNamedQuery("Hypotheek.allesVanRelatieInclDePakketten", Hypotheek.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Hypotheek.allesVanRelatieInclDePakketten");
         query.setParameter("relatie", relatie);
 
-        return query.getResultList();
+        List<Hypotheek> hypotheeks = query.list();
+
+        getTransaction().commit();
+
+        return hypotheeks;
     }
 
     @Transactional
     public void opslaanBijlage(Bijlage bijlage) {
-        getEm().getTransaction().begin();
-        getEm().persist(bijlage);
-        getEm().getTransaction().commit();
+        getSession().getTransaction().begin();
+
+        getSession().persist(bijlage);
+
+        getSession().getTransaction().commit();
+    }
+
+    public void opslaan(Hypotheek hypotheek) {
+        getTransaction();
+
+        LOGGER.info("Opslaan {}", ReflectionToStringBuilder.toString(hypotheek, ToStringStyle.SHORT_PREFIX_STYLE));
+        if (hypotheek.getId() == null) {
+            getSession().save(hypotheek);
+        } else {
+            getSession().merge(hypotheek);
+        }
+
+        getTransaction().commit();
+    }
+
+    public void verwijder(Hypotheek hypotheek) {
+        getTransaction();
+
+        getSession().delete(hypotheek);
+
+        getTransaction().commit();
+    }
+
+    public List<Hypotheek> alles() {
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Hypotheek.alles");
+
+        List<Hypotheek> hypotheeks = query.list();
+
+        getTransaction().commit();
+
+        return hypotheeks;
     }
 
 }

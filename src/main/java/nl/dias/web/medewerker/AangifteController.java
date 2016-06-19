@@ -11,7 +11,6 @@ import nl.lakedigital.djfc.commons.json.JsonAangifte;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +34,8 @@ public class AangifteController {
     private GebruikerService gebruikerService;
     @Inject
     private AangifteMapper aangifteMapper;
-    @Autowired
-    private HttpServletRequest httpServletRequest;
+    //    @Autowired
+    //    private HttpServletRequest httpServletRequest;
     @Inject
     private AuthorisatieService authorisatieService;
 
@@ -48,10 +47,10 @@ public class AangifteController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/afronden")
     @ResponseBody
-    public Response afronden(@RequestBody Long id) {
+    public Response afronden(@RequestBody Long id, HttpServletRequest httpServletRequest) {
         LOGGER.info("Afronden Aangifte met id " + id);
         try {
-            aangifteService.afronden(id, LocalDate.now(), getGebruiker());
+            aangifteService.afronden(id, LocalDate.now(), getGebruiker(httpServletRequest));
         } catch (Exception e) {
             LOGGER.trace("{}", e);
             return Response.status(500).build();
@@ -74,7 +73,7 @@ public class AangifteController {
         return aangifteMapper.mapAllNaarJson(aangifteService.getAfgeslotenAangiftes((Relatie) gebruikerService.lees(relatie)));
     }
 
-    private Gebruiker getGebruiker() {
+    private Gebruiker getGebruiker(HttpServletRequest httpServletRequest) {
         String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();

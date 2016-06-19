@@ -21,8 +21,8 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
     @Inject
     private OpmerkingMapper opmerkingMapper;
-    @Inject
-    private BijlageMapper bijlageMapper;
+    //    @Inject
+    //    private BijlageMapper bijlageMapper;
     @Inject
     private SchadeService schadeService;
     @Inject
@@ -119,7 +119,4 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
         this.opmerkingMapper = opmerkingMapper;
     }
 
-    public void setBijlageMapper(BijlageMapper bijlageMapper) {
-        this.bijlageMapper = bijlageMapper;
-    }
 }

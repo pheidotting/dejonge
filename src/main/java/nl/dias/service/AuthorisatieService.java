@@ -30,7 +30,7 @@ public class AuthorisatieService {
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {
         LOGGER.debug("Inloggen met " + identificatie + " en onthouden " + onthouden);
 
-        Gebruiker gebruikerUitDatabase = gebruikerService.zoek(identificatie);
+        Gebruiker gebruikerUitDatabase = gebruikerService.zoekOpIdentificatie(identificatie);
         Gebruiker inloggendeGebruiker = null;
         if (gebruikerUitDatabase instanceof Medewerker) {
             LOGGER.debug("Gebruiker is een Medewerker");

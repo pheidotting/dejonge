@@ -1,79 +1,61 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Opmerking;
-import nl.dias.service.OpmerkingService;
-import nl.dias.web.SoortEntiteit;
-import nl.dias.web.mapper.OpmerkingMapper;
+import com.google.common.base.Function;
+import nl.dias.domein.Medewerker;
+import nl.dias.service.GebruikerService;
+import nl.lakedigital.djfc.client.oga.OpmerkingClient;
 import nl.lakedigital.djfc.commons.json.JsonOpmerking;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.ws.rs.QueryParam;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
 
 @RequestMapping("/opmerking")
 @Controller
-public class OpmerkingController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpmerkingController.class);
-
+public class OpmerkingController extends AbstractController {
+    private OpmerkingClient opmerkingClient = new OpmerkingClient(8081);
     @Inject
-    private OpmerkingService opmerkingService;
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
-
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstOpmerkingen")
-    @ResponseBody
-    public List<JsonOpmerking> lijstOpmerkingen(@QueryParam("soortentiteit") String soortentiteit, @QueryParam("parentid") Long parentid) {
-        SoortEntiteit soortEntiteit = SoortEntiteit.valueOf(soortentiteit);
-
-        return opmerkingMapper.mapAllNaarJson(opmerkingService.alleOpmerkingenBijEntiteit(soortEntiteit, parentid));
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
-    @ResponseBody
-    public void verwijder(@QueryParam("id") Long id) {
-        LOGGER.debug("Verwijder opmerking met id {}", id);
-        opmerkingService.verwijder(id);
-    }
+    private GebruikerService gebruikerService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Long opslaan(@RequestBody JsonOpmerking jsonOpmerking) {
-        Opmerking opmerking = null;
-        try {
-            opmerking = opmerkingMapper.mapVanJson(jsonOpmerking);
-        } catch (IllegalArgumentException e) {
-            LOGGER.debug("Fout opgetreden bij opslaan Opmerking", e);
-            throw new AlgemeneFoutException(e.getMessage());
-        }
-        if (opmerking != null) {
-            opmerkingService.opslaan(opmerking);
-        }
-        return opmerking.getId();
+    public void opslaan(@RequestBody List<JsonOpmerking> jsonEntiteiten, HttpServletRequest httpServletRequest) {
+        opmerkingClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public class AlgemeneFoutException extends RuntimeException {
-        public AlgemeneFoutException(String message) {
-            super(message);
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/nieuw")
+    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
     @ResponseBody
-    public JsonOpmerking nieuw() {
-        return new JsonOpmerking();
+    public List<JsonOpmerking> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
+        List<JsonOpmerking> jsonEntiteiten = opmerkingClient.lijst(soortentiteit, parentid);
+
+        return newArrayList(transform(jsonEntiteiten, new Function<JsonOpmerking, JsonOpmerking>() {
+            @Override
+            public JsonOpmerking apply(JsonOpmerking jsonOpmerking) {
+                Medewerker medewerker = (Medewerker) gebruikerService.lees(jsonOpmerking.getMedewerkerId());
+
+                jsonOpmerking.setMedewerker(medewerker.getNaam());
+
+                return jsonOpmerking;
+            }
+        }));
     }
 
-    public void setOpmerkingService(OpmerkingService opmerkingService) {
-        this.opmerkingService = opmerkingService;
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
+    @ResponseBody
+    public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
+        opmerkingClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
-        this.opmerkingMapper = opmerkingMapper;
+    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")
+    @ResponseBody
+    public List<JsonOpmerking> zoeken(@PathVariable("zoekTerm") String zoekTerm) {
+        List<JsonOpmerking> result = opmerkingClient.zoeken(zoekTerm);
+
+        return result;
     }
 }

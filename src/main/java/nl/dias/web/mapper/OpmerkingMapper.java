@@ -32,8 +32,8 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         opmerking.setId(jsonOpmerking.getId());
         opmerking.setOpmerking(jsonOpmerking.getOpmerking());
         opmerking.setEntiteitId(jsonOpmerking.getEntiteitId());
-        if (jsonOpmerking.getSoort() != null) {
-            opmerking.setSoortEntiteit(SoortEntiteit.valueOf(jsonOpmerking.getSoort()));
+        if (jsonOpmerking.getSoortEntiteit() != null) {
+            opmerking.setSoortEntiteit(SoortEntiteit.valueOf(jsonOpmerking.getSoortEntiteit()));
         }
         opmerking.setMedewerker((Medewerker) gebruikerService.lees(Long.valueOf(jsonOpmerking.getMedewerkerId())));
 
@@ -50,7 +50,7 @@ public class OpmerkingMapper extends Mapper<Opmerking, JsonOpmerking> {
         jsonOpmerking.setOpmerking(opmerking.getOpmerking());
         jsonOpmerking.setTijd(opmerking.getTijd().toString("dd-MM-yyyy HH:mm"));
         jsonOpmerking.setMedewerker(opmerking.getMedewerker().getNaam());
-        jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId().toString());
+        jsonOpmerking.setMedewerkerId(opmerking.getMedewerker().getId());
         jsonOpmerking.setEntiteitId(opmerking.getEntiteitId());
 
         return jsonOpmerking;

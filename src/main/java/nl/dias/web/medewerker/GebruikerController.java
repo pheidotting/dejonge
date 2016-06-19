@@ -11,7 +11,6 @@ import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.List;
 
 @RequestMapping("/gebruiker")
 @Controller
-public class GebruikerController {
+public class GebruikerController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GebruikerController.class);
 
     @Inject
@@ -43,10 +41,10 @@ public class GebruikerController {
     private Mapper mapper;
     @Inject
     private AuthorisatieService authorisatieService;
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-    @Autowired
-    private HttpServletResponse httpServletResponse;
+    //    @Autowired
+    //    private HttpServletRequest httpServletRequest;
+    //    @Autowired
+    //    private HttpServletResponse httpServletResponse;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen")
     @ResponseBody
@@ -69,7 +67,7 @@ public class GebruikerController {
         if (id != null && !"0".equals(id.trim())) {
             Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
-            LOGGER.debug("Opgehaald : " + relatie);
+            //            LOGGER.debug("Opgehaald : " + relatie);
 
             jsonRelatie = relatieMapper.mapNaarJson(relatie);
         } else {
@@ -106,7 +104,9 @@ public class GebruikerController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon")
     @ResponseBody
-    public Long opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon) {
+    public Long opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon, HttpServletRequest httpServletRequest) {
+        zetSessieWaarden(httpServletRequest);
+
         ContactPersoon contactPersoon = mapper.map(jsonContactPersoon, ContactPersoon.class);
 
         gebruikerService.opslaan(contactPersoon);
@@ -116,8 +116,10 @@ public class GebruikerController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonRelatie jsonRelatie) {
+    public Response opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) {
         LOGGER.info("Opslaan " + jsonRelatie);
+
+        zetSessieWaarden(httpServletRequest);
 
         try {
             //            if (jsonRelatie.getId() != null) {
@@ -156,8 +158,10 @@ public class GebruikerController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijderen")
     @ResponseBody
-    public Response verwijderen(@QueryParam("id") Long id) {
+    public Response verwijderen(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
 
         gebruikerService.verwijder(id);
 
@@ -172,12 +176,9 @@ public class GebruikerController {
         JsonLijstRelaties lijst = new JsonLijstRelaties();
 
         if (zoekTerm == null || "".equals(zoekTerm)) {
-            // for (Gebruiker r :
-            // gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor()))
-            // {
-            // lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie)
-            // r));
-            // }
+            for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
+                lijst.getJsonRelaties().add(relatieMapper.mapNaarJson((Relatie) r));
+            }
         } else {
             Long idWeglaten = null;
             if (weglaten != null) {
@@ -196,7 +197,8 @@ public class GebruikerController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/koppelenOnderlingeRelatie")
     @ResponseBody
-    public void koppelenOnderlingeRelatie(@RequestBody JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie) {
+    public void koppelenOnderlingeRelatie(@RequestBody JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie, HttpServletRequest httpServletRequest) {
+        zetSessieWaarden(httpServletRequest);
 
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
     }
@@ -221,9 +223,5 @@ public class GebruikerController {
 
     public void setAuthorisatieService(AuthorisatieService authorisatieService) {
         this.authorisatieService = authorisatieService;
-    }
-
-    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
     }
 }

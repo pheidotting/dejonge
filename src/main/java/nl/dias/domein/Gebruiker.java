@@ -3,18 +3,27 @@ package nl.dias.domein;
 import nl.lakedigital.domein.Onderwerp;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
+@Audited
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorColumn(name = "SOORT", length = 1)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AttributeOverrides({@AttributeOverride(name = "identificatie", column = @Column(name = "GEBRUIKERSNAAM"))})
-@NamedQueries({@NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.identificatie = :emailadres"), @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"), @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam")})
+@NamedQueries({//
+        @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.emailadres = :emailadres"), //
+        @NamedQuery(name = "Gebruiker.zoekOpIdentificatie", query = "select g from Gebruiker g where g.identificatie = :identificatie"), //
+        @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"), //
+        @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), //
+        @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam")//
+})
 public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
 
@@ -26,6 +35,7 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
     private String achternaam;
     @Column(name = "EMAILADRES")
     private String emailadres;
+    @NotAudited
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gebruiker", orphanRemoval = true, targetEntity = Sessie.class)
     private Set<Sessie> sessies;
 

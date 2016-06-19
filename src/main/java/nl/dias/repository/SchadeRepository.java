@@ -1,80 +1,197 @@
 package nl.dias.repository;
 
 import nl.dias.domein.*;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class SchadeRepository extends AbstractRepository<Schade> {
-    public SchadeRepository() {
-        super(Schade.class);
-        zetPersistenceContext("dias");
+public class SchadeRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchadeRepository.class);
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    protected Transaction getTransaction() {
+        Transaction transaction = getSession().getTransaction();
+        if (transaction.getStatus() != TransactionStatus.ACTIVE) {
+            transaction.begin();
+        }
+
+        return transaction;
     }
 
     public List<SoortSchade> soortenSchade() {
-        TypedQuery<SoortSchade> query = getEm().createNamedQuery("SoortSchade.alles", SoortSchade.class);
-        return query.getResultList();
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("SoortSchade.alles");
+
+        List<SoortSchade> lijst = query.list();
+
+        getTransaction().commit();
+
+        return lijst;
     }
 
     public List<SoortSchade> soortenSchade(String omschrijving) {
-        TypedQuery<SoortSchade> query = getEm().createNamedQuery("SoortSchade.zoekOpOmschrijving", SoortSchade.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("SoortSchade.zoekOpOmschrijving");
         query.setParameter("omschrijving", "%" + omschrijving + "%");
-        return query.getResultList();
+
+        List<SoortSchade> lijst = query.list();
+
+        getTransaction().commit();
+
+        return lijst;
     }
 
     public StatusSchade getStatussen(String status) {
-        TypedQuery<StatusSchade> query = getEm().createNamedQuery("StatusSchade.zoekOpSoort", StatusSchade.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("StatusSchade.zoekOpSoort");
         query.setParameter("status", status);
 
-        return query.getSingleResult();
+        StatusSchade statusSchade = (StatusSchade) query.uniqueResult();
+
+        getTransaction().commit();
+
+        return statusSchade;
     }
 
     public List<StatusSchade> getStatussen() {
-        return getEm().createQuery("select s from StatusSchade s where s.ingebruik = '1'", StatusSchade.class).getResultList();
+        getTransaction();
+
+        Query query = getSession().createQuery("select s from StatusSchade s where s.ingebruik = '1'");
+
+        List<StatusSchade> lijst = query.list();
+
+        getTransaction().commit();
+
+        return lijst;
     }
 
     public Schade zoekOpSchadeNummerMaatschappij(String schadeNummerMaatschappij) {
-        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.zoekOpschadeNummerMaatschappij", Schade.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Schade.zoekOpschadeNummerMaatschappij");
         query.setParameter("schadeNummerMaatschappij", schadeNummerMaatschappij);
 
-        return query.getSingleResult();
+        Schade schade = (Schade) query.uniqueResult();
+
+        getTransaction().commit();
+
+        return schade;
     }
 
     public List<Schade> alleSchadesBijRelatie(Relatie relatie) {
-        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.allesVanRelatie", Schade.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Schade.allesVanRelatie");
         query.setParameter("relatie", relatie);
 
-        return query.getResultList();
+        List<Schade> lijst = query.list();
+
+        getTransaction().commit();
+
+        return lijst;
     }
 
     public List<Schade> allesBijPolis(Long polis) {
-        TypedQuery<Schade> query = getEm().createNamedQuery("Schade.allesBijPolis", Schade.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Schade.allesBijPolis");
         query.setParameter("polis", polis);
 
-        return query.getResultList();
+
+        List<Schade> lijst = query.list();
+
+        getTransaction().commit();
+
+        return lijst;
     }
 
     public List<Bijlage> zoekBijlagesBijSchade(Schade schade) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijSchade", Bijlage.class);
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Bijlage.zoekBijlagesBijSchade");
         query.setParameter("schade", schade);
 
-        return query.getResultList();
+        List<Bijlage> lijst = query.list();
 
+        getTransaction().commit();
+
+        return lijst;
     }
 
     @Transactional
     public void opslaanBijlage(Bijlage bijlage) {
-        getEm().getTransaction().begin();
-        getEm().persist(bijlage);
-        getEm().getTransaction().commit();
+        getTransaction();
+
+        getSession().persist(bijlage);
+
+        getTransaction().commit();
+    }
+
+    public Schade lees(Long id) {
+        getTransaction();
+
+        Schade schade = getSession().get(Schade.class, id);
+
+        getTransaction().commit();
+
+        return schade;
+    }
+
+    public void opslaan(Schade schade) {
+        getTransaction();
+
+        LOGGER.info("Opslaan {}", ReflectionToStringBuilder.toString(schade, ToStringStyle.SHORT_PREFIX_STYLE));
+        if (schade.getId() == null) {
+            getSession().save(schade);
+        } else {
+            getSession().merge(schade);
+        }
+
+        getTransaction().commit();
+    }
+
+    public void verwijder(Schade schade) {
+        getTransaction();
+
+        getSession().delete(schade);
+
+        getTransaction().commit();
+    }
+
+    public List<Schade> alles() {
+        getTransaction();
+
+        Query query = getSession().getNamedQuery("Schade.alles");
+
+        List<Schade> schades = query.list();
+
+        getTransaction().commit();
+
+        return schades;
     }
 }

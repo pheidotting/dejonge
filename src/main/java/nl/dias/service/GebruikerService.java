@@ -184,9 +184,9 @@ public class GebruikerService {
     }
 
     private void verstuurEvents(Relatie relatie) {
-        verstuurBsnEvent(relatie);
-        verstuurAdresEvent(relatie);
-        verstuurEmailEvent(relatie);
+        //        verstuurBsnEvent(relatie);
+        //        verstuurAdresEvent(relatie);
+        //        verstuurEmailEvent(relatie);
     }
 
     private void verstuurBsnEvent(Relatie relatie) {
@@ -308,6 +308,14 @@ public class GebruikerService {
         return gebruikerRepository.zoek(emailadres);
     }
 
+    public Gebruiker zoekOpIdentificatie(String identificatie) throws NietGevondenException {
+        return gebruikerRepository.zoekOpIdentificatie(identificatie);
+    }
+
+    public List<Gebruiker> zoekOpNaam(String naam) {
+        return gebruikerRepository.zoekOpNaam(naam);
+    }
+
     public void refresh(Sessie sessie) {
         gebruikerRepository.refresh(sessie);
     }
@@ -385,7 +393,7 @@ public class GebruikerService {
         List<Relatie> ret = new ArrayList<>();
         for (Relatie r : relaties) {
             if (r != null) {
-                LOGGER.debug("{}", ReflectionToStringBuilder.toString(r, ToStringStyle.SHORT_PREFIX_STYLE));
+                //                LOGGER.debug("{}", ReflectionToStringBuilder.toString(r, ToStringStyle.SHORT_PREFIX_STYLE));
                 ret.add(r);
             }
         }

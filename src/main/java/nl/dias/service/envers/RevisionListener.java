@@ -10,6 +10,7 @@ public class RevisionListener implements org.hibernate.envers.RevisionListener {
         RevEntity revEntity = (RevEntity) revisionEntity;
 
         revEntity.setUserid(Sessie.getIngelogdeGebruiker());
-	}
+        revEntity.setTrackAndTraceId(Sessie.getTrackAndTraceId());
+    }
 
 }

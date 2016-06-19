@@ -21,8 +21,8 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
     @Inject
     private OpmerkingMapper opmerkingMapper;
-    @Inject
-    private BijlageMapper bijlageMapper;
+    //    @Inject
+    //    private BijlageMapper bijlageMapper;
 
     @Override
     public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek) {
@@ -177,7 +177,4 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         this.opmerkingMapper = opmerkingMapper;
     }
 
-    public void setBijlageMapper(BijlageMapper bijlageMapper) {
-        this.bijlageMapper = bijlageMapper;
-    }
 }

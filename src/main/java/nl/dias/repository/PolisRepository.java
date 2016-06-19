@@ -5,106 +5,104 @@ import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.Polis;
-import nl.lakedigital.hulpmiddelen.repository.AbstractRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PolisRepository extends AbstractRepository<Polis> {
+public class PolisRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisRepository.class);
 
-    public PolisRepository() {
-        super(Polis.class);
-        zetPersistenceContext("dias");
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public void setPersistenceContext(String persistenceContext) {
-        zetPersistenceContext(persistenceContext);
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
     }
 
-    @Transactional
+    protected Session getEm() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    protected Transaction getTransaction() {
+        Transaction transaction = getSession().getTransaction();
+        if (transaction.getStatus() != TransactionStatus.ACTIVE) {
+            transaction.begin();
+        }
+
+        return transaction;
+    }
+
     public List<Polis> zoekPolissenOpSoort(Class<?> soort) {
+        getTransaction();
+        
         Query query = getEm().createQuery("select e from " + soort.getSimpleName() + " e");
-        @SuppressWarnings("unchecked") List<Polis> ret = query.getResultList();
+        List<Polis> ret = query.list();
 
+        getTransaction().commit();
+        
         return ret;
     }
-    //    @Override
-    //    public void opslaan(Polis polis){
-    ////        if(!getEm().getTransaction().isActive()) {
-    ////            getEm().getTransaction().begin();
-    ////        }
-    ////
-    ////        if(polis.getId()==null){
-    ////            getEm().persist(polis);
-    ////        }else{
-    ////            getEm().merge(polis);
-    ////        }
-    //        StringBuffer queryString=new StringBuffer();
-    //        queryString.append("update `POLIS` set ");
-    //
-    //        queryString.append("`STATUS` = '").append(polis.getStatus()).append("' ");
-    //        //        queryString.append("`BETAALFREQUENTIE` = '").append(polis.getBetaalfrequentie()).append("', ");
-    //        //        queryString.append("`INGANGSDATUM` = '").append(polis.getIngangsDatum()).append("', ");
-    //        //        queryString.append("`EINDDATUM` = '").append(polis.getEindDatum()).append("', ");
-    //        //        queryString.append("`POLISNUMMER` = '").append(polis.getPolisNummer()).append("', ");
-    //        //        queryString.append("`KENMERK` = '").append(polis.getKenmerk()).append("', ");
-    //        //        queryString.append("`PREMIE` = '").append(polis.getPremie().getBedrag()).append("', ");
-    //        //        queryString.append("`WIJZIGINGSDATUM` = '").append(polis.getWijzigingsDatum()).append("', ");
-    //        //        queryString.append("`PROLONGATIEDATUM` = '").append(polis.getProlongatieDatum()).append("', ");
-    //        //        queryString.append("`BEDRIJF` = '").append(polis.getBedrijf().getId()).append("', ");
-    //        //        queryString.append("`MAATSCHAPPIJ` = '").append(polis.getMaatschappij().getId()).append("', ");
-    //        //        queryString.append("`OMSCHRIJVING` = '").append(polis.getOmschrijvingVerzekering()).append("', ");
-    //
-    //        queryString.append("where `ID` = ");
-    //        queryString.append(polis.getId());
-    //
-    //        if(!getEm().getTransaction().isActive()) {
-    //            getEm().getTransaction().begin();
-    //        }
-    //        polis = null;
-    //
-    //        LOGGER.debug("Uitvoeren {}",queryString.toString());
-    //        Query query=getEm().createNativeQuery(queryString.toString());
-    //
-    //        query.executeUpdate();
-    //        getEm().getTransaction().commit();
-    //
-    //    }
 
     @Transactional
     public List<Polis> allePolissenBijMaatschappij(VerzekeringsMaatschappij maatschappij) {
-        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesBijMaatschappij", Polis.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Polis.allesBijMaatschappij");
         query.setParameter("maatschappij", maatschappij);
 
-        return query.getResultList();
+        List<Polis> polissen = query.list();
+
+        getTransaction().commit();
+
+        return polissen;
     }
 
     public List<Polis> allePolissenBijRelatie(Long relatie) {
-        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesVanRelatie", Polis.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Polis.allesVanRelatie");
         query.setParameter("relatie", relatie);
 
-        return query.getResultList();
+        List<Polis> polissen = query.list();
+
+        getTransaction().commit();
+
+        return polissen;
     }
 
     public List<Polis> allePolissenBijBedrijf(Long bedrijf) {
-        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.allesVanBedrijf", Polis.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Polis.allesVanBedrijf");
         query.setParameter("bedrijf", bedrijf);
 
-        return query.getResultList();
+        List<Polis> polissen = query.list();
+
+        getTransaction().commit();
+
+        return polissen;
     }
 
     @Transactional
     public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
-        relatie = getEm().find(Relatie.class, relatie.getId());
+        relatie = getEm().get(Relatie.class, relatie.getId());
 
         List<Polis> poli = new ArrayList<>();
         //        poli.addAll(relatie.getPolissen());
@@ -118,18 +116,29 @@ public class PolisRepository extends AbstractRepository<Polis> {
 
     @Transactional
     public Polis zoekOpPolisNummer(String PolisNummer, Kantoor kantoor) {
-        TypedQuery<Polis> query = getEm().createNamedQuery("Polis.zoekOpPolisNummer", Polis.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Polis.zoekOpPolisNummer");
         query.setParameter("polisNummer", PolisNummer);
         //        query.setParameter("kantoor", kantoor);
-        return query.getSingleResult();
+        Polis polis = (Polis) query.uniqueResult();
+
+        getTransaction().commit();
+
+        return polis;
     }
 
     public List<Bijlage> zoekBijlagesBijPolis(Polis polis) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijPolis", Bijlage.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Bijlage.zoekBijlagesBijPolis");
         query.setParameter("polis", polis);
 
-        return query.getResultList();
+        List<Bijlage> bijlages = query.list();
 
+        getTransaction().commit();
+
+        return bijlages;
     }
 
     @Transactional
@@ -146,13 +155,57 @@ public class PolisRepository extends AbstractRepository<Polis> {
     }
 
     public Bijlage leesBijlage(Long id) {
-        return getEm().find(Bijlage.class, id);
+        getTransaction();
+
+        Bijlage bijlage = getEm().get(Bijlage.class, id);
+
+        getTransaction().commit();
+
+        return bijlage;
     }
 
     public Bijlage leesBijlage(String s3) {
-        TypedQuery<Bijlage> query = getEm().createNamedQuery("Bijlage.zoekBijlagesBijS3", Bijlage.class);
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Bijlage.zoekBijlagesBijS3");
         query.setParameter("s3", s3);
-        return query.getSingleResult();
+
+        Bijlage bijlage = (Bijlage) query.list().get(0);
+
+        getTransaction().commit();
+
+        return bijlage;
+    }
+
+    public Polis lees(Long id) {
+        getTransaction();
+
+        Polis polis = getEm().get(Polis.class, id);
+
+        getTransaction().commit();
+
+        return polis;
+    }
+
+    public void opslaan(Polis polis) {
+        getTransaction();
+
+        LOGGER.info("Opslaan {}", ReflectionToStringBuilder.toString(polis, ToStringStyle.SHORT_PREFIX_STYLE));
+        if (polis.getId() == null) {
+            getSession().save(polis);
+        } else {
+            getSession().merge(polis);
+        }
+
+        getTransaction().commit();
+    }
+
+    public void verwijder(Polis polis) {
+        getTransaction();
+
+        getEm().delete(polis);
+
+        getTransaction().commit();
     }
 
 }

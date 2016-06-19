@@ -61,7 +61,7 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public Bijlage uploaden(MultipartFile fileDetail) {
+    public Bijlage uploaden(MultipartFile fileDetail, String uploadPad) {
         String[] exp = fileDetail.getOriginalFilename().split("//.");
         String extensie = exp[exp.length - 1];
 
@@ -74,12 +74,12 @@ public class BijlageService {
         bijlage.setBestandsNaam(fileDetail.getOriginalFilename());
         bijlage.setUploadMoment(LocalDateTime.now());
 
-        bijlageRepository.opslaan(bijlage);
+        //        bijlageRepository.opslaan(bijlage);
         LOGGER.debug("Opslaan Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         try {
             LOGGER.debug("Opslaan bestand op schijf");
-            writeToFile(fileDetail.getInputStream(), Utils.getUploadPad() + "/" + identificatie);
+            writeToFile(fileDetail.getInputStream(), uploadPad + "/" + identificatie);
             LOGGER.debug("Bestand opgeslagen op schijft");
         } catch (IOException e) {
             LOGGER.error("Fout bij uploaden", e);

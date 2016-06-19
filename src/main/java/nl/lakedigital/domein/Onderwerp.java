@@ -1,5 +1,9 @@
 package nl.lakedigital.domein;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -7,14 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
+@Audited
 @MappedSuperclass
 public abstract class Onderwerp implements Serializable {
     private static final long serialVersionUID = 6395324676484643680L;

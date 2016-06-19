@@ -35,9 +35,8 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
 
     @Inject
     private OpmerkingMapper opmerkingMapper;
-    @Inject
-    private BijlageMapper bijlageMapper;
-    @Inject
+    //    @Inject
+    //    private BijlageMapper bijlageMapper;
     private SchadeMapper schadeMapper;
     @Inject
     private PolisService polisService;
@@ -99,8 +98,8 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
             polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
         }
-        if (jsonPolis.getBedrijfsId() != null) {
-            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijfsId()));
+        if (jsonPolis.getBedrijf() != null) {
+            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijf()));
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
@@ -164,7 +163,6 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
             jsonPolis.setBedrijf(polis.getBedrijf().toString());
-            jsonPolis.setBedrijfsId(polis.getBedrijf());
         }
         //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {
@@ -206,9 +204,6 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         this.opmerkingMapper = opmerkingMapper;
     }
 
-    public void setBijlageMapper(BijlageMapper bijlageMapper) {
-        this.bijlageMapper = bijlageMapper;
-    }
 
     public void setSchadeMapper(SchadeMapper schadeMapper) {
         this.schadeMapper = schadeMapper;

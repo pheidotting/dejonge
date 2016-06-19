@@ -18,8 +18,8 @@ import javax.inject.Inject;
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AangifteMapper.class);
 
-    @Inject
-    private BijlageMapper bijlageMapper;
+    //    @Inject
+    //    private BijlageMapper bijlageMapper;
     @Inject
     private OpmerkingMapper opmerkingMapper;
 

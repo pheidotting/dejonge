@@ -1,11 +1,12 @@
 package nl.dias.domein;
 
-import nl.dias.domein.transformers.BedrijfToStringTransformer;
 import nl.dias.domein.transformers.SessieToStringTransformer;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Iterables.transform;
 
+@Audited
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "R")
@@ -35,6 +37,7 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @Column(name = "BSN")
     private String bsn;
 
+    @NotAudited
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false, targetEntity = Kantoor.class)
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
@@ -55,15 +58,19 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
     @Enumerated(EnumType.STRING)
     private BurgerlijkeStaat burgerlijkeStaat;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = OnderlingeRelatie.class, mappedBy = "relatie")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = OnderlingeRelatie.class, mappedBy = "relatie")
+    @NotAudited
     private Set<OnderlingeRelatie> onderlingeRelaties;
 
+    @NotAudited
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Bedrijf.class, mappedBy = "relatie")
     private Set<Bedrijf> bedrijven;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Hypotheek.class, mappedBy = "relatie", orphanRemoval = true)
+    @NotAudited
     private Set<Hypotheek> hypotheken;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = HypotheekPakket.class, mappedBy = "relatie", orphanRemoval = true)
+    @NotAudited
     private Set<HypotheekPakket> hypotheekPakketten;
 
     public String getRoepnaam() {
@@ -139,16 +146,16 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
         this.onderlingeRelaties = onderlingeRelaties;
     }
 
-    public Set<Bedrijf> getBedrijven() {
-        if (bedrijven == null) {
-            bedrijven = new HashSet<>();
-        }
-        return bedrijven;
-    }
-
-    public void setBedrijven(Set<Bedrijf> bedrijven) {
-        this.bedrijven = bedrijven;
-    }
+    //    public Set<Bedrijf> getBedrijven() {
+    //        if (bedrijven == null) {
+    //            bedrijven = new HashSet<>();
+    //        }
+    //        return bedrijven;
+    //    }
+    //
+    //    public void setBedrijven(Set<Bedrijf> bedrijven) {
+    //        this.bedrijven = bedrijven;
+    //    }
 
     public Set<Hypotheek> getHypotheken() {
         if (hypotheken == null) {
@@ -197,12 +204,12 @@ public class Relatie extends Gebruiker implements Serializable, PersistenceObjec
      */
     @Override
     public String toString() {
-        Long kantoorId = null;
-        if (kantoor != null) {
-            kantoorId = kantoor.getId();
-        }
+        //        Long kantoorId = null;
+        //        if (kantoor != null) {
+        //            kantoorId = kantoor.getId();
+        //        }
 
-        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("kantoor", kantoorId).append("burgerlijkeStaat", this.burgerlijkeStaat).append("identificatie", this.getIdentificatie()).append("bedrijven", transform(getBedrijven(), new BedrijfToStringTransformer())).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
+        return new ToStringBuilder(this).append("\ngeslacht", this.geslacht).append("burgerlijkeStaat", this.burgerlijkeStaat).append("identificatie", this.getIdentificatie()).append("voornaam", this.getVoornaam()).append("id", this.getId()).append("overlijdensdatum", this.overlijdensdatum).append("sessies", transform(this.getSessies(), new SessieToStringTransformer())).append("geboorteDatum", this.geboorteDatum).append("bsn", this.bsn).append("onderlingeRelaties", this.onderlingeRelaties).append("wachtwoordString", this.getWachtwoordString()).append("tussenvoegsel", this.getTussenvoegsel()).append("achternaam", this.getAchternaam()).toString();
     }
 
     @Override

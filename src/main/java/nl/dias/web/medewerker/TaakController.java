@@ -6,7 +6,6 @@ import nl.lakedigital.as.taakbeheer.domein.json.JsonTaak;
 import nl.lakedigital.as.taakbeheer.domein.json.JsonTaakAfhandelen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/taak")
@@ -24,8 +24,8 @@ import java.util.List;
 public class TaakController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TaakController.class);
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
+    //    @Autowired
+    //    private HttpServletRequest httpServletRequest;
 
     @Inject
     private TaakClient taakClient;
@@ -35,7 +35,8 @@ public class TaakController {
     @RequestMapping(method = RequestMethod.GET, value = "/alleOpenTakenVoorRelatie")
     @ResponseBody
     public List<JsonTaak> alleOpenTakenBijRelatie(@QueryParam("relatieId") Long relatieId) {
-        return taakClient.alleOpenTakenBijRelatie(relatieId);
+        return new ArrayList<>();
+        //        return taakClient.alleOpenTakenBijRelatie(relatieId);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/aantalOpenTaken")
@@ -68,7 +69,7 @@ public class TaakController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/oppakken")
     @ResponseBody
-    public Response oppakken(@QueryParam("id") Long id) {
+    public Response oppakken(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();

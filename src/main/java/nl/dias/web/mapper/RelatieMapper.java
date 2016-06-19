@@ -7,8 +7,6 @@ import nl.dias.domein.Relatie;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.djfc.commons.json.JsonOnderlingeRelatie;
 import nl.lakedigital.djfc.commons.json.JsonRelatie;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -31,8 +29,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private OpmerkingMapper opmerkingMapper;
     @Inject
     private AdresMapper adresMapper;
-    @Inject
-    private BijlageMapper bijlageMapper;
+    //    @Inject
+    //    private BijlageMapper bijlageMapper;
     @Inject
     private GebruikerService gebruikerService;
 
@@ -77,7 +75,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public JsonRelatie mapNaarJson(Relatie relatie) {
-        LOGGER.debug("Mappen : {}", ReflectionToStringBuilder.toString(relatie, ToStringStyle.SHORT_PREFIX_STYLE));
+        //        LOGGER.debug("Mappen : {}", ReflectionToStringBuilder.toString(relatie, ToStringStyle.SHORT_PREFIX_STYLE));
 
         JsonRelatie jsonRelatie = new JsonRelatie();
 
@@ -95,22 +93,19 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         //        jsonRelatie.setTelefoonnummers(telefoonnummerMapper.mapAllNaarJson(relatie.getTelefoonnummers()));
         jsonRelatie.setBsn(relatie.getBsn());
         //        jsonRelatie.setRekeningnummers(rekeningnummerMapper.mapAllNaarJson(relatie.getRekeningnummers()));
-        if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
-            jsonRelatie.setKantoor(relatie.getKantoor().getId());
-        }
+        //        if (relatie.getKantoor() != null && relatie.getKantoor().getId() != null) {
+        //            jsonRelatie.setKantoor(relatie.getKantoor().getId());
+        //        }
         //        LOGGER.debug("Opmerkingen mappen");
         //        jsonRelatie.setOpmerkingen(opmerkingMapper.mapAllNaarJson(relatie.getOpmerkingen()));
         //        LOGGER.debug("Einde opmerkingen mappen");
         if (relatie.getGeboorteDatum() != null) {
             jsonRelatie.setGeboorteDatum(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
-            jsonRelatie.setGeboorteDatumOpgemaakt(relatie.getGeboorteDatum().toString("dd-MM-yyyy"));
         } else {
             jsonRelatie.setGeboorteDatum("");
-            jsonRelatie.setGeboorteDatumOpgemaakt("");
         }
         if (relatie.getOverlijdensdatum() != null) {
             jsonRelatie.setOverlijdensdatum(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
-            jsonRelatie.setOverlijdensdatumOpgemaakt(relatie.getOverlijdensdatum().toString("dd-MM-yyyy"));
         }
         if (relatie.getGeslacht() != null) {
             jsonRelatie.setGeslacht(relatie.getGeslacht().getOmschrijving());
@@ -118,10 +113,12 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (relatie.getBurgerlijkeStaat() != null) {
             jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
         }
-        for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
-            jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
-        }
+        //        for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
+        //            jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
+        //        }
         //        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
+
+        jsonRelatie.setEmailadres(relatie.getEmailadres());
 
         return jsonRelatie;
     }

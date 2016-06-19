@@ -8,7 +8,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<context:component-scan base-package="nl.dias" />
 	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
 
-	<bean id="headerFilter" class="nl.dias.web.filter.HeaderFilter" />
+	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
+	<!--<property name="sessionFactory" ref="sessionFactory"/>-->
+	<!--</bean>-->
+	<!---->
+	<!--<bean id="headerFilter" class="nl.dias.web.filter.HeaderFilter" depends-on="gebruikerRepository">-->
+	<!--<property name="gebruikerRepository" ref="gebruikerRepository"/>-->
+	<!--</bean>-->
+	<!---->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
         <property name="maxUploadSize" value="50000000"/>
     </bean>
@@ -150,4 +157,62 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="jdbcDias" />
 	</bean-->
+
+	<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>file:app.properties</value>
+			</list>
+		</property>
+		<property name="placeholderPrefix" value="${"/>
+	</bean>
+
+	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer"/>
+		<property name="targetMethod" value="initLogging"/>
+		<property name="arguments">
+			<list>
+				<value>djfc.log4j.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--<bean id="inkomendRequestRepository" class="nl.lakedigital.djfc.repository.InkomendRequestRepository" depends-on="sessionFactory">-->
+	<!--<property name="sessionFactory" ref="sessionFactory" />-->
+	<!--</bean>-->
+	<!---->
+	<!--<bean id="inkomendRequestService" class="nl.lakedigital.djfc.service.InkomendRequestService" depends-on="inkomendRequestRepository">-->
+	<!--<property name="inkomendRequestRepository" ref="inkomendRequestRepository" />-->
+	<!--</bean>-->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<!--<property name="uniqueResourceName" value="NonXA_DataSource" />-->
+		<!--<property name="minPoolSize" value="2" />-->
+		<!--<property name="maxPoolSize" value="30" />-->
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="${djfc.db.name}"/>
+		<property name="username" value="${djfc.db.user}"/>
+		<property name="password" value="${djfc.db.pass}"/>
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="packagesToScan">
+			<list>
+				<value>nl.dias</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="changeLog" value="classpath:databaseChangeLog.xml"/>
+	</bean>
 </beans>
