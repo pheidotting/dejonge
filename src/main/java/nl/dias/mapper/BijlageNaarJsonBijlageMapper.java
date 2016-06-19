@@ -2,7 +2,6 @@ package nl.dias.mapper;
 
 import nl.dias.domein.Bijlage;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
-import nl.lakedigital.djfc.commons.json.SoortEntiteit;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +18,7 @@ public class BijlageNaarJsonBijlageMapper extends AbstractMapper<Bijlage, JsonBi
         json.setDatumUpload(bijlage.getUploadMoment().toString("dd-MM-yyyy HH:mm"));
         json.setBestandsNaam(bijlage.getBestandsNaam());
         json.setEntiteitId(bijlage.getEntiteitId());
-        json.setSoortEntiteit(SoortEntiteit.RELATIE.toString());
+        json.setSoortEntiteit(bijlage.getSoortBijlage().toString().toUpperCase());
         json.setS3Identificatie(bijlage.getS3Identificatie());
 
         return json;

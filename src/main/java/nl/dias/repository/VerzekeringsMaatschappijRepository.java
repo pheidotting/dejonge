@@ -85,7 +85,7 @@ public class VerzekeringsMaatschappijRepository {
     public List<VerzekeringsMaatschappij> alles() {
         getTransaction();
 
-        Query query = getSession().getNamedQuery("VerzekeringsMaatschappij.alles");
+        Query query = getSession().getNamedQuery("VerzekeringsMaatschappij.zoekAlles");
 
         List<VerzekeringsMaatschappij> verzekeringsMaatschappijs = query.list();
 

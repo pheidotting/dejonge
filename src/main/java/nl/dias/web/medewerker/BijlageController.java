@@ -129,7 +129,6 @@ public class BijlageController extends AbstractController {
             bijlage.setSoortBijlage(SoortEntiteit.valueOf(soortEntiteit.toUpperCase()));
             bijlage.setEntiteitId(entiteitId);
             LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
-            //            bijlageService.opslaan(bijlage);
             jsonBijlage = bijlageNaarJsonBijlageMapper.map(bijlage, null, null);
             String id = bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
             jsonBijlage.setId(Long.valueOf(id));
