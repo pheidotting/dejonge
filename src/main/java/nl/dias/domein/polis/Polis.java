@@ -5,6 +5,7 @@ import nl.dias.domein.StatusPolis;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.envers.Audited;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Audited
 @Component
 @Entity
 @Table(name = "POLIS")

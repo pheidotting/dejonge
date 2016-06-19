@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestMapping("/polis")
 @Controller
-public class PolisController {
+public class PolisController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisController.class);
 
     @Inject
@@ -72,8 +73,11 @@ public class PolisController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/beeindigen")
     @ResponseBody
-    public void beeindigen(@QueryParam("id") Long id) {
+    public void beeindigen(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("beeindigen Polis met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
+
         polisService.beeindigen(id);
     }
 
@@ -108,8 +112,10 @@ public class PolisController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonPolis jsonPolis) {
+    public Response opslaan(@RequestBody JsonPolis jsonPolis, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
+
+        zetSessieWaarden(httpServletRequest);
 
         Polis polis = polisMapper.mapVanJson(jsonPolis);
         try {
@@ -123,8 +129,11 @@ public class PolisController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
     @ResponseBody
-    public Response verwijder(@QueryParam("id") Long id) {
+    public Response verwijder(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Polis met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
+
         try {
             polisService.verwijder(id);
         } catch (IllegalArgumentException e) {
