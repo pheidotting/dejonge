@@ -1,5 +1,7 @@
 package nl.dias.inloggen;
 
+@Component
+@Scope(value = SpringScopes.SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public final class Sessie {
 	private Sessie() {
 	}
