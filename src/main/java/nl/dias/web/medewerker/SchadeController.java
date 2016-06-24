@@ -10,19 +10,17 @@ import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestMapping("/schade")
 @Controller
-public class SchadeController {
+public class SchadeController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchadeController.class);
 
     @Inject
@@ -36,8 +34,10 @@ public class SchadeController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonSchade jsonSchade) {
+    public Response opslaan(@RequestBody JsonSchade jsonSchade, HttpServletRequest httpServletRequest) {
         LOGGER.debug("{}", jsonSchade);
+
+        zetSessieWaarden(httpServletRequest);
 
         Schade schade = schadeMapper.mapVanJson(jsonSchade);
         schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());
@@ -67,17 +67,18 @@ public class SchadeController {
         return schadeMapper.mapNaarJson(schadeService.lees(Long.valueOf(id)));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
     @ResponseBody
-    public Response verwijder(@QueryParam("id") Long id) {
+    public void verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Schade met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
+
         try {
             schadeService.verwijder(id);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Fout bij verwijderen Schade", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
-        return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
 }

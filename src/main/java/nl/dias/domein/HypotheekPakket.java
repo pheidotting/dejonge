@@ -1,12 +1,14 @@
 package nl.dias.domein;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Audited
 @Entity
 @Table(name = "HYPOTHEEKPAKKET")
 @NamedQueries({@NamedQuery(name = "HypotheekPakket.allesVanRelatie", query = "select h from HypotheekPakket h where h.relatie = :relatie and size(h.hypotheken) >= 2")})
@@ -61,13 +63,13 @@ public class HypotheekPakket implements PersistenceObject, Serializable {
         builder.append(id);
         builder.append(", relatie=");
         builder.append(relatie.getId());
-        builder.append(", hypotheken=");
-        if (hypotheken != null) {
-            for (Hypotheek h : hypotheken) {
-                builder.append(h.getId());
-                builder.append(", ");
-            }
-        }
+        //        builder.append(", hypotheken=");
+        //        if (hypotheken != null) {
+        //            for (Hypotheek h : hypotheken) {
+        //                builder.append(h.getId());
+        //                builder.append(", ");
+        //            }
+        //        }
         builder.append("]");
         return builder.toString();
     }

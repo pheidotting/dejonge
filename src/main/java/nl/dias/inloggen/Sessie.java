@@ -1,10 +1,12 @@
 package nl.dias.inloggen;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 @Component
-@Scope(value = SpringScopes.SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public final class Sessie {
-	private Sessie() {
-	}
+@Scope(value = "REQUEST", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class Sessie {
 
 	// Zodat Hibernate Envers deze uit kan lezen..
 	private static Long ingelogdeGebruiker;

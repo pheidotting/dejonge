@@ -98,8 +98,10 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
             polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
         }
-        if (jsonPolis.getBedrijf() != null) {
-            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijf()));
+        LOGGER.trace("Bedrijf zetten bij Polis, bedrijf id : {}", jsonPolis.getBedrijf());
+        if (jsonPolis.getBedrijfsId() != null) {
+            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijfsId()));
+            LOGGER.trace("Bedrijf gezet: {}", polis.getBedrijf());
         }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 

@@ -5,6 +5,8 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
@@ -12,6 +14,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Audited
 @Entity
 @Table(name = "SCHADE")
 @NamedQueries({
@@ -40,6 +43,7 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
 
     @JoinColumn(name = "SOORT", nullable = true)
     @ManyToOne
+    @NotAudited
     private SoortSchade soortSchade;
 
     @Column(name = "SOORTSCHADEONGEDEFINIEERD", length = 100)
@@ -50,6 +54,7 @@ public class Schade implements Comparable, PersistenceObject, Serializable {
 
     @JoinColumn(name = "STATUS", nullable = false)
     @ManyToOne
+    @Audited
     private StatusSchade statusSchade;
 
     @Column(name = "DATUMTIJD", nullable = false)

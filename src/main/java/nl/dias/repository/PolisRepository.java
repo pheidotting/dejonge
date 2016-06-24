@@ -95,6 +95,8 @@ public class PolisRepository {
 
         List<Polis> polissen = query.list();
 
+        LOGGER.debug("Opgehaald {} polissen bij bedrijf met id {}", polissen.size(), bedrijf);
+
         getTransaction().commit();
 
         return polissen;

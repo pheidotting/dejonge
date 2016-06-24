@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @RequestMapping("/bedrijf")
 @Controller
-public class BedrijfController {
+public class BedrijfController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfController.class);
 
     @Inject
@@ -45,8 +46,10 @@ public class BedrijfController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf) {
+    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
+
+        zetSessieWaarden(httpServletRequest);
 
         try {
             Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
@@ -91,8 +94,11 @@ public class BedrijfController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
     @ResponseBody
-    public Response verwijder(@QueryParam("id") Long id) {
+    public Response verwijder(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Bedrijf met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
+
         try {
             bedrijfService.verwijder(id);
         } catch (IllegalArgumentException e) {

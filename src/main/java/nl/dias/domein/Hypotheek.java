@@ -4,6 +4,8 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Audited
 @Entity
 @Table(name = "HYPOTHEEK")
 @NamedQueries({@NamedQuery(name = "Hypotheek.allesVanRelatie", query = "select h from Hypotheek h where h.relatie = :relatie and size(h.hypotheekPakket.hypotheken) = 1"),//
@@ -31,6 +34,7 @@ public class Hypotheek implements PersistenceObject, Serializable {
 
     @JoinColumn(name = "SOORT")
     @ManyToOne
+    @NotAudited
     private SoortHypotheek hypotheekVorm;
     @Column(name = "OMSCHRIJVING", length = 1000, nullable = true)
     private String omschrijving;

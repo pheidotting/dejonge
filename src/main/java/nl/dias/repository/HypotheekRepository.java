@@ -57,11 +57,23 @@ public class HypotheekRepository {
     }
 
     public SoortHypotheek leesSoortHypotheek(Long id) {
-        return getSession().get(SoortHypotheek.class, id);
+        getTransaction();
+
+        SoortHypotheek result = getSession().get(SoortHypotheek.class, id);
+
+        getTransaction().commit();
+
+        return result;
     }
 
     public Hypotheek lees(Long id) {
-        return getSession().get(Hypotheek.class, id);
+        getTransaction();
+
+        Hypotheek result = (Hypotheek) getSession().get(Hypotheek.class, id);
+
+        getTransaction().commit();
+
+        return result;
     }
 
     public List<Hypotheek> allesVanRelatie(Relatie relatie) {

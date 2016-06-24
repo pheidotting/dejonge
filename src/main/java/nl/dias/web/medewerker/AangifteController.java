@@ -12,10 +12,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +22,7 @@ import java.util.List;
 
 @RequestMapping("/aangifte")
 @Controller
-public class AangifteController {
+public class AangifteController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AangifteController.class);
 
     @Inject
@@ -45,10 +42,13 @@ public class AangifteController {
         return aangifteMapper.mapAllNaarJson(aangifteService.getOpenstaandeAangiftes((Relatie) gebruikerService.lees(relatie)));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/afronden")
+    @RequestMapping(method = RequestMethod.POST, value = "/afronden/{id}")
     @ResponseBody
-    public Response afronden(@RequestBody Long id, HttpServletRequest httpServletRequest) {
+    public Response afronden(@PathVariable Long id, HttpServletRequest httpServletRequest) {
         LOGGER.info("Afronden Aangifte met id " + id);
+
+        zetSessieWaarden(httpServletRequest);
+
         try {
             aangifteService.afronden(id, LocalDate.now(), getGebruiker(httpServletRequest));
         } catch (Exception e) {
@@ -58,9 +58,11 @@ public class AangifteController {
         return Response.ok(id).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonAangifte jsonAangifte) {
+    public Response opslaan(@RequestBody JsonAangifte jsonAangifte, HttpServletRequest httpServletRequest) {
+        zetSessieWaarden(httpServletRequest);
+
         Aangifte aangifte = aangifteMapper.mapVanJson(jsonAangifte);
         aangifteService.opslaan(aangifte);
 

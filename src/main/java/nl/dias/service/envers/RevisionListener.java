@@ -1,6 +1,6 @@
 package nl.dias.service.envers;
 
-import nl.dias.inloggen.Sessie;
+import nl.dias.inloggen.SessieHolder;
 
 
 public class RevisionListener implements org.hibernate.envers.RevisionListener {
@@ -9,8 +9,8 @@ public class RevisionListener implements org.hibernate.envers.RevisionListener {
 	public void newRevision(Object revisionEntity) {
         RevEntity revEntity = (RevEntity) revisionEntity;
 
-        revEntity.setUserid(Sessie.getIngelogdeGebruiker());
-        revEntity.setTrackAndTraceId(Sessie.getTrackAndTraceId());
+        revEntity.setUserid(SessieHolder.get().getIngelogdeGebruiker());
+        revEntity.setTrackAndTraceId(SessieHolder.get().getTrackAndTraceId());
     }
 
 }

@@ -15,10 +15,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -127,9 +124,9 @@ public class PolisController extends AbstractController {
         return Response.status(200).entity(new JsonFoutmelding(polis.getId().toString())).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
     @ResponseBody
-    public Response verwijder(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
+    public Response verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Polis met id " + id);
 
         zetSessieWaarden(httpServletRequest);

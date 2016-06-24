@@ -215,4 +215,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSource" ref="dataSource"/>
 		<property name="changeLog" value="classpath:databaseChangeLog.xml"/>
 	</bean>
+
+    <bean id="inkomendRequestRepository" class="nl.dias.repository.trackandtraceid.InkomendRequestRepository"
+          depends-on="sessionFactory">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="inkomendRequestService" class="nl.dias.service.trackandtraceid.InkomendRequestService"
+          depends-on="inkomendRequestRepository">
+        <property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
+    </bean>
+
 </beans>

@@ -1,6 +1,6 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.inloggen.Sessie;
+import nl.dias.inloggen.SessieHolder;
 import nl.dias.service.AuthorisatieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +15,8 @@ public abstract class AbstractController {
     protected AuthorisatieService authorisatieService;
 
     protected void zetSessieWaarden(HttpServletRequest httpServletRequest) {
-        Sessie.setIngelogdeGebruiker(getIngelogdeGebruiker(httpServletRequest));
-        Sessie.setTrackAndTraceId(getTrackAndTraceId(httpServletRequest));
+        SessieHolder.get().setIngelogdeGebruiker(getIngelogdeGebruiker(httpServletRequest));
+        SessieHolder.get().setTrackAndTraceId(getTrackAndTraceId(httpServletRequest));
     }
 
     protected Long getIngelogdeGebruiker(HttpServletRequest httpServletRequest) {

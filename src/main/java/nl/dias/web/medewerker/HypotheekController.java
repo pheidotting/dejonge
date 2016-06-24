@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
@@ -29,7 +30,7 @@ import java.util.Set;
 
 @RequestMapping("/hypotheek")
 @Controller
-public class HypotheekController {
+public class HypotheekController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekController.class);
 
     @Inject
@@ -113,8 +114,10 @@ public class HypotheekController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonHypotheek jsonHypotheek) {
+    public Response opslaan(@RequestBody JsonHypotheek jsonHypotheek, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
+
+        zetSessieWaarden(httpServletRequest);
 
         // Hypotheek hypotheek = new Hypotheek();
         // if (jsonHypotheek.getId() != null && jsonHypotheek.getId() != 0) {

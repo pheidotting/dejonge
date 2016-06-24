@@ -5,12 +5,15 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Audited
 @Entity
 @Table(name = "BEDRIJF")
 @NamedQueries({
@@ -49,9 +52,11 @@ public class Bedrijf implements Serializable, PersistenceObject {
     @Column(name = "CAOVERPLICHTINGEN")
     private String cAoVerplichtingen;
 
+    @NotAudited
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<JaarCijfers> jaarCijfers;
 
+    @NotAudited
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bedrijf")
     private Set<RisicoAnalyse> risicoAnalyses;
 

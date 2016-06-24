@@ -2,10 +2,12 @@ package nl.dias.domein;
 
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Audited
 @Entity
 @Table(name = "GEBRUIKER")
 @DiscriminatorValue(value = "C")

@@ -3,6 +3,8 @@ package nl.dias.domein;
 import nl.lakedigital.domein.Onderwerp;
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -98,7 +100,27 @@ public abstract class Gebruiker extends Onderwerp implements PersistenceObject, 
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("wachtwoordString", this.wachtwoordString).append("achternaam", this.achternaam).append("tussenvoegsel", this.tussenvoegsel).append("voornaam", this.voornaam).append("sessies", this.sessies).append("emailadres", emailadres).toString();
+        return new ToStringBuilder(this).append("wachtwoordString", this.wachtwoordString).append("achternaam", this.achternaam).append("tussenvoegsel", this.tussenvoegsel).append("voornaam", this.voornaam).append("emailadres", emailadres).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Gebruiker)) {
+            return false;
+        }
+
+        Gebruiker gebruiker = (Gebruiker) o;
+
+        return new EqualsBuilder().appendSuper(super.equals(o)).append(getVoornaam(), gebruiker.getVoornaam()).append(getTussenvoegsel(), gebruiker.getTussenvoegsel()).append(getAchternaam(), gebruiker.getAchternaam()).append(getEmailadres(), gebruiker.getEmailadres()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(getVoornaam()).append(getTussenvoegsel()).append(getAchternaam()).append(getEmailadres()).toHashCode();
     }
 
     public String getNaam() {

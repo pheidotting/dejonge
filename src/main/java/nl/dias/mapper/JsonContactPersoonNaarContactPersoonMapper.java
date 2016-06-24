@@ -1,7 +1,7 @@
 package nl.dias.mapper;
 
 import nl.dias.domein.ContactPersoon;
-import nl.dias.service.BedrijfService;
+import nl.dias.service.GebruikerService;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,9 +16,7 @@ public class JsonContactPersoonNaarContactPersoonMapper extends AbstractMapper<J
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonContactPersoonNaarContactPersoonMapper.class);
 
     @Inject
-    private BedrijfService bedrijfService;
-    @Inject
-    private JsonTelefoonnummerNaarTelefoonnummerMapper jsonTelefoonnummerNaarTelefoonnummerMapper;
+    private GebruikerService gebruikerService;
 
     @Override
     public ContactPersoon map(JsonContactPersoon jsonContactPersoon, Object parent, Object bestaandOjbect) {
@@ -28,6 +26,9 @@ public class JsonContactPersoonNaarContactPersoonMapper extends AbstractMapper<J
         LOGGER.debug("Mappen {}", ReflectionToStringBuilder.toString(jsonContactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
 
         ContactPersoon contactPersoon = new ContactPersoon();
+        if (jsonContactPersoon.getId() != null) {
+            contactPersoon = (ContactPersoon) gebruikerService.lees(jsonContactPersoon.getId());
+        }
 
         contactPersoon.setId(jsonContactPersoon.getId());
         contactPersoon.setAchternaam(jsonContactPersoon.getAchternaam());

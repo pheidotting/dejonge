@@ -71,6 +71,14 @@
 	<!--<filter-name>HeaderFilter</filter-name>-->
 	<!--<url-pattern>/rest/medewerker/*</url-pattern>-->
 	<!--</filter-mapping>-->
+    <filter>
+        <filter-name>TrackAndTrace</filter-name>
+        <filter-class>nl.dias.web.filter.trackandtraceid.TrackAndTraceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TrackAndTrace</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
 
 	<filter>
 		<filter-name>Authorisatie</filter-name>
@@ -97,4 +105,6 @@
 		<servlet-name>relatiebeheer-applicaties</servlet-name>
 		<url-pattern>/rest/applicaties/*</url-pattern>
 	</servlet-mapping>
+
+
 </web-app>

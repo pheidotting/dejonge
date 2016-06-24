@@ -1,16 +1,17 @@
 package nl.dias.inloggen;
 
 public final class SessieHolder {
-    private ThreadLocal<Sessie> sessie = new ThreadLocal<Sessie>();
-    public static AuditContextSession get() {
-		return AuditContextSessionHolder.auditContext.get();
-	}
+    private static ThreadLocal<Sessie> sessie = new ThreadLocal<Sessie>();
 
-	public static void set(AuditContextSession auditContext) {
-		AuditContextSessionHolder.auditContext.set(auditContext);
-	}
+    public static Sessie get() {
+        return SessieHolder.sessie.get();
+    }
 
-	public static void clear() {
-		AuditContextSessionHolder.auditContext.remove();
-	}
+    public static void set(Sessie auditContext) {
+        SessieHolder.sessie.set(auditContext);
+    }
+
+    public static void clear() {
+        SessieHolder.sessie.remove();
+    }
 }
