@@ -89,22 +89,18 @@
 		<url-pattern>/rest/medewerker/*</url-pattern>
 	</filter-mapping>
 
-	<servlet-mapping>
-		<servlet-name>relatiebeheer-applicaties</servlet-name>
-		<url-pattern>/rest/applicaties/*</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>relatiebeheer-applicaties</servlet-name>
-		<servlet-class>
-			org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	<!--<servlet-mapping>-->
+	<!--<servlet-name>relatiebeheer-applicaties</servlet-name>-->
+	<!--<url-pattern>/rest/applicaties/*</url-pattern>-->
+	<!--</servlet-mapping>-->
+	<!--<servlet>-->
+	<!--<servlet-name>relatiebeheer-applicaties</servlet-name>-->
+	<!--<servlet-class>-->
+	<!--org.springframework.web.servlet.DispatcherServlet-->
+	<!--</servlet-class>-->
+	<!--<load-on-startup>1</load-on-startup>-->
+	<!--</servlet>-->
 
-	<servlet-mapping>
-		<servlet-name>relatiebeheer-applicaties</servlet-name>
-		<url-pattern>/rest/applicaties/*</url-pattern>
-	</servlet-mapping>
 
 
 </web-app>

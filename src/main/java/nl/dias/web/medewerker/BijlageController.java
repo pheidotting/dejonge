@@ -5,7 +5,9 @@ import nl.dias.mapper.BijlageNaarJsonBijlageMapper;
 import nl.dias.service.BijlageService;
 import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.djfc.client.oga.BijlageClient;
+import nl.lakedigital.djfc.client.oga.GroepBijlagesClient;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
+import nl.lakedigital.djfc.commons.json.JsonGroepBijlages;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -31,7 +33,10 @@ import java.util.List;
 @RequestMapping("/bijlage")
 @Controller
 public class BijlageController extends AbstractController {
-    private BijlageClient bijlageClient = new BijlageClient(8081);
+    @Inject
+    private BijlageClient bijlageClient;
+    @Inject
+    private GroepBijlagesClient groepBijlagesClient;
     private final static Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
     @Inject
     private BijlageService bijlageService;
@@ -83,6 +88,7 @@ public class BijlageController extends AbstractController {
 
         return result;
     }
+
     @RequestMapping(method = RequestMethod.GET, value = "/download")
     @ResponseBody
     @Produces("application/pdf")
@@ -99,6 +105,7 @@ public class BijlageController extends AbstractController {
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(Files.readAllBytes(Paths.get(file.getAbsolutePath())), headers, HttpStatus.OK);
         return response;
     }
+
     @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage")
     @ResponseBody
     public JsonBijlage uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
@@ -115,6 +122,22 @@ public class BijlageController extends AbstractController {
         LOGGER.debug("Naar de front-end {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         return bijlage;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/alleGroepen/{soortentiteit}/{parentid}")
+    @ResponseBody
+    public List<JsonGroepBijlages> alleGroepen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
+        LOGGER.debug("alleGroepen voor soortentiteit {} en {}", soortentiteit, parentid);
+
+        List<JsonGroepBijlages> result = groepBijlagesClient.lijst(soortentiteit, parentid);
+        LOGGER.debug(ReflectionToStringBuilder.toString(result, ToStringStyle.SHORT_PREFIX_STYLE));
+        LOGGER.debug("{}", result);
+
+        for (Object jsonGroepBijlages : result) {
+            LOGGER.debug(ReflectionToStringBuilder.toString(jsonGroepBijlages, ToStringStyle.SHORT_PREFIX_STYLE));
+        }
+
+        return result;
     }
 
     private JsonBijlage uploaden(MultipartFile fileDetail, String soortEntiteit, Long entiteitId, HttpServletRequest httpServletRequest) {

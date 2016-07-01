@@ -71,9 +71,14 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.5.0</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>nl.lakedigital.djfc.commons</groupId>-->
+        <!--<artifactId>djfc-json</artifactId>-->
+        <!--<version>3.1</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>nl.lakedigital.djfc.commons</groupId>
-            <artifactId>djfc-json</artifactId>
+            <groupId>nl.lakedigital.as.taakbeheer.client</groupId>
+            <artifactId>taakbeheerclient</artifactId>
             <version>3.1</version>
         </dependency>
         <dependency>

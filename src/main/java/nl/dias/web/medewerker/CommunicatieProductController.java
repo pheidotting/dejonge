@@ -22,7 +22,8 @@ public class CommunicatieProductController extends AbstractController {
     @Inject
     private AuthorisatieService authorisatieService;
 
-    private CommunicatieClient communicatieClient = new CommunicatieClient(8081);
+    @Inject
+    private CommunicatieClient communicatieClient;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
     @ResponseBody

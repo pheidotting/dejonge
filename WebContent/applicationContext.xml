@@ -226,4 +226,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
     </bean>
 
+	<bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="bijlageClient" class="nl.lakedigital.djfc.client.oga.BijlageClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="communicatieClient" class="nl.lakedigital.djfc.client.communicatie.CommunicatieClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="groepBijlagesClient" class="nl.lakedigital.djfc.client.oga.GroepBijlagesClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="opmerkingClient" class="nl.lakedigital.djfc.client.oga.OpmerkingClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
+		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+
 </beans>

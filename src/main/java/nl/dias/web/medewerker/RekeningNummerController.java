@@ -5,13 +5,15 @@ import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequestMapping("/rekeningnummer")
 @Controller
 public class RekeningNummerController extends AbstractController {
-    private RekeningClient rekeningClient = new RekeningClient(8081);
+    @Inject
+    private RekeningClient rekeningClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody

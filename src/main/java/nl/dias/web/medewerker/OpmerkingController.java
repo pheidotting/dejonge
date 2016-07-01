@@ -18,7 +18,8 @@ import static com.google.common.collect.Lists.transform;
 @RequestMapping("/opmerking")
 @Controller
 public class OpmerkingController extends AbstractController {
-    private OpmerkingClient opmerkingClient = new OpmerkingClient(8081);
+    @Inject
+    private OpmerkingClient opmerkingClient;
     @Inject
     private GebruikerService gebruikerService;
 
