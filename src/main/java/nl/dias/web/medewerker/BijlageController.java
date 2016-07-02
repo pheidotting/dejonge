@@ -8,6 +8,7 @@ import nl.lakedigital.djfc.client.oga.BijlageClient;
 import nl.lakedigital.djfc.client.oga.GroepBijlagesClient;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import nl.lakedigital.djfc.commons.json.JsonGroepBijlages;
+import nl.lakedigital.djfc.commons.json.WijzigenOmschrijvingBijlage;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -42,6 +43,12 @@ public class BijlageController extends AbstractController {
     private BijlageService bijlageService;
     @Inject
     private BijlageNaarJsonBijlageMapper bijlageNaarJsonBijlageMapper;
+
+    @RequestMapping(method = RequestMethod.POST, value = "/wijzigOmschrijvingBijlage")
+    @ResponseBody
+    public void wijzigOmschrijvingBijlage(@RequestBody WijzigenOmschrijvingBijlage wijzigenOmschrijvingBijlage, HttpServletRequest httpServletRequest) {
+        bijlageClient.wijzigOmschrijvingBijlage(wijzigenOmschrijvingBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
