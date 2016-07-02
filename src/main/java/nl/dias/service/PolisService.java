@@ -152,4 +152,7 @@ public class PolisService {
         return p.nieuweInstantie();
     }
 
+    public void setDiscriminatorValue(String discriminatorValue, Polis polis) {
+        polisRepository.setDiscriminatorValue(discriminatorValue, polis);
+    }
 }

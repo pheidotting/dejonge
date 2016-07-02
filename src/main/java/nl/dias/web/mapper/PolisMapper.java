@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.persistence.DiscriminatorValue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -71,6 +72,16 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             polis.setId(jsonPolis.getId());
         } else {
             polis = polisService.lees(jsonPolis.getId());
+
+            Polis p = polisService.definieerPolisSoort(jsonPolis.getSoort());
+
+            if (!polis.getSchermNaam().equals(p.getSchermNaam())) {
+                DiscriminatorValue discriminatorValue = p.getClass().getAnnotation(DiscriminatorValue.class);
+
+                polisService.setDiscriminatorValue(discriminatorValue.value(), polis);
+
+                polis = polisService.lees(jsonPolis.getId());
+            }
         }
 
         if (jsonPolis.getStatus() != null) {

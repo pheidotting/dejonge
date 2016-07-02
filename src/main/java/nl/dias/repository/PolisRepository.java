@@ -210,4 +210,16 @@ public class PolisRepository {
         getTransaction().commit();
     }
 
+    public void setDiscriminatorValue(String discriminatorValue, Polis polis) {
+        getTransaction();
+
+        Query query = getEm().createQuery("update Polis set SOORT = :discriminatorValue where id = :id");
+        query.setParameter("discriminatorValue", discriminatorValue);
+        query.setParameter("id", polis.getId());
+
+        query.executeUpdate();
+
+        getTransaction().commit();
+    }
+
 }
