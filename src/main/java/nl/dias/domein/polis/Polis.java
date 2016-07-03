@@ -321,31 +321,31 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Polis{");
-        sb.append("id=").append(id).append("\n");
+        sb.append("id=").append(id);
         if (status != null) {
-            sb.append(", status=").append(status.getOmschrijving()).append("\n");
+            sb.append(", status=").append(status.getOmschrijving());
         }
-        sb.append(", polisNummer='").append(polisNummer).append('\'').append("\n");
-        sb.append(", kenmerk='").append(kenmerk).append('\'').append("\n");
-        sb.append(", ingangsDatum=").append(getIngangsDatum()).append("\n");
-        sb.append(", eindDatum=").append(getEindDatum()).append("\n");
-        sb.append(", premie=").append(premie).append("\n");
-        sb.append(", wijzigingsDatum=").append(getWijzigingsDatum()).append("\n");
-        sb.append(", prolongatieDatum=").append(getProlongatieDatum()).append("\n");
-        sb.append(", betaalfrequentie=").append(betaalfrequentie).append("\n");
+        sb.append(", polisNummer='").append(polisNummer).append('\'');
+        sb.append(", kenmerk='").append(kenmerk).append('\'');
+        sb.append(", ingangsDatum=").append(getIngangsDatum());
+        sb.append(", eindDatum=").append(getEindDatum());
+        sb.append(", premie=").append(premie);
+        sb.append(", wijzigingsDatum=").append(getWijzigingsDatum());
+        sb.append(", prolongatieDatum=").append(getProlongatieDatum());
+        sb.append(", betaalfrequentie=").append(betaalfrequentie);
         //        if (relatie != null) {
-        //            sb.append(", relatie=").append(relatie.getIdentificatie()).append("\n");
+        //            sb.append(", relatie=").append(relatie.getIdentificatie());
         //        }
         if (bedrijf != null) {
-            sb.append(", bedrijf=").append(bedrijf).append("\n");
+            sb.append(", bedrijf=").append(bedrijf);
         }
-        //        sb.append(", bijlages=").append(bijlages).append("\n");
-        //        sb.append(", opmerkingen=").append(opmerkingen).append("\n");
+        //        sb.append(", bijlages=").append(bijlages);
+        //        sb.append(", opmerkingen=").append(opmerkingen);
         if (maatschappij != null) {
-            sb.append(", maatschappij=").append(maatschappij).append("\n");
+            sb.append(", maatschappij=").append(maatschappij);
         }
-        //        sb.append(", schades=").append(schades).append("\n");
-        sb.append(", omschrijvingVerzekering='").append(omschrijvingVerzekering).append('\'').append("\n");
+        //        sb.append(", schades=").append(schades);
+        sb.append(", omschrijvingVerzekering='").append(omschrijvingVerzekering).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -23,7 +23,7 @@ public class ZakelijkeGlasVerzekering extends Polis {
 
     @Override
     public String getSchermNaam() {
-        return "Glas";
+        return "ZakelijkeGlas";
     }
 
     @Override

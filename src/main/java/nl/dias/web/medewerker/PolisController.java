@@ -109,7 +109,7 @@ public class PolisController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody
-    public Response opslaan(@RequestBody JsonPolis jsonPolis, HttpServletRequest httpServletRequest) {
+    public Long opslaan(@RequestBody JsonPolis jsonPolis, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
 
         zetSessieWaarden(httpServletRequest);
@@ -119,9 +119,9 @@ public class PolisController extends AbstractController {
             polisService.opslaan(polis);
         } catch (IllegalArgumentException e) {
             LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+            throw new IllegalStateException(e.getLocalizedMessage());
         }
-        return Response.status(200).entity(new JsonFoutmelding(polis.getId().toString())).build();
+        return polis.getId();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")

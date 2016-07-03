@@ -25,10 +25,14 @@ public abstract class AbstractController {
             sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
         }
 
-        Long ingelogdeGebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr()).getId();
+        LOGGER.debug("sessie {}", sessie);
 
-        LOGGER.debug("DJFC Ingelogde Gebruiker opgehaald : {}", ingelogdeGebruiker);
+        Long ingelogdeGebruiker = null;
+        if (sessie != null) {
+            ingelogdeGebruiker = authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr()).getId();
 
+            LOGGER.debug("DJFC Ingelogde Gebruiker opgehaald : {}", ingelogdeGebruiker);
+        }
         return ingelogdeGebruiker;
 
     }

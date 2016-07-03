@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "POLIS")
 @DiscriminatorValue(value = "SV")
-public class SviSchadeverzekerininzittende extends Polis {
+public class SviSchadeverzekeringinzittende extends Polis {
     @Override
     public SoortVerzekering getSoortVerzekering() {
         return SoortVerzekering.PARTICULIER;
@@ -21,11 +21,11 @@ public class SviSchadeverzekerininzittende extends Polis {
 
     @Override
     public String getSchermNaam() {
-        return "SVI Schadeverzekeringinzittende";
+        return "SviSchadeverzekeringinzittende";
     }
 
     @Override
-    public SviSchadeverzekerininzittende nieuweInstantie() {
-        return new SviSchadeverzekerininzittende();
+    public SviSchadeverzekeringinzittende nieuweInstantie() {
+        return new SviSchadeverzekeringinzittende();
     }
 }

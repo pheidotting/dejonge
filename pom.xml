@@ -434,6 +434,42 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.3.7.v20160115</version>
+                <configuration>
+                    <httpConnector>
+                        <port>7075</port>
+                    </httpConnector>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <stopPort>8005</stopPort>
+                    <stopKey>STOP</stopKey>
+                    <webAppConfig>
+                        <contextPath>/dejonge</contextPath>
+                        <descriptor>src/main/resources/web-local.xml</descriptor>
+                    </webAppConfig>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
@@ -477,50 +513,22 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.3.0.M2</version>
-                <configuration>
-                    <httpConnector>
-                        <port>7073</port>
-                    </httpConnector>
-                    <webApp>
-                        <contextPath>/dejonge</contextPath>
-                        <descriptor>
-                            WebContent/WEB-INF/web-jetty.xml
-                        </descriptor>
-                    </webApp>
-                </configuration>
-            </plugin>
-            <!--plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
-                <configuration>
-                    <path>/dejonge</path>
-                    <port>7777</port>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start-tomcat</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <fork>true</fork>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-tomcat</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
+            <!--<plugin>-->
+            <!--<groupId>org.eclipse.jetty</groupId>-->
+            <!--<artifactId>jetty-maven-plugin</artifactId>-->
+            <!--<version>9.3.0.M2</version>-->
+            <!--<configuration>-->
+            <!--<httpConnector>-->
+            <!--<port>7073</port>-->
+            <!--</httpConnector>-->
+            <!--<webApp>-->
+            <!--<contextPath>/dejonge</contextPath>-->
+            <!--<descriptor>-->
+            <!--WebContent/WEB-INF/web-jetty.xml-->
+            <!--</descriptor>-->
+            <!--</webApp>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
         <finalName>dejonge</finalName>
     </build>
