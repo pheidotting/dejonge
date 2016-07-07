@@ -241,9 +241,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="opmerkingClient" class="nl.lakedigital.djfc.client.oga.OpmerkingClient">
 		<property name="basisUrl" value="${oga.url}"/>
 	</bean>
-	<bean id="polisClient" class="nl.lakedigital.djfc.client.PolisClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
+	<!--<bean id="polisClient" class="nl.lakedigital.djfc.client.PolisClient">-->
+	<!--<property name="basisUrl" value="${oga.url}"/>-->
+	<!--</bean>-->
 	<bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
 		<property name="basisUrl" value="${oga.url}"/>
 	</bean>

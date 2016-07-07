@@ -46,6 +46,12 @@ public class OpmerkingController extends AbstractController {
         }));
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @ResponseBody
+    public void verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
+        opmerkingClient.verwijder(id, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
     @ResponseBody
     public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
