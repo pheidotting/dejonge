@@ -24,7 +24,7 @@ public class HypotheekPakket implements PersistenceObject, Serializable {
     @ManyToOne(cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE }, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     protected Relatie relatie;
 
-    @OneToMany(targetEntity = Hypotheek.class, mappedBy = "hypotheekPakket")
+    @OneToMany(targetEntity = Hypotheek.class, mappedBy = "hypotheekPakket", fetch = FetchType.EAGER)
     private Set<Hypotheek> hypotheken;
 
     @Override
