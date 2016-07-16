@@ -15,7 +15,7 @@ public class PostcodeService {
                 index = plaats.indexOf("\"");
                 if (index > -1) {
                     plaats = plaats.substring(0, index);
-                    jsonAdres.setPlaats(plaats);
+                    jsonAdres.setPlaats(plaats.toUpperCase());
 
                     String straat = apiAntwoord.substring(apiAntwoord.indexOf("street") + 9);
                     index = straat.indexOf("\"");
