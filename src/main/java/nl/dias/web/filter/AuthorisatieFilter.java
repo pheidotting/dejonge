@@ -34,8 +34,12 @@ public class AuthorisatieFilter implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getSession().getAttribute("sessie") != null) {
+        if (req.getSession().getAttribute("sessie") != null || req.getHeader("sessie") != null) {
             LOGGER.debug("Blijkbaar heeft een vorig filter het al goed bevonden, doorgaan");
+
+            if (req.getSession().getAttribute("sessie") == null) {
+                req.getSession().setAttribute("sessie", req.getHeader("sessie"));
+            }
 
             opruimen();
             chain.doFilter(request, response);

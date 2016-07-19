@@ -14,8 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class BijlageService {
@@ -61,25 +64,103 @@ public class BijlageService {
         bijlageRepository.opslaan(bijlage);
     }
 
-    public Bijlage uploaden(MultipartFile fileDetail, String uploadPad) {
-        String[] exp = fileDetail.getOriginalFilename().split("//.");
+    protected String bepaalExtensie(String bestandsnaamn){
+        String[] exp = bestandsnaamn.split("\\.");
         String extensie = exp[exp.length - 1];
 
-        String identificatie = UUID.randomUUID().toString().replace("-", "");
+        return extensie;
+    };
 
-        LOGGER.debug("Gevonden extensie " + extensie);
+    public List<Bijlage> uploaden(MultipartFile fileDetail, String uploadPad) {
+        String extensie = bepaalExtensie(fileDetail.getOriginalFilename());
+
+        List<Bijlage> bijlages =new ArrayList<>();
+        LOGGER.debug(extensie);
+        if(extensie.toLowerCase().equals("zip")){
+            LOGGER.debug("zipfile");
+            try {
+                String bestand = uploadPad + "/" + fileDetail.getOriginalFilename();
+                try {
+                    writeToFile(fileDetail.getInputStream(), bestand);
+                } catch (IOException e) {
+                    LOGGER.error("Fout bij uploaden", e);
+                }
+                bijlages.addAll(verwerkZipFile(bestand, uploadPad));
+                new File(bestand).delete();
+            }catch (IOException e){
+
+            }
+        }else{
+            LOGGER.debug("PDF");
+         bijlages.add(schrijfWeg(fileDetail,uploadPad,extensie));
+    }
+
+        return bijlages;
+    }
+
+    private List<Bijlage> verwerkZipFile(String zipFile, String outputFolder) throws IOException{
+        LOGGER.debug("Verwerken zip bestand {}",zipFile);
+
+        List<Bijlage> bijlages = new ArrayList<>();
+        byte[] buffer = new byte[1024];
+
+        ZipInputStream zis =
+                new ZipInputStream(new FileInputStream(zipFile));
+        //get the zipped file list entry
+        ZipEntry ze = zis.getNextEntry();
+
+        while(ze!=null){
+            String fileName = ze.getName();
+            LOGGER.debug("Uitgepakt bestand: {}",fileName);
+
+            Bijlage bijlage = maakBijlage(fileName);
+            LOGGER.debug(ReflectionToStringBuilder.toString(bijlage,ToStringStyle.SHORT_PREFIX_STYLE));
+
+            bijlages.add(bijlage);
+
+            File newFile = new File(outputFolder + File.separator + bijlage.getS3Identificatie());
+
+            //create all non exists folders
+            //else you will hit FileNotFoundException for compressed folder
+            new File(newFile.getParent()).mkdirs();
+
+            FileOutputStream fos = new FileOutputStream(newFile);
+
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+
+            fos.close();
+            ze = zis.getNextEntry();
+        }
+
+        zis.closeEntry();
+        zis.close();
+
+        return bijlages;
+    }
+
+    private Bijlage maakBijlage(String fileName){
+        String identificatie = UUID.randomUUID().toString().replace("-", "");
 
         Bijlage bijlage = new Bijlage();
         bijlage.setS3Identificatie(identificatie);
-        bijlage.setBestandsNaam(fileDetail.getOriginalFilename());
+        bijlage.setBestandsNaam(fileName);
         bijlage.setUploadMoment(LocalDateTime.now());
+
+        return bijlage;
+    }
+
+        private Bijlage schrijfWeg(MultipartFile fileDetail, String uploadPad, String extensie){
+            Bijlage bijlage=maakBijlage(fileDetail.getOriginalFilename());
 
         //        bijlageRepository.opslaan(bijlage);
         LOGGER.debug("Opslaan Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         try {
             LOGGER.debug("Opslaan bestand op schijf");
-            writeToFile(fileDetail.getInputStream(), uploadPad + "/" + identificatie);
+            writeToFile(fileDetail.getInputStream(), uploadPad + "/" + bijlage.getS3Identificatie());
             LOGGER.debug("Bestand opgeslagen op schijft");
         } catch (IOException e) {
             LOGGER.error("Fout bij uploaden", e);

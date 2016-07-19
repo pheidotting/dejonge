@@ -8,18 +8,27 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(EasyMockRunner.class)
 public class BijlageServiceTest extends EasyMockSupport {
     @TestSubject
-    private BijlageService service=new BijlageService();
+    private BijlageService service = new BijlageService();
     @Mock
     private BijlageRepository repository;
 
     @After
     public void tearDown() throws Exception {
         verifyAll();
+    }
+
+    @Test
+    public void testBepaalExtendsie() {
+        replayAll();
+
+        assertThat(service.bepaalExtensie("pdf.zip"), is("zip"));
     }
 
     @Test

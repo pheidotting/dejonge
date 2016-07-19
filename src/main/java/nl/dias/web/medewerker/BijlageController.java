@@ -8,6 +8,7 @@ import nl.lakedigital.djfc.client.oga.BijlageClient;
 import nl.lakedigital.djfc.client.oga.GroepBijlagesClient;
 import nl.lakedigital.djfc.commons.json.JsonBijlage;
 import nl.lakedigital.djfc.commons.json.JsonGroepBijlages;
+import nl.lakedigital.djfc.commons.json.UploadBijlageResponse;
 import nl.lakedigital.djfc.commons.json.WijzigenOmschrijvingBijlage;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/bijlage")
@@ -115,20 +117,33 @@ public class BijlageController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage")
     @ResponseBody
-    public JsonBijlage uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
+    public UploadBijlageResponse uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
+        UploadBijlageResponse response = new UploadBijlageResponse();
+
         LOGGER.info("uploaden bestand voor {} met id {}", soortEntiteit, id);
 
         LOGGER.debug("{}", ReflectionToStringBuilder.toString(fileDetail));
 
-        JsonBijlage bijlage = uploaden(fileDetail, soortEntiteit, Long.valueOf(id), httpServletRequest);
+        List<JsonBijlage> bijlages = uploaden(fileDetail, soortEntiteit, Long.valueOf(id), httpServletRequest);
 
-        LOGGER.debug("Geupload {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+        if (bijlages.size() > 1) {
+            JsonGroepBijlages groepBijlages = new JsonGroepBijlages();
+            groepBijlages.setBijlages(bijlages);
+            groepBijlages.setNaam(fileDetail.getOriginalFilename().replace(".zip", ""));
+            String groepId = groepBijlagesClient.opslaan(groepBijlages, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
 
-        //        JsonBijlage jsonBijlage = bijlageMapper.mapNaarJson(bijlage);
-        //
-        LOGGER.debug("Naar de front-end {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+            groepBijlages.setId(Long.valueOf(groepId));
 
-        return bijlage;
+            response.setGroepBijlages(groepBijlages);
+        } else {
+            response.setBijlage(bijlages.get(0));
+        }
+
+        for (JsonBijlage bijlage : bijlages) {
+            LOGGER.debug("Geupload {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+        }
+
+        return response;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleGroepen/{soortentiteit}/{parentid}")
@@ -147,22 +162,27 @@ public class BijlageController extends AbstractController {
         return result;
     }
 
-    private JsonBijlage uploaden(MultipartFile fileDetail, String soortEntiteit, Long entiteitId, HttpServletRequest httpServletRequest) {
+    private List<JsonBijlage> uploaden(MultipartFile fileDetail, String soortEntiteit, Long entiteitId, HttpServletRequest httpServletRequest) {
 
-        Bijlage bijlage = null;
-        JsonBijlage jsonBijlage = null;
+        List<Bijlage> bijlages = null;
+        List<JsonBijlage> jsonBijlages = new ArrayList<>();
 
         if (fileDetail != null && fileDetail.getName() != null) {
 
             LOGGER.debug("Naar BijlageService");
-            bijlage = bijlageService.uploaden(fileDetail, getUploadPad());
-            bijlage.setSoortBijlage(SoortEntiteit.valueOf(soortEntiteit.toUpperCase()));
-            bijlage.setEntiteitId(entiteitId);
-            LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
-            jsonBijlage = bijlageNaarJsonBijlageMapper.map(bijlage, null, null);
-            String id = bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
-            jsonBijlage.setId(Long.valueOf(id));
+            bijlages = bijlageService.uploaden(fileDetail, getUploadPad());
+
+            for (Bijlage bijlage : bijlages) {
+                bijlage.setSoortBijlage(SoortEntiteit.valueOf(soortEntiteit.toUpperCase()));
+                bijlage.setEntiteitId(entiteitId);
+                LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
+                JsonBijlage jsonBijlage = bijlageNaarJsonBijlageMapper.map(bijlage, null, null);
+                String id = bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+                jsonBijlage.setId(Long.valueOf(id));
+
+                jsonBijlages.add(jsonBijlage);
+            }
         }
-        return jsonBijlage;
+        return jsonBijlages;
     }
 }
