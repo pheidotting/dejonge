@@ -1,6 +1,5 @@
 package nl.dias.domein.polis;
 
-import nl.dias.domein.polis.zakelijk.BedrijfsSchadeVerzekering;
 import org.hibernate.envers.Audited;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +26,6 @@ public class ArbeidsongeschiktheidVerzekeringParticulier extends Polis {
 
     @Override
     public Polis nieuweInstantie() {
-        return new BedrijfsSchadeVerzekering();
+        return new ArbeidsongeschiktheidVerzekeringParticulier();
     }
 }

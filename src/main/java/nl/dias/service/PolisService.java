@@ -148,7 +148,10 @@ public class PolisService {
     }
 
     public Polis definieerPolisSoort(String soort) {
+        LOGGER.debug("definieerPolisSoort {}", soort);
         Polis p = getOnlyElement(filter(polissen, new PolisOpSchermNaamPredicate(soort)));
+
+        LOGGER.debug("Gevonden : {}", p.getClass());
         return p.nieuweInstantie();
     }
 
