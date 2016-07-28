@@ -51,7 +51,7 @@ public class RelatieController {
         try {
             return relatieMapper.mapNaarJson((Relatie) gebruikerService.zoek(emailadres));
         } catch (NietGevondenException nre) {
-            LOGGER.trace(nre.getLocalizedMessage());
+            LOGGER.trace("{}",nre);
             return null;
         }
     }

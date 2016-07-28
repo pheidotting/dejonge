@@ -15,6 +15,7 @@ import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
 import nl.lakedigital.djfc.commons.json.JsonPolis;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.joda.time.LocalDate;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,8 @@ public class PolisOpslaanTest {
 
     @Test
     public void opslaanAllePolissen() {
+        String dateformat = "yyyy-MM-dd";
+
         Medewerker medewerker = (Medewerker) gebruikerRepository.lees(3L);
         Sessie sessie = new Sessie();
         sessie.setSessie("abc");
@@ -60,38 +63,48 @@ public class PolisOpslaanTest {
         gebruikerRepository.opslaan(medewerker);
 
 
-        for (Polis polis : polissen) {
-            vulPolis(polis);
+        for (String polisSoort : polisClient.alleParticulierePolisSoorten()) {
+            JsonPolis polis = vulPolis(polisSoort);
 
-            JsonPolis jsonPolis = polisMapper.mapNaarJson(polis);
+            polis.setId(polisClient.opslaan(polis, 3L, "tAtId", "abc"));
 
-            LOGGER.debug(ReflectionToStringBuilder.toString(jsonPolis, ToStringStyle.SHORT_PREFIX_STYLE));
+            polis.setEindDatum(LocalDate.now().toString(dateformat));
+            polis.setIngangsDatum(LocalDate.now().toString(dateformat));
+            polis.setProlongatieDatum(LocalDate.now().toString(dateformat));
+            polis.setWijzigingsDatum(LocalDate.now().toString(dateformat));
 
-            polisClient.opslaan(jsonPolis, 3L, "tAtId", "abc");
+            JsonPolis opgeslagenPolis = polisClient.lees(polis.getId().toString());
+            System.out.println(ReflectionToStringBuilder.toString(opgeslagenPolis, ToStringStyle.SHORT_PREFIX_STYLE));
+            System.out.println(ReflectionToStringBuilder.toString(polis, ToStringStyle.SHORT_PREFIX_STYLE));
 
-            //            Polis opgeslagenPolis = polisMapper.mapVanJson(polisClient.lees(polis.getId().toString()));
 
-            //            assertThat(opgeslagenPolis,is(polis));
-            //            assertThat(polisClient.lees(polis.getId().toString()),is(jsonPolis));
+            assertThat(opgeslagenPolis, is(polis));
         }
-
     }
 
 
-    private void vulPolis(Polis polis) {
-        polis.setKenmerk(randomString(200));
-        polis.setBetaalfrequentie(Betaalfrequentie.H);
-        polis.setPolisNummer(randomString(200));
+    private JsonPolis vulPolis(String soort) {
+        String dateformat = "dd-MM-yyyy";
+
+        JsonPolis polis = new JsonPolis();
+
+        polis.setSoort(soort);
+
+        polis.setKenmerk(randomString(100));
+        polis.setBetaalfrequentie(Betaalfrequentie.H.getOmschrijving());
+        polis.setPolisNummer(randomString(25));
         polis.setDekking(randomString(200));
-        //        polis.setEindDatum(LocalDate.now());
-        //        polis.setIngangsDatum(LocalDate.now());
+        polis.setEindDatum(LocalDate.now().toString(dateformat));
+        polis.setIngangsDatum(LocalDate.now().toString(dateformat));
         polis.setOmschrijvingVerzekering(randomString(200));
-        polis.setPremie(new Bedrag("123"));
-        //        polis.setProlongatieDatum(LocalDate.now());
-        polis.setStatus(StatusPolis.ACT);
+        polis.setPremie(new Bedrag("123.45").getBedrag().toString());
+        polis.setProlongatieDatum(LocalDate.now().toString(dateformat));
+        polis.setStatus(StatusPolis.ACT.getOmschrijving());
         polis.setVerzekerdeZaak(randomString(200));
-        //        polis.setWijzigingsDatum(LocalDate.now());
-        polis.setMaatschappij(1L);
+        polis.setWijzigingsDatum(LocalDate.now().toString(dateformat));
+        polis.setMaatschappij("1");
+
+        return polis;
     }
 
     private String randomString(int lengte) {

@@ -64,6 +64,10 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         if (jsonPolis.getProlongatieDatum() != null && !"".equals(jsonPolis.getProlongatieDatum())) {
             prolongatieDatum = LocalDate.parse(jsonPolis.getProlongatieDatum(), DateTimeFormat.forPattern(patternDatum));
         }
+        LocalDate eindDatum = null;
+        if (jsonPolis.getEindDatum() != null && !"".equals(jsonPolis.getEindDatum())) {
+            eindDatum = LocalDate.parse(jsonPolis.getEindDatum(), DateTimeFormat.forPattern(patternDatum));
+        }
 
         Polis polis = null;
         if (jsonPolis.getId() == null || jsonPolis.getId() == 0L) {
@@ -96,6 +100,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         polis.setWijzigingsDatum(wijzigingsDatum);
         polis.setProlongatieDatum(prolongatieDatum);
+        polis.setEindDatum(eindDatum);
         polis.setDekking(jsonPolis.getDekking());
         polis.setVerzekerdeZaak(jsonPolis.getVerzekerdeZaak());
         if (StringUtils.isNotEmpty(jsonPolis.getBetaalfrequentie())) {
