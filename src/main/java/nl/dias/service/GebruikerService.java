@@ -271,12 +271,6 @@ public class GebruikerService {
 
         if (gebruiker instanceof Relatie) {
             Relatie relatie = (Relatie) gebruiker;
-            //            for (Polis polis : relatie.getPolissen()) {
-            //                LOGGER.debug("Verwijder Polis :");
-            //                LOGGER.debug(ReflectionToStringBuilder.toString(polis));
-            //                polisRepository.verwijder(polis);
-            //                relatie.getPolissen().remove(polis);
-            //            }
             for (Hypotheek hypotheek : relatie.getHypotheken()) {
                 LOGGER.debug("Verwijder Hypotheek :");
                 LOGGER.debug(ReflectionToStringBuilder.toString(hypotheek));
@@ -367,7 +361,7 @@ public class GebruikerService {
                 relaties.add((Relatie) g);
             }
         }
-        LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
+        LOGGER.debug("Op naam {}", relaties.size());
         relaties.addAll(destilleerRelatie(adresClient.zoeken(zoekTerm)));
         LOGGER.debug("Zoeken op telefoonnummer");
         String zoekTermNumeriek = zoekTerm.replace(" ", "").replace("-", "");
@@ -398,12 +392,12 @@ public class GebruikerService {
         LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
 
         List<Relatie> ret = new ArrayList<>();
-        for (Relatie r : relaties) {
-            if (r != null) {
-                //                LOGGER.debug("{}", ReflectionToStringBuilder.toString(r, ToStringStyle.SHORT_PREFIX_STYLE));
-                ret.add(r);
+        ret.addAll(newArrayList(filter(relaties, new Predicate<Relatie>() {
+            @Override
+            public boolean apply(Relatie relatie) {
+                return relatie != null;
             }
-        }
+        })));
 
         return ret;
     }
