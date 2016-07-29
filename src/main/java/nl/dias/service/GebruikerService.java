@@ -16,6 +16,9 @@ import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.BsnAangevuld;
 import nl.lakedigital.as.messaging.EmailadresAangevuld;
+import nl.lakedigital.djfc.client.oga.AdresClient;
+import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
+import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
 import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
@@ -34,8 +37,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -65,6 +70,11 @@ public class GebruikerService {
     private TelefoonnummerService telefoonnummerService;
     @Inject
     private AdresRepository adresRepository;
+
+    @Inject
+    private AdresClient adresClient;
+    @Inject
+    private TelefoonnummerClient telefoonnummerClient;
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
@@ -357,9 +367,7 @@ public class GebruikerService {
             }
         }
         LOGGER.debug("Gevonden " + relaties.size() + " Relaties");
-        for (Gebruiker g : gebruikerRepository.zoekOpAdres(zoekTerm)) {
-            relaties.add((Relatie) g);
-        }
+        relaties.addAll(destilleerRelatie(adresClient.zoeken(zoekTerm)));
         LOGGER.debug("Zoeken op telefoonnummer");
         String zoekTermNumeriek = zoekTerm.replace(" ", "").replace("-", "");
         try {
@@ -369,9 +377,7 @@ public class GebruikerService {
             LOGGER.trace("", nfe);
         }
         if (zoekTermNumeriek != null) {
-            for (Gebruiker g : gebruikerRepository.zoekRelatiesOpTelefoonnummer(zoekTermNumeriek)) {
-                relaties.add((Relatie) g);
-            }
+            relaties.addAll(destilleerRelatie(telefoonnummerClient.zoeken(zoekTerm)));
         }
         LOGGER.debug("Zoeken op bedrijfnsaam");
         for (Gebruiker g : gebruikerRepository.zoekRelatiesOpBedrijfsnaam(zoekTerm)) {
@@ -399,5 +405,21 @@ public class GebruikerService {
         }
 
         return ret;
+    }
+
+    private List<Relatie> destilleerRelatie(List<? extends AbstracteJsonEntiteitMetSoortEnId> entiteitenMetSoortEnId) {
+        List<Relatie> relaties = newArrayList(transform(newArrayList(filter(entiteitenMetSoortEnId, new Predicate<AbstracteJsonEntiteitMetSoortEnId>() {
+            @Override
+            public boolean apply(AbstracteJsonEntiteitMetSoortEnId adres) {
+                return adres.getSoortEntiteit().equals(nl.lakedigital.djfc.domain.SoortEntiteit.RELATIE.name());
+            }
+        })), new Function<AbstracteJsonEntiteitMetSoortEnId, Relatie>() {
+            @Override
+            public Relatie apply(AbstracteJsonEntiteitMetSoortEnId adres) {
+                return (Relatie) gebruikerRepository.lees(adres.getEntiteitId());
+            }
+        }));
+
+        return relaties;
     }
 }
