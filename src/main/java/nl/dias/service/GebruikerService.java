@@ -2,6 +2,7 @@ package nl.dias.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import nl.dias.commons.DJFCToStringBuilder;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
@@ -419,6 +420,8 @@ public class GebruikerService {
                 return (Relatie) gebruikerRepository.lees(adres.getEntiteitId());
             }
         }));
+
+        LOGGER.trace(DJFCToStringBuilder.toString(relaties));
 
         return relaties;
     }
