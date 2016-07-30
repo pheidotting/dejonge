@@ -414,8 +414,6 @@ public class GebruikerService {
             }
         }));
 
-        LOGGER.trace(ReflectionToStringBuilder.toString(relaties));
-
         return relaties;
     }
 }
