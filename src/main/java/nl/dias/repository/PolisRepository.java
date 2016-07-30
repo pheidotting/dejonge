@@ -1,6 +1,5 @@
 package nl.dias.repository;
 
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Kantoor;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
@@ -128,55 +127,6 @@ public class PolisRepository {
         getTransaction().commit();
 
         return polis;
-    }
-
-    public List<Bijlage> zoekBijlagesBijPolis(Polis polis) {
-        getTransaction();
-
-        Query query = getEm().getNamedQuery("Bijlage.zoekBijlagesBijPolis");
-        query.setParameter("polis", polis);
-
-        List<Bijlage> bijlages = query.list();
-
-        getTransaction().commit();
-
-        return bijlages;
-    }
-
-    @Transactional
-    public void opslaanBijlage(Bijlage bijlage) {
-        LOGGER.debug("opslaan " + bijlage);
-
-        getEm().getTransaction().begin();
-        if (bijlage.getId() == null) {
-            getEm().persist(bijlage);
-        } else {
-            getEm().merge(bijlage);
-        }
-        getEm().getTransaction().commit();
-    }
-
-    public Bijlage leesBijlage(Long id) {
-        getTransaction();
-
-        Bijlage bijlage = getEm().get(Bijlage.class, id);
-
-        getTransaction().commit();
-
-        return bijlage;
-    }
-
-    public Bijlage leesBijlage(String s3) {
-        getTransaction();
-
-        Query query = getEm().getNamedQuery("Bijlage.zoekBijlagesBijS3");
-        query.setParameter("s3", s3);
-
-        Bijlage bijlage = (Bijlage) query.list().get(0);
-
-        getTransaction().commit();
-
-        return bijlage;
     }
 
     public Polis lees(Long id) {

@@ -1,8 +1,6 @@
 package nl.dias.utils;
 
-import nl.dias.domein.Adres;
 import nl.dias.domein.Relatie;
-import nl.dias.domein.Telefoonnummer;
 import nl.dias.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,54 +26,6 @@ public final class Validatie {
 
     public static void valideer(Relatie relatie) throws TelefoonnummerNietGoedException, IbanNietGoedException, PostcodeNietGoedException, BsnNietGoedException {
         Validatie.checkBsn(relatie.getBsn());
-    }
-
-    public static void validate(Telefoonnummer telefoonnummer) throws TelefoonnummerNietGoedException {
-        if (telefoonnummer.getSoort() == null) {
-            throw new TelefoonnummerNietGoedException();
-        }
-
-        if (telefoonnummer.getTelefoonnummer().length() != 10) {
-            throw new TelefoonnummerNietGoedException();
-        }
-
-        try {
-            Long.parseLong(telefoonnummer.getTelefoonnummer());
-        } catch (NumberFormatException e) {
-            LOGGER.debug(e.getMessage());
-            throw new TelefoonnummerNietGoedException();
-        }
-    }
-
-    private static void validate(Adres adres) throws PostcodeNietGoedException {
-        if (adres.getPostcode() != null && adres.getPostcode().length() > 0) {
-            try {
-                if (adres.getPostcode().length() != MAXLENGTE) {
-                    throw new PostcodeNietGoedException(adres.getPostcode());
-                }
-
-                String deelEen = adres.getPostcode().substring(0, DEELEEN);
-                String deelTwee = adres.getPostcode().substring(DEELEEN, MAXLENGTE);
-
-                // Geeft wel een fout als e.e.a. niet numeriek is
-                Long.parseLong(deelEen);
-                try {
-                    Long.parseLong(deelTwee.substring(0, 1));
-                    throw new PostcodeNietGoedException(adres.getPostcode());
-                } catch (NumberFormatException e) {
-                    // dit is verwacht, want deeltwee moet alfanumeriek zijn
-                }
-                try {
-                    Long.parseLong(deelTwee.substring(1, 2));
-                    throw new PostcodeNietGoedException(adres.getPostcode());
-                } catch (NumberFormatException e) {
-                    // dit is verwacht, want deeltwee moet alfanumeriek zijn
-                }
-            } catch (Exception e) {
-                LOGGER.debug("Fout opgetreden", e);
-                throw new PostcodeNietGoedException(adres.getPostcode());
-            }
-        }
     }
 
     public static void checkBsn(String bsn) throws BsnNietGoedException {

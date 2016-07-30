@@ -61,23 +61,6 @@ public class KantoorJson extends Kantoor {
             ret.setId(kantoor.getId());
         }
 
-        Adres postAdres = new Adres();
-
-        postAdres.setHuisnummer(this.getAdresHuisnummer());
-        postAdres.setPlaats(this.getAdresPlaats());
-        postAdres.setPostcode(this.getAdresPostcode());
-        postAdres.setStraat(this.getAdresStraat());
-        postAdres.setToevoeging(this.getAdresToevoeging());
-        postAdres.setSoortAdres(Adres.SoortAdres.POSTADRES);
-
-        Adres factuurAdres = new Adres();
-        factuurAdres.setHuisnummer(this.getFactuurAdresHuisnummer());
-        factuurAdres.setPlaats(this.getFactuurAdresPlaats());
-        factuurAdres.setPostcode(this.getFactuurAdresPostcode());
-        factuurAdres.setStraat(this.getFactuurAdresStraat());
-        factuurAdres.setToevoeging(this.getFactuurAdresToevoeging());
-        factuurAdres.setSoortAdres(Adres.SoortAdres.FACTUURADRES);
-
         ret.setBtwNummer(this.getBtwNummer());
         if (this.getDatumOprichtingString() != null && !"".equals(this.getDatumOprichtingString())) {
             try {

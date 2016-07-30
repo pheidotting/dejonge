@@ -1,6 +1,5 @@
 package nl.dias.repository;
 
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Hypotheek;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.SoortHypotheek;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -113,15 +111,6 @@ public class HypotheekRepository {
         getTransaction().commit();
 
         return hypotheeks;
-    }
-
-    @Transactional
-    public void opslaanBijlage(Bijlage bijlage) {
-        getSession().getTransaction().begin();
-
-        getSession().persist(bijlage);
-
-        getSession().getTransaction().commit();
     }
 
     public void opslaan(Hypotheek hypotheek) {

@@ -1,6 +1,9 @@
 package nl.dias.repository;
 
-import nl.dias.domein.*;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.Schade;
+import nl.dias.domein.SoortSchade;
+import nl.dias.domein.StatusSchade;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.Query;
@@ -12,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -128,28 +130,6 @@ public class SchadeRepository {
         getTransaction().commit();
 
         return lijst;
-    }
-
-    public List<Bijlage> zoekBijlagesBijSchade(Schade schade) {
-        getTransaction();
-
-        Query query = getSession().getNamedQuery("Bijlage.zoekBijlagesBijSchade");
-        query.setParameter("schade", schade);
-
-        List<Bijlage> lijst = query.list();
-
-        getTransaction().commit();
-
-        return lijst;
-    }
-
-    @Transactional
-    public void opslaanBijlage(Bijlage bijlage) {
-        getTransaction();
-
-        getSession().persist(bijlage);
-
-        getTransaction().commit();
     }
 
     public Schade lees(Long id) {

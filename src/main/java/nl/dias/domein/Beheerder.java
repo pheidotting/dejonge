@@ -1,15 +1,9 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "GEBRUIKER")

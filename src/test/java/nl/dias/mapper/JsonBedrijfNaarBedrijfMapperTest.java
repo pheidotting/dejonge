@@ -3,11 +3,9 @@ package nl.dias.mapper;
 import nl.dias.builders.BedrijfBuilder;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.ContactPersoon;
-import nl.dias.domein.Telefoonnummer;
 import nl.dias.service.BedrijfService;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
-import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -30,8 +28,6 @@ public class JsonBedrijfNaarBedrijfMapperTest extends EasyMockSupport {
     @Mock
     private BedrijfService bedrijfService;
     @Mock
-    private JsonTelefoonnummerNaarTelefoonnummerMapper jsonTelefoonnummerNaarTelefoonnummerMapper;
-    @Mock
     private JsonContactPersoonNaarContactPersoonMapper jsonContactPersoonNaarContactPersoonMapper;
 
     @Test
@@ -43,7 +39,6 @@ public class JsonBedrijfNaarBedrijfMapperTest extends EasyMockSupport {
 
         expect(bedrijfService.lees(2L)).andReturn(bedrijf);
 
-        expect(jsonTelefoonnummerNaarTelefoonnummerMapper.mapAllNaarSet(new ArrayList<JsonTelefoonnummer>(), bedrijf)).andReturn(new HashSet<Telefoonnummer>());
         expect(jsonContactPersoonNaarContactPersoonMapper.mapAllNaarSet(new ArrayList<JsonContactPersoon>(), bedrijf)).andReturn(new HashSet<ContactPersoon>());
 
         replayAll();

@@ -34,10 +34,6 @@ import static com.google.common.collect.Iterables.getFirst;
 public class PolisMapper extends Mapper<Polis, JsonPolis> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisMapper.class);
 
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
-    //    @Inject
-    //    private BijlageMapper bijlageMapper;
     private SchadeMapper schadeMapper;
     @Inject
     private PolisService polisService;
@@ -217,11 +213,6 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         return ret;
     }
-
-    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
-        this.opmerkingMapper = opmerkingMapper;
-    }
-
 
     public void setSchadeMapper(SchadeMapper schadeMapper) {
         this.schadeMapper = schadeMapper;

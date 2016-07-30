@@ -1,8 +1,8 @@
 package nl.dias.mapper;
 
 import nl.dias.builders.BedrijfBuilder;
-import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Relatie;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -32,6 +32,6 @@ public class BedrijfNaarJsonBedrijfMapperTest extends EasyMockSupport {
     @Test
     public void testIsVoorMij() throws Exception {
         assertTrue(mapper.isVoorMij(new Bedrijf()));
-        assertFalse(mapper.isVoorMij(new Adres()));
+        assertFalse(mapper.isVoorMij(new Relatie()));
     }
 }

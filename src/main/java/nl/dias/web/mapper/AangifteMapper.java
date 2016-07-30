@@ -12,16 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-
 @Component
 public class AangifteMapper extends Mapper<Aangifte, JsonAangifte> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AangifteMapper.class);
-
-    //    @Inject
-    //    private BijlageMapper bijlageMapper;
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
 
     @Override
     public Aangifte mapVanJson(JsonAangifte json) {

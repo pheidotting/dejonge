@@ -5,12 +5,8 @@ import nl.dias.web.mapper.dozer.AdresDozerMapper;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-
 @Component
 public class BedrijfMapper extends Mapper<Bedrijf, JsonBedrijf> {
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
 
     @Override
     public Bedrijf mapVanJson(JsonBedrijf json) {

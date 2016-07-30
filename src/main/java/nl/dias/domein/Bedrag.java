@@ -1,11 +1,10 @@
 package nl.dias.domein;
 
-import java.io.Serializable;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import java.io.Serializable;
 
 @Embeddable
 public class Bedrag implements Serializable {

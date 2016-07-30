@@ -1,9 +1,6 @@
 package nl.dias.repository;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 import nl.dias.domein.*;
-import nl.dias.web.SoortEntiteit;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,11 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static com.google.common.collect.Iterables.filter;
 
 
 @Repository
@@ -200,30 +193,30 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
         return result;
     }
 
-    public List<Relatie> zoekOpAdres(String adres) {
-        getTransaction();
-
-        Query query = getEm().getNamedQuery("Adres.zoekAdres");
-        query.setMaxResults(MAX_RESULTS);
-        query.setParameter("adres", "%" + adres + "%");
-
-        Set<Relatie> result = new HashSet<>();
-
-        List<Adres> res = query.list();
-
-        for (Adres adr : filter(res, new Predicate<Adres>() {
-            @Override
-            public boolean apply(Adres adres) {
-                return adres.getSoortEntiteit().equals(SoortEntiteit.RELATIE);
-            }
-        })) {
-            result.add(getEm().get(Relatie.class, adr.getEntiteitId()));
-        }
-
-        getTransaction().commit();
-
-        return Lists.newArrayList(result);
-    }
+    //    public List<Relatie> zoekOpAdres(String adres) {
+    //        getTransaction();
+    //
+    //        Query query = getEm().getNamedQuery("Adres.zoekAdres");
+    //        query.setMaxResults(MAX_RESULTS);
+    //        query.setParameter("adres", "%" + adres + "%");
+    //
+    //        Set<Relatie> result = new HashSet<>();
+    //
+    //        List<Adres> res = query.list();
+    //
+    //        for (Adres adr : filter(res, new Predicate<Adres>() {
+    //            @Override
+    //            public boolean apply(Adres adres) {
+    //                return adres.getSoortEntiteit().equals(SoortEntiteit.RELATIE);
+    //            }
+    //        })) {
+    //            result.add(getEm().get(Relatie.class, adr.getEntiteitId()));
+    //        }
+    //
+    //        getTransaction().commit();
+    //
+    //        return Lists.newArrayList(result);
+    //    }
 
 
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {

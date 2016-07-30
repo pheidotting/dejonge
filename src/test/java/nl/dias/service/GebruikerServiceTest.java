@@ -567,8 +567,6 @@ public class GebruikerServiceTest extends EasyMockSupport {
         String zoekterm = "06-12 345 678";
 
         Relatie relatieTelefoonnummer = new Relatie();
-        Telefoonnummer telefoonnummer = new Telefoonnummer();
-        telefoonnummer.setTelefoonnummer("031");
         List<Relatie> relatiesTelefoonnummer = new ArrayList<>();
         relatiesTelefoonnummer.add(relatieTelefoonnummer);
         JsonTelefoonnummer jsonTelefoonnummer = new JsonTelefoonnummer();

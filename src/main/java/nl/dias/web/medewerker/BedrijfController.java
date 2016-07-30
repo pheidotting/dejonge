@@ -2,10 +2,8 @@ package nl.dias.web.medewerker;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.mapper.Mapper;
-import nl.dias.service.AdresService;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
-import nl.dias.service.TelefoonnummerService;
 import nl.dias.web.mapper.BedrijfMapper;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
@@ -39,10 +37,6 @@ public class BedrijfController extends AbstractController {
     private Mapper mapper;
     @Inject
     private BedrijfMapper bedrijfMapper;
-    @Inject
-    private AdresService adresService;
-    @Inject
-    private TelefoonnummerService telefoonnummerService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
     @ResponseBody

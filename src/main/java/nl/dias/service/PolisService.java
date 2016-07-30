@@ -1,7 +1,6 @@
 package nl.dias.service;
 
 import com.google.common.collect.Lists;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
@@ -10,7 +9,6 @@ import nl.dias.domein.predicates.PolissenOpSoortPredicate;
 import nl.dias.domein.transformers.PolisToSchermNaamTransformer;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
-import nl.dias.web.SoortEntiteit;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -78,44 +76,6 @@ public class PolisService {
             LOGGER.debug("Niks gevonden ", e);
             return null;
         }
-    }
-
-    public Bijlage opslaanBijlage(String polisId, Bijlage bijlage) {
-        LOGGER.info("Opslaan bijlage met id {}, bij Polis met id {}", bijlage.getId(), polisId);
-
-        //        Polis polis = polisRepository.lees(Long.valueOf(polisId));
-
-        //        polis.getBijlages().add(bijlage);
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(bijlage));
-        //        LOGGER.debug(ReflectionToStringBuilder.toString(polis));
-
-        //        polisRepository.opslaan(polis);
-
-        bijlage.setSoortBijlage(SoortEntiteit.POLIS);
-        //        bijlage.setPolis(polis);
-
-        return bijlage;
-    }
-
-    public void slaBijlageOp(Long polisId, Bijlage bijlage, String omschrijving) {
-        LOGGER.debug("Opslaan Bijlage bij Polis, polisId " + polisId);
-
-        //        bijlage.setPolis(polisRepository.lees(polisId));
-        bijlage.setSoortBijlage(SoortEntiteit.POLIS);
-        bijlage.setOmschrijving(omschrijving);
-
-        LOGGER.debug("Bijlage naar repository " + bijlage);
-
-        polisRepository.opslaanBijlage(bijlage);
-    }
-
-    public Bijlage leesBijlage(Long id) {
-        return polisRepository.leesBijlage(id);
-    }
-
-    public Bijlage leesBijlage(String s3) {
-        return polisRepository.leesBijlage(s3);
     }
 
     public void verwijder(Long id) {

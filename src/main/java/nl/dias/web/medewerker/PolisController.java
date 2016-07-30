@@ -5,7 +5,6 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
-import nl.dias.service.BijlageService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.web.mapper.PolisMapper;
@@ -32,8 +31,6 @@ public class PolisController extends AbstractController {
     private PolisService polisService;
     @Inject
     private GebruikerService gebruikerService;
-    @Inject
-    private BijlageService bijlageService;
     @Inject
     private PolisMapper polisMapper;
     @Inject

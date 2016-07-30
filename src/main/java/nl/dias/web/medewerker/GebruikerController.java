@@ -5,7 +5,6 @@ import nl.dias.mapper.Mapper;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
-import nl.dias.web.mapper.AdresMapper;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -35,8 +34,6 @@ public class GebruikerController extends AbstractController {
     private KantoorRepository kantoorRepository;
     @Inject
     private RelatieMapper relatieMapper;
-    @Inject
-    private AdresMapper adresMapper;
     @Inject
     private Mapper mapper;
     @Inject
@@ -201,12 +198,6 @@ public class GebruikerController extends AbstractController {
         zetSessieWaarden(httpServletRequest);
 
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanAdresBijRelatie")
-    @ResponseBody
-    public void opslaanAdresBijRelatie(@RequestBody JsonAdres jsonAdres) {
-        gebruikerService.opslaanAdresBijRelatie(adresMapper.mapVanJson(jsonAdres), Long.valueOf(jsonAdres.getEntiteitId()));
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

@@ -11,18 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.math.BigDecimal;
 
 @Component
 public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HypotheekMapper.class);
     private static final String DATUM_FORMAAT = "dd-MM-yyyy";
-
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
-    //    @Inject
-    //    private BijlageMapper bijlageMapper;
 
     @Override
     public Hypotheek mapVanJson(JsonHypotheek jsonHypotheek) {
@@ -172,9 +166,4 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
 
         return jsonHypotheek;
     }
-
-    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
-        this.opmerkingMapper = opmerkingMapper;
-    }
-
 }

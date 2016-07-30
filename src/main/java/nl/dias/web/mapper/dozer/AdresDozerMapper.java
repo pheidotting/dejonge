@@ -1,6 +1,5 @@
 package nl.dias.web.mapper.dozer;
 
-import nl.dias.domein.Adres;
 import nl.dias.domein.Bedrijf;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
 import org.dozer.DozerBeanMapper;
@@ -49,7 +48,7 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
             result.setId(Long.valueOf(jsonBedrijf.getId()));
         }
 
-        Adres adres = new Adres();
+        //        Adres adres = new Adres();
         //        adres.setToevoeging(jsonBedrijf.getToevoeging());
         //        adres.setHuisnummer(Long.valueOf(jsonBedrijf.getHuisnummer()));
         //        adres.setPlaats(jsonBedrijf.getPlaats());

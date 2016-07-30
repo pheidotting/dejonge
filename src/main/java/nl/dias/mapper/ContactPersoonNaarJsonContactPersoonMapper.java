@@ -8,14 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-
 @Component
 public class ContactPersoonNaarJsonContactPersoonMapper extends AbstractMapper<ContactPersoon, JsonContactPersoon> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactPersoonNaarJsonContactPersoonMapper.class);
 
-    @Inject
-    private TelefoonnummerNaarJsonTelefoonnummerMapper telefoonnummerNaarJsonTelefoonnummerMapper;
 
     @Override
     public JsonContactPersoon map(ContactPersoon object, Object parent, Object bestaandObject) {
@@ -30,12 +26,6 @@ public class ContactPersoonNaarJsonContactPersoonMapper extends AbstractMapper<C
         jsonContactPersoon.setFunctie(object.getFunctie());
         jsonContactPersoon.setTussenvoegsel(object.getTussenvoegsel());
         jsonContactPersoon.setVoornaam(object.getVoornaam());
-
-        //        jsonContactPersoon.setTelefoonnummers(telefoonnummerNaarJsonTelefoonnummerMapper.mapAll(object.getTelefoonnummers()));
-
-        //        JsonTelefoonnummer jsonTelefoonnummer=telefoonnummerNaarJsonTelefoonnummerMapper.map(getFirst(object.getTelefoonnummers(), null));
-        //
-        //        jsonContactPersoon.setTelefoonnummer(jsonTelefoonnummer.getTelefoonnummer());
 
         LOGGER.debug("Gemapt naar {}", ReflectionToStringBuilder.toString(jsonContactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
 

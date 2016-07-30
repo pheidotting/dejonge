@@ -1,7 +1,6 @@
 package nl.dias.repository;
 
 import nl.dias.domein.Aangifte;
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Relatie;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -79,15 +77,6 @@ public class AangifteRepository {
         getTransaction().commit();
 
         return aangiftes;
-    }
-
-    @Transactional
-    public void opslaanBijlage(Bijlage bijlage) {
-        getSession().getTransaction();
-
-        getSession().persist(bijlage);
-
-        getSession().getTransaction().commit();
     }
 
     public Aangifte lees(Long id) {

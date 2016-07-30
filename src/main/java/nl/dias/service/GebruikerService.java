@@ -10,8 +10,10 @@ import nl.dias.messaging.sender.AanmakenTaakSender;
 import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
-import nl.dias.repository.*;
-import nl.dias.web.SoortEntiteit;
+import nl.dias.repository.GebruikerRepository;
+import nl.dias.repository.HypotheekRepository;
+import nl.dias.repository.KantoorRepository;
+import nl.dias.repository.PolisRepository;
 import nl.lakedigital.as.messaging.AanmakenTaak;
 import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
 import nl.lakedigital.as.messaging.BsnAangevuld;
@@ -20,7 +22,6 @@ import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
-import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -66,10 +67,6 @@ public class GebruikerService {
     private BsnAangevuldSender bsnAangevuldSender;
     @Inject
     private Mapper mapper;
-    @Inject
-    private TelefoonnummerService telefoonnummerService;
-    @Inject
-    private AdresRepository adresRepository;
 
     @Inject
     private AdresClient adresClient;
@@ -78,13 +75,6 @@ public class GebruikerService {
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
-    }
-
-    public void opslaanAdresBijRelatie(Adres adres, Long relatieId) {
-        adres.setEntiteitId(relatieId);
-        adres.setSoortEntiteit(SoortEntiteit.RELATIE);
-
-        adresRepository.opslaan(adres);
     }
 
     public void koppelenOnderlingeRelatie(Long relatieId, Long relatieMetId, String soortRelatie) {
@@ -177,14 +167,6 @@ public class GebruikerService {
             LOGGER.debug("opslaan {}", ReflectionToStringBuilder.toString(contactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
 
             gebruikerRepository.opslaan(contactPersoon);
-
-            List<Telefoonnummer> telefoonnummers = new ArrayList<>();
-            for (JsonTelefoonnummer jsonTelefoonnummer : jsonContactPersoon.getTelefoonnummers()) {
-                telefoonnummers.add(mapper.map(jsonTelefoonnummer, Telefoonnummer.class));
-            }
-            telefoonnummerService.opslaan(telefoonnummers, contactPersoon.getId(), SoortEntiteit.CONTACTPERSOON);
-
-
         }
     }
 

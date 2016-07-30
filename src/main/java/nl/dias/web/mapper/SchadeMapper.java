@@ -20,10 +20,6 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchadeMapper.class);
 
     @Inject
-    private OpmerkingMapper opmerkingMapper;
-    //    @Inject
-    //    private BijlageMapper bijlageMapper;
-    @Inject
     private SchadeService schadeService;
     @Inject
     private PolisService polisService;
@@ -114,9 +110,4 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
 
         return jsonSchade;
     }
-
-    public void setOpmerkingMapper(OpmerkingMapper opmerkingMapper) {
-        this.opmerkingMapper = opmerkingMapper;
-    }
-
 }

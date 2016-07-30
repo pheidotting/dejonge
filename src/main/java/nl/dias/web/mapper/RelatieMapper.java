@@ -22,16 +22,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RelatieMapper.class);
 
     @Inject
-    private TelefoonnummerMapper telefoonnummerMapper;
-    @Inject
-    private RekeningnummerMapper rekeningnummerMapper;
-    @Inject
-    private OpmerkingMapper opmerkingMapper;
-    @Inject
-    private AdresMapper adresMapper;
-    //    @Inject
-    //    private BijlageMapper bijlageMapper;
-    @Inject
     private GebruikerService gebruikerService;
 
     @Override
@@ -113,10 +103,6 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         if (relatie.getBurgerlijkeStaat() != null) {
             jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
         }
-        //        for (OnderlingeRelatie ol : relatie.getOnderlingeRelaties()) {
-        //            jsonRelatie.getOnderlingeRelaties().add(jsonOnderlingeRelatie(ol));
-        //        }
-        //        jsonRelatie.setBijlages(bijlageMapper.mapAllNaarJson(relatie.getBijlages()));
 
         jsonRelatie.setEmailadres(relatie.getEmailadres());
 
