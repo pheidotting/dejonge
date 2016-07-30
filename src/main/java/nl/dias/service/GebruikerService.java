@@ -2,7 +2,6 @@ package nl.dias.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import nl.dias.commons.DJFCToStringBuilder;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
@@ -22,8 +21,8 @@ import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
 import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -415,7 +414,7 @@ public class GebruikerService {
             }
         }));
 
-        LOGGER.trace(DJFCToStringBuilder.toString(relaties));
+        LOGGER.trace(ReflectionToStringBuilder.toString(relaties));
 
         return relaties;
     }
