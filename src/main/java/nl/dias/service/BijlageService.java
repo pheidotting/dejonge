@@ -47,7 +47,7 @@ public class BijlageService {
                 bijlages.addAll(verwerkZipFile(bestand, uploadPad));
                 new File(bestand).delete();
             } catch (IOException e) {
-                LOGGER.error("{}", e.getStackTrace());
+                LOGGER.info("{}", e);
             }
         } else {
             LOGGER.debug("PDF");
