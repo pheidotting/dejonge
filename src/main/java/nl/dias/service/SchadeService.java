@@ -78,22 +78,11 @@ public class SchadeService {
         }
 
         if (polisId != null && !"Kies een polis uit de lijst..".equals(polisId)) {
-            //            LOGGER.debug("Polis opzoeken, id : " + polisId);
-            //            Polis polis = polisService.lees(Long.valueOf(polisId));
-            //            schade.setPolis(polis);
             schade.setPolis(Long.valueOf(polisId));
         }
 
-        // Bijlages er bij zoeken
-        //        List<Bijlage> bijlages = schadeRepository.zoekBijlagesBijSchade(schade);
-        //        schade.getBijlages().addAll(bijlages);
-
         LOGGER.debug("Schade opslaan");
         schadeRepository.opslaan(schade);
-
-        //        LOGGER.debug("Opmerkingen bij de schade zoeken en er weer bij plaatsen");
-        //        Schade schadeOorspronkelijk = schadeRepository.lees(schade.getId());
-        //        schade.setOpmerkingen(schadeOorspronkelijk.getOpmerkingen());
     }
 
     public List<Schade> alleSchadesBijRelatie(Long relatie) {
@@ -125,13 +114,5 @@ public class SchadeService {
         Schade schade = schadeRepository.lees(id);
         LOGGER.debug(ReflectionToStringBuilder.toString(schade));
         return schade;
-    }
-
-    public void setSchadeRepository(SchadeRepository schadeRepository) {
-        this.schadeRepository = schadeRepository;
-    }
-
-    public void setPolisService(PolisService polisService) {
-        this.polisService = polisService;
     }
 }
