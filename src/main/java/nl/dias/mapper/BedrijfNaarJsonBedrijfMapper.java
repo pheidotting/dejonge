@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBedrijf> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BedrijfNaarJsonBedrijfMapper.class);
 
-    //    @Inject
-    //    private ContactPersoonNaarJsonContactPersoonMapper contactPersoonNaarJsonContactPersoonMapper;
-
     @Override
     public JsonBedrijf map(Bedrijf bedrijf, Object parent, Object bestaandObject) {
         JsonBedrijf jsonBedrijf = new JsonBedrijf();
@@ -29,10 +26,6 @@ public class BedrijfNaarJsonBedrijfMapper extends AbstractMapper<Bedrijf, JsonBe
         jsonBedrijf.setHoedanigheid(bedrijf.getHoedanigheid());
         jsonBedrijf.setRechtsvorm(bedrijf.getRechtsvorm());
         jsonBedrijf.setInternetadres(bedrijf.getInternetadres());
-
-        //        for (ContactPersoon contactPersoon : bedrijf.getContactPersonen()) {
-        //            jsonBedrijf.getContactpersonen().add(contactPersoonNaarJsonContactPersoonMapper.map(contactPersoon));
-        //        }
 
         LOGGER.debug("Gemapt naar {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
 
