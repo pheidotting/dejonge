@@ -27,19 +27,15 @@ public class BijlageService {
 
     protected String bepaalExtensie(String bestandsnaamn) {
         String[] exp = bestandsnaamn.split("\\.");
-        String extensie = exp[exp.length - 1];
-
-        return extensie;
+        return exp[exp.length - 1];
     }
-
-    ;
 
     public List<Bijlage> uploaden(MultipartFile fileDetail, String uploadPad) {
         String extensie = bepaalExtensie(fileDetail.getOriginalFilename());
 
         List<Bijlage> bijlages = new ArrayList<>();
         LOGGER.debug(extensie);
-        if (extensie.toLowerCase().equals("zip")) {
+        if ("zip".equalsIgnoreCase(extensie)) {
             LOGGER.debug("zipfile");
             try {
                 String bestand = uploadPad + "/" + fileDetail.getOriginalFilename();
@@ -55,7 +51,7 @@ public class BijlageService {
             }
         } else {
             LOGGER.debug("PDF");
-            bijlages.add(schrijfWeg(fileDetail, uploadPad, extensie));
+            bijlages.add(schrijfWeg(fileDetail, uploadPad));
         }
 
         return bijlages;
@@ -114,10 +110,9 @@ public class BijlageService {
         return bijlage;
     }
 
-    private Bijlage schrijfWeg(MultipartFile fileDetail, String uploadPad, String extensie) {
+    private Bijlage schrijfWeg(MultipartFile fileDetail, String uploadPad) {
         Bijlage bijlage = maakBijlage(fileDetail.getOriginalFilename());
 
-        //        bijlageRepository.opslaan(bijlage);
         LOGGER.debug("Opslaan Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
 
         try {
