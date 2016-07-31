@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
+
 public abstract class AbstractMapper<T, Z> {
 
     public Z map(T object) {
@@ -26,7 +29,7 @@ public abstract class AbstractMapper<T, Z> {
             }
             return ret;
         } else {
-            return null;
+            return newArrayList();
         }
 
     }
@@ -39,7 +42,7 @@ public abstract class AbstractMapper<T, Z> {
             }
             return ret;
         } else {
-            return null;
+            return newArrayList();
         }
 
     }
@@ -56,7 +59,7 @@ public abstract class AbstractMapper<T, Z> {
             }
             return ret;
         } else {
-            return null;
+            return newHashSet();
         }
     }
 
