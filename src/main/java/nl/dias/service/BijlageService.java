@@ -22,44 +22,8 @@ public class BijlageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
     private static final String FOUTMELDINGBIJOPSLAANBIJLAGE = "fout bij opslaan bijlage nar schijf\"   ";
 
-    //    @Inject
-    //    private BijlageRepository bijlageRepository;
     @Inject
     private BedrijfService bedrijfService;
-
-    //    public void wijzigOmschrijvingBijlage(Long id, String nieuweNaam) {
-    //        Bijlage bijlage = bijlageRepository.leesBijlage(id);
-    //
-    //        bijlage.setOmschrijving(nieuweNaam);
-    //
-    //        bijlageRepository.opslaan(bijlage);
-    //    }
-    //
-    //    public List<Bijlage> alleBijlagesBijEntiteit(SoortEntiteit soortEntiteit, Long entiteitId) {
-    //        return bijlageRepository.alleBijlagesBijEntiteit(soortEntiteit, entiteitId);
-    //    }
-    //
-    //    public void verwijderBijlage(Long id) {
-    //        Bijlage bijlage = bijlageRepository.lees(id);
-    //
-    //        LOGGER.debug("Verwijderen Bijlage {}", ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
-    //
-    //                if (bijlage.getBedrijf() != null) {
-    //                    Bedrijf bedrijf = bedrijfService.lees(bijlage.getBedrijf().getId());
-    //                    bedrijf.getBijlages().remove(bijlage);
-    //                }
-    //
-    //        bijlageRepository.verwijder(bijlage);
-    //
-    //        Bestand nog ff verwijderen
-    //        LOGGER.debug("Bestand {} verwijderen", Utils.getUploadPad() + "/" + bijlage.getS3Identificatie());
-    //
-    //        new File(Utils.getUploadPad() + "/" + bijlage.getS3Identificatie()).delete();
-    //    }
-    //
-    //    public void opslaan(Bijlage bijlage) {
-    //        bijlageRepository.opslaan(bijlage);
-    //    }
 
     protected String bepaalExtensie(String bestandsnaamn) {
         String[] exp = bestandsnaamn.split("\\.");
@@ -87,7 +51,7 @@ public class BijlageService {
                 bijlages.addAll(verwerkZipFile(bestand, uploadPad));
                 new File(bestand).delete();
             } catch (IOException e) {
-
+                LOGGER.error("{}", e.getStackTrace());
             }
         } else {
             LOGGER.debug("PDF");
