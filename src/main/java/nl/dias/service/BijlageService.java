@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.inject.Inject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,6 @@ import java.util.zip.ZipInputStream;
 public class BijlageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BijlageService.class);
     private static final String FOUTMELDINGBIJOPSLAANBIJLAGE = "fout bij opslaan bijlage nar schijf\"   ";
-
-    @Inject
-    private BedrijfService bedrijfService;
 
     protected String bepaalExtensie(String bestandsnaamn) {
         String[] exp = bestandsnaamn.split("\\.");
