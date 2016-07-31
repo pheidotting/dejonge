@@ -71,26 +71,13 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
     private String verzekerdeZaak;
 
     @Column(name = "RELATIE")
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Relatie.class)
     private Long relatie;
 
     @Column(name = "BEDRIJF")
-    //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = true, targetEntity = Bedrijf.class)
     private Long bedrijf;
 
-    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Bijlage.class)
-    //    private Set<Bijlage> bijlages;
-
-    //    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Opmerking.class)
-    //    private Set<Opmerking> opmerkingen;
-
-    //    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, optional = false, targetEntity = VerzekeringsMaatschappij.class)
-    //    @JoinColumn(name = "MAATSCHAPPIJ")
     @Column(name = "MAATSCHAPPIJ")
     private Long maatschappij;
-
-    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "polis", orphanRemoval = true, targetEntity = Schade.class)
-    //    private Set<Schade> schades;
 
     @Column(name = "OMSCHRIJVING", columnDefinition = "varchar(2500)")
     private String omschrijvingVerzekering;
@@ -187,28 +174,6 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.relatie = relatie;
     }
 
-    //    public Set<Bijlage> getBijlages() {
-    //        if (bijlages == null) {
-    //            bijlages = new HashSet<>();
-    //        }
-    //        return bijlages;
-    //    }
-    //
-    //    public void setBijlages(Set<Bijlage> bijlages) {
-    //        this.bijlages = bijlages;
-    //    }
-    //
-    //    public Set<Opmerking> getOpmerkingen() {
-    //        if (opmerkingen == null) {
-    //            opmerkingen = new HashSet<>();
-    //        }
-    //        return opmerkingen;
-    //    }
-    //
-    //    public void setOpmerkingen(Set<Opmerking> opmerkingen) {
-    //        this.opmerkingen = opmerkingen;
-    //    }
-
     public Long getMaatschappij() {
         return maatschappij;
     }
@@ -279,17 +244,6 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         this.bedrijf = bedrijf;
     }
 
-    //    public Set<Schade> getSchades() {
-    //        if (schades == null) {
-    //            schades = new HashSet<>();
-    //        }
-    //        return schades;
-    //    }
-    //
-    //    public void setSchades(Set<Schade> schades) {
-    //        this.schades = schades;
-    //    }
-
     public String getOmschrijvingVerzekering() {
         return omschrijvingVerzekering;
     }
@@ -333,18 +287,12 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
         sb.append(", wijzigingsDatum=").append(getWijzigingsDatum());
         sb.append(", prolongatieDatum=").append(getProlongatieDatum());
         sb.append(", betaalfrequentie=").append(betaalfrequentie);
-        //        if (relatie != null) {
-        //            sb.append(", relatie=").append(relatie.getIdentificatie());
-        //        }
         if (bedrijf != null) {
             sb.append(", bedrijf=").append(bedrijf);
         }
-        //        sb.append(", bijlages=").append(bijlages);
-        //        sb.append(", opmerkingen=").append(opmerkingen);
         if (maatschappij != null) {
             sb.append(", maatschappij=").append(maatschappij);
         }
-        //        sb.append(", schades=").append(schades);
         sb.append(", omschrijvingVerzekering='").append(omschrijvingVerzekering).append('\'');
         sb.append('}');
         return sb.toString();
