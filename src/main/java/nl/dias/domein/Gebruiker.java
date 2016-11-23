@@ -24,7 +24,7 @@ import java.util.Set;
         @NamedQuery(name = "Gebruiker.zoekOpIdentificatie", query = "select g from Gebruiker g where g.identificatie = :identificatie"), //
         @NamedQuery(name = "Gebruiker.zoekOpSessieEnIpAdres", query = "select distinct g from Gebruiker g join g.sessies as s where s.sessie = :sessie and s.ipadres = :ipadres"), //
         @NamedQuery(name = "Gebruiker.zoekOpCookieCode", query = "select distinct g from Gebruiker g join g.sessies as s where s.cookieCode = :cookieCode"), //
-        @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Gebruiker g where g.voornaam like :naam or g.achternaam like :naam")//
+        @NamedQuery(name = "Gebruiker.zoekOpNaam", query = "select g from Relatie g where g.voornaam like :naam or g.achternaam like :naam")//
 })
 public abstract class Gebruiker extends Onderwerp implements PersistenceObject, Principal {
     private static final long serialVersionUID = -643848502264838675L;
