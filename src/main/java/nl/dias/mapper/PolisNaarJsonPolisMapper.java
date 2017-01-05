@@ -41,11 +41,13 @@ public class PolisNaarJsonPolisMapper extends AbstractMapper<Polis, JsonPolis> {
         }
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
-            jsonPolis.setBedrijf(polis.getBedrijf().toString());
+            jsonPolis.setEntiteitId(polis.getBedrijf());
+            jsonPolis.setSoortEntiteit("BEDRIJF");
         }
         //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {
-            jsonPolis.setRelatie(polis.getRelatie().toString());
+            jsonPolis.setEntiteitId(polis.getBedrijf());
+            jsonPolis.setSoortEntiteit("RELATIE");
         }
         jsonPolis.setOmschrijvingVerzekering(polis.getOmschrijvingVerzekering());
 

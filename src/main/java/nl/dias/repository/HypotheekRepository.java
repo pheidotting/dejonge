@@ -134,6 +134,16 @@ public class HypotheekRepository {
         getTransaction().commit();
     }
 
+    public void verwijder(List<Hypotheek> hypotheken) {
+        getTransaction();
+
+        for (Hypotheek hypotheek : hypotheken) {
+            getSession().delete(hypotheek);
+        }
+
+        getTransaction().commit();
+    }
+
     public List<Hypotheek> alles() {
         getTransaction();
 

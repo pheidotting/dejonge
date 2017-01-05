@@ -38,16 +38,18 @@ public class AuthorisatieController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/inloggen")
     @ResponseBody
-    public Response inloggen(@RequestBody Inloggen inloggen, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
+    public Long inloggen(@RequestBody Inloggen inloggen, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
         try {
             LOGGER.debug("Inloggen");
             authorisatieService.inloggen(inloggen.getIdentificatie().trim(), inloggen.getWachtwoord(), inloggen.isOnthouden(), httpServletRequest, httpServletResponse);
-        } catch (OnjuistWachtwoordException | NietGevondenException e) {
-            LOGGER.debug("Onjuist wachtwoord of Gebruiker niet gevonden", e);
-            return Response.status(401).entity(new JsonFoutmelding(e.getMessage())).build();
+        } catch (NietGevondenException e) {
+            LOGGER.trace("gebruiker niet gevonden", e);
+            return 1L;
+        } catch (OnjuistWachtwoordException e) {
+            LOGGER.trace("Onjuist wachtwoord", e);
+            return 2L;
         }
-
-        return Response.status(200).entity(new JsonFoutmelding()).build();
+        return 0L;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/uitloggen")
@@ -88,6 +90,9 @@ public class AuthorisatieController {
 
     }
 
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public class GebruikerNietGevondenOfWachtwoordOnjuisException extends RuntimeException {
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/isIngelogd")
     @ResponseBody
@@ -117,7 +122,7 @@ public class AuthorisatieController {
             try {
                 gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
             } catch (NietGevondenException nge) {
-                LOGGER.trace("Gebruiker dus niet gevonden", nge);
+                //                LOGGER.trace("Gebruiker dus niet gevonden", nge);
             }
         }
 

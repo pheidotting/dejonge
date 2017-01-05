@@ -106,15 +106,24 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         polis.setMaatschappij(Long.valueOf(jsonPolis.getMaatschappij()));
         //        if (jsonPolis.getMaatschappij() != null && !"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
         //            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
+        //
+        //
+        //      }
+
+        if (jsonPolis.getSoortEntiteit().equalsIgnoreCase("relatie")) {
+            polis.setRelatie(jsonPolis.getEntiteitId());
+        } else {
+            polis.setBedrijf(jsonPolis.getEntiteitId());
+        }
+
+        //        if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
+        //            polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
         //        }
-        if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
-            polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
-        }
-        LOGGER.trace("Bedrijf zetten bij Polis, bedrijf id : {}", jsonPolis.getBedrijf());
-        if (StringUtils.isNotEmpty(jsonPolis.getBedrijf())) {
-            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijf()));
-            LOGGER.trace("Bedrijf gezet: {}", polis.getBedrijf());
-        }
+        //        LOGGER.trace("Bedrijf zetten bij Polis, bedrijf id : {}", jsonPolis.getBedrijf());
+        //        if (StringUtils.isNotEmpty(jsonPolis.getBedrijf())) {
+        //            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijf()));
+        //            LOGGER.trace("Bedrijf gezet: {}", polis.getBedrijf());
+        //        }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
 
         //        if (polis.getId() != null && polis.getId() != 0) {
@@ -176,11 +185,13 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         jsonPolis.setSoort(polis.getClass().getSimpleName().replace("Verzekering", ""));
         if (polis.getBedrijf() != null) {
-            jsonPolis.setBedrijf(polis.getBedrijf().toString());
+            jsonPolis.setEntiteitId(polis.getBedrijf());
+            jsonPolis.setSoortEntiteit("BEDRIJF");
         }
         //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {
-            jsonPolis.setRelatie(polis.getRelatie().toString());
+            jsonPolis.setEntiteitId(polis.getBedrijf());
+            jsonPolis.setSoortEntiteit("RELATIE");
         }
         jsonPolis.setOmschrijvingVerzekering(polis.getOmschrijvingVerzekering());
 

@@ -65,9 +65,9 @@ public class PolisController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/beeindigen")
+    @RequestMapping(method = RequestMethod.POST, value = "/beeindigen/{id}")
     @ResponseBody
-    public void beeindigen(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
+    public void beeindigen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("beeindigen Polis met id " + id);
 
         zetSessieWaarden(httpServletRequest);

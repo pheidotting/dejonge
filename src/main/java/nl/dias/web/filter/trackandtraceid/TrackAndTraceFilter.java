@@ -1,6 +1,9 @@
 package nl.dias.web.filter.trackandtraceid;
 
+import nl.dias.domein.Gebruiker;
+import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.trackandtraceid.InkomendRequestService;
+import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -13,11 +16,13 @@ import java.io.IOException;
 @Component
 public class TrackAndTraceFilter implements Filter {
     private InkomendRequestService inkomendRequestService;
+    private GebruikerRepository gebruikerRepository;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
         this.inkomendRequestService = ctx.getBean(InkomendRequestService.class);
+        this.gebruikerRepository = ctx.getBean(GebruikerRepository.class);
     }
 
 
@@ -79,6 +84,17 @@ public class TrackAndTraceFilter implements Filter {
         String ingelogdeGebruiker = "ingelogdeGebruiker";
         if (httpServletRequest.getSession().getAttribute(ingelogdeGebruiker) != null && !"".equals(httpServletRequest.getSession().getAttribute(ingelogdeGebruiker))) {
             return Long.valueOf(httpServletRequest.getSession().getAttribute(ingelogdeGebruiker).toString());
+        }
+
+        final String sessieId = (String) httpServletRequest.getSession().getAttribute("sessie");
+        final String ipAdres = httpServletRequest.getRemoteAddr();
+
+        if (sessieId != null && sessieId.length() > 0) {
+            try {
+                Gebruiker gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
+                return gebruiker.getId();
+            } catch (NietGevondenException e) {
+            }
         }
         return null;
     }

@@ -40,7 +40,7 @@ public class HeaderFilter extends OncePerRequestFilter {
                 gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
 
                 if (gebruiker == null) {
-                    LOGGER.debug("Geen Gebruiker gevonden");
+                    //                    LOGGER.debug("Geen Gebruiker gevonden");
                 } else {
                     LOGGER.debug("Gebruiker met id {} gevonden", gebruiker.getId());
 

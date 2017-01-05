@@ -54,6 +54,8 @@ public class GebruikerService {
     @Inject
     private PolisRepository polisRepository;
     @Inject
+    private SchadeService schadeService;
+    @Inject
     private KantoorRepository kantoorRepository;
     @Inject
     private HypotheekRepository hypotheekRepository;
@@ -248,16 +250,19 @@ public class GebruikerService {
         Gebruiker gebruiker = gebruikerRepository.lees(id);
 
         LOGGER.debug("Opgehaalde gebruiker : ");
-        LOGGER.debug(ReflectionToStringBuilder.toString(gebruiker));
+        //        LOGGER.debug(ReflectionToStringBuilder.toString(gebruiker));
 
         if (gebruiker instanceof Relatie) {
             Relatie relatie = (Relatie) gebruiker;
-            for (Hypotheek hypotheek : relatie.getHypotheken()) {
-                LOGGER.debug("Verwijder Hypotheek :");
-                LOGGER.debug(ReflectionToStringBuilder.toString(hypotheek));
-                hypotheekRepository.verwijder(hypotheek);
-                relatie.getHypotheken().remove(hypotheek);
-            }
+
+            List<Hypotheek> hypotheeks = hypotheekRepository.allesVanRelatie(relatie);
+            hypotheekRepository.verwijder(hypotheeks);
+
+            List<Schade> schades = schadeService.alleSchadesBijRelatie(relatie.getId());
+            schadeService.verwijder(schades);
+
+            List<Polis> polises = polisRepository.allePolissenBijRelatie(relatie.getId());
+            polisRepository.verwijder(polises);
         }
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);
@@ -397,5 +402,18 @@ public class GebruikerService {
         }));
 
         return relaties;
+    }
+
+    public void opslaanOAuthCodeTodoist(String code, Long id) {
+        Medewerker medewerker = (Medewerker) gebruikerRepository.lees(id);
+        medewerker.setoAuthCodeTodoist(code);
+
+        gebruikerRepository.opslaan(medewerker);
+    }
+
+    public String leesOAuthCodeTodoist(Long id) {
+        Medewerker medewerker = (Medewerker) gebruikerRepository.lees(id);
+
+        return medewerker.getoAuthCodeTodoist();
     }
 }

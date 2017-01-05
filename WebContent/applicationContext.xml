@@ -8,16 +8,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<context:component-scan base-package="nl.dias" />
 	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
 
+
 	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
-	<!--<property name="sessionFactory" ref="sessionFactory"/>-->
+	<!--<property name="sessionFactory" ref="sessionFactory" />-->
 	<!--</bean>-->
 	<!---->
 	<!--<bean id="headerFilter" class="nl.dias.web.filter.HeaderFilter" depends-on="gebruikerRepository">-->
-	<!--<property name="gebruikerRepository" ref="gebruikerRepository"/>-->
+	<!--<property name="gebruikerRepository" ref="gebruikerRepository" />-->
 	<!--</bean>-->
 	<!---->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-        <property name="maxUploadSize" value="50000000"/>
+		<property name="maxUploadSize" value="50000000"/>
     </bean>
 
 	<!-- Activemq connection factory -->
@@ -167,6 +168,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="placeholderPrefix" value="${"/>
 	</bean>
 
+	<context:annotation-config/>
+
 	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer"/>
 		<property name="targetMethod" value="initLogging"/>
@@ -218,12 +221,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <bean id="inkomendRequestRepository" class="nl.dias.repository.trackandtraceid.InkomendRequestRepository"
           depends-on="sessionFactory">
-        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <bean id="inkomendRequestService" class="nl.dias.service.trackandtraceid.InkomendRequestService"
           depends-on="inkomendRequestRepository">
-        <property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
+		<property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
     </bean>
 
 	<bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
@@ -242,7 +245,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<!--<bean id="polisClient" class="nl.lakedigital.djfc.client.PolisClient">-->
-	<!--<property name="basisUrl" value="${oga.url}"/>-->
+	<!--<property name="basisUrl" value="${oga.url}" />-->
 	<!--</bean>-->
 	<bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
 		<property name="basisUrl" value="${oga.url}"/>

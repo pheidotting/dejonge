@@ -11,10 +11,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -153,16 +150,14 @@ public class GebruikerController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijderen")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{id}")
     @ResponseBody
-    public Response verwijderen(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
+    public void verwijderen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
 
         zetSessieWaarden(httpServletRequest);
 
         gebruikerService.verwijder(id);
-
-        return Response.status(200).build();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaamAdresOfPolisNummer")
@@ -198,6 +193,23 @@ public class GebruikerController extends AbstractController {
         zetSessieWaarden(httpServletRequest);
 
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanoauthcode")
+    @ResponseBody
+    public void opslaanOAuthCode(@RequestBody String code, HttpServletRequest httpServletRequest) {
+        LOGGER.debug("Opslaan Authcode {}", code);
+        zetSessieWaarden(httpServletRequest);
+
+        gebruikerService.opslaanOAuthCodeTodoist(code, getIngelogdeGebruiker(httpServletRequest));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/leesoauthcode")
+    @ResponseBody
+    public String leesOAuthCode(HttpServletRequest httpServletRequest) {
+        LOGGER.debug("Lees Authcode ");
+
+        return gebruikerService.leesOAuthCodeTodoist(getIngelogdeGebruiker(httpServletRequest));
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {

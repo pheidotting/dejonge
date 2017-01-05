@@ -9,6 +9,7 @@ import nl.dias.messaging.sender.AdresAangevuldSender;
 import nl.dias.messaging.sender.BsnAangevuldSender;
 import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
+import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import nl.lakedigital.djfc.client.oga.AdresClient;
@@ -57,6 +58,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
     private AdresClient adresClient;
     @Mock
     private TelefoonnummerClient telefoonnummerClient;
+    @Mock
+    private HypotheekRepository hypotheekRepository;
+    @Mock
+    private SchadeService schadeService;
 
     @After
     public void teardown() {
@@ -348,9 +353,23 @@ public class GebruikerServiceTest extends EasyMockSupport {
     @Test
     public void testVerwijder() {
         Relatie relatie = new Relatie();
+        relatie.setId(1L);
 
         expect(repository.lees(1L)).andReturn(relatie);
         repository.verwijder(relatie);
+        expectLastCall();
+
+        List<Hypotheek> hypotheeks = newArrayList();
+        expect(hypotheekRepository.allesVanRelatie(relatie)).andReturn(hypotheeks);
+        hypotheekRepository.verwijder(hypotheeks);
+        expectLastCall();
+        List<Schade> schades = newArrayList();
+        expect(schadeService.alleSchadesBijRelatie(1L)).andReturn(schades);
+        schadeService.verwijder(schades);
+        expectLastCall();
+        List<Polis> polises = newArrayList();
+        expect(polisRepository.allePolissenBijRelatie(1L)).andReturn(polises);
+        polisRepository.verwijder(polises);
         expectLastCall();
 
         replayAll();

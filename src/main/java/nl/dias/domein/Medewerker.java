@@ -17,12 +17,23 @@ public class Medewerker extends Gebruiker implements Serializable, PersistenceOb
     @JoinColumn(name = "KANTOOR")
     private Kantoor kantoor;
 
+    @Column(name = "OAUTHTODOIST")
+    private String oAuthCodeTodoist;
+
     public Kantoor getKantoor() {
         return kantoor;
     }
 
     public void setKantoor(Kantoor kantoor) {
         this.kantoor = kantoor;
+    }
+
+    public String getoAuthCodeTodoist() {
+        return oAuthCodeTodoist;
+    }
+
+    public void setoAuthCodeTodoist(String oAuthCodeTodoist) {
+        this.oAuthCodeTodoist = oAuthCodeTodoist;
     }
 
     @Override

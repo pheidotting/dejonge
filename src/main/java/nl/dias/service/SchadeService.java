@@ -109,6 +109,10 @@ public class SchadeService {
         return schades;
     }
 
+    public void verwijder(List<Schade> schades) {
+        schadeRepository.verwijder(schades);
+    }
+
     public Schade lees(Long id) {
         LOGGER.debug("{}", id);
         Schade schade = schadeRepository.lees(id);

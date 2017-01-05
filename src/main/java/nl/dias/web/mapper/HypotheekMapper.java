@@ -104,6 +104,7 @@ public class HypotheekMapper extends Mapper<Hypotheek, JsonHypotheek> {
         jsonHypotheek.setId(hypotheek.getId());
         jsonHypotheek.setDuur(hypotheek.getDuur());
         jsonHypotheek.setDuurRenteVastePeriode(hypotheek.getDuurRenteVastePeriode());
+        jsonHypotheek.setHypotheekPakket(hypotheek.getHypotheekPakket().getId());
         if (hypotheek.getEindDatum() != null) {
             jsonHypotheek.setEindDatum(hypotheek.getEindDatum().toString(DATUM_FORMAAT));
         }

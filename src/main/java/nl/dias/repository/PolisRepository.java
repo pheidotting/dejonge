@@ -50,12 +50,12 @@ public class PolisRepository {
 
     public List<Polis> zoekPolissenOpSoort(Class<?> soort) {
         getTransaction();
-        
+
         Query query = getEm().createQuery("select e from " + soort.getSimpleName() + " e");
         List<Polis> ret = query.list();
 
         getTransaction().commit();
-        
+
         return ret;
     }
 
@@ -156,6 +156,16 @@ public class PolisRepository {
         getTransaction();
 
         getEm().delete(polis);
+
+        getTransaction().commit();
+    }
+
+    public void verwijder(List<Polis> polissen) {
+        getTransaction();
+
+        for (Polis polis : polissen) {
+            getEm().delete(polis);
+        }
 
         getTransaction().commit();
     }

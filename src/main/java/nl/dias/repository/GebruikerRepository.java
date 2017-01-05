@@ -30,7 +30,7 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
         this.sessionFactory = sessionFactory;
     }
 
-    protected Session getSession() {
+    public Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -169,8 +169,8 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
         //        query.setParameter("emailadres", "'"+emailadres+"'");
         try {
             gebruiker = (Gebruiker) query.list().get(0);
-        } catch (NoResultException e) {
-            LOGGER.info("Niets gevonden", e);
+        } catch (NoResultException | IndexOutOfBoundsException e) {
+            LOGGER.trace("Niets gevonden", e);
             throw new NietGevondenException(identificatie);
         }
 

@@ -87,7 +87,13 @@ public class BijlageController extends AbstractController {
     @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
     @ResponseBody
     public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
-        bijlageClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), "tantid");
+        bijlageClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @ResponseBody
+    public void verwijderen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
+        bijlageClient.verwijder(id, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")

@@ -1,5 +1,6 @@
 package nl.dias.web.medewerker;
 
+import nl.dias.domein.features.MyFeatures;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.slf4j.Logger;
@@ -50,6 +51,6 @@ public class AdresController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode/{postcode}/{huisnummer}")
     @ResponseBody
     public JsonAdres ophalenAdresOpPostcode(@PathVariable("postcode") String postcode, @PathVariable("huisnummer") String huisnummer) {
-        return adresClient.ophalenAdresOpPostcode(postcode, huisnummer);
+        return adresClient.ophalenAdresOpPostcode(postcode, huisnummer, MyFeatures.ADRES_NIET_VIA_API.isActive());
     }
 }

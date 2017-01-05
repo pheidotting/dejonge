@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name = "SCHADE")
 @NamedQueries({
         // @NamedQuery(name = "Schade.zoekOpschadeNummerMaatschappij", query = "select s from Schade s where s.schadeNummerMaatschappij = :schadeNummerMaatschappij"),
-        //        @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie"),
+        //                @NamedQuery(name = "Schade.allesVanRelatie", query = "select s from Schade s where s.polis.relatie = :relatie"),
         //                @NamedQuery(name = "Schade.allesVanBedrijf", query = "select s from Schade s where s.polis.bedrijf = :bedrijf")
         @NamedQuery(name = "Schade.allesBijPolis", query = "select s from Schade s where s.polis = :polis")
 })

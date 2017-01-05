@@ -65,6 +65,7 @@ public class PolisOpslaanTest {
 
         for (String polisSoort : polisClient.alleParticulierePolisSoorten()) {
             JsonPolis polis = vulPolis(polisSoort);
+            polis.setSoortEntiteit("RELATIE");
 
             polis.setId(polisClient.opslaan(polis, 3L, "tAtId", "abc"));
 
@@ -74,6 +75,7 @@ public class PolisOpslaanTest {
             polis.setWijzigingsDatum(LocalDate.now().toString(dateformat));
 
             JsonPolis opgeslagenPolis = polisClient.lees(polis.getId().toString());
+            opgeslagenPolis.setSoortEntiteit("RELATIE");
             System.out.println(ReflectionToStringBuilder.toString(opgeslagenPolis, ToStringStyle.SHORT_PREFIX_STYLE));
             System.out.println(ReflectionToStringBuilder.toString(polis, ToStringStyle.SHORT_PREFIX_STYLE));
 

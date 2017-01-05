@@ -163,6 +163,16 @@ public class SchadeRepository {
         getTransaction().commit();
     }
 
+    public void verwijder(List<Schade> schades) {
+        getTransaction();
+
+        for (Schade schade : schades) {
+            getSession().delete(schade);
+        }
+
+        getTransaction().commit();
+    }
+
     public List<Schade> alles() {
         getTransaction();
 

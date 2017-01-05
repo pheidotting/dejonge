@@ -64,7 +64,11 @@ public class SchadeController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees")
     @ResponseBody
     public JsonSchade lees(@QueryParam("id") String id) {
-        return schadeMapper.mapNaarJson(schadeService.lees(Long.valueOf(id)));
+        if (id != null && !"".equals(id) && !"0".equals(id)) {
+            return schadeMapper.mapNaarJson(schadeService.lees(Long.valueOf(id)));
+        } else {
+            return new JsonSchade();
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")

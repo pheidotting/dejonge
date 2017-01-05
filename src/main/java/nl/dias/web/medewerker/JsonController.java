@@ -54,6 +54,13 @@ public class JsonController {
 
         LOGGER.debug("Gevonden, " + lijst.size() + " VerzekeringsMaatschappijen");
 
+        lijst.sort(new Comparator<VerzekeringsMaatschappij>() {
+            @Override
+            public int compare(VerzekeringsMaatschappij o1, VerzekeringsMaatschappij o2) {
+                return o1.getNaam().compareTo(o2.getNaam());
+            }
+        });
+
         Map<Long, String> ret = new HashMap<>();
         ret.put(0L, "Kies een maatschappij...");
 
