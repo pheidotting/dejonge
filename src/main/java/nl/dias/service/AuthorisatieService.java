@@ -132,7 +132,7 @@ public class AuthorisatieService {
             LOGGER.debug("Er is helemaal niemand ingelogd");
         } else {
             Sessie sessie = gebruikerService.zoekSessieOp(sessieId, ipadres, gebruiker.getSessies());
-            gebruikerService.verwijder(sessie);
+            //            gebruikerService.verwijder(sessie);
             gebruiker.getSessies().remove(sessie);
             gebruikerService.opslaan(gebruiker);
 
