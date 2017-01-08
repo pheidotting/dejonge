@@ -42,6 +42,7 @@ public class PolisService {
         Iterable<Polis> poli = filter(polissen, new PolissenOpSoortPredicate(soortVerzekering));
 
         Iterable<String> polisString = transform(poli, new PolisToSchermNaamTransformer());
+        polissen.sort((o1, o2) -> o1.getSchermNaam().compareTo(o2.getSchermNaam()));
 
         return Lists.newArrayList(polisString);
     }
