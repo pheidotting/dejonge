@@ -4,6 +4,7 @@ import nl.lakedigital.hulpmiddelen.domein.PersistenceObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "GEBRUIKER")
@@ -60,22 +61,23 @@ public class Medewerker extends Gebruiker implements Serializable, PersistenceOb
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Medewerker)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Medewerker that = (Medewerker) o;
+        return Objects.equals(getKantoor(), that.getKantoor()) && Objects.equals(getoAuthCodeTodoist(), that.getoAuthCodeTodoist());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getKantoor(), getoAuthCodeTodoist());
     }
 
     @Override
