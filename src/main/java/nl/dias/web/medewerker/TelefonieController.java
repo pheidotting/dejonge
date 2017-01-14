@@ -1,5 +1,6 @@
 package nl.dias.web.medewerker;
 
+import nl.lakedigital.djfc.client.oga.TelefonieBestandClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.ws.rs.Produces;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/telefonie")
 @Controller
@@ -39,29 +41,13 @@ public class TelefonieController extends AbstractController {
     private String voicemailspad;
     @Value("${recordingspad}")
     private String recordingspad;
+    @Inject
+    private TelefonieBestandClient telefonieBestandClient;
 
     @RequestMapping("/recordings")
     @ResponseBody
-    public Map<String, List<String>> getRecordingsAndVoicemails(@RequestParam List<String> telefoonnummer) {
-        Map<String, List<String>> ret = new HashMap<>();
-
-        File f = new File(recordingspad);
-        List<String> recordings = new ArrayList<>(Arrays.asList(f.list()));
-        List<String> gefilterdOpTelefoonnummer = recordings.stream().filter(s -> telefoonnummer.contains(getTelefoonnummer(s))).collect(Collectors.toList());
-
-        ret.put("recordings", gefilterdOpTelefoonnummer);
-
-        return ret;
-    }
-
-    private String getTelefoonnummer(String bestandsnaam) {
-        String[] parts = bestandsnaam.split("-");
-
-        if (parts[0].equals("out")) {
-            return parts[1];
-        } else {
-            return parts[2];
-        }
+    public Map<String, List<String>> getRecordingsAndVoicemails(@RequestParam List<String> telefoonnummers) {
+        return telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/download/{bestandsnaam}")
