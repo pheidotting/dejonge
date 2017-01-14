@@ -81,4 +81,7 @@
     <bean id="taakClient" class="nl.lakedigital.as.taakbeheer.client.TaakClient">
         <!--<property name="basisUrl" value="${oga.url}"/>-->
     </bean>
+    <bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
+        <property name="basisUrl" value="${oga.url}"/>
+    </bean>
 </beans>

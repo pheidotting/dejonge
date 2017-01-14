@@ -67,4 +67,7 @@
     <bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
         <property name="basisUrl" value="${oga.url}"/>
     </bean>
+    <bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
+        <property name="basisUrl" value="${oga.url}"/>
+    </bean>
 </beans>
