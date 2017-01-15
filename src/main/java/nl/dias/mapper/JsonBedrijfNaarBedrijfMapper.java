@@ -22,7 +22,7 @@ public class JsonBedrijfNaarBedrijfMapper extends AbstractMapper<JsonBedrijf, Be
     public Bedrijf map(JsonBedrijf jsonBedrijf, Object parent, Object bestaandOjbect) {
         LOGGER.debug("Mappen: ", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
 
-        Bedrijf bedrijf = null;
+        Bedrijf bedrijf;
         if (jsonBedrijf.getId() == null || "0".equals(jsonBedrijf.getId())) {
             bedrijf = new Bedrijf();
         } else {

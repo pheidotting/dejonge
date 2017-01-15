@@ -26,7 +26,7 @@ public class Mapper {
     }
 
     public <T> T map(final Object objectIn, final Class<T> clazz, Object parent, final Object bestaandObject) {
-        Object objectUit = null;
+        Object objectUit;
 
         LOGGER.debug("Mappen van {}", ReflectionToStringBuilder.toString(objectIn, ToStringStyle.SHORT_PREFIX_STYLE));
 
