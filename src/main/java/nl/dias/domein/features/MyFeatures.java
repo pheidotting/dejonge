@@ -15,6 +15,9 @@ public enum MyFeatures implements Feature {
     @Label("Koppeling met Todoist")
     TODOIST,
 
+    @Label("Beheerpagina")
+    BEHEERPAGINA,
+
     @Label("Opgenomen gesprekken en voicemails tonen")
     TELEFONIE;
 

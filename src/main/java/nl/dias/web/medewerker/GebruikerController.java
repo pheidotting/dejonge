@@ -2,6 +2,7 @@ package nl.dias.web.medewerker;
 
 import nl.dias.domein.*;
 import nl.dias.mapper.Mapper;
+import nl.dias.mapper.MedewerkerNaarJsonMedewerkerMapper;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
@@ -35,6 +36,8 @@ public class GebruikerController extends AbstractController {
     private Mapper mapper;
     @Inject
     private AuthorisatieService authorisatieService;
+    @Inject
+    private MedewerkerNaarJsonMedewerkerMapper medewerkerNaarJsonMedewerkerMapper;
     //    @Autowired
     //    private HttpServletRequest httpServletRequest;
     //    @Autowired
@@ -71,6 +74,25 @@ public class GebruikerController extends AbstractController {
         LOGGER.debug("Naar de front-end : " + jsonRelatie);
 
         return jsonRelatie;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/leesMedewerker")
+    @ResponseBody
+    public JsonMedewerker leesMedewerker(@QueryParam("id") String id) {
+        LOGGER.debug("Ophalen Relatie met id : " + id);
+
+        JsonMedewerker jsonMedewerker = null;
+        if (id != null && !"0".equals(id.trim())) {
+            Medewerker medewerker = (Medewerker) gebruikerService.lees(Long.parseLong(id));
+
+            jsonMedewerker = medewerkerNaarJsonMedewerkerMapper.map(medewerker);
+        } else {
+            jsonMedewerker = new JsonMedewerker();
+        }
+
+        LOGGER.debug("Naar de front-end : " + jsonMedewerker);
+
+        return jsonMedewerker;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstRelaties")
