@@ -37,8 +37,6 @@ public class ToggleController {
     }
 
     private Map<String, Boolean> getToggles(String toggle) {
-        checkAdmin();
-
         Map<String, Boolean> result = new HashMap<>();
 
         for (Feature feature : MyFeatures.values()) {
