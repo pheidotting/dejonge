@@ -1,6 +1,7 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.*;
+import nl.dias.mapper.JsonMedewerkerNaarMedewerkerMapper;
 import nl.dias.mapper.Mapper;
 import nl.dias.mapper.MedewerkerNaarJsonMedewerkerMapper;
 import nl.dias.repository.KantoorRepository;
@@ -38,6 +39,8 @@ public class GebruikerController extends AbstractController {
     private AuthorisatieService authorisatieService;
     @Inject
     private MedewerkerNaarJsonMedewerkerMapper medewerkerNaarJsonMedewerkerMapper;
+    @Inject
+    private JsonMedewerkerNaarMedewerkerMapper jsonMedewerkerNaarMedewerkerMapper;
     //    @Autowired
     //    private HttpServletRequest httpServletRequest;
     //    @Autowired
@@ -93,6 +96,16 @@ public class GebruikerController extends AbstractController {
         LOGGER.debug("Naar de front-end : " + jsonMedewerker);
 
         return jsonMedewerker;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanMedewerker")
+    @ResponseBody
+    public void opslaanMedewerker(@RequestBody JsonMedewerker jsonMedewerker) {
+        LOGGER.debug("opslaan medewerker");
+
+        Medewerker medewerker = (Medewerker) gebruikerService.lees(jsonMedewerker.getId());
+
+        gebruikerService.opslaan(jsonMedewerkerNaarMedewerkerMapper.map(jsonMedewerker, null, medewerker));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstRelaties")
@@ -232,6 +245,15 @@ public class GebruikerController extends AbstractController {
         LOGGER.debug("Lees Authcode ");
 
         return gebruikerService.leesOAuthCodeTodoist(getIngelogdeGebruiker(httpServletRequest));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/wijzig-wachtwoord")
+    @ResponseBody
+    public void wijzigWachtwoord(@RequestBody WachtwoordWijzigen wachtwoordWijzigen, HttpServletRequest httpServletRequest) {
+        zetSessieWaarden(httpServletRequest);
+
+        LOGGER.debug(wachtwoordWijzigen.getIdentificatie());
+        LOGGER.debug(wachtwoordWijzigen.getWachtwoord());
     }
 
     public void setGebruikerService(GebruikerService gebruikerService) {
