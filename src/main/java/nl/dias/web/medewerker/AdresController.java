@@ -53,4 +53,10 @@ public class AdresController extends AbstractController {
     public JsonAdres ophalenAdresOpPostcode(@PathVariable("postcode") String postcode, @PathVariable("huisnummer") String huisnummer) {
         return adresClient.ophalenAdresOpPostcode(postcode, huisnummer, MyFeatures.ADRES_NIET_VIA_API.isActive());
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/alleAdressenBijLijstMetEntiteiten")
+    @ResponseBody
+    public List<JsonAdres> alleAdressenBijLijstMetEntiteiten(@RequestParam("soortEntiteit") String soortEntiteit, @RequestParam("lijst") List<Long> ids) {
+        return adresClient.alleAdressenBijLijstMetEntiteiten(ids, "RELATIE");
+    }
 }
