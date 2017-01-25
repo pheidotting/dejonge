@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import nl.dias.domein.Bijlage;
 import nl.dias.domein.Schade;
 import nl.dias.domein.SoortSchade;
 import nl.dias.domein.StatusSchade;
@@ -15,9 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
@@ -72,7 +69,6 @@ public class SchadeServiceTest extends EasyMockSupport {
         SoortSchade soortSchade = createMock(SoortSchade.class);
         List<SoortSchade> soortSchades = new ArrayList<>();
         soortSchades.add(soortSchade);
-//        Polis polis = createMock(Polis.class);
         StatusSchade statusSchade = createMock(StatusSchade.class);
 
         schade.setPolis(Long.valueOf(polisId));
@@ -85,9 +81,6 @@ public class SchadeServiceTest extends EasyMockSupport {
         expect(schadeRepository.getStatussen(statusSchadeString)).andReturn(statusSchade);
         schade.setStatusSchade(statusSchade);
         expectLastCall();
-
-        Set<Bijlage> bijlageSet = new HashSet<>();
-        List<Bijlage> bijlages = new ArrayList<>();
 
         schadeRepository.opslaan(schade);
         expectLastCall();
@@ -118,9 +111,6 @@ public class SchadeServiceTest extends EasyMockSupport {
         expect(schadeRepository.getStatussen(statusSchadeString)).andReturn(statusSchade);
         schade.setStatusSchade(statusSchade);
         expectLastCall();
-
-        Set<Bijlage> bijlageSet = new HashSet<>();
-        List<Bijlage> bijlages = new ArrayList<>();
 
         schadeRepository.opslaan(schade);
         expectLastCall();

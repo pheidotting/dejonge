@@ -65,7 +65,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             eindDatum = LocalDate.parse(jsonPolis.getEindDatum(), DateTimeFormat.forPattern(patternDatum));
         }
 
-        Polis polis = null;
+        Polis polis;
         if (jsonPolis.getId() == null || jsonPolis.getId() == 0L) {
             polis = polisService.definieerPolisSoort(jsonPolis.getSoort());
 
@@ -104,39 +104,14 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
 
         polis.setMaatschappij(Long.valueOf(jsonPolis.getMaatschappij()));
-        //        if (jsonPolis.getMaatschappij() != null && !"Kies een maatschappij...".equals(jsonPolis.getMaatschappij())) {
-        //            polis.setMaatschappij(verzekeringsMaatschappijService.zoekOpNaam(jsonPolis.getMaatschappij()));
-        //
-        //
-        //      }
 
-        if (jsonPolis.getSoortEntiteit().equalsIgnoreCase("relatie")) {
+        if ("relatie".equalsIgnoreCase(jsonPolis.getSoortEntiteit())) {
             polis.setRelatie(jsonPolis.getEntiteitId());
         } else {
             polis.setBedrijf(jsonPolis.getEntiteitId());
         }
 
-        //        if (StringUtils.isNotEmpty(jsonPolis.getRelatie())) {
-        //            polis.setRelatie(Long.valueOf(jsonPolis.getRelatie()));
-        //        }
-        //        LOGGER.trace("Bedrijf zetten bij Polis, bedrijf id : {}", jsonPolis.getBedrijf());
-        //        if (StringUtils.isNotEmpty(jsonPolis.getBedrijf())) {
-        //            polis.setBedrijf(Long.valueOf(jsonPolis.getBedrijf()));
-        //            LOGGER.trace("Bedrijf gezet: {}", polis.getBedrijf());
-        //        }
         polis.setOmschrijvingVerzekering(jsonPolis.getOmschrijvingVerzekering());
-
-        //        if (polis.getId() != null && polis.getId() != 0) {
-        //            Polis p = polisService.lees(polis.getId());
-        //
-        //            polis.setSchades(p.getSchades());
-        //            polis.setOpmerkingen(p.getOpmerkingen());
-        //        }
-
-        //        polis.setBijlages(bijlageMapper.mapAllVanJson(jsonPolis.getBijlages()));
-        //        for (Bijlage bijlage : polis.getBijlages()) {
-        //            bijlage.setPolis(polis);
-        //        }
 
         LOGGER.debug(ReflectionToStringBuilder.toString(polis));
         return polis;
@@ -176,10 +151,6 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
         }
         jsonPolis.setDekking(polis.getDekking());
         jsonPolis.setVerzekerdeZaak(polis.getVerzekerdeZaak());
-        //        LOGGER.debug("{}", polis.getBijlages());
-        //        jsonPolis.setBijlages(bijlageMapper.mapAllNaarJson(polis.getBijlages()));
-
-        //        jsonPolis.setOpmerkingen(opmerkingMapper.mapAllNaarJson(polis.getOpmerkingen()));
         if (polis.getMaatschappij() != null) {
             jsonPolis.setMaatschappij(polis.getMaatschappij().toString());
         }
@@ -188,7 +159,6 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             jsonPolis.setEntiteitId(polis.getBedrijf());
             jsonPolis.setSoortEntiteit("BEDRIJF");
         }
-        //        jsonPolis.setSchades(schadeMapper.mapAllNaarJson(polis.getSchades()));
         if (polis.getRelatie() != null) {
             jsonPolis.setEntiteitId(polis.getBedrijf());
             jsonPolis.setSoortEntiteit("RELATIE");
@@ -199,7 +169,7 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
     }
 
     public static String zetBedragOm(Bedrag bedrag) {
-        String waarde = null;
+        String waarde;
         String[] x = bedrag.getBedrag().toString().split("\\.");
         if (x[1].length() == 1) {
             waarde = bedrag.getBedrag().toString() + "0";
@@ -223,21 +193,5 @@ public class PolisMapper extends Mapper<Polis, JsonPolis> {
             ret.add(mapNaarJson(polis));
         }
         return ret;
-    }
-
-    public void setSchadeMapper(SchadeMapper schadeMapper) {
-        this.schadeMapper = schadeMapper;
-    }
-
-    public void setPolisService(PolisService polisService) {
-        this.polisService = polisService;
-    }
-
-    public void setVerzekeringsMaatschappijService(VerzekeringsMaatschappijService verzekeringsMaatschappijService) {
-        this.verzekeringsMaatschappijService = verzekeringsMaatschappijService;
-    }
-
-    public void setGebruikerService(GebruikerService gebruikerService) {
-        this.gebruikerService = gebruikerService;
     }
 }
