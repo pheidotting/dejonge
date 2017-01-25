@@ -41,10 +41,6 @@ public class GebruikerController extends AbstractController {
     private MedewerkerNaarJsonMedewerkerMapper medewerkerNaarJsonMedewerkerMapper;
     @Inject
     private JsonMedewerkerNaarMedewerkerMapper jsonMedewerkerNaarMedewerkerMapper;
-    //    @Autowired
-    //    private HttpServletRequest httpServletRequest;
-    //    @Autowired
-    //    private HttpServletResponse httpServletResponse;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen")
     @ResponseBody
@@ -67,8 +63,6 @@ public class GebruikerController extends AbstractController {
         if (id != null && !"0".equals(id.trim())) {
             Relatie relatie = (Relatie) gebruikerService.lees(Long.parseLong(id));
 
-            //            LOGGER.debug("Opgehaald : " + relatie);
-
             jsonRelatie = relatieMapper.mapNaarJson(relatie);
         } else {
             jsonRelatie = new JsonRelatie();
@@ -84,7 +78,7 @@ public class GebruikerController extends AbstractController {
     public JsonMedewerker leesMedewerker(@QueryParam("id") String id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);
 
-        JsonMedewerker jsonMedewerker = null;
+        JsonMedewerker jsonMedewerker;
         if (id != null && !"0".equals(id.trim())) {
             Medewerker medewerker = (Medewerker) gebruikerService.lees(Long.parseLong(id));
 
@@ -151,13 +145,6 @@ public class GebruikerController extends AbstractController {
         zetSessieWaarden(httpServletRequest);
 
         try {
-            //            if (jsonRelatie.getId() != null) {
-            //                gebruikerService.verwijderOudSpul((Relatie) gebruikerService.lees(jsonRelatie.getId()));
-            //            }
-
-
-            //            Relatie relatie = mapper.map(jsonRelatie, Relatie.class);
-
             String sessie = null;
             if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
                 sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
@@ -254,21 +241,5 @@ public class GebruikerController extends AbstractController {
 
         LOGGER.debug(wachtwoordWijzigen.getIdentificatie());
         LOGGER.debug(wachtwoordWijzigen.getWachtwoord());
-    }
-
-    public void setGebruikerService(GebruikerService gebruikerService) {
-        this.gebruikerService = gebruikerService;
-    }
-
-    public void setRelatieMapper(RelatieMapper relatieMapper) {
-        this.relatieMapper = relatieMapper;
-    }
-
-    public void setKantoorRepository(KantoorRepository kantoorRepository) {
-        this.kantoorRepository = kantoorRepository;
-    }
-
-    public void setAuthorisatieService(AuthorisatieService authorisatieService) {
-        this.authorisatieService = authorisatieService;
     }
 }
