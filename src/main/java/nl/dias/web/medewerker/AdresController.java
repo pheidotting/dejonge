@@ -57,6 +57,6 @@ public class AdresController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/alleAdressenBijLijstMetEntiteiten")
     @ResponseBody
     public List<JsonAdres> alleAdressenBijLijstMetEntiteiten(@RequestParam("soortEntiteit") String soortEntiteit, @RequestParam("lijst") List<Long> ids) {
-        return adresClient.alleAdressenBijLijstMetEntiteiten(ids, "RELATIE");
+        return adresClient.alleAdressenBijLijstMetEntiteiten(ids, soortEntiteit);
     }
 }
