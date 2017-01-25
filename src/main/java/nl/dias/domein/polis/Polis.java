@@ -151,7 +151,7 @@ public abstract class Polis implements PersistenceObject, Serializable, Cloneabl
 
     public void setEindDatum(LocalDate eindDatum) {
         if (eindDatum == null) {
-            eindDatum = null;
+            this.eindDatum = null;
         }
         if (eindDatum != null) {
             this.eindDatum = eindDatum.toDate();
