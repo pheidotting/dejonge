@@ -34,6 +34,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Aanmaken Taak -->
 	<!-- Default Destination Queue Definition -->
+	<bean id="opslaanTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="taakOpslaanQueue"/>
+	</bean>
+
+	<!-- aanmakenTaakTemplate Definition -->
+	<bean id="opslaanTaakTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="defaultDestination" ref="opslaanTaakDestination"/>
+	</bean>
+
+	<!-- Message Sender Definition -->
+	<bean id="opslaanTaakSender" class="nl.dias.messaging.sender.OpslaanTaakSender">
+		<constructor-arg index="0" ref="opslaanTaakTemplate"/>
+	</bean>
+
+
+	<!-- Aanmaken Taak -->
+	<!-- Default Destination Queue Definition -->
 	<bean id="aanmakenTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="aanmakenTaakQueue" />
 	</bean>
