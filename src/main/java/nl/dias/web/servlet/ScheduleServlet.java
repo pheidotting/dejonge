@@ -25,7 +25,7 @@ public class ScheduleServlet implements ServletContextListener {
         WebApplicationContextUtils.getRequiredWebApplicationContext(servletContextEvent.getServletContext()).getAutowireCapableBeanFactory().autowireBean(this);
 
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new CheckDatabaseConnectie(gebruikerRepository), 0, 30, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new CheckDatabaseConnectie(gebruikerRepository), 0, 1, TimeUnit.MINUTES);
     }
 
     @Override
