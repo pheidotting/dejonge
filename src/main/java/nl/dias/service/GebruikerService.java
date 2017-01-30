@@ -7,18 +7,10 @@ import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
 import nl.dias.mapper.Mapper;
-import nl.dias.messaging.sender.AanmakenTaakSender;
-import nl.dias.messaging.sender.AdresAangevuldSender;
-import nl.dias.messaging.sender.BsnAangevuldSender;
-import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
-import nl.lakedigital.as.messaging.AanmakenTaak;
-import nl.lakedigital.as.messaging.AanmakenTaak.SoortTaak;
-import nl.lakedigital.as.messaging.BsnAangevuld;
-import nl.lakedigital.as.messaging.EmailadresAangevuld;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
@@ -27,7 +19,6 @@ import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,7 +34,6 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class GebruikerService {
@@ -61,16 +51,7 @@ public class GebruikerService {
     @Inject
     private HypotheekRepository hypotheekRepository;
     @Inject
-    private AanmakenTaakSender aanmakenTaakSender;
-    @Inject
-    private AdresAangevuldSender adresAangevuldSender;
-    @Inject
-    private EmailAdresAangevuldSender emailAdresAangevuldSender;
-    @Inject
-    private BsnAangevuldSender bsnAangevuldSender;
-    @Inject
     private Mapper mapper;
-
     @Inject
     private AdresClient adresClient;
     @Inject
@@ -183,26 +164,26 @@ public class GebruikerService {
         //        verstuurAdresEvent(relatie);
         //        verstuurEmailEvent(relatie);
     }
-
-    private void verstuurBsnEvent(Relatie relatie) {
-        if (isBlank(relatie.getBsn())) {
-            LOGGER.info("BSN is leeg, Taak aanmaken");
-
-            AanmakenTaak taak = new AanmakenTaak();
-            taak.setDatumTijdCreatie(LocalDateTime.now());
-            taak.setRelatie(relatie.getId());
-            taak.setSoort(SoortTaak.AANVULLEN_BSN);
-
-            aanmakenTaakSender.send(taak);
-        } else {
-            LOGGER.info("BSN gevuld, bericht versturen");
-
-            BsnAangevuld bsnAangevuld = new BsnAangevuld();
-            bsnAangevuld.setRelatie(relatie.getId());
-
-            bsnAangevuldSender.send(bsnAangevuld);
-        }
-    }
+    //
+    //    private void verstuurBsnEvent(Relatie relatie) {
+    //        if (isBlank(relatie.getBsn())) {
+    //            LOGGER.info("BSN is leeg, Taak aanmaken");
+    //
+    //            AanmakenTaak taak = new AanmakenTaak();
+    //            taak.setDatumTijdCreatie(LocalDateTime.now());
+    //            taak.setRelatie(relatie.getId());
+    //            taak.setSoort(SoortTaak.AANVULLEN_BSN);
+    //
+    //            aanmakenTaakSender.send(taak);
+    //        } else {
+    //            LOGGER.info("BSN gevuld, bericht versturen");
+    //
+    //            BsnAangevuld bsnAangevuld = new BsnAangevuld();
+    //            bsnAangevuld.setRelatie(relatie.getId());
+    //
+    //            bsnAangevuldSender.send(bsnAangevuld);
+    //        }
+    //    }
 
     private void verstuurAdresEvent(Relatie relatie) {
         //        if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
@@ -224,25 +205,25 @@ public class GebruikerService {
         //        }
     }
 
-    private void verstuurEmailEvent(Relatie relatie) {
-        if (isBlank(relatie.getIdentificatie())) {
-            LOGGER.info("E-mailadres is leeg, Taak aanmaken");
-
-            AanmakenTaak taak = new AanmakenTaak();
-            taak.setDatumTijdCreatie(LocalDateTime.now());
-            taak.setRelatie(relatie.getId());
-            taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
-
-            aanmakenTaakSender.send(taak);
-        } else {
-            LOGGER.info("E-mailadres gevuld, bericht versturen");
-
-            EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
-            emailadresAangevuld.setRelatie(relatie.getId());
-
-            emailAdresAangevuldSender.send(emailadresAangevuld);
-        }
-    }
+    //    private void verstuurEmailEvent(Relatie relatie) {
+    //        if (isBlank(relatie.getIdentificatie())) {
+    //            LOGGER.info("E-mailadres is leeg, Taak aanmaken");
+    //
+    //            AanmakenTaak taak = new AanmakenTaak();
+    //            taak.setDatumTijdCreatie(LocalDateTime.now());
+    //            taak.setRelatie(relatie.getId());
+    //            taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
+    //
+    //            aanmakenTaakSender.send(taak);
+    //        } else {
+    //            LOGGER.info("E-mailadres gevuld, bericht versturen");
+    //
+    //            EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
+    //            emailadresAangevuld.setRelatie(relatie.getId());
+    //
+    //            emailAdresAangevuldSender.send(emailadresAangevuld);
+    //        }
+    //    }
 
     public void verwijder(Long id) {
         LOGGER.info("Verwijderen gebruiker met id " + id);

@@ -204,7 +204,7 @@
         <dependency>
             <groupId>nl.lakedigital.as</groupId>
             <artifactId>messaging</artifactId>
-            <version>5.2</version>
+            <version>5.6</version>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>

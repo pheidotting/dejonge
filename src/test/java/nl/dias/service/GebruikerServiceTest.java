@@ -4,10 +4,6 @@ import com.google.common.collect.Lists;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Polis;
-import nl.dias.messaging.sender.AanmakenTaakSender;
-import nl.dias.messaging.sender.AdresAangevuldSender;
-import nl.dias.messaging.sender.BsnAangevuldSender;
-import nl.dias.messaging.sender.EmailAdresAangevuldSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
@@ -42,14 +38,6 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
     @Mock
     private GebruikerRepository repository;
-    @Mock
-    private AanmakenTaakSender aanmakenTaakSender;
-    @Mock
-    private AdresAangevuldSender adresAangevuldSender;
-    @Mock
-    private EmailAdresAangevuldSender emailAdresAangevuldSender;
-    @Mock
-    private BsnAangevuldSender bsnAangevuldSender;
     @Mock
     private PolisRepository polisRepository;
     @Mock

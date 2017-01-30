@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jms="http://www.springframework.org/schema/jms"
 	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
 	<context:component-scan base-package="nl.dias" />
 	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
@@ -34,129 +36,140 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Aanmaken Taak -->
 	<!-- Default Destination Queue Definition -->
-	<bean id="opslaanTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">
+	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="taakOpslaanQueue"/>
 	</bean>
 
 	<!-- aanmakenTaakTemplate Definition -->
-	<bean id="opslaanTaakTemplate" class="org.springframework.jms.core.JmsTemplate">
+	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="opslaanTaakDestination"/>
+		<property name="defaultDestination" ref="taakOpslaanDestination"/>
 	</bean>
 
 	<!-- Message Sender Definition -->
-	<bean id="opslaanTaakSender" class="nl.dias.messaging.sender.OpslaanTaakSender">
-		<constructor-arg index="0" ref="opslaanTaakTemplate"/>
+	<bean id="taakOpslaanSender" class="nl.dias.messaging.sender.TaakOpslaanSender">
+		<constructor-arg index="0" ref="taakOpslaanTemplate"/>
 	</bean>
 
 
-	<!-- Aanmaken Taak -->
-	<!-- Default Destination Queue Definition -->
-	<bean id="aanmakenTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="aanmakenTaakQueue" />
-	</bean>
+	<!--&lt;!&ndash; Aanmaken Taak &ndash;&gt;-->
+	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
+	<!--<bean id="aanmakenTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="aanmakenTaakQueue" />-->
+	<!--</bean>-->
 
-	<!-- aanmakenTaakTemplate Definition -->
-	<bean id="aanmakenTaakTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="aanmakenTaakDestination" />
-	</bean>
+	<!--&lt;!&ndash; aanmakenTaakTemplate Definition &ndash;&gt;-->
+	<!--<bean id="aanmakenTaakTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory" />-->
+	<!--<property name="defaultDestination" ref="aanmakenTaakDestination" />-->
+	<!--</bean>-->
 
-	<!-- Message Sender Definition -->
-	<bean id="aanmakenTaakSender" class="nl.dias.messaging.sender.AanmakenTaakSender">
-		<constructor-arg index="0" ref="aanmakenTaakTemplate" />
-	</bean>
-	<!-- /Aanmaken Taak -->
+	<!--&lt;!&ndash; Message Sender Definition &ndash;&gt;-->
+	<!--<bean id="aanmakenTaakSender" class="nl.dias.messaging.sender.AanmakenTaakSender">-->
+	<!--<constructor-arg index="0" ref="aanmakenTaakTemplate" />-->
+	<!--</bean>-->
+	<!--&lt;!&ndash; /Aanmaken Taak &ndash;&gt;-->
 
-	<!-- Adres aangevuld -->
-	<!-- Default Destination Queue Definition -->
-	<bean id="adresAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="adresAangevuldQueue" />
-	</bean>
 
-	<bean id="adresAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="adresAangevuldDestination" />
-	</bean>
+	<!-- Opvragen Persoon -->
+	<bean id="opvragenPersoonRequestReciever" class="nl.dias.messaging.reciever.OpvragenPersoonRequestReciever"/>
 
-	<!-- Message Sender Definition -->
-	<bean id="adresAangevuldSender" class="nl.dias.messaging.sender.AdresAangevuldSender">
-		<constructor-arg index="0" ref="adresAangevuldTemplate" />
-	</bean>
-	<!-- /Adres aangevuld -->
+	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
+		<jms:listener destination="opvragenPersoonRequestQueue" ref="opvragenPersoonRequestReciever"
+					  method="onMessage"/>
+	</jms:listener-container>
+	<!-- // Opvragen Persoon -->
 
-	<!-- E-mailadres aangevuld -->
-	<bean id="emailAdresAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="emailAdresAangevuldQueue" />
-	</bean>
 
-	<bean id="emailAdresAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="emailAdresAangevuldDestination" />
-	</bean>
+	<!--&lt;!&ndash; Adres aangevuld &ndash;&gt;-->
+	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
+	<!--<bean id="adresAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="adresAangevuldQueue" />-->
+	<!--</bean>-->
 
-	<!-- Message Sender Definition -->
-	<bean id="emailAdresAangevuldSender" class="nl.dias.messaging.sender.EmailAdresAangevuldSender">
-		<constructor-arg index="0" ref="emailAdresAangevuldTemplate" />
-	</bean>
-	<!-- /E-mailadres aangevuld -->
+	<!--<bean id="adresAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory" />-->
+	<!--<property name="defaultDestination" ref="adresAangevuldDestination" />-->
+	<!--</bean>-->
 
-	<!-- BSN aangevuld -->
-	<bean id="bsnAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="bsnAangevuldQueue" />
-	</bean>
+	<!--&lt;!&ndash; Message Sender Definition &ndash;&gt;-->
+	<!--<bean id="adresAangevuldSender" class="nl.dias.messaging.sender.AdresAangevuldSender">-->
+	<!--<constructor-arg index="0" ref="adresAangevuldTemplate" />-->
+	<!--</bean>-->
+	<!--&lt;!&ndash; /Adres aangevuld &ndash;&gt;-->
 
-	<bean id="bsnAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="bsnAangevuldDestination" />
-	</bean>
+	<!--&lt;!&ndash; E-mailadres aangevuld &ndash;&gt;-->
+	<!--<bean id="emailAdresAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="emailAdresAangevuldQueue" />-->
+	<!--</bean>-->
 
-	<!-- Message Sender Definition -->
-	<bean id="bsnAangevuldSender" class="nl.dias.messaging.sender.BsnAangevuldSender">
-		<constructor-arg index="0" ref="bsnAangevuldTemplate" />
-	</bean>
-	<!-- /BSN aangevuld -->
+	<!--<bean id="emailAdresAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory" />-->
+	<!--<property name="defaultDestination" ref="emailAdresAangevuldDestination" />-->
+	<!--</bean>-->
 
-	<bean name="verstuurAanmakenTaakJob"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="nl.dias.batch.jobs.VerstuurAanmakenTaakJob" />
-	</bean>
+	<!--&lt;!&ndash; Message Sender Definition &ndash;&gt;-->
+	<!--<bean id="emailAdresAangevuldSender" class="nl.dias.messaging.sender.EmailAdresAangevuldSender">-->
+	<!--<constructor-arg index="0" ref="emailAdresAangevuldTemplate" />-->
+	<!--</bean>-->
+	<!--&lt;!&ndash; /E-mailadres aangevuld &ndash;&gt;-->
 
-	<!-- Opslaan Bestand -->
-	<!-- Default Destination Queue Definition -->
-	<!--Moet nog ooit
-    <bean id="opslaanBestandDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg index="0" value="opslaanBestandQueue" />
-    </bean>
-    -->
+	<!--&lt;!&ndash; BSN aangevuld &ndash;&gt;-->
+	<!--<bean id="bsnAangevuldDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="bsnAangevuldQueue" />-->
+	<!--</bean>-->
 
-	<!-- opslaanBestandTemplate Definition -->
-	<!--Moet nog ooit
-    <bean id="opslaanBestandTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="defaultDestination" ref="opslaanBestandDestination" />
-    </bean>
-    -->
+	<!--<bean id="bsnAangevuldTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory" />-->
+	<!--<property name="defaultDestination" ref="bsnAangevuldDestination" />-->
+	<!--</bean>-->
 
-	<!-- Message Sender Definition -->
-	<!--Moet nog ooit
-    <bean id="opslaanBestandSender" class="nl.lakedigital.archief.messaging.sender.OpslaanBestandSender">
-        <constructor-arg index="0" ref="opslaanBestandTemplate" />
-    </bean>
-    -->
-	<!-- /Opslaan Bestand -->
+	<!--&lt;!&ndash; Message Sender Definition &ndash;&gt;-->
+	<!--<bean id="bsnAangevuldSender" class="nl.dias.messaging.sender.BsnAangevuldSender">-->
+	<!--<constructor-arg index="0" ref="bsnAangevuldTemplate" />-->
+	<!--</bean>-->
+	<!--&lt;!&ndash; /BSN aangevuld &ndash;&gt;-->
 
-	<!-- Bestand Gelezen -->
-	<!-- Default Destination Queue Definition -->
-	<bean id="bestandGelezenDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="bestandGelezenQueue"/>
-	</bean>
+	<!--<bean name="verstuurAanmakenTaakJob"-->
+	<!--class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+	<!--<property name="jobClass" value="nl.dias.batch.jobs.VerstuurAanmakenTaakJob" />-->
+	<!--</bean>-->
 
-	<!-- bestandGelezenTemplate Definition -->
-	<bean id="bestandGelezenTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="bestandGelezenDestination"/>
-	</bean>
+	<!--&lt;!&ndash; Opslaan Bestand &ndash;&gt;-->
+	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
+	<!--&lt;!&ndash;Moet nog ooit-->
+	<!--<bean id="opslaanBestandDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="opslaanBestandQueue" />-->
+	<!--</bean>-->
+	<!--&ndash;&gt;-->
+
+	<!--&lt;!&ndash; opslaanBestandTemplate Definition &ndash;&gt;-->
+	<!--&lt;!&ndash;Moet nog ooit-->
+	<!--<bean id="opslaanBestandTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory" />-->
+	<!--<property name="defaultDestination" ref="opslaanBestandDestination" />-->
+	<!--</bean>-->
+	<!--&ndash;&gt;-->
+
+	<!--&lt;!&ndash; Message Sender Definition &ndash;&gt;-->
+	<!--&lt;!&ndash;Moet nog ooit-->
+	<!--<bean id="opslaanBestandSender" class="nl.lakedigital.archief.messaging.sender.OpslaanBestandSender">-->
+	<!--<constructor-arg index="0" ref="opslaanBestandTemplate" />-->
+	<!--</bean>-->
+	<!--&ndash;&gt;-->
+	<!--&lt;!&ndash; /Opslaan Bestand &ndash;&gt;-->
+
+	<!--&lt;!&ndash; Bestand Gelezen &ndash;&gt;-->
+	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
+	<!--<bean id="bestandGelezenDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
+	<!--<constructor-arg index="0" value="bestandGelezenQueue"/>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; bestandGelezenTemplate Definition &ndash;&gt;-->
+	<!--<bean id="bestandGelezenTemplate" class="org.springframework.jms.core.JmsTemplate">-->
+	<!--<property name="connectionFactory" ref="connectionFactory"/>-->
+	<!--<property name="defaultDestination" ref="bestandGelezenDestination"/>-->
+	<!--</bean>-->
 
 	<!--bean id="simpleTriggert"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">

@@ -8,17 +8,18 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OpslaanTaakSender extends AbstractSender<TaakOpslaan, Taak> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpslaanTaakSender.class);
+public class TaakOpslaanSender extends AbstractSender<TaakOpslaan, Taak> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaakOpslaanSender.class);
 
-    public OpslaanTaakSender() {
+    public TaakOpslaanSender() {
         this.jmsTemplate = null;
         this.LOGGER_ = LOGGER;
     }
 
-    public OpslaanTaakSender(final JmsTemplate jmsTemplate) {
+    public TaakOpslaanSender(final JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
         this.LOGGER_ = LOGGER;
+        this.clazz = TaakOpslaan.class;
     }
 
     @Override

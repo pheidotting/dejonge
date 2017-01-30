@@ -1,6 +1,6 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.messaging.sender.OpslaanTaakSender;
+import nl.dias.messaging.sender.TaakOpslaanSender;
 import nl.lakedigital.as.messaging.domain.Taak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class TaakController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TaakController.class);
 
     @Inject
-    private OpslaanTaakSender opslaanAfgerondeTakenSender;
+    private TaakOpslaanSender taakOpslaanSender;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaanAfgerondeTaken")
     @ResponseBody
@@ -28,7 +28,7 @@ public class TaakController extends AbstractController {
         zetSessieWaarden(httpServletRequest);
 
         for (Taak taak : taaks) {
-            opslaanAfgerondeTakenSender.send(taak);
+            taakOpslaanSender.send(taak);
         }
     }
 }
