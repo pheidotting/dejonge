@@ -42,10 +42,8 @@ public class TaakController extends AbstractController {
     public List<nl.lakedigital.djfc.commons.json.Taak> alleAfgerondeTaken(@PathVariable("soortEntiteit") String soortEntiteit, @PathVariable("entiteitId") Long entiteitId) {
         try {
             return taakClient.alleAfgerondeTaken(soortEntiteit, entiteitId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        } catch (IOException | JAXBException e) {
+            LOGGER.error("{}", e)
         }
         return newArrayList();
     }
