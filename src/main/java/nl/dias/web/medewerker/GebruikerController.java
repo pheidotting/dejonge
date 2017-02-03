@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class GebruikerController extends AbstractController {
     @Inject
     private JsonMedewerkerNaarMedewerkerMapper jsonMedewerkerNaarMedewerkerMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen")
+    @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonContactPersoon> alleContactPersonen(@QueryParam("bedrijfsId") Long bedrijfsId) {
         List<JsonContactPersoon> result = new ArrayList<>();
@@ -54,7 +55,7 @@ public class GebruikerController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonRelatie lees(@QueryParam("id") String id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);
@@ -73,7 +74,7 @@ public class GebruikerController extends AbstractController {
         return jsonRelatie;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/leesMedewerker")
+    @RequestMapping(method = RequestMethod.GET, value = "/leesMedewerker", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonMedewerker leesMedewerker(@QueryParam("id") String id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);
@@ -102,7 +103,7 @@ public class GebruikerController extends AbstractController {
         gebruikerService.opslaan(jsonMedewerkerNaarMedewerkerMapper.map(jsonMedewerker, null, medewerker));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstRelaties")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstRelaties", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonLijstRelaties lijstRelaties(@QueryParam("weglaten") String weglaten) {
         LOGGER.debug("Ophalen lijst met alle Relaties");
@@ -182,7 +183,7 @@ public class GebruikerController extends AbstractController {
         gebruikerService.verwijder(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaamAdresOfPolisNummer")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaamAdresOfPolisNummer", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonLijstRelaties zoekOpNaamAdresOfPolisNummer(@QueryParam("zoekTerm") String zoekTerm, @QueryParam("weglaten") String weglaten) {
         LOGGER.info("zoekOpNaamAdresOfPolisNummer met zoekterm " + zoekTerm);
@@ -226,7 +227,7 @@ public class GebruikerController extends AbstractController {
         gebruikerService.opslaanOAuthCodeTodoist(code, getIngelogdeGebruiker(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/leesoauthcode")
+    @RequestMapping(method = RequestMethod.GET, value = "/leesoauthcode", produces = MediaType.TEXT_PLAIN)
     @ResponseBody
     public String leesOAuthCode(HttpServletRequest httpServletRequest) {
         LOGGER.debug("Lees Authcode ");

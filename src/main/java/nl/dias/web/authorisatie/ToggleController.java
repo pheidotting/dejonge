@@ -9,13 +9,14 @@ import org.togglz.core.context.FeatureContext;
 import org.togglz.core.repository.FeatureState;
 
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("togglz")
 @Controller
 public class ToggleController {
-    @RequestMapping(method = RequestMethod.GET, value = "/toggle")
+    @RequestMapping(method = RequestMethod.GET, value = "/toggle", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void toggle(@QueryParam("feature") String feature, @QueryParam("toggle") boolean toggle) {
         checkAdmin();
@@ -24,13 +25,13 @@ public class ToggleController {
         FeatureContext.clearCache();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/toggles")
+    @RequestMapping(method = RequestMethod.GET, value = "/toggles", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Map<String, Boolean> toggles() {
         return getToggles(null);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/toggles/{toggle}")
+    @RequestMapping(method = RequestMethod.GET, value = "/toggles/{toggle}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public boolean toggles(@PathVariable("toggle") String toggle) {
         return getToggles(toggle).get(toggle);

@@ -64,19 +64,19 @@ public class BijlageController extends AbstractController {
         bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/genereerBestandsnaam")
+    @RequestMapping(method = RequestMethod.GET, value = "/genereerBestandsnaam", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public String genereerBestandsnaam() {
         return bijlageClient.genereerBestandsnaam();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getUploadPad")
+    @RequestMapping(method = RequestMethod.GET, value = "/getUploadPad", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public String getUploadPad() {
         return bijlageClient.getUploadPad();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonBijlage> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         List<JsonBijlage> jsonEntiteiten = bijlageClient.lijst(soortentiteit, parentid);
@@ -96,7 +96,7 @@ public class BijlageController extends AbstractController {
         bijlageClient.verwijder(id, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonBijlage> zoeken(@PathVariable("zoekTerm") String zoekTerm) {
         List<JsonBijlage> result = bijlageClient.zoeken(zoekTerm);
@@ -152,7 +152,7 @@ public class BijlageController extends AbstractController {
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alleGroepen/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/alleGroepen/{soortentiteit}/{parentid}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonGroepBijlages> alleGroepen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         LOGGER.debug("alleGroepen voor soortentiteit {} en {}", soortentiteit, parentid);

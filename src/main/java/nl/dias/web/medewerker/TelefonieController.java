@@ -50,7 +50,7 @@ public class TelefonieController extends AbstractController {
         return telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/download/{bestandsnaam}")
+    @RequestMapping(method = RequestMethod.GET, value = "/download/{bestandsnaam}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     @Produces("application/wav")
     public ResponseEntity<byte[]> getFile(@PathVariable("bestandsnaam") String bestandsnaam) throws IOException {

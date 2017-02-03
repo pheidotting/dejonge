@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @RequestMapping("/rekeningnummer")
@@ -21,7 +22,7 @@ public class RekeningNummerController extends AbstractController {
         rekeningClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonRekeningNummer> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         List<JsonRekeningNummer> jsonEntiteiten = rekeningClient.lijst(soortentiteit, parentid);
@@ -35,7 +36,7 @@ public class RekeningNummerController extends AbstractController {
         rekeningClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonRekeningNummer> zoeken(@PathVariable("zoekTerm") String zoekTerm) {
         List<JsonRekeningNummer> result = rekeningClient.zoeken(zoekTerm);

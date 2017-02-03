@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 
 @RequestMapping("/medewerker")
 @Controller
@@ -25,7 +26,7 @@ public class MedewerkerController {
     @Inject
     private Mapper mapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonMedewerker lees(@PathVariable("id") Long id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,7 +43,7 @@ public class HypotheekController extends AbstractController {
     @Inject
     private HypotheekPakketMapper hypotheekPakketMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonHypotheek lees(@QueryParam("id") String id) {
         JsonHypotheek jsonHypotheek = null;
@@ -56,7 +57,7 @@ public class HypotheekController extends AbstractController {
         return jsonHypotheek;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alleSoortenHypotheek")
+    @RequestMapping(method = RequestMethod.GET, value = "/alleSoortenHypotheek", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonSoortHypotheek> alleSoortenHypotheek() {
         Set<SoortHypotheek> soorten = new HashSet<>();
@@ -86,7 +87,7 @@ public class HypotheekController extends AbstractController {
         return hypotheekPakketMapper.mapAllNaarJson(hypotheekPakketten);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypotheken")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypotheken", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonHypotheek> alleHypotheken(@QueryParam("relatieId") Long relatieId) {
         Set<Hypotheek> hypotheken = new HashSet<>();
@@ -98,7 +99,7 @@ public class HypotheekController extends AbstractController {
         return hypotheekMapper.mapAllNaarJson(hypotheken);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypothekenInclDePakketten")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstHypothekenInclDePakketten", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonHypotheek> alleHypothekenInclDePakketten(@QueryParam("relatieId") Long relatieId) {
         hypotheekService.leesHypotheek(14L);
@@ -135,27 +136,11 @@ public class HypotheekController extends AbstractController {
         return Response.status(200).entity(new JsonFoutmelding(hypotheek.getId().toString())).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/leesHypotheekVorm")
+    @RequestMapping(method = RequestMethod.GET, value = "/leesHypotheekVorm", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public String leesHypotheekVorm(@QueryParam("id") Long id) {
         SoortHypotheek soortHypotheek = hypotheekService.leesSoortHypotheek(id);
 
         return soortHypotheek.getOmschrijving();
-    }
-
-    public void setHypotheekService(HypotheekService hypotheekService) {
-        this.hypotheekService = hypotheekService;
-    }
-
-    public void setSoortHypotheekMapper(SoortHypotheekMapper soortHypotheekMapper) {
-        this.soortHypotheekMapper = soortHypotheekMapper;
-    }
-
-    public void setHypotheekMapper(HypotheekMapper hypotheekMapper) {
-        this.hypotheekMapper = hypotheekMapper;
-    }
-
-    public void setHypotheekPakketMapper(HypotheekPakketMapper hypotheekPakketMapper) {
-        this.hypotheekPakketMapper = hypotheekPakketMapper;
     }
 }

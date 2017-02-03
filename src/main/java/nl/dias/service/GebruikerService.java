@@ -7,10 +7,13 @@ import nl.dias.domein.*;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
 import nl.dias.mapper.Mapper;
+import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
+import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
@@ -56,6 +59,8 @@ public class GebruikerService {
     private AdresClient adresClient;
     @Inject
     private TelefoonnummerClient telefoonnummerClient;
+    @Inject
+    private VerwijderEntiteitenRequestSender verwijderEntiteitRequestSender;
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
@@ -248,6 +253,13 @@ public class GebruikerService {
         }
         // en dan verwijderen
         gebruikerRepository.verwijder(gebruiker);
+
+        LOGGER.debug("Bericht naar OGA");
+        SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
+        soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
+        soortEntiteitEnEntiteitId.setEntiteitId(id);
+
+        verwijderEntiteitRequestSender.send(soortEntiteitEnEntiteitId);
     }
 
     public Gebruiker zoekOpSessieEnIpAdres(String sessie, String ipadres) throws NietGevondenException {

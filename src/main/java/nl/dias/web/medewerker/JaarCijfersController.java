@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class JaarCijfersController {
     @Inject
     private JaarCijfersService jaarCijfersService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonJaarCijfers> lijstBijBedrijf(@QueryParam("bedrijfsId") Long bedrijfsId) {
         List<JsonJaarCijfers> jsonJaarCijferses = Lists.newArrayList();

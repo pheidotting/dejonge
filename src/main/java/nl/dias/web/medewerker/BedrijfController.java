@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class BedrijfController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonBedrijf lees(@QueryParam("id") String id) {
         JsonBedrijf bedrijf = null;
@@ -68,7 +69,7 @@ public class BedrijfController extends AbstractController {
         return bedrijf;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonBedrijf> lijst(@QueryParam("zoekTerm") String zoekTerm) {
         List<JsonBedrijf> bedrijven = new ArrayList<>();
@@ -86,7 +87,7 @@ public class BedrijfController extends AbstractController {
         return bedrijven;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijder")
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijder", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response verwijder(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Bedrijf met id " + id);

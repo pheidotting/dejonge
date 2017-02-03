@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class SchadeController extends AbstractController {
         return Response.status(202).entity(new JsonFoutmelding(schade.getId().toString())).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijst")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonSchade> lijst(@QueryParam("relatieId") Long relatieId) {
         LOGGER.debug("Opzoeken Schades bij Relatie met Id {}", relatieId);
@@ -53,7 +54,7 @@ public class SchadeController extends AbstractController {
         return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijRelatie(relatieId));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonSchade> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
         LOGGER.debug("Opzoeken Schades bij Bedrijf met Id {}", bedrijfId);
@@ -61,7 +62,7 @@ public class SchadeController extends AbstractController {
         return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijBedrijf(bedrijfId));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonSchade lees(@QueryParam("id") String id) {
         if (id != null && !"".equals(id) && !"0".equals(id)) {

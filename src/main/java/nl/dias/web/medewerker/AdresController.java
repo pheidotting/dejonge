@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @RequestMapping("/adres")
@@ -26,7 +27,7 @@ public class AdresController extends AbstractController {
         adresClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonAdres> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         List<JsonAdres> jsonEntiteiten = adresClient.lijst(soortentiteit, parentid);
@@ -40,7 +41,7 @@ public class AdresController extends AbstractController {
         adresClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonAdres> zoeken(@PathVariable("zoekTerm") String zoekTerm) {
         List<JsonAdres> result = adresClient.zoeken(zoekTerm);
@@ -48,13 +49,13 @@ public class AdresController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode/{postcode}/{huisnummer}")
+    @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode/{postcode}/{huisnummer}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonAdres ophalenAdresOpPostcode(@PathVariable("postcode") String postcode, @PathVariable("huisnummer") String huisnummer) {
         return adresClient.ophalenAdresOpPostcode(postcode, huisnummer, MyFeatures.ADRES_NIET_VIA_API.isActive());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alleAdressenBijLijstMetEntiteiten")
+    @RequestMapping(method = RequestMethod.GET, value = "/alleAdressenBijLijstMetEntiteiten", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonAdres> alleAdressenBijLijstMetEntiteiten(@RequestParam("soortEntiteit") String soortEntiteit, @RequestParam("lijst") List<Long> ids) {
         return adresClient.alleAdressenBijLijstMetEntiteiten(ids, soortEntiteit);

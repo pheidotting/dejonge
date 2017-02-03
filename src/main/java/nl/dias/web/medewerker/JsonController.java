@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.*;
 
 @RequestMapping("/overig")
@@ -39,12 +40,13 @@ public class JsonController {
     @Inject
     private PostcodeService postcodeService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getTrackAndTraceId")
+    @RequestMapping(method = RequestMethod.GET, value = "/getTrackAndTraceId", produces = MediaType.TEXT_PLAIN)
     @ResponseBody
     public String getTrackAndTraceId() {
         return UUID.randomUUID().toString();
     }
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen")
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstVerzekeringsMaatschappijen", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Map<Long, String> lijstVerzekeringsMaatschappijen() {
 
@@ -73,7 +75,7 @@ public class JsonController {
         return ret;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/extraInfo")
+    @RequestMapping(method = RequestMethod.GET, value = "/extraInfo", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public String extraInfo() {
 
@@ -84,7 +86,7 @@ public class JsonController {
         return omgeving;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/soortenSchade")
+    @RequestMapping(method = RequestMethod.GET, value = "/soortenSchade", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonSoortSchade> soortenSchade(@QueryParam("query") String query) {
         return soortSchadeMapper.mapAllNaarJson(schadeService.soortenSchade(query));
@@ -104,7 +106,7 @@ public class JsonController {
         return ret;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode")
+    @RequestMapping(method = RequestMethod.GET, value = "/ophalenAdresOpPostcode", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonAdres ophalenAdresOpPostcode(@QueryParam("postcode") String postcode, @QueryParam("huisnummer") String huisnummer) {
         String adres = "https://postcode-api.apiwise.nl/v2/addresses/?postcode=" + postcode + "&number=" + huisnummer;

@@ -34,22 +34,30 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 		<constructor-arg ref="amqConnectionFactory" />
 	</bean>
 
-	<!-- Aanmaken Taak -->
-	<!-- Default Destination Queue Definition -->
+	<!-- Taak Opslaan -->
 	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="taakOpslaanQueue"/>
 	</bean>
-
-	<!-- aanmakenTaakTemplate Definition -->
 	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory"/>
 		<property name="defaultDestination" ref="taakOpslaanDestination"/>
 	</bean>
-
-	<!-- Message Sender Definition -->
 	<bean id="taakOpslaanSender" class="nl.dias.messaging.sender.TaakOpslaanSender">
 		<constructor-arg index="0" ref="taakOpslaanTemplate"/>
 	</bean>
+	<!-- /Taak Opslaan  -->
+	<!-- VerwijderEntiteitenRequest -->
+	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="verwijderEntiteitenRequestQueue"/>
+	</bean>
+	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
+	</bean>
+	<bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
+		<constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
+	</bean>
+	<!-- /VerwijderEntiteitenRequest -->
 
 
 	<!--&lt;!&ndash; Aanmaken Taak &ndash;&gt;-->
@@ -286,6 +294,9 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	</bean>
 	<bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
 		<property name="basisUrl" value="${oga.url}"/>
+	</bean>
+	<bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
+		<property name="basisUrl" value="${tb.url}"/>
 	</bean>
 
 </beans>

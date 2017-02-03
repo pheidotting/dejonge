@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -29,7 +30,7 @@ public class OpmerkingController extends AbstractController {
         opmerkingClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonOpmerking> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         List<JsonOpmerking> jsonEntiteiten = opmerkingClient.lijst(soortentiteit, parentid);
@@ -58,7 +59,7 @@ public class OpmerkingController extends AbstractController {
         opmerkingClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonOpmerking> zoeken(@PathVariable("zoekTerm") String zoekTerm) {
         List<JsonOpmerking> result = opmerkingClient.zoeken(zoekTerm);

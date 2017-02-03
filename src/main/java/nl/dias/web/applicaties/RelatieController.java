@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.transform;
@@ -31,7 +32,7 @@ public class RelatieController {
     @Inject
     private RelatieMapper relatieMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonRelatie lees(@PathVariable("id") Long id) {
         LOGGER.debug("Ophalen Relatie met id : " + id);
@@ -43,7 +44,7 @@ public class RelatieController {
         return jsonRelatie;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpEmailadres/{emailadres}/dummy")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpEmailadres/{emailadres}/dummy", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonRelatie zoekOpEmailadres(@PathVariable("emailadres") String emailadres) {
         LOGGER.debug("Zoeken relatie met emailadres '{}'", emailadres);
@@ -56,7 +57,7 @@ public class RelatieController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaam/{naam}")
+    @RequestMapping(method = RequestMethod.GET, value = "/zoekOpNaam/{naam}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonRelatie> zoekOpNaam(@PathVariable("naam") String naam) {
         List<Gebruiker> gevondenGebruikers = gebruikerService.zoekOpNaam(naam);

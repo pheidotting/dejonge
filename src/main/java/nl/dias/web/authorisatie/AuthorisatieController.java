@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @RequestMapping("/authorisatie")
@@ -36,7 +37,7 @@ public class AuthorisatieController {
     @Inject
     private GebruikerRepository gebruikerRepository;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/inloggen")
+    @RequestMapping(method = RequestMethod.POST, value = "/inloggen", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Long inloggen(@RequestBody Inloggen inloggen, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
         try {
@@ -52,14 +53,14 @@ public class AuthorisatieController {
         return 0L;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/uitloggen")
+    @RequestMapping(method = RequestMethod.GET, value = "/uitloggen", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response uitloggen(HttpServletRequest httpServletRequest) {
         authorisatieService.uitloggen(httpServletRequest);
         return Response.status(200).entity(new JsonFoutmelding()).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/ingelogdeGebruiker")
+    @RequestMapping(method = RequestMethod.GET, value = "/ingelogdeGebruiker", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public IngelogdeGebruiker getIngelogdeGebruiker(HttpServletRequest httpServletRequest) {
         LOGGER.debug("Ophalen ingelogde gebruiker");
@@ -94,7 +95,7 @@ public class AuthorisatieController {
     public class GebruikerNietGevondenOfWachtwoordOnjuisException extends RuntimeException {
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/isIngelogd")
+    @RequestMapping(method = RequestMethod.GET, value = "/isIngelogd", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response isIngelogd(HttpServletRequest httpServletRequest) {
         LOGGER.debug("is gebruiker ingelogd");

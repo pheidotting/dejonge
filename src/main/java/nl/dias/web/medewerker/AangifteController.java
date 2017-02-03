@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class AangifteController extends AbstractController {
     @Inject
     private AuthorisatieService authorisatieService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/openAangiftes")
+    @RequestMapping(method = RequestMethod.GET, value = "/openAangiftes", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonAangifte> openAangiftes(@QueryParam("relatie") Long relatie) {
         return aangifteMapper.mapAllNaarJson(aangifteService.getOpenstaandeAangiftes((Relatie) gebruikerService.lees(relatie)));
@@ -69,7 +70,7 @@ public class AangifteController extends AbstractController {
         return Response.ok(aangifte.getId()).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/geslotenAangiftes")
+    @RequestMapping(method = RequestMethod.GET, value = "/geslotenAangiftes", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<JsonAangifte> geslotenAangiftes(@QueryParam("relatie") Long relatie) {
         return aangifteMapper.mapAllNaarJson(aangifteService.getAfgeslotenAangiftes((Relatie) gebruikerService.lees(relatie)));

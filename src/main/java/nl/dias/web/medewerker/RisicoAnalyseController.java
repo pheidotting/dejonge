@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 @RequestMapping("/risicoanalyse")
 @Controller
@@ -19,7 +20,7 @@ public class RisicoAnalyseController {
     @Inject
     private RisicoAnalyseService risicoAnalyseService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees")
+    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonRisicoAnalyse lees(@QueryParam("bedrijfsId") Long bedrijfsId) {
         return mapper.map(risicoAnalyseService.leesBijBedrijf(bedrijfsId), JsonRisicoAnalyse.class);
