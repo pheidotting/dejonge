@@ -4,10 +4,13 @@ import com.google.common.collect.Lists;
 import nl.dias.domein.*;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Polis;
+import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
+import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
@@ -28,8 +31,8 @@ import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 
 @RunWith(EasyMockRunner.class)
 public class GebruikerServiceTest extends EasyMockSupport {
@@ -50,6 +53,8 @@ public class GebruikerServiceTest extends EasyMockSupport {
     private HypotheekRepository hypotheekRepository;
     @Mock
     private SchadeService schadeService;
+    @Mock
+    private VerwijderEntiteitenRequestSender verwijderEntiteitenRequestSender;
 
     @After
     public void teardown() {
@@ -236,9 +241,17 @@ public class GebruikerServiceTest extends EasyMockSupport {
         polisRepository.verwijder(polises);
         expectLastCall();
 
+        Capture<SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+
+        verwijderEntiteitenRequestSender.send(capture(soortEntiteitEnEntiteitIdCapture));
+        expectLastCall();
+
         replayAll();
 
         service.verwijder(1L);
+
+        assertThat(soortEntiteitEnEntiteitIdCapture.getValue().getSoortEntiteit(), is(SoortEntiteit.RELATIE));
+        assertThat(soortEntiteitEnEntiteitIdCapture.getValue().getEntiteitId(), is(1L));
     }
 
     @Test
