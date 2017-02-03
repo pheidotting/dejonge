@@ -9,10 +9,8 @@ import org.slf4j.Logger;
 import javax.jms.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 public abstract class AbstractReciever<T extends AbstractMessage> implements MessageListener {
     private static Logger LOGGER = null;
@@ -38,8 +36,6 @@ public abstract class AbstractReciever<T extends AbstractMessage> implements Mes
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-            StringWriter sw = new StringWriter();
-
             T ontvangenObject = (T) jaxbUnmarshaller.unmarshal(new StringReader(((TextMessage) message).getText()));
 
 
@@ -49,12 +45,8 @@ public abstract class AbstractReciever<T extends AbstractMessage> implements Mes
             replyTo = message.getJMSReplyTo();
 
             verwerkMessage(ontvangenObject);
-        } catch (JMSException e) {
-            LOGGER.error("Fout opgetreden bij ontvangen AanmakenTaak event {}", e);
-        } catch (PropertyException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        } catch (JMSException | JAXBException e) {
+            LOGGER.error("Fout opgetreden bij ontvangen Request {}", e);
         }
     }
 
@@ -73,7 +65,7 @@ public abstract class AbstractReciever<T extends AbstractMessage> implements Mes
             this.replyProducer = this.session.createProducer(null);
             this.replyProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         } catch (JMSException e) {
-            //Handle the exception appropriately
+            LOGGER.error("{}", e);
         }
     }
 
