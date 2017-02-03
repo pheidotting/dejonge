@@ -1,32 +1,40 @@
 package nl.dias.service;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.junit.Assert.assertEquals;
+import nl.dias.domein.Bedrijf;
+import nl.dias.domein.Relatie;
+import nl.dias.domein.Schade;
+import nl.dias.domein.polis.Polis;
+import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
+import nl.dias.repository.BedrijfRepository;
+import nl.dias.repository.PolisRepository;
+import nl.lakedigital.as.messaging.domain.SoortEntiteit;
+import org.easymock.*;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.dias.domein.Bedrijf;
-import nl.dias.domein.Relatie;
-import nl.dias.repository.BedrijfRepository;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
-import org.easymock.EasyMockSupport;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+@RunWith(EasyMockRunner.class)
 public class BedrijfServiceTest extends EasyMockSupport {
-    private BedrijfService bedrijfService;
+    @TestSubject
+    private BedrijfService bedrijfService = new BedrijfService();
+    @Mock
     private BedrijfRepository bedrijfRepository;
-
-    @Before
-    public void setUp() throws Exception {
-        bedrijfService = new BedrijfService();
-
-        bedrijfRepository = createMock(BedrijfRepository.class);
-        bedrijfService.setBedrijfRepository(bedrijfRepository);
-    }
+    @Mock
+    private VerwijderEntiteitenRequestSender verwijderEntiteitenRequestSender;
+    @Mock
+    private SchadeService schadeService;
+    @Mock
+    private PolisRepository polisRepository;
 
     @After
     public void afterTest() {
@@ -72,13 +80,33 @@ public class BedrijfServiceTest extends EasyMockSupport {
     public void testVerwijder() {
         Long id = 69L;
         Bedrijf bedrijf = new Bedrijf();
+        bedrijf.setId(id);
 
         expect(bedrijfRepository.lees(id)).andReturn(bedrijf);
+
+        List<Schade> schades = newArrayList();
+        expect(schadeService.alleSchadesBijBedrijf(id)).andReturn(schades);
+        schadeService.verwijder(schades);
+        expectLastCall();
+
+        List<Polis> polises = newArrayList();
+        expect(polisRepository.allePolissenBijBedrijf(id)).andReturn(polises);
+        polisRepository.verwijder(polises);
+        expectLastCall();
+
         bedrijfRepository.verwijder(bedrijf);
+        expectLastCall();
+
+        Capture<SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+
+        verwijderEntiteitenRequestSender.send(capture(soortEntiteitEnEntiteitIdCapture));
         expectLastCall();
 
         replayAll();
 
         bedrijfService.verwijder(id);
+
+        assertThat(soortEntiteitEnEntiteitIdCapture.getValue().getSoortEntiteit(), is(SoortEntiteit.BEDRIJF));
+        assertThat(soortEntiteitEnEntiteitIdCapture.getValue().getEntiteitId(), is(id));
     }
 }
