@@ -27,7 +27,7 @@ public class TaakController extends AbstractController {
     @Inject
     private TaakClient taakClient;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanAfgerondeTaken")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanAfgerondeTaken", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaanAfgerondeTaken(@RequestBody List<Taak> taaks, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);

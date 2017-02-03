@@ -66,7 +66,7 @@ public class PolisController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/beeindigen/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/beeindigen/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void beeindigen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("beeindigen Polis met id " + id);
@@ -105,7 +105,7 @@ public class PolisController extends AbstractController {
         return polisMapper.mapAllNaarJson(polisService.allePolissenBijBedrijf(bedrijfId));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Long opslaan(@RequestBody JsonPolis jsonPolis, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
@@ -122,7 +122,7 @@ public class PolisController extends AbstractController {
         return polis.getId();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Polis met id " + id);

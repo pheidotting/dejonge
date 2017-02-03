@@ -33,7 +33,7 @@ public class SchadeController extends AbstractController {
     @Inject
     private BedrijfService bedrijfService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response opslaan(@RequestBody JsonSchade jsonSchade, HttpServletRequest httpServletRequest) {
         LOGGER.debug("{}", jsonSchade);
@@ -72,7 +72,7 @@ public class SchadeController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Schade met id " + id);

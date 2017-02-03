@@ -43,7 +43,7 @@ public class AangifteController extends AbstractController {
         return aangifteMapper.mapAllNaarJson(aangifteService.getOpenstaandeAangiftes((Relatie) gebruikerService.lees(relatie)));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/afronden/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/afronden/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response afronden(@PathVariable Long id, HttpServletRequest httpServletRequest) {
         LOGGER.info("Afronden Aangifte met id " + id);
@@ -59,7 +59,7 @@ public class AangifteController extends AbstractController {
         return Response.ok(id).build();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response opslaan(@RequestBody JsonAangifte jsonAangifte, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);

@@ -2,7 +2,13 @@ package nl.dias.service;
 
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Relatie;
+import nl.dias.domein.Schade;
+import nl.dias.domein.polis.Polis;
+import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
 import nl.dias.repository.BedrijfRepository;
+import nl.dias.repository.PolisRepository;
+import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -18,6 +24,12 @@ public class BedrijfService {
 
     @Inject
     private BedrijfRepository bedrijfRepository;
+    @Inject
+    private VerwijderEntiteitenRequestSender verwijderEntiteitenRequestSender;
+    @Inject
+    private SchadeService schadeService;
+    @Inject
+    private PolisRepository polisRepository;
 
     public void opslaan(Bedrijf bedrijf) {
         bedrijfRepository.opslaan(bedrijf);
@@ -33,8 +45,20 @@ public class BedrijfService {
         Bedrijf bedrijf = lees(id);
 
         LOGGER.debug("Verwijderen : {}", ReflectionToStringBuilder.toString(bedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
+        List<Schade> schades = schadeService.alleSchadesBijBedrijf(bedrijf.getId());
+        schadeService.verwijder(schades);
+
+        List<Polis> polises = polisRepository.allePolissenBijBedrijf(bedrijf.getId());
+        polisRepository.verwijder(polises);
 
         bedrijfRepository.verwijder(bedrijf);
+
+        LOGGER.debug("Bericht naar OGA");
+        SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
+        soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.BEDRIJF);
+        soortEntiteitEnEntiteitId.setEntiteitId(id);
+
+        verwijderEntiteitenRequestSender.send(soortEntiteitEnEntiteitId);
     }
 
     public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {

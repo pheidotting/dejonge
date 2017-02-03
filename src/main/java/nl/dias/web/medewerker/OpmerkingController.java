@@ -24,7 +24,7 @@ public class OpmerkingController extends AbstractController {
     @Inject
     private GebruikerService gebruikerService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaan(@RequestBody List<JsonOpmerking> jsonEntiteiten, HttpServletRequest httpServletRequest) {
         opmerkingClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
@@ -47,13 +47,13 @@ public class OpmerkingController extends AbstractController {
         }));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         opmerkingClient.verwijder(id, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
         opmerkingClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));

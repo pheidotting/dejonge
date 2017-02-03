@@ -12,10 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +36,7 @@ public class BedrijfController extends AbstractController {
     @Inject
     private BedrijfMapper bedrijfMapper;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
@@ -87,9 +84,9 @@ public class BedrijfController extends AbstractController {
         return bedrijven;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/verwijder", produces = MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public Response verwijder(@QueryParam("id") Long id, HttpServletRequest httpServletRequest) {
+    public void verwijder(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("verwijderen Bedrijf met id " + id);
 
         zetSessieWaarden(httpServletRequest);
@@ -98,9 +95,7 @@ public class BedrijfController extends AbstractController {
             bedrijfService.verwijder(id);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Fout bij verwijderen Polis", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
         }
-        return Response.status(202).entity(new JsonFoutmelding()).build();
     }
 
 }

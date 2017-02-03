@@ -93,7 +93,7 @@ public class GebruikerController extends AbstractController {
         return jsonMedewerker;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanMedewerker")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanMedewerker", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaanMedewerker(@RequestBody JsonMedewerker jsonMedewerker) {
         LOGGER.debug("opslaan medewerker");
@@ -126,7 +126,7 @@ public class GebruikerController extends AbstractController {
         return lijst;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Long opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);
@@ -138,7 +138,7 @@ public class GebruikerController extends AbstractController {
         return contactPersoon.getId();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) {
         LOGGER.info("Opslaan " + jsonRelatie);
@@ -173,7 +173,7 @@ public class GebruikerController extends AbstractController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijderen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Verwijderen Relatie met id " + id);
@@ -210,7 +210,7 @@ public class GebruikerController extends AbstractController {
         return lijst;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/koppelenOnderlingeRelatie")
+    @RequestMapping(method = RequestMethod.POST, value = "/koppelenOnderlingeRelatie", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void koppelenOnderlingeRelatie(@RequestBody JsonKoppelenOnderlingeRelatie jsonKoppelenOnderlingeRelatie, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);
@@ -218,7 +218,7 @@ public class GebruikerController extends AbstractController {
         gebruikerService.koppelenOnderlingeRelatie(jsonKoppelenOnderlingeRelatie.getRelatie(), jsonKoppelenOnderlingeRelatie.getRelatieMet(), jsonKoppelenOnderlingeRelatie.getSoortRelatie());
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanoauthcode")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanoauthcode", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaanOAuthCode(@RequestBody String code, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan Authcode {}", code);
@@ -235,7 +235,7 @@ public class GebruikerController extends AbstractController {
         return gebruikerService.leesOAuthCodeTodoist(getIngelogdeGebruiker(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/wijzig-wachtwoord")
+    @RequestMapping(method = RequestMethod.POST, value = "/wijzig-wachtwoord", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void wijzigWachtwoord(@RequestBody WachtwoordWijzigen wachtwoordWijzigen, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);

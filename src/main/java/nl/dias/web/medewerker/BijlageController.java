@@ -46,19 +46,19 @@ public class BijlageController extends AbstractController {
     @Inject
     private BijlageNaarJsonBijlageMapper bijlageNaarJsonBijlageMapper;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/wijzigOmschrijvingBijlage")
+    @RequestMapping(method = RequestMethod.POST, value = "/wijzigOmschrijvingBijlage", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public void wijzigOmschrijvingBijlage(@RequestBody WijzigenOmschrijvingBijlage wijzigenOmschrijvingBijlage, HttpServletRequest httpServletRequest) {
         bijlageClient.wijzigOmschrijvingBijlage(wijzigenOmschrijvingBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaan(@RequestBody List<JsonBijlage> jsonEntiteiten, HttpServletRequest httpServletRequest) {
         bijlageClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanBijlage")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanBijlage", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaanBijlage(JsonBijlage jsonBijlage, HttpServletRequest httpServletRequest) {
         bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
@@ -84,13 +84,13 @@ public class BijlageController extends AbstractController {
         return jsonEntiteiten;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
         bijlageClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public void verwijderen(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         bijlageClient.verwijder(id, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
@@ -121,7 +121,7 @@ public class BijlageController extends AbstractController {
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage")
+    @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
     public UploadBijlageResponse uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
         UploadBijlageResponse response = new UploadBijlageResponse();

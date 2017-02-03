@@ -113,7 +113,7 @@ public class HypotheekController extends AbstractController {
         return hypotheekMapper.mapAllNaarJson(hypotheken);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Response opslaan(@RequestBody JsonHypotheek jsonHypotheek, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan Hypotheek " + jsonHypotheek);
