@@ -9,7 +9,6 @@ import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import java.io.StringWriter;
 
 public abstract class AbstractSender<M extends AbstractMessage, T extends Object> {
@@ -34,13 +33,11 @@ public abstract class AbstractSender<M extends AbstractMessage, T extends Object
         send(m);
     }
 
-    ;
-
     public void send(final AbstractMessage abstractMessage) {
         jmsTemplate.send(session -> {
             try {
-            abstractMessage.setTrackAndTraceId(SessieHolder.get().getTrackAndTraceId());
-            abstractMessage.setIngelogdeGebruiker(SessieHolder.get().getIngelogdeGebruiker());
+                abstractMessage.setTrackAndTraceId(SessieHolder.get().getTrackAndTraceId());
+                abstractMessage.setIngelogdeGebruiker(SessieHolder.get().getIngelogdeGebruiker());
 
                 JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
                 Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -53,12 +50,10 @@ public abstract class AbstractSender<M extends AbstractMessage, T extends Object
 
                 TextMessage message = session.createTextMessage(sw.toString());
 
-            LOGGER_.debug("Verzenden message {}", message.getText());
-            return message;
-            } catch (PropertyException e) {
-                e.printStackTrace();
+                LOGGER_.debug("Verzenden message {}", message.getText());
+                return message;
             } catch (JAXBException e) {
-                e.printStackTrace();
+                LOGGER_.error("{}", e);
             }
             return null;
         });
