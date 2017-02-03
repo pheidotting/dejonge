@@ -43,7 +43,7 @@ public class TaakController extends AbstractController {
         try {
             return taakClient.alleAfgerondeTaken(soortEntiteit, entiteitId);
         } catch (IOException | JAXBException e) {
-            LOGGER.error("{}", e)
+            LOGGER.error("{}", e);
         }
         return newArrayList();
     }
