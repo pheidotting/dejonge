@@ -16,7 +16,6 @@ import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import java.io.StringWriter;
 
 public class OpvragenPersoonRequestReciever extends AbstractReciever<OpvragenPersoonSOfBedrijfsGegevensRequest> {
@@ -64,12 +63,8 @@ public class OpvragenPersoonRequestReciever extends AbstractReciever<OpvragenPer
 
                 LOGGER.debug("Verzenden message {}", message.getText());
                 this.replyProducer.send(replyTo, message);
-            } catch (JMSException e) {
-                e.printStackTrace();
-            } catch (PropertyException e) {
-                e.printStackTrace();
-            } catch (JAXBException e) {
-                e.printStackTrace();
+            } catch (JMSException | JAXBException e) {
+                LOGGER.error("{}", e);
             }
         }
     }
