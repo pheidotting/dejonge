@@ -1,7 +1,6 @@
 package nl.dias.repository;
 
 import nl.dias.domein.Kantoor;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.VerzekeringsMaatschappij;
 import nl.dias.domein.polis.Polis;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -99,20 +97,6 @@ public class PolisRepository {
         getTransaction().commit();
 
         return polissen;
-    }
-
-    @Transactional
-    public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
-        relatie = getEm().get(Relatie.class, relatie.getId());
-
-        List<Polis> poli = new ArrayList<>();
-        //        poli.addAll(relatie.getPolissen());
-
-        //        for (Bedrijf bedrijf : relatie.getBedrijven()) {
-        //            poli.addAll(bedrijf.getPolissen());
-        //        }
-
-        return poli;
     }
 
     @Transactional

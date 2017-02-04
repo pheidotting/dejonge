@@ -70,18 +70,6 @@ public class PolisServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void testAllePolissenVanRelatieEnZijnBedrijf() {
-        Relatie relatie = new Relatie();
-        List<Polis> polissen = new ArrayList<Polis>();
-
-        expect(polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie)).andReturn(polissen);
-
-        replayAll();
-
-        assertEquals(polissen, polisService.allePolissenVanRelatieEnZijnBedrijf(relatie));
-    }
-
-    @Test
     public void testOpslaanPolis() {
         final Long id = 58L;
 

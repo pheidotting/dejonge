@@ -1,7 +1,6 @@
 package nl.dias.service;
 
 import com.google.common.collect.Lists;
-import nl.dias.domein.Relatie;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
@@ -45,10 +44,6 @@ public class PolisService {
         polissen.sort((o1, o2) -> o1.getSchermNaam().compareTo(o2.getSchermNaam()));
 
         return Lists.newArrayList(polisString);
-    }
-
-    public List<Polis> allePolissenVanRelatieEnZijnBedrijf(Relatie relatie) {
-        return polisRepository.allePolissenVanRelatieEnZijnBedrijf(relatie);
     }
 
     public void beeindigen(Long id) {
