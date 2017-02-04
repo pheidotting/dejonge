@@ -59,7 +59,8 @@ public class BijlageService {
         List<Bijlage> bijlages = new ArrayList<>();
         byte[] buffer = new byte[1024];
 
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+        FileInputStream fis = new FileInputStream(zipFile);
+        ZipInputStream zis = new ZipInputStream(fis);
         //get the zipped file list entry
         ZipEntry ze = zis.getNextEntry();
 
@@ -91,6 +92,7 @@ public class BijlageService {
 
         zis.closeEntry();
         zis.close();
+        fis.close();
 
         return bijlages;
     }
