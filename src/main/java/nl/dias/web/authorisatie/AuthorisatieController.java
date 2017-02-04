@@ -28,10 +28,6 @@ import javax.ws.rs.core.Response;
 public class AuthorisatieController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisatieController.class);
 
-    //    @Autowired
-    //    private HttpServletRequest httpServletRequest;
-    //    @Autowired
-    //    private HttpServletResponse httpServletResponse;
     @Inject
     private AuthorisatieService authorisatieService;
     @Inject
@@ -123,7 +119,7 @@ public class AuthorisatieController {
             try {
                 gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
             } catch (NietGevondenException nge) {
-                //                LOGGER.trace("Gebruiker dus niet gevonden", nge);
+                LOGGER.error("Gebruiker dus niet gevonden", nge);
             }
         }
 
