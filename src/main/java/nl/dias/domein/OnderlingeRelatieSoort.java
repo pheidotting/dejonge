@@ -1,7 +1,6 @@
 package nl.dias.domein;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 public enum OnderlingeRelatieSoort {
 	O("Ouder"), K("Kind"), W("Werknemer"), WG("Werkgever");
@@ -21,7 +20,7 @@ public enum OnderlingeRelatieSoort {
 	}
 
 	public static OnderlingeRelatieSoort getTegenGesteld(OnderlingeRelatieSoort soort) {
-		Map<OnderlingeRelatieSoort, OnderlingeRelatieSoort> soorten = new HashMap<OnderlingeRelatieSoort, OnderlingeRelatieSoort>();
+		EnumMap<OnderlingeRelatieSoort, OnderlingeRelatieSoort> soorten = new EnumMap<>(OnderlingeRelatieSoort.class);
 		soorten.put(O, K);
 		soorten.put(K, O);
 		soorten.put(W, WG);
