@@ -46,9 +46,9 @@ public class RisicoAnalyseRepository {
         Query query = getSession().getNamedQuery("RisicoAnalyse.alleRisicoAnalysesBijBedrijf");
         query.setParameter("bedrijf", bedrijf);
 
-        RisicoAnalyse risicoAnalyse = null;
+        RisicoAnalyse risicoAnalyse;
         List<RisicoAnalyse> result = query.list();
-        if (result.size() == 0) {
+        if (result.isEmpty()) {
             risicoAnalyse = new RisicoAnalyse();
             risicoAnalyse.setBedrijf(bedrijf);
             bedrijf.getRisicoAnalyses().add(risicoAnalyse);
