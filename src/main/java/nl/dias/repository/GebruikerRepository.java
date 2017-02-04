@@ -193,37 +193,11 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
         return result;
     }
 
-    //    public List<Relatie> zoekOpAdres(String adres) {
-    //        getTransaction();
-    //
-    //        Query query = getEm().getNamedQuery("Adres.zoekAdres");
-    //        query.setMaxResults(MAX_RESULTS);
-    //        query.setParameter("adres", "%" + adres + "%");
-    //
-    //        Set<Relatie> result = new HashSet<>();
-    //
-    //        List<Adres> res = query.list();
-    //
-    //        for (Adres adr : filter(res, new Predicate<Adres>() {
-    //            @Override
-    //            public boolean apply(Adres adres) {
-    //                return adres.getSoortEntiteit().equals(SoortEntiteit.RELATIE);
-    //            }
-    //        })) {
-    //            result.add(getEm().get(Relatie.class, adr.getEntiteitId()));
-    //        }
-    //
-    //        getTransaction().commit();
-    //
-    //        return Lists.newArrayList(result);
-    //    }
-
-
     public Gebruiker zoekOpSessieEnIpadres(String sessie, String ipadres) throws NietGevondenException {
         LOGGER.debug("zoekOpSessieEnIpadres(" + sessie + " , " + ipadres + ")");
 
 
-        Gebruiker gebruiker = null;
+        Gebruiker gebruiker;
 
         getTransaction();
 
@@ -268,15 +242,7 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
     public void verwijderAdressenBijRelatie(Relatie relatie) {
         getEm().getTransaction();
         getEm().getNamedQuery("Adres.verwijderAdressenBijRelatie").setParameter("relatie", relatie).executeUpdate();
-        //        getEm().getTransaction().commit();
-        //    }
-        //    public void verwijderTelefoonnummersnBijRelatie(Relatie relatie) {
-        //        getEm().getTransaction().begin();
         getEm().getNamedQuery("Telefoonnummer.verwijderTelefoonnummersBijRelatie").setParameter("relatie", relatie).executeUpdate();
-        //        getEm().getTransaction().commit();
-        //    }
-        //    public void verwijderRekeningenBijRelatie(Relatie relatie) {
-        //        getEm().getTransaction().begin();
         getEm().getNamedQuery("RekeningNummer.verwijderRekeningNummersBijRelatie").setParameter("relatie", relatie).executeUpdate();
         getEm().getTransaction().commit();
     }
@@ -294,7 +260,7 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
     }
 
     public Gebruiker zoekOpCookieCode(String cookieCode) throws NietGevondenException {
-        Gebruiker gebruiker = null;
+        Gebruiker gebruiker;
         getTransaction();
 
         Query query = getEm().getNamedQuery("Gebruiker.zoekOpCookieCode");
@@ -333,34 +299,4 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
 
         getTransaction().commit();
     }
-
-    //    @Transactional
-    //    public void verwijder(Gebruiker o) {
-    //        getEm().remove(o);
-    //    }
-    //
-    //    @Transactional
-    //    public List<Gebruiker> alles() {
-    //        Query query = getEm().createQuery("select e from Gebruiker e");
-    //        @SuppressWarnings("unchecked")
-    //        List<Gebruiker> ret = query.getResultList();
-    //
-    //        return ret;
-    //    }
-    //
-    //    @Transactional
-    //    public void opslaan(Gebruiker o) {
-    //
-    //        if (o.getId() == null) {
-    //            getEm().persist(o);
-    //        } else {
-    //            getEm().merge(o);
-    //        }
-    //    }
-    //
-    //    @Transactional
-    //    public Gebruiker lees(Long id) {
-    //        System.out.println(getEm());
-    //        return getEm().find(Gebruiker.class, id);
-    //    }
 }
