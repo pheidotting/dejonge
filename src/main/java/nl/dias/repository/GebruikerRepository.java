@@ -290,7 +290,6 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
     public void opslaan(Gebruiker gebruiker) {
         getTransaction();
 
-        //        LOGGER.info("Opslaan {}", ReflectionToStringBuilder.toString(gebruiker, ToStringStyle.SHORT_PREFIX_STYLE));
         if (gebruiker.getId() == null) {
             getSession().save(gebruiker);
         } else {
