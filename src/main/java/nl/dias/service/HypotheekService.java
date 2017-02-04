@@ -42,7 +42,7 @@ public class HypotheekService {
             soortHypotheek = hypotheekRepository.leesSoortHypotheek(Long.valueOf(hypotheekVorm));
         }
 
-        Hypotheek hypotheek = null;
+        Hypotheek hypotheek;
         if (jsonHypotheek.getId() == null) {
             hypotheek = new Hypotheek();
         } else {
@@ -58,7 +58,7 @@ public class HypotheekService {
             hypotheek.setHypotheekVorm(soortHypotheek);
         }
 
-        HypotheekPakket pakket = null;
+        HypotheekPakket pakket;
 
         LOGGER.debug("gekoppeldeHypotheekId " + gekoppeldeHypotheekId);
         Hypotheek gekoppeldeHypotheek = null;
