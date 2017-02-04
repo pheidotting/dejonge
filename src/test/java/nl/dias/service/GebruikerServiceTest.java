@@ -423,7 +423,6 @@ public class GebruikerServiceTest extends EasyMockSupport {
     @Test
     public void testZoekOpNaamAdresOfPolisNummer() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String zoekterm = "a";
-        Kantoor kantoor = new Kantoor();
 
         List<Gebruiker> relatiesZoekOpNaam = new ArrayList<Gebruiker>();
         Relatie relatieZoekOpNaam = new Relatie();
