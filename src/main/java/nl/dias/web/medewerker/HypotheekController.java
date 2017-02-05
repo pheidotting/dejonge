@@ -46,9 +46,9 @@ public class HypotheekController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonHypotheek lees(@QueryParam("id") String id) {
-        JsonHypotheek jsonHypotheek = null;
+        JsonHypotheek jsonHypotheek;
 
-        if (id == null || id.equals("") || id.equals("0")) {
+        if ("".equals(id) || "0".equals(id)) {
             jsonHypotheek = new JsonHypotheek();
         } else {
             jsonHypotheek = hypotheekMapper.mapNaarJson(hypotheekService.leesHypotheek(Long.valueOf(id)));
