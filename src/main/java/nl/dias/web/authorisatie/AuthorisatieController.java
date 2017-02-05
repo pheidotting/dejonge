@@ -119,7 +119,7 @@ public class AuthorisatieController {
             try {
                 gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
             } catch (NietGevondenException nge) {
-                LOGGER.error("Gebruiker dus niet gevonden", nge);
+                LOGGER.trace("Gebruiker dus niet gevonden", nge);
             }
         }
 

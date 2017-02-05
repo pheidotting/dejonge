@@ -1,6 +1,5 @@
 package nl.dias.service;
 
-import com.google.common.collect.Lists;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.domein.predicates.PolisOpSchermNaamPredicate;
@@ -19,6 +18,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Lists.newArrayList;
 
 @Service
 public class PolisService {
@@ -39,11 +39,11 @@ public class PolisService {
 
     public List<String> allePolisSoorten(final SoortVerzekering soortVerzekering) {
         Iterable<Polis> poli = filter(polissen, new PolissenOpSoortPredicate(soortVerzekering));
+        newArrayList(poli).sort((o1, o2) -> o1.getSchermNaam().compareTo(o2.getSchermNaam()));
 
         Iterable<String> polisString = transform(poli, new PolisToSchermNaamTransformer());
-        polissen.sort((o1, o2) -> o1.getSchermNaam().compareTo(o2.getSchermNaam()));
 
-        return Lists.newArrayList(polisString);
+        return newArrayList(polisString);
     }
 
     public void beeindigen(Long id) {

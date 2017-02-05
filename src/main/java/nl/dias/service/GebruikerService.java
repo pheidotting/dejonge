@@ -1,4 +1,3 @@
-
 package nl.dias.service;
 
 import com.google.common.base.Function;
@@ -238,28 +237,29 @@ public class GebruikerService {
 
         LOGGER.debug("Opgehaalde gebruiker : ");
         //        LOGGER.debug(ReflectionToStringBuilder.toString(gebruiker));
+        if (gebruiker != null) {
+            if (gebruiker instanceof Relatie) {
+                Relatie relatie = (Relatie) gebruiker;
 
-        if (gebruiker instanceof Relatie) {
-            Relatie relatie = (Relatie) gebruiker;
+                List<Hypotheek> hypotheeks = hypotheekRepository.allesVanRelatie(relatie);
+                hypotheekRepository.verwijder(hypotheeks);
 
-            List<Hypotheek> hypotheeks = hypotheekRepository.allesVanRelatie(relatie);
-            hypotheekRepository.verwijder(hypotheeks);
+                List<Schade> schades = schadeService.alleSchadesBijRelatie(relatie.getId());
+                schadeService.verwijder(schades);
 
-            List<Schade> schades = schadeService.alleSchadesBijRelatie(relatie.getId());
-            schadeService.verwijder(schades);
+                List<Polis> polises = polisRepository.allePolissenBijRelatie(relatie.getId());
+                polisRepository.verwijder(polises);
+            }
+            // en dan verwijderen
+            gebruikerRepository.verwijder(gebruiker);
 
-            List<Polis> polises = polisRepository.allePolissenBijRelatie(relatie.getId());
-            polisRepository.verwijder(polises);
+            LOGGER.debug("Bericht naar OGA");
+            SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
+            soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
+            soortEntiteitEnEntiteitId.setEntiteitId(id);
+
+            verwijderEntiteitRequestSender.send(soortEntiteitEnEntiteitId);
         }
-        // en dan verwijderen
-        gebruikerRepository.verwijder(gebruiker);
-
-        LOGGER.debug("Bericht naar OGA");
-        SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
-        soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
-        soortEntiteitEnEntiteitId.setEntiteitId(id);
-
-        verwijderEntiteitRequestSender.send(soortEntiteitEnEntiteitId);
     }
 
     public Gebruiker zoekOpSessieEnIpAdres(String sessie, String ipadres) throws NietGevondenException {
