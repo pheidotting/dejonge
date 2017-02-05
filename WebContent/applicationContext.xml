@@ -88,14 +88,23 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	</jms:listener-container>
 	<!-- // Opvragen Persoon -->
 
-    <!-- Opvragen Persoon -->
+	<!-- Verwijderen Relaties -->
     <bean id="verwijderRelatiesRequestReciever" class="nl.dias.messaging.reciever.VerwijderRelatiesRequestReciever"/>
 
     <jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
         <jms:listener destination="verwijderRelatiesRequestQueue" ref="verwijderRelatiesRequestReciever"
                       method="onMessage"/>
     </jms:listener-container>
-    <!-- // Opvragen Persoon -->
+	<!-- // Verwijderen Relaties -->
+
+	<!-- Verwijderen Bedrijven -->
+	<bean id="verwijderBedrijvenRequestReciever" class="nl.dias.messaging.reciever.VerwijderBedrijvenRequestReciever"/>
+
+	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
+		<jms:listener destination="verwijderBedrijvenRequestQueue" ref="verwijderBedrijvenRequestReciever"
+					  method="onMessage"/>
+	</jms:listener-container>
+	<!-- // Verwijderen Bedrijven -->
 
 
 	<!--&lt;!&ndash; Adres aangevuld &ndash;&gt;-->

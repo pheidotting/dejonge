@@ -44,32 +44,34 @@ public class BedrijfService {
 
         Bedrijf bedrijf = lees(id);
 
-        LOGGER.debug("Verwijderen : {}", ReflectionToStringBuilder.toString(bedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
-        List<Schade> schades = schadeService.alleSchadesBijBedrijf(bedrijf.getId());
-        schadeService.verwijder(schades);
+        if (bedrijf != null) {
+            LOGGER.debug("Verwijderen : {}", ReflectionToStringBuilder.toString(bedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
+            List<Schade> schades = schadeService.alleSchadesBijBedrijf(bedrijf.getId());
+            schadeService.verwijder(schades);
 
-        List<Polis> polises = polisRepository.allePolissenBijBedrijf(bedrijf.getId());
-        polisRepository.verwijder(polises);
+            List<Polis> polises = polisRepository.allePolissenBijBedrijf(bedrijf.getId());
+            polisRepository.verwijder(polises);
 
-        bedrijfRepository.verwijder(bedrijf);
+            bedrijfRepository.verwijder(bedrijf);
 
-        LOGGER.debug("Bericht naar OGA");
-        SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
-        soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.BEDRIJF);
-        soortEntiteitEnEntiteitId.setEntiteitId(id);
+            LOGGER.debug("Bericht naar OGA");
+            SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
+            soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.BEDRIJF);
+            soortEntiteitEnEntiteitId.setEntiteitId(id);
 
-        verwijderEntiteitenRequestSender.send(soortEntiteitEnEntiteitId);
+            verwijderEntiteitenRequestSender.send(soortEntiteitEnEntiteitId);
+        }
     }
 
     public List<Bedrijf> alleBedrijvenBijRelatie(Relatie relatie) {
         return bedrijfRepository.alleBedrijvenBijRelatie(relatie);
     }
 
-    public List<Bedrijf> alles(){
+    public List<Bedrijf> alles() {
         return bedrijfRepository.alles();
     }
 
-    public List<Bedrijf> zoekOpNaam(String zoekTerm){
+    public List<Bedrijf> zoekOpNaam(String zoekTerm) {
         return bedrijfRepository.zoekOpNaam(zoekTerm);
     }
 
