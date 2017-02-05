@@ -34,7 +34,7 @@ public class SchadeMapper extends Mapper<Schade, JsonSchade> {
             datumAfgehandeld = LocalDate.parse(json.getDatumAfgehandeld(), DateTimeFormat.forPattern(patternDatum));
         }
 
-        Schade schade = null;
+        Schade schade;
         if (json.getId() == null) {
             schade = new Schade();
         } else {
