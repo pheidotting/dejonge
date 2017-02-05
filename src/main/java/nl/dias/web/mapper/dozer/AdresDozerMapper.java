@@ -24,7 +24,7 @@ public class AdresDozerMapper extends DozerConverter<Bedrijf, JsonBedrijf> {
         Bedrijf result = new Bedrijf();
         result.setKvk(jsonBedrijf.getKvk());
         result.setNaam(jsonBedrijf.getNaam());
-        if (jsonBedrijf != null && jsonBedrijf.getId() != null) {
+        if (jsonBedrijf.getId() != null) {
             result.setId(Long.valueOf(jsonBedrijf.getId()));
         }
 
