@@ -37,7 +37,7 @@ public abstract class Onderwerp implements Serializable {
     }
 
     public String hash(String tekst) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        MessageDigest md = null;
+        MessageDigest md;
         md = MessageDigest.getInstance("SHA-512");
         // Change this to "UTF-16" if needed
         md.update(tekst.getBytes("UTF-8"));
