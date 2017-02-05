@@ -47,7 +47,7 @@ public class AuthorisatieFilter implements Filter {
             init();
 
             Gebruiker gebruiker = null;
-            Sessie sessie = null;
+            Sessie sessie;
             Cookie cookie = null;
 
             LOGGER.debug("koekjes opzoeken");
@@ -107,13 +107,6 @@ public class AuthorisatieFilter implements Filter {
                     LOGGER.debug("Stuur een UNAUTHORIZED");
                     ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
-            } else if (cookie != null) {
-                init();
-                Sessie sessie2 = gebruikerService.zoekSessieOp(cookie.getValue(), gebruiker.getSessies());
-                req.getSession().setAttribute("sessie", sessie2.getSessie());
-
-                opruimen();
-                chain.doFilter(request, response);
             }
         }
     }
@@ -129,17 +122,6 @@ public class AuthorisatieFilter implements Filter {
         gebruikerService = null;
         gebruikerRepository = null;
         authorisatieService = null;
-    }
-
-    private String getFullURL(HttpServletRequest request) {
-        StringBuffer requestURL = request.getRequestURL();
-        String queryString = request.getQueryString();
-
-        if (queryString == null) {
-            return requestURL.toString();
-        } else {
-            return requestURL.append('?').append(queryString).toString();
-        }
     }
 
     @Override
