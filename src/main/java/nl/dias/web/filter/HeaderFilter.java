@@ -32,7 +32,7 @@ public class HeaderFilter extends OncePerRequestFilter {
         HttpServletRequest req = (HttpServletRequest) httpServletRequest;
 
         String sessieHeader = req.getHeader("sessieCode");
-        Gebruiker gebruiker = null;
+        Gebruiker gebruiker;
         if (sessieHeader != null) {
             LOGGER.debug("sessieHeader : {}", sessieHeader);
             try {
@@ -40,7 +40,6 @@ public class HeaderFilter extends OncePerRequestFilter {
                 gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieHeader, "0:0:0:0:0:0:0:1");
 
                 if (gebruiker == null) {
-                    //                    LOGGER.debug("Geen Gebruiker gevonden");
                 } else {
                     LOGGER.debug("Gebruiker met id {} gevonden", gebruiker.getId());
 
@@ -53,9 +52,6 @@ public class HeaderFilter extends OncePerRequestFilter {
                         }
                     }
                     LOGGER.debug("/ Sessies");
-
-                    //                    Sessie sessie = getFirst(filter(gebruiker.getSessies(), new SessieOpSessiecodePredicate(sessieHeader)), null);
-
                     if (sessie != null) {
                         LOGGER.debug(ReflectionToStringBuilder.toString(sessie));
                         LOGGER.debug("Sessie weer opslaan met bijgewerkte datum");
