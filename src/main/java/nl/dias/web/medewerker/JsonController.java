@@ -116,22 +116,16 @@ public class JsonController {
         Client client = Client.create(clientConfig);
         WebResource webResource = client.resource(adres);
         ClientResponse response = webResource.header("X-Api-Key", "FYEYGHHNFV3sZutux7LcX8ng8VizXWPk1HWxPPX9").accept("application/x-www-form-urlencoded; charset=UTF-8").get(ClientResponse.class);
-        //        if (response.getStatus() != 200) {
-        //            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-        //        }
 
         String antwoord = response.getEntity(String.class);
         LOGGER.debug("Antwoord van de postcode api: {}", antwoord);
 
         JsonAdres jsonAdres = postcodeService.extraHeerAdres(antwoord);
         jsonAdres.setPostcode(postcode);
-        if (huisnummer != null)
-        jsonAdres.setHuisnummer(Long.valueOf(huisnummer));
-
+        if (huisnummer != null) {
+            jsonAdres.setHuisnummer(Long.valueOf(huisnummer));
+        }
+        
         return jsonAdres;
-    }
-
-    public void setMaatschappijService(VerzekeringsMaatschappijService maatschappijService) {
-        this.maatschappijService = maatschappijService;
     }
 }
