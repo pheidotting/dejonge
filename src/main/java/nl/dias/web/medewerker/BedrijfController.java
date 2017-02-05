@@ -57,7 +57,7 @@ public class BedrijfController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonBedrijf lees(@QueryParam("id") String id) {
-        JsonBedrijf bedrijf = null;
+        JsonBedrijf bedrijf;
         if (id == null || "0".equals(id)) {
             bedrijf = new JsonBedrijf();
         } else {
