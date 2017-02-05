@@ -125,7 +125,7 @@ public class JsonController {
         if (huisnummer != null) {
             jsonAdres.setHuisnummer(Long.valueOf(huisnummer));
         }
-        
+
         return jsonAdres;
     }
 }
