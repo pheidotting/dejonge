@@ -4,6 +4,8 @@ import nl.dias.domein.Gebruiker;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.trackandtraceid.InkomendRequestService;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -15,6 +17,8 @@ import java.io.IOException;
 
 @Component
 public class TrackAndTraceFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrackAndTraceFilter.class);
+
     private InkomendRequestService inkomendRequestService;
     private GebruikerRepository gebruikerRepository;
 
@@ -94,6 +98,7 @@ public class TrackAndTraceFilter implements Filter {
                 Gebruiker gebruiker = gebruikerRepository.zoekOpSessieEnIpadres(sessieId, ipAdres);
                 return gebruiker.getId();
             } catch (NietGevondenException e) {
+                LOGGER.trace("{}", e);
             }
         }
         return null;
