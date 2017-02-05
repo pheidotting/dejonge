@@ -135,7 +135,9 @@ public class BijlageController extends AbstractController {
         if (bijlages.size() > 1) {
             JsonGroepBijlages groepBijlages = new JsonGroepBijlages();
             groepBijlages.setBijlages(bijlages);
-            groepBijlages.setNaam(fileDetail.getOriginalFilename().replace(".zip", ""));
+            if (fileDetail != null) {
+                groepBijlages.setNaam(fileDetail.getOriginalFilename().replace(".zip", ""));
+            }
             String groepId = groepBijlagesClient.opslaan(groepBijlages, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
 
             groepBijlages.setId(Long.valueOf(groepId));
@@ -170,7 +172,7 @@ public class BijlageController extends AbstractController {
 
     private List<JsonBijlage> uploaden(MultipartFile fileDetail, String soortEntiteit, Long entiteitId, HttpServletRequest httpServletRequest) {
 
-        List<Bijlage> bijlages = null;
+        List<Bijlage> bijlages;
         List<JsonBijlage> jsonBijlages = new ArrayList<>();
 
         if (fileDetail != null && fileDetail.getName() != null) {
