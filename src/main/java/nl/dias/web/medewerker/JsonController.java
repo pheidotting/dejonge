@@ -92,7 +92,7 @@ public class JsonController {
         return soortSchadeMapper.mapAllNaarJson(schadeService.soortenSchade(query));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lijstStatusSchade")
+    @RequestMapping(method = RequestMethod.GET, value = "/lijstStatusSchade", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public List<String> lijstStatusSchade() {
         List<StatusSchade> lijst = schadeService.getStatussen();
