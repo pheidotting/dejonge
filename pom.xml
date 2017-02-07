@@ -43,7 +43,7 @@
         <dependency>
             <groupId>nl.lakedigital.djfc</groupId>
             <artifactId>djfc-clients</artifactId>
-            <version>5.1</version>
+            <version>5.2</version>
         </dependency>
         <!-- Togglz core module (mandatory) -->
         <dependency>
