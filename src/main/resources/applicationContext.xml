@@ -33,7 +33,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Taak Opslaan -->
 	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="taakOpslaanQueue"/>
+		<constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
 	</bean>
 	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory" />
@@ -45,7 +45,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- /Taak Opslaan  -->
 	<!-- VerwijderEntiteitenRequest -->
 	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="verwijderEntiteitenRequestQueue"/>
+		<constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
 	</bean>
 	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory"/>

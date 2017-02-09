@@ -36,7 +36,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
 	<!-- Taak Opslaan -->
 	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="taakOpslaanQueue"/>
+		<constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
 	</bean>
 	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory"/>
@@ -48,7 +48,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<!-- /Taak Opslaan  -->
 	<!-- VerwijderEntiteitenRequest -->
 	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="verwijderEntiteitenRequestQueue"/>
+		<constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
 	</bean>
 	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory"/>
@@ -83,7 +83,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<bean id="opvragenPersoonRequestReciever" class="nl.dias.messaging.reciever.OpvragenPersoonRequestReciever"/>
 
 	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
-		<jms:listener destination="opvragenPersoonRequestQueue" ref="opvragenPersoonRequestReciever"
+		<jms:listener destination="tb.rb.opvragenPersoonRequestQueue" ref="opvragenPersoonRequestReciever"
 					  method="onMessage"/>
 	</jms:listener-container>
 	<!-- // Opvragen Persoon -->
@@ -92,8 +92,8 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
     <bean id="verwijderRelatiesRequestReciever" class="nl.dias.messaging.reciever.VerwijderRelatiesRequestReciever"/>
 
     <jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
-        <jms:listener destination="verwijderRelatiesRequestQueue" ref="verwijderRelatiesRequestReciever"
-                      method="onMessage"/>
+		<jms:listener destination="rb.verwijderRelatiesRequestQueue" ref="verwijderRelatiesRequestReciever"
+					  method="onMessage"/>
     </jms:listener-container>
 	<!-- // Verwijderen Relaties -->
 
@@ -101,7 +101,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<bean id="verwijderBedrijvenRequestReciever" class="nl.dias.messaging.reciever.VerwijderBedrijvenRequestReciever"/>
 
 	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
-		<jms:listener destination="verwijderBedrijvenRequestQueue" ref="verwijderBedrijvenRequestReciever"
+		<jms:listener destination="rb.verwijderBedrijvenRequestQueue" ref="verwijderBedrijvenRequestReciever"
 					  method="onMessage"/>
 	</jms:listener-container>
 	<!-- // Verwijderen Bedrijven -->
