@@ -159,7 +159,7 @@ public class BijlageController extends AbstractController {
     public List<JsonGroepBijlages> alleGroepen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
         LOGGER.debug("alleGroepen voor soortentiteit {} en {}", soortentiteit, parentid);
 
-        List<JsonGroepBijlages> result = groepBijlagesClient.lijst(soortentiteit, parentid);
+        List<JsonGroepBijlages> result = groepBijlagesClient.lijstGroepen(soortentiteit, parentid);
         LOGGER.debug(ReflectionToStringBuilder.toString(result, ToStringStyle.SHORT_PREFIX_STYLE));
         LOGGER.debug("{}", result);
 
