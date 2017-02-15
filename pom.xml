@@ -27,6 +27,7 @@
         <url>scm:git:https://github.com/pheidotting/dejonge.git</url>
         <developerConnection>scm:git:git@github.com/pheidotting/dejonge.git</developerConnection>
     </scm>
+
     <repositories>
         <repository>
             <id>Symplex</id>
@@ -35,6 +36,12 @@
     </repositories>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>org.logback-extensions</groupId>-->
+            <!--<artifactId>logback-ext-loggly</artifactId>-->
+            <!--<version>0.1.2</version>-->
+        <!--</dependency>-->
+
         <!--<dependency>-->
         <!--<groupId>org.bouncycastle</groupId>-->
         <!--<artifactId>bcprov-jdk15on</artifactId>-->
@@ -49,9 +56,14 @@
         <dependency>
             <groupId>nl.lakedigital.djfc</groupId>
             <artifactId>djfc-clients</artifactId>
-            <version>5.5</version>
+            <version>5.8</version>
         </dependency>
-        <!-- Togglz core module (mandatory) -->
+        <dependency>
+            <groupId>nl.lakedigital.as</groupId>
+            <artifactId>messaging</artifactId>
+            <version>5.21</version>
+        </dependency>
+
         <dependency>
             <groupId>org.togglz</groupId>
             <artifactId>togglz-core</artifactId>
@@ -206,11 +218,6 @@
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>2.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.lakedigital.as</groupId>
-            <artifactId>messaging</artifactId>
-            <version>5.9</version>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>
