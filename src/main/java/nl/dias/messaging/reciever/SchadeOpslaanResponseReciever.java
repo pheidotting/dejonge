@@ -32,12 +32,14 @@ public class SchadeOpslaanResponseReciever extends AbstractReciever<SchadeOpslaa
             Schade opgeslagenSchade = schadeOpslaanResponse.getSchades().stream().filter(s -> s.getIdentificatie()//
                     .equals(schade.getIdentificatie())).findFirst().orElse(null);
 
-            schade.getOpmerkingen().stream().forEach(opmerking -> {
-                opmerking.setEntiteitId(opgeslagenSchade.getId());
-                opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
+            if (!schade.getOpmerkingen().isEmpty()) {
+                schade.getOpmerkingen().stream().forEach(opmerking -> {
+                    opmerking.setEntiteitId(opgeslagenSchade.getId());
+                    opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
 
-                opslaanEntiteitenRequest.getLijst().add(opmerking);
-            });
+                    opslaanEntiteitenRequest.getLijst().add(opmerking);
+                });
+            }
         });
 
         if (!opslaanEntiteitenRequest.getLijst().isEmpty()) {

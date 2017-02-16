@@ -11,6 +11,8 @@ import org.easymock.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.UUID;
+
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,12 +30,14 @@ public class PolisOpslaanResponseRecieverTest extends EasyMockSupport {
         Opmerking opmerking = new Opmerking();
         Polis polis = new Polis();
         polis.setId(3L);
+        polis.setIdentificatie(UUID.randomUUID().toString());
         polis.getOpmerkingen().add(opmerking);
 
         PolisOpslaanRequest polisOpslaanRequest = new PolisOpslaanRequest();
         polisOpslaanRequest.getPolissen().add(polis);
 
         PolisOpslaanResponse polisOpslaanResponse = new PolisOpslaanResponse();
+        polisOpslaanResponse.getPolissen().add(polis);
         polisOpslaanResponse.setAntwoordOp(polisOpslaanRequest);
 
         Capture<OpslaanEntiteitenRequest> opslaanEntiteitenRequestCapture = newCapture();

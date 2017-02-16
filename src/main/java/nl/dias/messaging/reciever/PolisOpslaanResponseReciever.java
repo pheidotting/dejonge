@@ -32,12 +32,14 @@ public class PolisOpslaanResponseReciever extends AbstractReciever<PolisOpslaanR
             Polis opgeslagenPolis = polisOpslaanResponse.getPolissen().stream().filter(p -> p.getIdentificatie()//
                     .equals(polis.getIdentificatie())).findFirst().orElse(null);
 
-            polis.getOpmerkingen().stream().forEach(opmerking -> {
-                opmerking.setEntiteitId(opgeslagenPolis.getId());
-                opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
+            if (!polis.getOpmerkingen().isEmpty()) {
+                polis.getOpmerkingen().stream().forEach(opmerking -> {
+                    opmerking.setEntiteitId(opgeslagenPolis.getId());
+                    opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
 
-                opslaanEntiteitenRequest.getLijst().add(opmerking);
-            });
+                    opslaanEntiteitenRequest.getLijst().add(opmerking);
+                });
+            }
         });
 
         if (!opslaanEntiteitenRequest.getLijst().isEmpty()) {

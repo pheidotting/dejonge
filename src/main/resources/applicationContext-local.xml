@@ -87,4 +87,6 @@
     <bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
         <property name="basisUrl" value="${tb.url}"/>
     </bean>
+
+
 </beans>
