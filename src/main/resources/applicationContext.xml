@@ -55,6 +55,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
 	</bean>
 	<!-- /VerwijderEntiteitenRequest -->
+	<bean id="polisOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="pa.rb.polisOpslaanResponseQueue"/>
+	</bean>
 
 	<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">

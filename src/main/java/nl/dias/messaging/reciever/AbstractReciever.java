@@ -5,6 +5,7 @@ import nl.dias.inloggen.SessieHolder;
 import nl.lakedigital.as.messaging.AbstractMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import javax.xml.bind.JAXBContext;
@@ -13,14 +14,14 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 
 public abstract class AbstractReciever<T extends AbstractMessage> implements MessageListener {
-    private static Logger LOGGER = null;
+    private static Logger LOGGER = LoggerFactory.getLogger(AbstractReciever.class);
 
     protected final Gson gson = new Gson();
     private Class<T> clazz;
 
     public AbstractReciever(Class<T> clazz, Logger LOGGER) {
         this.clazz = clazz;
-        this.LOGGER = LOGGER;
+//        this.LOGGER = LOGGER;
     }
 
     protected MessageProducer replyProducer;

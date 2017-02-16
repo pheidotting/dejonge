@@ -1,9 +1,11 @@
 package nl.dias.web.medewerker;
 
-import com.google.common.collect.Lists;
+import nl.dias.domein.features.MyFeatures;
 import nl.dias.domein.polis.Polis;
 import nl.dias.domein.polis.SoortVerzekering;
 import nl.dias.mapper.Mapper;
+import nl.dias.messaging.sender.PolisOpslaanRequestSender;
+import nl.dias.messaging.sender.PolisVerwijderenRequestSender;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
@@ -17,11 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @RequestMapping("/polis")
 @Controller
@@ -40,6 +45,12 @@ public class PolisController extends AbstractController {
     private BedrijfService bedrijfService;
     @Inject
     private Mapper mapper;
+    @Inject
+    private PolisVerwijderenRequestSender polisVerwijderenRequestSender;
+    @Inject
+    private PolisOpslaanRequestSender polisOpslaanRequestSender;
+    @Inject
+    private Destination polisOpslaanResponseDestination;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleParticulierePolisSoorten", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -83,7 +94,7 @@ public class PolisController extends AbstractController {
         //        Relatie relatie = (Relatie) gebruikerService.lees(Long.valueOf(relatieId));
         Long relatie = Long.valueOf(relatieId);
 
-        List<JsonPolis> result = Lists.newArrayList();
+        List<JsonPolis> result = newArrayList();
         for (Polis polis : polisService.allePolissenBijRelatie(relatie)) {
             result.add(polisMapper.mapNaarJson(polis));
         }
@@ -112,14 +123,21 @@ public class PolisController extends AbstractController {
 
         zetSessieWaarden(httpServletRequest);
 
-        Polis polis = polisMapper.mapVanJson(jsonPolis);
-        try {
-            polisService.opslaan(polis);
-        } catch (IllegalArgumentException e) {
-            LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
-            throw new IllegalStateException(e.getLocalizedMessage());
-        }
+        if (MyFeatures.NIEUWE_POLIS_ADMINISTRATIE.isActive()) {
+            polisOpslaanRequestSender.setReplyTo(polisOpslaanResponseDestination);
+            polisOpslaanRequestSender.send(jsonPolis);
+
+            return null;
+        } else {
+            Polis polis = polisMapper.mapVanJson(jsonPolis);
+            try {
+                polisService.opslaan(polis);
+            } catch (IllegalArgumentException e) {
+                LOGGER.debug("Fout opgetreden bij opslaan Polis", e);
+                throw new IllegalStateException(e.getLocalizedMessage());
+            }
         return polis.getId();
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)

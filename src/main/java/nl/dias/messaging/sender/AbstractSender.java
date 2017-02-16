@@ -5,16 +5,19 @@ import nl.lakedigital.as.messaging.AbstractMessage;
 import org.slf4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 
+import javax.jms.Destination;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import java.io.StringWriter;
 
 public abstract class AbstractSender<M extends AbstractMessage, T extends Object> {
     protected static Logger LOGGER_;
     protected JmsTemplate jmsTemplate;
     protected Class<M> clazz;
+    private Destination replyTo;
 
     public AbstractSender() {
         this.jmsTemplate = null;
@@ -31,6 +34,18 @@ public abstract class AbstractSender<M extends AbstractMessage, T extends Object
         M m = maakMessage(t);
 
         send(m);
+    }
+
+    public void setReplyTo(Destination replyTo) {
+        this.replyTo = replyTo;
+    }
+
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    public void setClazz(Class<M> clazz) {
+        this.clazz = clazz;
     }
 
     public void send(final AbstractMessage abstractMessage) {
@@ -50,8 +65,15 @@ public abstract class AbstractSender<M extends AbstractMessage, T extends Object
 
                 TextMessage message = session.createTextMessage(sw.toString());
 
+                if (replyTo != null) {
+                    message.setJMSReplyTo(replyTo);
+                }
+
                 LOGGER_.debug("Verzenden message {}", message.getText());
+
                 return message;
+            } catch (PropertyException e) {
+                LOGGER_.error("{}", e);
             } catch (JAXBException e) {
                 LOGGER_.error("{}", e);
             }

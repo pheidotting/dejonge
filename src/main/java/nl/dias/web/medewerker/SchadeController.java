@@ -1,6 +1,8 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Schade;
+import nl.dias.domein.features.MyFeatures;
+import nl.dias.messaging.sender.SchadeOpslaanRequestSender;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.SchadeService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -32,6 +35,10 @@ public class SchadeController extends AbstractController {
     private GebruikerService gebruikerService;
     @Inject
     private BedrijfService bedrijfService;
+    @Inject
+    private SchadeOpslaanRequestSender schadeOpslaanRequestSender;
+    @Inject
+    private Destination schadeOpslaanResponseDestination;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -40,10 +47,17 @@ public class SchadeController extends AbstractController {
 
         zetSessieWaarden(httpServletRequest);
 
-        Schade schade = schadeMapper.mapVanJson(jsonSchade);
-        schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());
+        if (MyFeatures.NIEUWE_POLIS_ADMINISTRATIE.isActive()) {
+            schadeOpslaanRequestSender.setReplyTo(schadeOpslaanResponseDestination);
+            schadeOpslaanRequestSender.send(jsonSchade);
 
-        return Response.status(202).entity(new JsonFoutmelding(schade.getId().toString())).build();
+            return null;
+        } else {
+            Schade schade = schadeMapper.mapVanJson(jsonSchade);
+            schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());
+
+            return Response.status(202).entity(new JsonFoutmelding(schade.getId().toString())).build();
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)

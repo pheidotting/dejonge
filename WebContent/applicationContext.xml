@@ -20,7 +20,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<!--</bean>-->
 	<!---->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		<property name="maxUploadSize" value="50000000"/>
+        <property name="maxUploadSize" value="50000000"/>
     </bean>
 
 	<!-- Activemq connection factory -->
@@ -36,31 +36,94 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
 	<!-- Taak Opslaan -->
 	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
+        <constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
 	</bean>
 	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="taakOpslaanDestination"/>
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="taakOpslaanDestination"/>
 	</bean>
 	<bean id="taakOpslaanSender" class="nl.dias.messaging.sender.TaakOpslaanSender">
-		<constructor-arg index="0" ref="taakOpslaanTemplate"/>
+        <constructor-arg index="0" ref="taakOpslaanTemplate"/>
 	</bean>
 	<!-- /Taak Opslaan  -->
 	<!-- VerwijderEntiteitenRequest -->
 	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
+        <constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
 	</bean>
 	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
 	</bean>
 	<bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
-		<constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
+        <constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
 	</bean>
 	<!-- /VerwijderEntiteitenRequest -->
 
+    <bean id="polisOpslaanRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.pa.polisOpslaanRequestQueue"/>
+    </bean>
+    <bean id="polisOpslaanRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="polisOpslaanRequestDestination"/>
+    </bean>
+    <bean id="polisOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="pa.rb.polisOpslaanResponseQueue"/>
+    </bean>
+    <bean id="polisOpslaanRequestSender" class="nl.dias.messaging.sender.PolisOpslaanRequestSender">
+        <constructor-arg index="0" ref="polisOpslaanRequestTemplate"/>
+    </bean>
+    <bean id="polisOpslaanResponseReciever" class="nl.dias.messaging.reciever.PolisOpslaanResponseReciever"/>
 
-	<!--&lt;!&ndash; Aanmaken Taak &ndash;&gt;-->
+    <jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
+        <jms:listener destination="pa.rb.polisOpslaanResponseQueue" ref="polisOpslaanResponseReciever"
+                      method="onMessage"/>
+    </jms:listener-container>
+
+    <bean id="polisVerwijderenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.pa.polisVerwijderenRequestQueue"/>
+    </bean>
+    <bean id="polisVerwijderenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="polisVerwijderenRequestDestination"/>
+    </bean>
+    <bean id="polisVerwijderenRequestSender" class="nl.dias.messaging.sender.PolisVerwijderenRequestSender">
+        <constructor-arg index="0" ref="polisVerwijderenRequestTemplate"/>
+    </bean>
+
+    <!-- Entiteiten opslaan -->
+    <bean id="opslaanEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.oga.opslaanEntiteitenRequestQueue"/>
+    </bean>
+    <bean id="opslaanEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="opslaanEntiteitenRequestDestination"/>
+    </bean>
+    <bean id="opslaanEntiteitenRequestSender" class="nl.dias.messaging.sender.OpslaanEntiteitenRequestSender">
+        <constructor-arg index="0" ref="opslaanEntiteitenRequestTemplate"/>
+    </bean>
+
+    <bean id="schadeOpslaanRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.pa.schadeOpslaanRequestQueue"/>
+    </bean>
+    <bean id="schadeOpslaanRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="schadeOpslaanRequestDestination"/>
+    </bean>
+    <bean id="schadeOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="pa.rb.schadeOpslaanResponseQueue"/>
+    </bean>
+    <bean id="schadeOpslaanRequestSender" class="nl.dias.messaging.sender.SchadeOpslaanRequestSender">
+        <constructor-arg index="0" ref="schadeOpslaanRequestTemplate"/>
+    </bean>
+    <bean id="schadeOpslaanResponseReciever" class="nl.dias.messaging.reciever.SchadeOpslaanResponseReciever"/>
+
+    <jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
+        <jms:listener destination="pa.rb.schadeOpslaanResponseQueue" ref="schadeOpslaanResponseReciever"
+                      method="onMessage"/>
+    </jms:listener-container>
+
+
+    <!--&lt;!&ndash; Aanmaken Taak &ndash;&gt;-->
 	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
 	<!--<bean id="aanmakenTaakDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
 	<!--<constructor-arg index="0" value="aanmakenTaakQueue" />-->
@@ -80,11 +143,11 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
 
 	<!-- Opvragen Persoon -->
-	<bean id="opvragenPersoonRequestReciever" class="nl.dias.messaging.reciever.OpvragenPersoonRequestReciever"/>
+    <bean id="opvragenPersoonRequestReciever" class="nl.dias.messaging.reciever.OpvragenPersoonRequestReciever"/>
 
 	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="tb.rb.opvragenPersoonRequestQueue" ref="opvragenPersoonRequestReciever"
-					  method="onMessage"/>
+                      method="onMessage"/>
 	</jms:listener-container>
 	<!-- // Opvragen Persoon -->
 
@@ -93,16 +156,16 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
     <jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="rb.verwijderRelatiesRequestQueue" ref="verwijderRelatiesRequestReciever"
-					  method="onMessage"/>
+                      method="onMessage"/>
     </jms:listener-container>
 	<!-- // Verwijderen Relaties -->
 
 	<!-- Verwijderen Bedrijven -->
-	<bean id="verwijderBedrijvenRequestReciever" class="nl.dias.messaging.reciever.VerwijderBedrijvenRequestReciever"/>
+    <bean id="verwijderBedrijvenRequestReciever" class="nl.dias.messaging.reciever.VerwijderBedrijvenRequestReciever"/>
 
 	<jms:listener-container container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="rb.verwijderBedrijvenRequestQueue" ref="verwijderBedrijvenRequestReciever"
-					  method="onMessage"/>
+                      method="onMessage"/>
 	</jms:listener-container>
 	<!-- // Verwijderen Bedrijven -->
 
@@ -188,13 +251,13 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<!--&lt;!&ndash; Bestand Gelezen &ndash;&gt;-->
 	<!--&lt;!&ndash; Default Destination Queue Definition &ndash;&gt;-->
 	<!--<bean id="bestandGelezenDestination" class="org.apache.activemq.command.ActiveMQQueue">-->
-	<!--<constructor-arg index="0" value="bestandGelezenQueue"/>-->
+    <!--<constructor-arg index="0" value="bestandGelezenQueue" />-->
 	<!--</bean>-->
 
 	<!--&lt;!&ndash; bestandGelezenTemplate Definition &ndash;&gt;-->
 	<!--<bean id="bestandGelezenTemplate" class="org.springframework.jms.core.JmsTemplate">-->
-	<!--<property name="connectionFactory" ref="connectionFactory"/>-->
-	<!--<property name="defaultDestination" ref="bestandGelezenDestination"/>-->
+    <!--<property name="connectionFactory" ref="connectionFactory" />-->
+    <!--<property name="defaultDestination" ref="bestandGelezenDestination" />-->
 	<!--</bean>-->
 
 	<!--bean id="simpleTriggert"
@@ -222,14 +285,14 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 				<value>file:app.properties</value>
 			</list>
 		</property>
-		<property name="placeholderPrefix" value="${"/>
+        <property name="placeholderPrefix" value="${"/>
 	</bean>
 
 	<context:annotation-config/>
 
 	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetClass" value="org.springframework.util.Log4jConfigurer"/>
-		<property name="targetMethod" value="initLogging"/>
+        <property name="targetClass" value="org.springframework.util.Log4jConfigurer"/>
+        <property name="targetMethod" value="initLogging"/>
 		<property name="arguments">
 			<list>
 				<value>djfc.log4j.xml</value>
@@ -249,14 +312,14 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 		<!--<property name="uniqueResourceName" value="NonXA_DataSource" />-->
 		<!--<property name="minPoolSize" value="2" />-->
 		<!--<property name="maxPoolSize" value="30" />-->
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="${djfc.db.name}"/>
-		<property name="username" value="${djfc.db.user}"/>
-		<property name="password" value="${djfc.db.pass}"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${djfc.db.name}"/>
+        <property name="username" value="${djfc.db.user}"/>
+        <property name="password" value="${djfc.db.pass}"/>
 	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSource"/>
 		<property name="packagesToScan">
 			<list>
 				<value>nl.dias</value>
@@ -272,49 +335,49 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	</bean>
 
 	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="changeLog" value="classpath:databaseChangeLog.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="changeLog" value="classpath:databaseChangeLog.xml"/>
 	</bean>
 
     <bean id="inkomendRequestRepository" class="nl.dias.repository.trackandtraceid.InkomendRequestRepository"
           depends-on="sessionFactory">
-		<property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <bean id="inkomendRequestService" class="nl.dias.service.trackandtraceid.InkomendRequestService"
           depends-on="inkomendRequestRepository">
-		<property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
+        <property name="inkomendRequestRepository" ref="inkomendRequestRepository"/>
     </bean>
 
 	<bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="bijlageClient" class="nl.lakedigital.djfc.client.oga.BijlageClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="communicatieClient" class="nl.lakedigital.djfc.client.communicatie.CommunicatieClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="groepBijlagesClient" class="nl.lakedigital.djfc.client.oga.GroepBijlagesClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="opmerkingClient" class="nl.lakedigital.djfc.client.oga.OpmerkingClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<!--<bean id="polisClient" class="nl.lakedigital.djfc.client.PolisClient">-->
 	<!--<property name="basisUrl" value="${oga.url}" />-->
 	<!--</bean>-->
 	<bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
-		<property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="${oga.url}"/>
 	</bean>
 	<bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
-		<property name="basisUrl" value="${tb.url}"/>
+        <property name="basisUrl" value="${tb.url}"/>
 	</bean>
 
 </beans>
