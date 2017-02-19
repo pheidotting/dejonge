@@ -67,7 +67,7 @@ public class PolisOpslaanTest {
             JsonPolis polis = vulPolis(polisSoort);
             polis.setSoortEntiteit("RELATIE");
 
-            polis.setId(polisClient.opslaan(polis, 3L, "tAtId", "abc"));
+            //            polis.setId(polisClient.opslaan(polis, 3L, "tAtId", "abc"));
 
             polis.setEindDatum(LocalDate.now().toString(dateformat));
             polis.setIngangsDatum(LocalDate.now().toString(dateformat));
