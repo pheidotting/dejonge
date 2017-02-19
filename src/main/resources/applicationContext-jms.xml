@@ -1,63 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
-	<context:component-scan base-package="nl.dias" />
-    <context:component-scan base-package="nl.lakedigital"/>
+    <!-- Activemq connection factory -->
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory"
+          p:brokerURL="tcp://localhost:61616" p:userName="admin" p:password="secret"/>
 
-	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
-	<!--<property name="sessionFactory" ref="sessionFactory"/>-->
-	<!--</bean>-->
-	<!---->
-	<!--<bean id="headerFilter" class="nl.dias.web.filter.HeaderFilter" depends-on="gebruikerRepository">-->
-	<!--<property name="gebruikerRepository" ref="gebruikerRepository"/>-->
-	<!--</bean>-->
-	<!---->
-	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		<property name="maxUploadSize" value="50000000"/>
-	</bean>
+    <!-- ConnectionFactory Definition -->
+    <bean id="connectionFactory"
+          class="org.springframework.jms.connection.CachingConnectionFactory">
+        <constructor-arg ref="amqConnectionFactory"/>
+    </bean>
 
-	<!-- Activemq connection factory -->
-	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<constructor-arg index="0" value="tcp://localhost:61616" />
-	</bean>
-
-	<!-- ConnectionFactory Definition -->
-	<bean id="connectionFactory"
-		class="org.springframework.jms.connection.CachingConnectionFactory">
-		<constructor-arg ref="amqConnectionFactory" />
-	</bean>
-
-	<!-- Taak Opslaan -->
-	<bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
-	</bean>
-	<bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="taakOpslaanDestination"/>
-	</bean>
-	<bean id="taakOpslaanSender" class="nl.dias.messaging.sender.TaakOpslaanSender">
-		<constructor-arg index="0" ref="taakOpslaanTemplate"/>
-	</bean>
-	<!-- /Taak Opslaan  -->
-	<!-- VerwijderEntiteitenRequest -->
-	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
-	</bean>
-	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
-	</bean>
-	<bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
-		<constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
-	</bean>
-	<!-- /VerwijderEntiteitenRequest -->
-	<bean id="polisOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="pa.rb.polisOpslaanResponseQueue"/>
-	</bean>
+    <!-- Taak Opslaan -->
+    <bean id="taakOpslaanDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.tb.taakOpslaanQueue"/>
+    </bean>
+    <bean id="taakOpslaanTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="taakOpslaanDestination"/>
+    </bean>
+    <bean id="taakOpslaanSender" class="nl.dias.messaging.sender.TaakOpslaanSender">
+        <constructor-arg index="0" ref="taakOpslaanTemplate"/>
+    </bean>
+    <!-- /Taak Opslaan  -->
+    <!-- VerwijderEntiteitenRequest -->
+    <bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
+        <constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
+    </bean>
+    <!-- /VerwijderEntiteitenRequest -->
+    <bean id="polisOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="pa.rb.polisOpslaanResponseQueue"/>
+    </bean>
 
     <bean id="polisOpslaanRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg index="0" value="rb.pa.polisOpslaanRequestQueue"/>
@@ -176,85 +160,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
                       method="onMessage"/>
     </jms:listener-container>
     <!-- // Verwijderen Bedrijven -->
-
-
-    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>file:app.properties</value>
-			</list>
-		</property>
-		<property name="placeholderPrefix" value="${"/>
-	</bean>
-
-	<!--<bean id="inkomendRequestRepository" class="nl.lakedigital.djfc.repository.InkomendRequestRepository" depends-on="sessionFactory">-->
-	<!--<property name="sessionFactory" ref="sessionFactory" />-->
-	<!--</bean>-->
-	<!---->
-	<!--<bean id="inkomendRequestService" class="nl.lakedigital.djfc.service.InkomendRequestService" depends-on="inkomendRequestRepository">-->
-	<!--<property name="inkomendRequestRepository" ref="inkomendRequestRepository" />-->
-	<!--</bean>-->
-
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		<!--<property name="uniqueResourceName" value="NonXA_DataSource" />-->
-		<!--<property name="minPoolSize" value="2" />-->
-		<!--<property name="maxPoolSize" value="30" />-->
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="${djfc.db.name}"/>
-		<property name="username" value="${djfc.db.user}"/>
-		<property name="password" value="${djfc.db.pass}"/>
-	</bean>
-
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="packagesToScan">
-			<list>
-				<value>nl.dias</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.current_session_context_class">thread</prop>
-				<prop key="hibernate.show_sql">true</prop>
-			</props>
-		</property>
-	</bean>
-
-	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="changeLog" value="classpath:databaseChangeLog.xml"/>
-	</bean>
-
-	<bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="bijlageClient" class="nl.lakedigital.djfc.client.oga.BijlageClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="communicatieClient" class="nl.lakedigital.djfc.client.communicatie.CommunicatieClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="groepBijlagesClient" class="nl.lakedigital.djfc.client.oga.GroepBijlagesClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="opmerkingClient" class="nl.lakedigital.djfc.client.oga.OpmerkingClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<!--<bean id="polisClient" class="nl.lakedigital.djfc.client.PolisClient">-->
-	<!--<property name="basisUrl" value="${oga.url}"/>-->
-	<!--</bean>-->
-	<bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
-		<property name="basisUrl" value="${oga.url}"/>
-	</bean>
-	<bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
-		<property name="basisUrl" value="${tb.url}"/>
-	</bean>
-
 </beans>

@@ -1,13 +1,11 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Schade;
-import nl.dias.domein.features.MyFeatures;
 import nl.dias.messaging.sender.SchadeOpslaanRequestSender;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.SchadeService;
 import nl.dias.web.mapper.SchadeMapper;
-import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
+import nl.lakedigital.djfc.client.polisadministratie.SchadeClient;
 import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RequestMapping("/schade")
@@ -39,25 +36,18 @@ public class SchadeController extends AbstractController {
     private SchadeOpslaanRequestSender schadeOpslaanRequestSender;
     @Inject
     private Destination schadeOpslaanResponseDestination;
+    @Inject
+    private SchadeClient schadeClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public Response opslaan(@RequestBody JsonSchade jsonSchade, HttpServletRequest httpServletRequest) {
+    public void opslaan(@RequestBody JsonSchade jsonSchade, HttpServletRequest httpServletRequest) {
         LOGGER.debug("{}", jsonSchade);
 
         zetSessieWaarden(httpServletRequest);
 
-        if (MyFeatures.NIEUWE_POLIS_ADMINISTRATIE.isActive()) {
             schadeOpslaanRequestSender.setReplyTo(schadeOpslaanResponseDestination);
             schadeOpslaanRequestSender.send(jsonSchade);
-
-            return null;
-        } else {
-            Schade schade = schadeMapper.mapVanJson(jsonSchade);
-            schadeService.opslaan(schade, jsonSchade.getSoortSchade(), jsonSchade.getPolis(), jsonSchade.getStatusSchade());
-
-            return Response.status(202).entity(new JsonFoutmelding(schade.getId().toString())).build();
-        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)
@@ -65,7 +55,7 @@ public class SchadeController extends AbstractController {
     public List<JsonSchade> lijst(@QueryParam("relatieId") Long relatieId) {
         LOGGER.debug("Opzoeken Schades bij Relatie met Id {}", relatieId);
 
-        return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijRelatie(relatieId));
+        return schadeClient.lijst(relatieId);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijstBijBedrijf", produces = MediaType.APPLICATION_JSON)
@@ -73,17 +63,13 @@ public class SchadeController extends AbstractController {
     public List<JsonSchade> lijstBijBedrijf(@QueryParam("bedrijfId") Long bedrijfId) {
         LOGGER.debug("Opzoeken Schades bij Bedrijf met Id {}", bedrijfId);
 
-        return schadeMapper.mapAllNaarJson(schadeService.alleSchadesBijBedrijf(bedrijfId));
+        return schadeClient.lijstBijBedrijf(bedrijfId);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JsonSchade lees(@QueryParam("id") String id) {
-        if (id != null && !"".equals(id) && !"0".equals(id)) {
-            return schadeMapper.mapNaarJson(schadeService.lees(Long.valueOf(id)));
-        } else {
-            return new JsonSchade();
-        }
+        return schadeClient.lees(id);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijder/{id}", produces = MediaType.APPLICATION_JSON)

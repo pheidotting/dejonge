@@ -35,7 +35,7 @@ public class SchadeOpslaanResponseReciever extends AbstractReciever<SchadeOpslaa
             if (!schade.getOpmerkingen().isEmpty()) {
                 schade.getOpmerkingen().stream().forEach(opmerking -> {
                     opmerking.setEntiteitId(opgeslagenSchade.getId());
-                    opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
+                    opmerking.setSoortEntiteit(SoortEntiteit.SCHADE);
 
                     opslaanEntiteitenRequest.getLijst().add(opmerking);
                 });

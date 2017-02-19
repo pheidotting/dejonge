@@ -52,8 +52,8 @@
         <property name="start" value="true" />
     </bean>
 
-    <import resource="applicationContext-jms.xml" />
     -->
+    <import resource="applicationContext-jms.xml"/>
     <bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
         <property name="basisUrl" value="${oga.url}"/>
     </bean>

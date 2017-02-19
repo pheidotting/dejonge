@@ -35,6 +35,7 @@ public class SchadeOpslaanRequestSender extends AbstractSender<SchadeOpslaanRequ
         schadeOpslaanRequest.setSchades(newArrayList(jsonSchade).stream().map(jsonSchade1 -> {
             Schade schade = new Schade();
 
+            schade.setId(jsonSchade1.getId());
             schade.setDatumAfgehandeld(jsonSchade1.getDatumAfgehandeld());
             schade.setDatumTijdMelding(jsonSchade1.getDatumTijdMelding());
             schade.setDatumTijdSchade(jsonSchade1.getDatumTijdSchade());
