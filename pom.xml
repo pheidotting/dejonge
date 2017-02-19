@@ -56,7 +56,7 @@
         <dependency>
             <groupId>nl.lakedigital.djfc</groupId>
             <artifactId>djfc-clients</artifactId>
-            <version>5.16</version>
+            <version>5.17</version>
         </dependency>
         <dependency>
             <groupId>nl.lakedigital.as</groupId>
