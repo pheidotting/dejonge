@@ -97,8 +97,27 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
     public List<Relatie> alleRelaties() {
         getTransaction();
         Query query = getEm().createQuery("select e from Relatie e");
-        query.setMaxResults(MAX_RESULTS);
         List<Relatie> ret = query.list();
+
+        getTransaction().commit();
+
+        return ret;
+    }
+
+    public List<Medewerker> alleMedewerkers() {
+        getTransaction();
+        Query query = getEm().createQuery("select e from Medewerker e");
+        List<Medewerker> ret = query.list();
+
+        getTransaction().commit();
+
+        return ret;
+    }
+
+    public List<ContactPersoon> alleContactPersonen() {
+        getTransaction();
+        Query query = getEm().createQuery("select e from ContactPersoon e");
+        List<ContactPersoon> ret = query.list();
 
         getTransaction().commit();
 

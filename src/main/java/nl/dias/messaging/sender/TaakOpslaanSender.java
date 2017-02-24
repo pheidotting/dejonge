@@ -7,17 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class TaakOpslaanSender extends AbstractSender<TaakOpslaan, Taak> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TaakOpslaanSender.class);
 
     public TaakOpslaanSender() {
-        this.jmsTemplate = null;
+        this.jmsTemplates = new ArrayList<>();
         this.LOGGER_ = LOGGER;
     }
 
     public TaakOpslaanSender(final JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
+        this.jmsTemplates.add(jmsTemplate);
         this.LOGGER_ = LOGGER;
         this.clazz = TaakOpslaan.class;
     }

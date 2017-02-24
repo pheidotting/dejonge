@@ -7,6 +7,7 @@ import nl.dias.domein.polis.Polis;
 import nl.dias.domein.predicates.SessieOpCookiePredicate;
 import nl.dias.mapper.Mapper;
 import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.EntiteitenOpgeslagenRequestSender;
 import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
@@ -60,6 +61,8 @@ public class GebruikerService {
     private TelefoonnummerClient telefoonnummerClient;
     @Inject
     private VerwijderEntiteitenRequestSender verwijderEntiteitRequestSender;
+    @Inject
+    private EntiteitenOpgeslagenRequestSender entiteitenOpgeslagenRequestSender;
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
@@ -104,7 +107,11 @@ public class GebruikerService {
 
         // Als Gebruiker een Relatie is en BSN leeg is, moet er een taak worden aangemaakt
         if (gebruiker instanceof Relatie) {
-            verstuurEvents((Relatie) gebruiker);
+            nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId();
+            soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
+            soortEntiteitEnEntiteitId.setEntiteitId(gebruiker.getId());
+
+            entiteitenOpgeslagenRequestSender.send(newArrayList(soortEntiteitEnEntiteitId));
         }
     }
 
@@ -158,77 +165,6 @@ public class GebruikerService {
         }
     }
 
-    public void verwijderOudSpul(Relatie relatie) {
-        LOGGER.debug("Adressen wissen bij relatie");
-        gebruikerRepository.verwijderAdressenBijRelatie(relatie);
-    }
-
-    private void verstuurEvents(Relatie relatie) {
-        //        verstuurBsnEvent(relatie);
-        //        verstuurAdresEvent(relatie);
-        //        verstuurEmailEvent(relatie);
-    }
-    //
-    //    private void verstuurBsnEvent(Relatie relatie) {
-    //        if (isBlank(relatie.getBsn())) {
-    //            LOGGER.info("BSN is leeg, Taak aanmaken");
-    //
-    //            AanmakenTaak taak = new AanmakenTaak();
-    //            taak.setDatumTijdCreatie(LocalDateTime.now());
-    //            taak.setRelatie(relatie.getId());
-    //            taak.setSoort(SoortTaak.AANVULLEN_BSN);
-    //
-    //            aanmakenTaakSender.send(taak);
-    //        } else {
-    //            LOGGER.info("BSN gevuld, bericht versturen");
-    //
-    //            BsnAangevuld bsnAangevuld = new BsnAangevuld();
-    //            bsnAangevuld.setRelatie(relatie.getId());
-    //
-    //            bsnAangevuldSender.send(bsnAangevuld);
-    //        }
-    //    }
-
-    private void verstuurAdresEvent(Relatie relatie) {
-        //        if (relatie.getAdres() == null || !relatie.getAdres().isCompleet()) {
-        //            LOGGER.info("Adres is leeg of niet volledig, Taak aanmaken");
-        //
-        //            AanmakenTaak taak = new AanmakenTaak();
-        //            taak.setDatumTijdCreatie(LocalDateTime.now());
-        //            taak.setRelatie(relatie.getId());
-        //            taak.setSoort(SoortTaak.AANVULLEN_ADRES);
-        //
-        //            aanmakenTaakSender.send(taak);
-        //        } else if (relatie.getAdres() != null && relatie.getAdres().isCompleet()) {
-        //            LOGGER.info("Adres gevuld, bericht versturen");
-        //
-        //            AdresAangevuld adresAangevuld = new AdresAangevuld();
-        //            adresAangevuld.setRelatie(relatie.getId());
-        //
-        //            adresAangevuldSender.send(adresAangevuld);
-        //        }
-    }
-
-    //    private void verstuurEmailEvent(Relatie relatie) {
-    //        if (isBlank(relatie.getIdentificatie())) {
-    //            LOGGER.info("E-mailadres is leeg, Taak aanmaken");
-    //
-    //            AanmakenTaak taak = new AanmakenTaak();
-    //            taak.setDatumTijdCreatie(LocalDateTime.now());
-    //            taak.setRelatie(relatie.getId());
-    //            taak.setSoort(SoortTaak.AANVULLEN_EMAIL);
-    //
-    //            aanmakenTaakSender.send(taak);
-    //        } else {
-    //            LOGGER.info("E-mailadres gevuld, bericht versturen");
-    //
-    //            EmailadresAangevuld emailadresAangevuld = new EmailadresAangevuld();
-    //            emailadresAangevuld.setRelatie(relatie.getId());
-    //
-    //            emailAdresAangevuldSender.send(emailadresAangevuld);
-    //        }
-    //    }
-
     public void verwijder(Long id) {
         LOGGER.info("Verwijderen gebruiker met id " + id);
 
@@ -253,7 +189,7 @@ public class GebruikerService {
             // en dan verwijderen
             gebruikerRepository.verwijder(gebruiker);
 
-            LOGGER.debug("Bericht naar OGA");
+            LOGGER.debug("Verwijderbericht versturen");
             SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
             soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
             soortEntiteitEnEntiteitId.setEntiteitId(id);
@@ -391,7 +327,11 @@ public class GebruikerService {
         })), new Function<AbstracteJsonEntiteitMetSoortEnId, Relatie>() {
             @Override
             public Relatie apply(AbstracteJsonEntiteitMetSoortEnId adres) {
-                return (Relatie) gebruikerRepository.lees(adres.getEntiteitId());
+                Gebruiker gebruiker = gebruikerRepository.lees(adres.getEntiteitId());
+                if (gebruiker instanceof Relatie) {
+                    return (Relatie) gebruikerRepository.lees(adres.getEntiteitId());
+                }
+                return null;
             }
         }));
 

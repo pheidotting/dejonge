@@ -6,17 +6,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class OpslaanEntiteitenRequestSender extends AbstractSender<OpslaanEntiteitenRequest, OpslaanEntiteitenRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisOpslaanRequestSender.class);
 
     public OpslaanEntiteitenRequestSender() {
-        this.jmsTemplate = null;
+        this.jmsTemplates = new ArrayList<>();
         this.LOGGER_ = LOGGER;
     }
 
     public OpslaanEntiteitenRequestSender(final JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
+        this.jmsTemplates.add(jmsTemplate);
         this.LOGGER_ = LOGGER;
         this.clazz = OpslaanEntiteitenRequest.class;
     }

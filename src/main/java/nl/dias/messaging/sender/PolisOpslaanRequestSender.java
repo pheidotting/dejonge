@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -19,12 +20,12 @@ public class PolisOpslaanRequestSender extends AbstractSender<PolisOpslaanReques
     private static final Logger LOGGER = LoggerFactory.getLogger(PolisOpslaanRequestSender.class);
 
     public PolisOpslaanRequestSender() {
-        this.jmsTemplate = null;
+        this.jmsTemplates = new ArrayList<>();
         this.LOGGER_ = LOGGER;
     }
 
     public PolisOpslaanRequestSender(final JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
+        this.jmsTemplates.add(jmsTemplate);
         this.LOGGER_ = LOGGER;
         this.clazz = PolisOpslaanRequest.class;
     }

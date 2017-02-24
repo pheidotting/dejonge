@@ -5,6 +5,7 @@ import nl.dias.domein.*;
 import nl.dias.domein.polis.AutoVerzekering;
 import nl.dias.domein.polis.Polis;
 import nl.dias.messaging.SoortEntiteitEnEntiteitId;
+import nl.dias.messaging.sender.EntiteitenOpgeslagenRequestSender;
 import nl.dias.messaging.sender.VerwijderEntiteitenRequestSender;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.repository.HypotheekRepository;
@@ -55,6 +56,9 @@ public class GebruikerServiceTest extends EasyMockSupport {
     private SchadeService schadeService;
     @Mock
     private VerwijderEntiteitenRequestSender verwijderEntiteitenRequestSender;
+    @Mock
+    private EntiteitenOpgeslagenRequestSender entiteitenOpgeslagenRequestSender;
+
 
     @After
     public void teardown() {
@@ -109,6 +113,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         repository.opslaan(relatie);
         expectLastCall();
 
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -121,6 +129,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatie.setIdentificatie("id");
 
         repository.opslaan(relatie);
+        expectLastCall();
+
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
         expectLastCall();
 
         replayAll();
@@ -137,6 +149,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         repository.opslaan(relatie);
         expectLastCall();
 
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -149,6 +165,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatie.setIdentificatie("id");
 
         repository.opslaan(relatie);
+        expectLastCall();
+
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
         expectLastCall();
 
         replayAll();
@@ -165,6 +185,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatie.setBsn("id");
 
         repository.opslaan(relatie);
+        expectLastCall();
+
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
         expectLastCall();
 
         replayAll();
@@ -184,6 +208,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         repository.opslaan(relatie);
         expectLastCall();
 
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
+        expectLastCall();
+
         replayAll();
 
         service.opslaan(relatie);
@@ -197,6 +225,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         relatie.setId(2L);
         relatie.setBsn("bsn");
         relatie.setIdentificatie("id");
+
+        Capture<nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIdCapture = newCapture();
+        entiteitenOpgeslagenRequestSender.send(newArrayList(capture(soortEntiteitEnEntiteitIdCapture)));
+        expectLastCall();
 
         repository.opslaan(relatie);
         expectLastCall();
@@ -470,7 +502,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
         expect(adresClient.zoeken(zoekterm)).andReturn(Lists.<JsonAdres>newArrayList());
         expect(telefoonnummerClient.zoeken(zoekterm)).andReturn(newArrayList(jsonTelefoonnummer));
-        expect(repository.lees(888L)).andReturn(relatieTelefoonnummer);
+        expect(repository.lees(888L)).andReturn(relatieTelefoonnummer).times(2);
 
         expect(repository.zoekOpNaam(zoekterm)).andReturn(new ArrayList<Gebruiker>());
         expect(polisRepository.zoekOpPolisNummer(zoekterm, null)).andReturn(null);
@@ -512,7 +544,7 @@ public class GebruikerServiceTest extends EasyMockSupport {
 
         expect(repository.zoekOpNaam(zoekterm)).andReturn(relatiesZoekOpNaam);
         expect(adresClient.zoeken(zoekterm)).andReturn(newArrayList(adres));
-        expect(repository.lees(23L)).andReturn(relatieZoekOpAdres);
+        expect(repository.lees(23L)).andReturn(relatieZoekOpAdres).times(2);
         expect(polisRepository.zoekOpPolisNummer(zoekterm, null)).andReturn(null);
         expect(repository.zoekRelatiesOpBedrijfsnaam("a")).andReturn(relatiesZoekOpBedrijfsnaam);
 

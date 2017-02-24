@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
-	<context:component-scan base-package="nl.dias" />
+    <context:component-scan base-package="nl.dias"/>
     <context:component-scan base-package="nl.lakedigital"/>
 
 	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
@@ -44,16 +46,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	<!-- /Taak Opslaan  -->
 	<!-- VerwijderEntiteitenRequest -->
-	<bean id="verwijderEntiteitenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="rb.oga.verwijderEntiteitenRequestQueue"/>
-	</bean>
-	<bean id="verwijderEntiteitenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory"/>
-		<property name="defaultDestination" ref="verwijderEntiteitenRequestDestination"/>
-	</bean>
-	<bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
-		<constructor-arg index="0" ref="verwijderEntiteitenRequestTemplate"/>
-	</bean>
+    <bean id="verwijderEntiteitenRequestDestinationId" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="id.verwijderEntiteitenRequestQueue"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestTemplateId" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="verwijderEntiteitenRequestDestinationId"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestDestinationPa" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="pa.verwijderEntiteitenRequestQueue"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestTemplatePa" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="verwijderEntiteitenRequestDestinationPa"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestDestinationOga" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="oga.verwijderEntiteitenRequestQueue"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestTemplateOga" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="verwijderEntiteitenRequestDestinationOga"/>
+    </bean>
+    <bean id="verwijderEntiteitenRequestSender" class="nl.dias.messaging.sender.VerwijderEntiteitenRequestSender">
+        <constructor-arg index="0" ref="verwijderEntiteitenRequestTemplateId"/>
+        <constructor-arg index="1" ref="verwijderEntiteitenRequestTemplateOga"/>
+        <constructor-arg index="2" ref="verwijderEntiteitenRequestTemplatePa"/>
+    </bean>
 	<!-- /VerwijderEntiteitenRequest -->
 	<bean id="polisOpslaanResponseDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="pa.rb.polisOpslaanResponseQueue"/>
@@ -128,6 +146,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
     <bean id="beindigenPolisRequestSender" class="nl.dias.messaging.sender.SchadeOpslaanRequestSender">
         <constructor-arg index="0" ref="beindigenPolisRequestTemplate"/>
+    </bean>
+
+
+    <bean id="entiteitenOpgeslagenRequestDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="id.entiteitenOpgeslagenRequestQueue"/>
+    </bean>
+    <bean id="entiteitenOpgeslagenRequestTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="entiteitenOpgeslagenRequestDestination"/>
+    </bean>
+    <bean id="entiteitenOpgeslagenRequestSender" class="nl.dias.messaging.sender.EntiteitenOpgeslagenRequestSender">
+        <constructor-arg index="0" ref="entiteitenOpgeslagenRequestTemplate"/>
     </bean>
 
 

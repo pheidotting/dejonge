@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -18,12 +19,12 @@ public class SchadeOpslaanRequestSender extends AbstractSender<SchadeOpslaanRequ
     private static final Logger LOGGER = LoggerFactory.getLogger(SchadeOpslaanRequestSender.class);
 
     public SchadeOpslaanRequestSender() {
-        this.jmsTemplate = null;
+        this.jmsTemplates = new ArrayList<>();
         this.LOGGER_ = LOGGER;
     }
 
     public SchadeOpslaanRequestSender(final JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
+        this.jmsTemplates.add(jmsTemplate);
         this.LOGGER_ = LOGGER;
         this.clazz = SchadeOpslaanRequest.class;
     }
