@@ -338,6 +338,18 @@ public class GebruikerService {
         return relaties;
     }
 
+    public List<Relatie> zoekOpGeboortedatum(LocalDate geboortedatum) {
+        return gebruikerRepository.zoekOpGeboortedatum(geboortedatum);
+    }
+
+    public List<Relatie> zoekOpTussenVoegsel(String tussenvoegsel) {
+        return null;
+    }
+
+    public List<Relatie> zoekOpVoorletters(String voorletters) {
+        return null;
+    }
+
     public void opslaanOAuthCodeTodoist(String code, Long id) {
         Medewerker medewerker = (Medewerker) gebruikerRepository.lees(id);
         medewerker.setoAuthCodeTodoist(code);

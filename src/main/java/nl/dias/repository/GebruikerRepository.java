@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -316,5 +320,63 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
         }
 
         getTransaction().commit();
+    }
+
+    public List<Relatie> zoekOpGeboortedatum(LocalDate geboortedatum) {
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Relatie.zoekOpGeboortedatum");
+        query.setParameter("geboorteDatum", geboortedatum.toDate());
+
+        List<Relatie> result = query.list();
+
+        getTransaction().commit();
+
+        return result;
+    }
+
+    public List<Relatie> zoekOpTussenVoegsel(String tussenvoegsel) {
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Gebruiker.zoekOpTussenVoegsel");
+        query.setParameter("tussenvoegsel", tussenvoegsel);
+
+        List<Gebruiker> result = query.list();
+
+        List<Relatie> relaties = result.stream()//
+                .filter(new RelatiePredicate())//
+                .map(new GebruikerNaarRelatie())//
+                .collect(Collectors.toList());
+
+        getTransaction().commit();
+
+        return relaties;
+    }
+
+    public List<Relatie> zoekOpVoorletters(String voorletters) {
+        getTransaction();
+
+        Query query = getEm().getNamedQuery("Relatie.zoekOpVoorletters");
+        query.setParameter("voorletters", voorletters);
+
+        List<Relatie> result = query.list();
+
+        getTransaction().commit();
+
+        return result;
+    }
+
+    private class RelatiePredicate implements Predicate<Gebruiker> {
+        @Override
+        public boolean test(Gebruiker gebruiker) {
+            return gebruiker instanceof Relatie;
+        }
+    }
+
+    private class GebruikerNaarRelatie implements Function<Gebruiker, Relatie> {
+        @Override
+        public Relatie apply(Gebruiker gebruiker) {
+            return (Relatie) gebruiker;
+        }
     }
 }

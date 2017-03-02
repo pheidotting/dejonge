@@ -1,14 +1,20 @@
 package nl.dias.web.medewerker;
 
+import com.google.gson.Gson;
+import nl.dias.ZoekResultaat;
 import nl.dias.domein.Bedrijf;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
+import nl.dias.service.ZoekService;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.*;
+import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +25,14 @@ import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/zoeken")
 public class ZoekController extends AbstractController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZoekController.class);
 
     @Inject
     private GebruikerService gebruikerService;
@@ -36,6 +44,8 @@ public class ZoekController extends AbstractController {
     private AdresClient adresClient;
     @Inject
     private IdentificatieClient identificatieClient;
+    @Inject
+    private ZoekService zoekService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -52,39 +62,36 @@ public class ZoekController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekterm}/{weglaten}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public ZoekResultaatResponse zoeken(@PathVariable("zoekterm") String zoekTerm, @QueryParam("weglaten") Long weglaten) {
-        List<Relatie> relaties = new ArrayList<>();
+        String decoded = new String(Base64.getDecoder().decode(zoekTerm));
+        LOGGER.debug("Decoded zoekstring {}", decoded);
+        ZoekVelden zoekVelden = new Gson().fromJson(decoded, ZoekVelden.class);
 
-        if (zoekTerm == null || "".equals(zoekTerm)) {
+        List<Relatie> relaties = new ArrayList<>();
+        List<Bedrijf> bedrijven = new ArrayList<>();
+
+        if (zoekVelden != null && !zoekVelden.isEmpty()) {
+            LOGGER.debug("We gaan zoeken");
+            LocalDate geboortedatum = null;
+            if (zoekVelden.getGeboortedatum() != null && !"".equals(zoekVelden.getGeboortedatum())) {
+                geboortedatum = LocalDate.parse(zoekVelden.getGeboortedatum());
+            }
+
+            ZoekResultaat zoekResultaat = zoekService.zoek(zoekVelden.getNaam(), geboortedatum, zoekVelden.getTussenvoegsel(), zoekVelden.getPolisnummer(), zoekVelden.getVoorletters(), zoekVelden.getSchadenummer(), zoekVelden.getAdres(), zoekVelden.getPostcode(), zoekVelden.getWoonplaats(), zoekVelden.getBedrijf());
+            relaties = zoekResultaat.getRelaties();
+            bedrijven = zoekResultaat.getBedrijven();
+        } else {
+            LOGGER.debug("We laten alles zien");
             for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
                 relaties.add((Relatie) r);
             }
-        } else {
-            Long idWeglaten = null;
-            if (weglaten != null) {
-                idWeglaten = weglaten;
-            }
-
-            for (Gebruiker r : gebruikerService.zoekOpNaamAdresOfPolisNummer(zoekTerm)) {
-                if (idWeglaten == null || !idWeglaten.equals(r.getId())) {
-                    relaties.add((Relatie) r);
-                }
+            for (Bedrijf bedrijf : bedrijfService.alles()) {
+                bedrijven.add(bedrijf);
             }
         }
 
         List<JsonAdres> adressenBijRelaties = adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
                 .map(relatie -> relatie.getId())//
                 .collect(Collectors.toList()), "RELATIE");
-
-        List<Bedrijf> bedrijven = new ArrayList<>();
-        if (zoekTerm == null) {
-            for (Bedrijf bedrijf : bedrijfService.alles()) {
-                bedrijven.add(bedrijf);
-            }
-        } else {
-            for (Bedrijf bedrijf : bedrijfService.zoekOpNaam(zoekTerm)) {
-                bedrijven.add(bedrijf);
-            }
-        }
 
         List<JsonAdres> adressenBijBedrijven = adresClient.alleAdressenBijLijstMetEntiteiten(bedrijven.stream()//
                 .map(bedrijf -> bedrijf.getId())//
@@ -111,10 +118,12 @@ public class ZoekController extends AbstractController {
                     }
 
                     relatieZoekResultaat.setAdres(adressenBijRelaties.stream()//
+                            .filter(adres -> adres.getEntiteitId() == relatie.getId())//
                             .filter(adres -> "WOONADRES".equals(adres.getSoortAdres()))//
                             .findFirst().orElse(null));
                     if (relatieZoekResultaat.getAdres() == null) {
                         relatieZoekResultaat.setAdres(adressenBijRelaties.stream()//
+                                .filter(adres -> adres.getEntiteitId() == relatie.getId())//
                                 .filter(adres -> "POSTADRES".equals(adres.getSoortAdres()))//
                                 .findFirst().orElse(null));
                     }
@@ -136,10 +145,12 @@ public class ZoekController extends AbstractController {
                     bedrijfZoekResultaat.setNaam(bedrijf.getNaam());
 
                     bedrijfZoekResultaat.setAdres(adressenBijBedrijven.stream()//
+                            .filter(adres -> adres.getEntiteitId() == bedrijf.getId())//
                             .filter(adres -> "POSTADRES".equals(adres.getSoortAdres()))//
                             .findFirst().orElse(null));
                     if (bedrijfZoekResultaat.getAdres() == null) {
                         bedrijfZoekResultaat.setAdres(adressenBijBedrijven.stream()//
+                                .filter(adres -> adres.getEntiteitId() == bedrijf.getId())//
                                 .filter(adres -> "WOONADRES".equals(adres.getSoortAdres()))//
                                 .findFirst().orElse(null));
                     }
