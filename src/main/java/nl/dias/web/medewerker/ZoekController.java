@@ -29,6 +29,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 @Controller
 @RequestMapping(value = "/zoeken")
 public class ZoekController extends AbstractController {
@@ -89,11 +91,11 @@ public class ZoekController extends AbstractController {
             }
         }
 
-        List<JsonAdres> adressenBijRelaties = adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
+        List<JsonAdres> adressenBijRelaties = relaties.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
                 .map(relatie -> relatie.getId())//
                 .collect(Collectors.toList()), "RELATIE");
 
-        List<JsonAdres> adressenBijBedrijven = adresClient.alleAdressenBijLijstMetEntiteiten(bedrijven.stream()//
+        List<JsonAdres> adressenBijBedrijven = bedrijven.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(bedrijven.stream()//
                 .map(bedrijf -> bedrijf.getId())//
                 .collect(Collectors.toList()), "BEDRIJF");
 
@@ -118,12 +120,12 @@ public class ZoekController extends AbstractController {
                     }
 
                     relatieZoekResultaat.setAdres(adressenBijRelaties.stream()//
-                            .filter(adres -> adres.getEntiteitId() == relatie.getId())//
+                            .filter(adres -> adres.getEntiteitId().equals(relatie.getId()))//
                             .filter(adres -> "WOONADRES".equals(adres.getSoortAdres()))//
                             .findFirst().orElse(null));
                     if (relatieZoekResultaat.getAdres() == null) {
                         relatieZoekResultaat.setAdres(adressenBijRelaties.stream()//
-                                .filter(adres -> adres.getEntiteitId() == relatie.getId())//
+                                .filter(adres -> adres.getEntiteitId().equals(relatie.getId()))//
                                 .filter(adres -> "POSTADRES".equals(adres.getSoortAdres()))//
                                 .findFirst().orElse(null));
                     }
@@ -145,12 +147,12 @@ public class ZoekController extends AbstractController {
                     bedrijfZoekResultaat.setNaam(bedrijf.getNaam());
 
                     bedrijfZoekResultaat.setAdres(adressenBijBedrijven.stream()//
-                            .filter(adres -> adres.getEntiteitId() == bedrijf.getId())//
+                            .filter(adres -> adres.getEntiteitId().equals(bedrijf.getId()))//
                             .filter(adres -> "POSTADRES".equals(adres.getSoortAdres()))//
                             .findFirst().orElse(null));
                     if (bedrijfZoekResultaat.getAdres() == null) {
                         bedrijfZoekResultaat.setAdres(adressenBijBedrijven.stream()//
-                                .filter(adres -> adres.getEntiteitId() == bedrijf.getId())//
+                                .filter(adres -> adres.getEntiteitId().equals(bedrijf.getId()))//
                                 .filter(adres -> "WOONADRES".equals(adres.getSoortAdres()))//
                                 .findFirst().orElse(null));
                     }
