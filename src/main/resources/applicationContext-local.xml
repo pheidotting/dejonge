@@ -78,9 +78,12 @@
     <bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
         <property name="basisUrl" value="${oga.url}"/>
     </bean>
-    <!--<bean id="taakClient" class="nl.lakedigital.as.taakbeheer.client.TaakClient">-->
-        <!--<property name="basisUrl" value="${oga.url}"/>-->
-    <!--</bean>-->
+    <bean id="polisClient" class="nl.lakedigital.djfc.client.polisadministratie.PolisClient">
+        <property name="basisUrl" value="${pa.url}"/>
+    </bean>
+    <bean id="schadeClient" class="nl.lakedigital.djfc.client.polisadministratie.SchadeClient">
+        <property name="basisUrl" value="${pa.url}"/>
+    </bean>
     <bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
         <property name="basisUrl" value="${oga.url}"/>
     </bean>

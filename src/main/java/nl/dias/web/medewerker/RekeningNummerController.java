@@ -1,5 +1,6 @@
 package nl.dias.web.medewerker;
 
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.RekeningClient;
 import nl.lakedigital.djfc.commons.json.JsonRekeningNummer;
 import org.springframework.stereotype.Controller;
@@ -9,17 +10,31 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequestMapping("/rekeningnummer")
 @Controller
 public class RekeningNummerController extends AbstractController {
     @Inject
     private RekeningClient rekeningClient;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaan(@RequestBody List<JsonRekeningNummer> jsonEntiteiten, HttpServletRequest httpServletRequest) {
-        rekeningClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+        List<JsonRekeningNummer> lijst = jsonEntiteiten.stream().map(new Function<JsonRekeningNummer, JsonRekeningNummer>() {
+            @Override
+            public JsonRekeningNummer apply(JsonRekeningNummer adres) {
+                Long entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+
+                adres.setEntiteitId(entiteitId);
+
+                return adres;
+            }
+        }).collect(Collectors.toList());
+        rekeningClient.opslaan(lijst, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)

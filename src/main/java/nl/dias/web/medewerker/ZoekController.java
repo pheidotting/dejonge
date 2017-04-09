@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -167,6 +168,24 @@ public class ZoekController extends AbstractController {
             return naam1.compareTo(naam2);
         });
 
+        zoekResultaatResponse.setBedrijfOfRelatieList(zoekResultaatResponse.getBedrijfOfRelatieList().stream().map(new Function<BedrijfOfRelatie, BedrijfOfRelatie>() {
+            @Override
+            public BedrijfOfRelatie apply(BedrijfOfRelatie bedrijfOfRelatie) {
+                bedrijfOfRelatie.setId(null);
+
+                if (bedrijfOfRelatie.getAdres() != null) {
+                    String identificatie = identificatieClient.zoekIdentificatie("ADRES", bedrijfOfRelatie.getAdres().getId()).getIdentificatie();
+
+                    bedrijfOfRelatie.getAdres().setIdentificatie(identificatie);
+                    bedrijfOfRelatie.getAdres().setId(null);
+                    bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
+                    bedrijfOfRelatie.getAdres().setEntiteitId(null);
+                }
+
+                return bedrijfOfRelatie;
+            }
+        }).collect(Collectors.toList()));
+
         return zoekResultaatResponse;
     }
 
@@ -178,4 +197,5 @@ public class ZoekController extends AbstractController {
         }
         return null;
     }
+
 }

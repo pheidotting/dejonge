@@ -8,6 +8,7 @@ import nl.dias.repository.KantoorRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.RelatieMapper;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.commons.json.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +42,8 @@ public class GebruikerController extends AbstractController {
     private MedewerkerNaarJsonMedewerkerMapper medewerkerNaarJsonMedewerkerMapper;
     @Inject
     private JsonMedewerkerNaarMedewerkerMapper jsonMedewerkerNaarMedewerkerMapper;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleContactPersonen", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -138,39 +140,40 @@ public class GebruikerController extends AbstractController {
         return contactPersoon.getId();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")//, produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public Response opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) {
+    public String opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         zetSessieWaarden(httpServletRequest);
 
-        try {
-            String sessie = null;
-            if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
-                sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
-            }
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonRelatie.getIdentificatie());
+        jsonRelatie.setId(identificatie.getEntiteitId());
 
-            Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
-
-            LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
-
-            Kantoor kantoor = kantoorRepository.lees(medewerker.getKantoor().getId());
-
-            Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
-            relatie.setKantoor(kantoor);
-            LOGGER.debug("Uit mapper " + relatie);
-
-            LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
-
-            gebruikerService.opslaan(relatie);
-
-            LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
-            return Response.status(202).entity(new JsonFoutmelding(relatie.getId().toString())).build();
-        } catch (Exception e) {
-            LOGGER.error("Fout bij opslaan Relatie", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
+        String sessie = null;
+        if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
+            sessie = httpServletRequest.getSession().getAttribute("sessie").toString();
         }
+
+        Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
+
+        LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
+
+        Kantoor kantoor = kantoorRepository.lees(medewerker.getKantoor().getId());
+
+        Relatie relatie = relatieMapper.mapVanJson(jsonRelatie);
+        relatie.setKantoor(kantoor);
+        LOGGER.debug("Uit mapper " + relatie);
+
+        LOGGER.debug("Opslaan Relatie met id " + relatie.getId());
+
+        gebruikerService.opslaan(relatie);
+
+        LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
+
+        LOGGER.debug("Return {}", relatie.getIdentificatie());
+
+        return relatie.getIdentificatie();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{id}", produces = MediaType.APPLICATION_JSON)

@@ -4,12 +4,12 @@ import nl.dias.domein.Bijlage;
 import nl.dias.mapper.BijlageNaarJsonBijlageMapper;
 import nl.dias.service.BijlageService;
 import nl.dias.web.SoortEntiteit;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.BijlageClient;
 import nl.lakedigital.djfc.client.oga.GroepBijlagesClient;
-import nl.lakedigital.djfc.commons.json.JsonBijlage;
-import nl.lakedigital.djfc.commons.json.JsonGroepBijlages;
-import nl.lakedigital.djfc.commons.json.UploadBijlageResponse;
-import nl.lakedigital.djfc.commons.json.WijzigenOmschrijvingBijlage;
+import nl.lakedigital.djfc.commons.json.*;
+import nl.lakedigital.djfc.request.EntiteitenOpgeslagenRequest;
+import nl.lakedigital.djfc.request.SoortEntiteitEnEntiteitId;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -36,15 +36,18 @@ import java.util.List;
 @RequestMapping("/bijlage")
 @Controller
 public class BijlageController extends AbstractController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
+
     @Inject
     private BijlageClient bijlageClient;
     @Inject
     private GroepBijlagesClient groepBijlagesClient;
-    private final static Logger LOGGER = LoggerFactory.getLogger(BijlageController.class);
     @Inject
     private BijlageService bijlageService;
     @Inject
     private BijlageNaarJsonBijlageMapper bijlageNaarJsonBijlageMapper;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/wijzigOmschrijvingBijlage", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -107,9 +110,12 @@ public class BijlageController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/download")
     @ResponseBody
     @Produces("application/pdf")
-    public ResponseEntity<byte[]> getFile(@RequestParam("id") Long id) throws IOException {
+    public ResponseEntity<byte[]> getFile(@RequestParam("id") String identificatieString) throws IOException {
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(identificatieString);
 
-        JsonBijlage bijlage = bijlageClient.lees(id);
+        LOGGER.debug("Ophalen bijlage met id {}", identificatie.getEntiteitId());
+
+        JsonBijlage bijlage = bijlageClient.lees(identificatie.getEntiteitId());
 
         File file = new File(bijlageClient.getUploadPad() + "/" + bijlage.getS3Identificatie());
 
@@ -123,14 +129,16 @@ public class BijlageController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/uploadBijlage", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @ResponseBody
-    public UploadBijlageResponse uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("id") String id, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
+    public UploadBijlageResponse uploadBijlage(@RequestParam("bijlageFile") MultipartFile fileDetail, @FormParam("identificatie") String identificatie, @FormParam("soortEntiteit") String soortEntiteit, HttpServletRequest httpServletRequest) {
         UploadBijlageResponse response = new UploadBijlageResponse();
 
-        LOGGER.info("uploaden bestand voor {} met id {}", soortEntiteit, id);
+        LOGGER.info("uploaden bestand voor {} met id {}", soortEntiteit, identificatie);
 
         LOGGER.debug("{}", ReflectionToStringBuilder.toString(fileDetail));
 
-        List<JsonBijlage> bijlages = uploaden(fileDetail, soortEntiteit, Long.valueOf(id), httpServletRequest);
+        Long id = identificatieClient.zoekIdentificatieCode(identificatie).getEntiteitId();
+
+        List<JsonBijlage> bijlages = uploaden(fileDetail, soortEntiteit, id, httpServletRequest);
 
         if (bijlages.size() > 1) {
             JsonGroepBijlages groepBijlages = new JsonGroepBijlages();
@@ -186,6 +194,15 @@ public class BijlageController extends AbstractController {
                 LOGGER.debug(ReflectionToStringBuilder.toString(bijlage, ToStringStyle.SHORT_PREFIX_STYLE));
                 JsonBijlage jsonBijlage = bijlageNaarJsonBijlageMapper.map(bijlage, null, null);
                 String id = bijlageClient.opslaan(jsonBijlage, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+
+                EntiteitenOpgeslagenRequest entiteitenOpgeslagenRequest = new EntiteitenOpgeslagenRequest();
+                SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
+                soortEntiteitEnEntiteitId.setEntiteitId(Long.valueOf(id));
+                soortEntiteitEnEntiteitId.setSoortEntiteit(nl.lakedigital.djfc.request.SoortEntiteit.BIJLAGE);
+                entiteitenOpgeslagenRequest.getSoortEntiteitEnEntiteitIds().add(soortEntiteitEnEntiteitId);
+                Identificatie identificatie = identificatieClient.opslaan(entiteitenOpgeslagenRequest);
+
+                jsonBijlage.setIdentificatie(identificatie.getIdentificatie());
                 jsonBijlage.setId(Long.valueOf(id));
 
                 jsonBijlages.add(jsonBijlage);

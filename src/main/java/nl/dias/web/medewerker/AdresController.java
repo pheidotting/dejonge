@@ -1,6 +1,7 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.features.MyFeatures;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequestMapping("/adres")
 @Controller
@@ -20,11 +23,23 @@ public class AdresController extends AbstractController {
 
     @Inject
     private AdresClient adresClient;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaan(@RequestBody List<JsonAdres> jsonEntiteiten, HttpServletRequest httpServletRequest) {
-        adresClient.opslaan(jsonEntiteiten, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+        List<JsonAdres> lijst = jsonEntiteiten.stream().map(new Function<JsonAdres, JsonAdres>() {
+            @Override
+            public JsonAdres apply(JsonAdres adres) {
+                Long entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+
+                adres.setEntiteitId(entiteitId);
+
+                return adres;
+            }
+        }).collect(Collectors.toList());
+        adresClient.opslaan(lijst, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)

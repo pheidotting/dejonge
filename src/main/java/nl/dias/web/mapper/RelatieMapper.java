@@ -7,6 +7,7 @@ import nl.dias.domein.Relatie;
 import nl.dias.service.GebruikerService;
 import nl.lakedigital.djfc.commons.json.JsonOnderlingeRelatie;
 import nl.lakedigital.djfc.commons.json.JsonRelatie;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public Relatie mapVanJson(JsonRelatie jsonRelatie) {
-        String patternDatum = "dd-MM-yyyy";
+        String patternDatum = "yyyy-MM-dd";
 
         Relatie relatie = new Relatie();
         if (jsonRelatie.getId() != null) {
@@ -65,6 +66,8 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
 
     @Override
     public JsonRelatie mapNaarJson(Relatie relatie) {
+        LOGGER.debug("Map naar JSON : {}", ReflectionToStringBuilder.toString(relatie));
+
         JsonRelatie jsonRelatie = new JsonRelatie();
 
         jsonRelatie.setId(relatie.getId());
@@ -93,7 +96,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
             jsonRelatie.setBurgerlijkeStaat(relatie.getBurgerlijkeStaat().getOmschrijving());
         }
 
-        jsonRelatie.setEmailadres(relatie.getEmailadres());
+        jsonRelatie.setEmailadres(relatie.getIdentificatie());
+
+        LOGGER.debug("Gemapt naar JSON : {}", ReflectionToStringBuilder.toString(jsonRelatie));
 
         return jsonRelatie;
     }
