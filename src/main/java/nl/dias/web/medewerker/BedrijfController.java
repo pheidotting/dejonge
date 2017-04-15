@@ -1,6 +1,7 @@
 package nl.dias.web.medewerker;
 
 import nl.dias.domein.Bedrijf;
+import nl.dias.inloggen.SessieHolder;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/bedrijf")
 @Controller
@@ -102,6 +104,7 @@ public class BedrijfController extends AbstractController {
     @ResponseBody
     public void verwijder(HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);
+        SessieHolder.get().setTrackAndTraceId(UUID.randomUUID().toString());
 
         try {
             for (int i = 29; i < 106; i++) {
