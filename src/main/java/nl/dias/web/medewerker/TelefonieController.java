@@ -28,7 +28,7 @@ import java.util.Map;
 @RequestMapping("/telefonie")
 @Controller
 @Configuration
-@PropertySources({@PropertySource("classpath:application.properties"), @PropertySource(value = "file:app.properties", ignoreResourceNotFound = true)})
+@PropertySources({@PropertySource(value = "file:djfc.app.properties", ignoreResourceNotFound = false)})
 public class TelefonieController extends AbstractController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelefonieController.class);
 
