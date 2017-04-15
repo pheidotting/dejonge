@@ -98,4 +98,18 @@ public class BedrijfController extends AbstractController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/verwijderen", produces = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public void verwijder(HttpServletRequest httpServletRequest) {
+        zetSessieWaarden(httpServletRequest);
+
+        try {
+            for (int i = 29; i < 106; i++) {
+                bedrijfService.verwijder(Long.valueOf(i));
+            }
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Fout bij verwijderen Polis", e);
+        }
+    }
+
 }
