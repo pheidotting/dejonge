@@ -62,7 +62,9 @@ public class RelatieController {
             relatie.setTussenvoegsel(relatieDomain.getTussenvoegsel());
             relatie.setBsn(relatieDomain.getBsn());
             relatie.setGeboorteDatum(relatieDomain.getGeboorteDatum().toString(datumFormaat));
-            relatie.setOverlijdensdatum(relatieDomain.getOverlijdensdatum().toString(datumFormaat));
+            if (relatieDomain.getOverlijdensdatum() != null) {
+                relatie.setOverlijdensdatum(relatieDomain.getOverlijdensdatum().toString(datumFormaat));
+            }
             relatie.setGeslacht(relatieDomain.getGeslacht().getOmschrijving());
             relatie.setBurgerlijkeStaat(relatieDomain.getBurgerlijkeStaat().getOmschrijving());
             relatie.setEmailadres(relatieDomain.getEmailadres());
