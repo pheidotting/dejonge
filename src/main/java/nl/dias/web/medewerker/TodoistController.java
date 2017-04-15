@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 @Controller
 @RequestMapping(value = "/todoist")
 @Configuration
-@PropertySources({@PropertySource("classpath:application.properties"), @PropertySource(value = "file:app.properties", ignoreResourceNotFound = true)})
+@PropertySources({@PropertySource(value = "file:app.properties", ignoreResourceNotFound = false)})
 public class TodoistController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TodoistController.class);
 
