@@ -1,8 +1,8 @@
 package nl.dias.web.medewerker;
 
-import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Medewerker;
 import nl.dias.service.GebruikerService;
+import nl.dias.service.RelatieService;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.*;
 import nl.lakedigital.djfc.commons.json.*;
@@ -41,18 +41,21 @@ public class RelatieController {
     private GebruikerService gebruikerService;
     @Inject
     private IdentificatieClient identificatieClient;
+    @Inject
+    private RelatieService relatieService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Relatie leesRelatie(@PathVariable("id") String identificatie) {
-        Identificatie identificatieGelezen = identificatieClient.zoekIdentificatieCode(identificatie);
-        Long id = identificatieGelezen.getEntiteitId();
-
-        Gebruiker gebruiker = gebruikerService.lees(id);
+        //        Identificatie identificatieGelezen = identificatieClient.zoekIdentificatieCode(identificatie);
+        //        Long id = identificatieGelezen.getEntiteitId();
+        //
+        //        Gebruiker gebruiker = gebruikerService.lees(id);
+        nl.dias.domein.Relatie relatieDomain = relatieService.zoekRelatie(identificatie);
         Relatie relatie = new Relatie();
 
-        if (gebruiker instanceof nl.dias.domein.Relatie) {
-            nl.dias.domein.Relatie relatieDomain = (nl.dias.domein.Relatie) gebruiker;
+        //        if (gebruiker instanceof nl.dias.domein.Relatie) {
+        //            nl.dias.domein.Relatie relatieDomain = (nl.dias.domein.Relatie) gebruiker;
             String datumFormaat = "yyyy-MM-dd";
 
             relatie.setAchternaam(relatieDomain.getAchternaam());
@@ -69,7 +72,7 @@ public class RelatieController {
             relatie.setBurgerlijkeStaat(relatieDomain.getBurgerlijkeStaat().getOmschrijving());
             relatie.setEmailadres(relatieDomain.getEmailadres());
 
-            relatie.setAdressen(adresClient.lijst("RELATIE", id).stream().map(new Function<JsonAdres, Adres>() {
+        relatie.setAdressen(adresClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonAdres, Adres>() {
                 @Override
                 public Adres apply(JsonAdres jsonAdres) {
                     Adres adres = new Adres();
@@ -88,7 +91,7 @@ public class RelatieController {
                 }
             }).collect(Collectors.toList()));
 
-            relatie.setBijlages(bijlageClient.lijst("RELATIE", id).stream().map(new Function<JsonBijlage, Bijlage>() {
+        relatie.setBijlages(bijlageClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonBijlage, Bijlage>() {
                 @Override
                 public Bijlage apply(JsonBijlage jsonBijlage) {
                     Bijlage bijlage = new Bijlage();
@@ -104,7 +107,7 @@ public class RelatieController {
                 }
             }).collect(Collectors.toList()));
 
-            relatie.setGroepBijlages(groepBijlagesClient.lijstGroepen("RELATIE", id).stream().map(new Function<JsonGroepBijlages, GroepBijlages>() {
+        relatie.setGroepBijlages(groepBijlagesClient.lijstGroepen("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonGroepBijlages, GroepBijlages>() {
                 @Override
                 public GroepBijlages apply(JsonGroepBijlages jsonGroepBijlages) {
                     GroepBijlages groepBijlages = new GroepBijlages();
@@ -136,7 +139,7 @@ public class RelatieController {
                 }
             }).collect(Collectors.toList()));
 
-            relatie.setRekeningNummers(rekeningClient.lijst("RELATIE", id).stream().map(new Function<JsonRekeningNummer, RekeningNummer>() {
+        relatie.setRekeningNummers(rekeningClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonRekeningNummer, RekeningNummer>() {
                 @Override
                 public RekeningNummer apply(JsonRekeningNummer jsonRekeningNummer) {
                     RekeningNummer rekeningNummer = new RekeningNummer();
@@ -151,7 +154,7 @@ public class RelatieController {
                 }
             }).collect(Collectors.toList()));
 
-            relatie.setTelefoonnummers(telefoonnummerClient.lijst("RELATIE", id).stream().map(new Function<JsonTelefoonnummer, Telefoonnummer>() {
+        relatie.setTelefoonnummers(telefoonnummerClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonTelefoonnummer, Telefoonnummer>() {
                 @Override
                 public Telefoonnummer apply(JsonTelefoonnummer jsonTelefoonnummer) {
                     Telefoonnummer telefoonnummer = new Telefoonnummer();
@@ -167,7 +170,7 @@ public class RelatieController {
                 }
             }).collect(Collectors.toList()));
 
-            relatie.setOpmerkingen(opmerkingClient.lijst("RELATIE", id).stream().map(new Function<JsonOpmerking, Opmerking>() {
+        relatie.setOpmerkingen(opmerkingClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new Function<JsonOpmerking, Opmerking>() {
                 @Override
                 public Opmerking apply(JsonOpmerking jsonOpmerking) {
                     Opmerking opmerking = new Opmerking();
@@ -217,7 +220,7 @@ public class RelatieController {
 
                 relatie.getTelefoonnummerMetGesprekkens().add(telefoonnummerMetGesprekken);
             }
-        }
+        //        }
 
         return relatie;
     }
