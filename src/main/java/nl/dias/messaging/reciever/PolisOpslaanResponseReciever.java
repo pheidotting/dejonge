@@ -6,6 +6,7 @@ import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.as.messaging.request.OpslaanEntiteitenRequest;
 import nl.lakedigital.as.messaging.request.PolisOpslaanRequest;
 import nl.lakedigital.as.messaging.response.PolisOpslaanResponse;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,9 @@ public class PolisOpslaanResponseReciever extends AbstractReciever<PolisOpslaanR
             Polis opgeslagenPolis = polisOpslaanResponse.getPolissen().stream().filter(p -> p.getIdentificatie()//
                     .equals(polis.getIdentificatie())).findFirst().orElse(null);
 
+            LOGGER.debug("Opgeslagen polis : {}", ReflectionToStringBuilder.toString(opgeslagenPolis));
             if (!polis.getOpmerkingen().isEmpty()) {
+                LOGGER.debug("Opmerkingen aanwezig, opslaan dus..");
                 polis.getOpmerkingen().stream().forEach(opmerking -> {
                     opmerking.setEntiteitId(opgeslagenPolis.getId());
                     opmerking.setSoortEntiteit(SoortEntiteit.POLIS);

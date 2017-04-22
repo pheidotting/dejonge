@@ -9,6 +9,7 @@ import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
 import nl.dias.service.PolisService;
 import nl.dias.web.mapper.PolisMapper;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
 import nl.lakedigital.djfc.commons.json.JsonPolis;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -53,6 +54,8 @@ public class PolisController extends AbstractController {
     private PolisClient polisClient;
     @Inject
     private BeindigenPolisRequestSender beindigenPolisRequestSender;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     @RequestMapping(method = RequestMethod.GET, value = "/alleParticulierePolisSoorten", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
@@ -102,13 +105,13 @@ public class PolisController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public void opslaan(@RequestBody JsonPolis jsonPolis, HttpServletRequest httpServletRequest) {
-        LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(jsonPolis));
+    public void opslaan(@RequestBody JsonPolis polis, HttpServletRequest httpServletRequest) {
+        LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(polis));
 
         zetSessieWaarden(httpServletRequest);
 
         polisOpslaanRequestSender.setReplyTo(polisOpslaanResponseDestination);
-        polisOpslaanRequestSender.send(jsonPolis);
+        polisOpslaanRequestSender.send(polis);
 
     }
 

@@ -36,7 +36,8 @@ public class PolisOpslaanRequestSender extends AbstractSender<PolisOpslaanReques
         polisOpslaanRequest.setPolissen(newArrayList(polis).stream().map(jsonPolis -> {
             Polis polis1 = new Polis();
 
-            polis1.setId(polis1.getId());
+            //            polis1.setId(polis1.getId());
+            polis1.setIdentificatie(jsonPolis.getIdentificatie());
             // polissen die al in het systeem staan hoeven net per se een status te
             // hebben
             if (polis1.getStatus() != null) {
@@ -50,7 +51,7 @@ public class PolisOpslaanRequestSender extends AbstractSender<PolisOpslaanReques
             polis1.setBetaalfrequentie(jsonPolis.getBetaalfrequentie());
             polis1.setIngangsDatum(jsonPolis.getIngangsDatum());
             polis1.setEindDatum(jsonPolis.getEindDatum());
-            polis1.setWijzigingsDatum(polis1.getWijzigingsDatum());
+            polis1.setWijzigingsDatum(jsonPolis.getWijzigingsDatum());
             polis1.setProlongatieDatum(jsonPolis.getProlongatieDatum());
             polis1.setBetaalfrequentie(jsonPolis.getBetaalfrequentie());
             polis1.setDekking(jsonPolis.getDekking());
@@ -72,6 +73,7 @@ public class PolisOpslaanRequestSender extends AbstractSender<PolisOpslaanReques
                     opmerking.setMedewerker(jsonOpmerking.getMedewerkerId());
                     opmerking.setTekst(jsonOpmerking.getOpmerking());
                     opmerking.setTijdstip(jsonOpmerking.getTijd());
+                    opmerking.setIdentificatie(jsonOpmerking.getIdentificatie());
 
                     return opmerking;
                 }).collect(Collectors.toList()));
