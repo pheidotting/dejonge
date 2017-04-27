@@ -112,6 +112,8 @@ public class ZoekController extends AbstractController {
                 .map(relatie -> {
                     RelatieZoekResultaat relatieZoekResultaat = new RelatieZoekResultaat();
 
+                    LOGGER.debug("{}", relatie);
+
                     Identificatie identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
 
                     if (identificatie != null) {
