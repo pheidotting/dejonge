@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -117,10 +118,21 @@ public class ZoekService {
                             LOGGER.debug("{}", gebruiker);
                             return (Relatie) gebruiker;
                         }
+                    }).filter(new Predicate<Relatie>() {
+                        @Override
+                        public boolean test(Relatie relatie) {
+                            return relatie != null;
+                        }
                     }).collect(Collectors.toList()));
             bedrijven.addAll(adressen.stream()//
                     .filter(adres1 -> "BEDRIJF".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> bedrijfService.lees(adres1.getEntiteitId()))//
+                    .filter(new Predicate<Bedrijf>() {
+                        @Override
+                        public boolean test(Bedrijf bedrijf) {
+                            return bedrijf != null;
+                        }
+                    })
                     .collect(Collectors.toList()));
         }
         if (postcode != null && !"".equals(postcode)) {
