@@ -4,9 +4,11 @@ import nl.dias.domein.Relatie;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
+import nl.lakedigital.djfc.client.polisadministratie.SchadeClient;
 import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonAdres;
 import nl.lakedigital.djfc.commons.json.JsonPolis;
+import nl.lakedigital.djfc.commons.json.JsonSchade;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -33,6 +35,8 @@ public class RelatieServiceTest extends EasyMockSupport {
     private PolisClient polisClient;
     @Mock
     private AdresClient adresClient;
+    @Mock
+    private SchadeClient schadeClient;
 
     @Test
     public void testZoekRelatieObvRelatieIdentificatie() throws Exception {
@@ -97,6 +101,37 @@ public class RelatieServiceTest extends EasyMockSupport {
         expect(identificatieClient.zoekIdentificatieCode(code)).andReturn(identificatie);
 
         expect(adresClient.lees(adresId)).andReturn(adres);
+
+        expect(gebruikerService.lees(relatieId)).andReturn(relatie);
+
+        replayAll();
+
+        assertThat(relatieService.zoekRelatie(code), is(relatie));
+
+        verifyAll();
+    }
+
+    @Test
+    public void testZoekRelatieObvSchadeIdentificatie() throws Exception {
+        String code = UUID.randomUUID().toString();
+        Long schadeId = 6L;
+        Long polisId = 5L;
+        Long relatieId = 4L;
+        Relatie relatie = new Relatie();
+        JsonPolis polis = new JsonPolis();
+        polis.setEntiteitId(relatieId);
+        JsonSchade schade = new JsonSchade();
+        schade.setPolis(String.valueOf(polisId));
+        schade.setId(schadeId);
+
+        Identificatie identificatie = new Identificatie();
+        identificatie.setEntiteitId(schadeId);
+        identificatie.setSoortEntiteit("SCHADE");
+
+        expect(identificatieClient.zoekIdentificatieCode(code)).andReturn(identificatie);
+
+        expect(schadeClient.lees(String.valueOf(schadeId))).andReturn(schade);
+        expect(polisClient.lees(String.valueOf(polisId))).andReturn(polis);
 
         expect(gebruikerService.lees(relatieId)).andReturn(relatie);
 

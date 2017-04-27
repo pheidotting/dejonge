@@ -37,6 +37,7 @@ public class SchadeOpslaanRequestSender extends AbstractSender<SchadeOpslaanRequ
             Schade schade = new Schade();
 
             schade.setId(jsonSchade1.getId());
+            schade.setIdentificatie(jsonSchade1.getIdentificatie());
             schade.setDatumAfgehandeld(jsonSchade1.getDatumAfgehandeld());
             schade.setDatumTijdMelding(jsonSchade1.getDatumTijdMelding());
             schade.setDatumTijdSchade(jsonSchade1.getDatumTijdSchade());
@@ -56,6 +57,7 @@ public class SchadeOpslaanRequestSender extends AbstractSender<SchadeOpslaanRequ
                     opmerking.setMedewerker(jsonOpmerking.getMedewerkerId());
                     opmerking.setTekst(jsonOpmerking.getOpmerking());
                     opmerking.setTijdstip(jsonOpmerking.getTijd());
+                    opmerking.setIdentificatie(jsonOpmerking.getIdentificatie());
 
                     return opmerking;
                 }).collect(Collectors.toList()));

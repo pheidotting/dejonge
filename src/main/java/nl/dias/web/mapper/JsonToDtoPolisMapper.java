@@ -55,6 +55,7 @@ public class JsonToDtoPolisMapper implements Function<JsonPolis, Polis> {
         polis.setGroepBijlages(groepBijlagesClient.lijstGroepen("POLIS", json.getId()).stream().map(new JsonToDtoGroepBijlageMapper(identificatieClient)).collect(Collectors.toList()));
         polis.setOpmerkingen(opmerkingClient.lijst("POLIS", json.getId()).stream().map(new JsonToDtoOpmerkingMapper(identificatieClient, gebruikerService)).collect(Collectors.toList()));
 
+        polis.setSchades(json.getSchades().stream().map(new JsonToDtoSchadeMapper(bijlageClient, groepBijlagesClient, opmerkingClient, identificatieClient, gebruikerService)).collect(Collectors.toList()));
 
         return polis;
     }
