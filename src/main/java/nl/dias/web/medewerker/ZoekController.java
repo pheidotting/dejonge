@@ -12,7 +12,6 @@ import nl.dias.service.ZoekService;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.*;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,13 +82,20 @@ public class ZoekController extends AbstractController {
             bedrijven = zoekResultaat.getBedrijven();
         } else {
             LOGGER.debug("We laten alles zien");
-            for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
-                LOGGER.debug(ReflectionToStringBuilder.toString((Relatie) r));
+            List<Relatie> lijst = gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor());
+            LOGGER.debug("Gevonden {} Relaties/Gebruikers");
+            for (Gebruiker r : lijst) {
+                LOGGER.debug("{}", r);
                 relaties.add((Relatie) r);
             }
-            for (Bedrijf bedrijf : bedrijfService.alles()) {
+            LOGGER.debug("Dat waren de Relaties");
+            List<Bedrijf> bedrijfjes = bedrijfService.alles();
+            LOGGER.debug("En {} bedrijven gevonden");
+            for (Bedrijf bedrijf : bedrijfjes) {
+                LOGGER.debug("{}", bedrijf);
                 bedrijven.add(bedrijf);
             }
+            LOGGER.debug("En dat waren de bedrijven");
         }
 
         //        List<JsonAdres> adressenBijRelaties = relaties.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
