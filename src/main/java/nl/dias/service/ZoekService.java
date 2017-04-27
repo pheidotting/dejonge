@@ -20,8 +20,6 @@ import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -110,29 +108,16 @@ public class ZoekService {
 
             relaties.addAll(adressen.stream()//
                     .filter(adres1 -> "RELATIE".equals(adres1.getSoortEntiteit()))//
-                    .map(new Function<JsonAdres, Relatie>() {
-                        @Override
-                        public Relatie apply(JsonAdres adres1) {
-                            LOGGER.debug("Relatie met id {}", adres1.getEntiteitId());
-                            Gebruiker gebruiker = gebruikerService.lees(adres1.getEntiteitId());//
-                            LOGGER.debug("{}", gebruiker);
-                            return (Relatie) gebruiker;
-                        }
-                    }).filter(new Predicate<Relatie>() {
-                        @Override
-                        public boolean test(Relatie relatie) {
-                            return relatie != null;
-                        }
-                    }).collect(Collectors.toList()));
+                    .map(adres1 -> {
+                        LOGGER.debug("Relatie met id {}", adres1.getEntiteitId());
+                        Gebruiker gebruiker = gebruikerService.lees(adres1.getEntiteitId());//
+                        LOGGER.debug("{}", gebruiker);
+                        return (Relatie) gebruiker;
+                    }).filter(relatie -> relatie != null).collect(Collectors.toList()));
             bedrijven.addAll(adressen.stream()//
                     .filter(adres1 -> "BEDRIJF".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> bedrijfService.lees(adres1.getEntiteitId()))//
-                    .filter(new Predicate<Bedrijf>() {
-                        @Override
-                        public boolean test(Bedrijf bedrijf) {
-                            return bedrijf != null;
-                        }
-                    })
+                    .filter(bedrijf1 -> bedrijf1 != null)
                     .collect(Collectors.toList()));
         }
         if (postcode != null && !"".equals(postcode)) {
@@ -141,10 +126,11 @@ public class ZoekService {
             relaties.addAll(adressen.stream()//
                     .filter(adres1 -> "RELATIE".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> (Relatie) gebruikerService.lees(adres1.getEntiteitId()))//
-                    .collect(Collectors.toList()));
+                    .filter(relatie -> relatie != null).collect(Collectors.toList()));
             bedrijven.addAll(adressen.stream()//
                     .filter(adres1 -> "BEDRIJF".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> bedrijfService.lees(adres1.getEntiteitId()))//
+                    .filter(bedrijf1 -> bedrijf1 != null)
                     .collect(Collectors.toList()));
         }
         if (woonplaats != null && !"".equals(woonplaats)) {
@@ -153,10 +139,11 @@ public class ZoekService {
             relaties.addAll(adressen.stream()//
                     .filter(adres1 -> "RELATIE".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> (Relatie) gebruikerService.lees(adres1.getEntiteitId()))//
-                    .collect(Collectors.toList()));
+                    .filter(relatie -> relatie != null).collect(Collectors.toList()));
             bedrijven.addAll(adressen.stream()//
                     .filter(adres1 -> "BEDRIJF".equals(adres1.getSoortEntiteit()))//
                     .map(adres1 -> bedrijfService.lees(adres1.getEntiteitId()))//
+                    .filter(bedrijf1 -> bedrijf1 != null)
                     .collect(Collectors.toList()));
         }
 
