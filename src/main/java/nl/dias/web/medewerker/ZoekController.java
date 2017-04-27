@@ -12,6 +12,7 @@ import nl.dias.service.ZoekService;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.*;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,7 @@ public class ZoekController extends AbstractController {
         } else {
             LOGGER.debug("We laten alles zien");
             for (Gebruiker r : gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor())) {
+                LOGGER.debug(ReflectionToStringBuilder.toString((Relatie) r));
                 relaties.add((Relatie) r);
             }
             for (Bedrijf bedrijf : bedrijfService.alles()) {

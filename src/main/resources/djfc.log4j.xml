@@ -20,7 +20,7 @@
     <appender name="debugFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="file" value="/var/log/djfc/djfc.log"/>
         <param name="immediateFlush" value="true"/>
-        <!--<param name="threshold" value="debug"/>-->
+        <param name="threshold" value="debug"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
