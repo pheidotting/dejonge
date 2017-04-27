@@ -99,7 +99,13 @@ public class ZoekService {
             }
         }
         if (adres != null && !"".equals(adres)) {
+            LOGGER.debug("Zoeken op adres : {}", adres);
             List<JsonAdres> adressen = adresClient.zoekOpAdres(adres);
+
+            LOGGER.debug("{} adressen gevonden", adressen.size());
+            for (JsonAdres adres1 : adressen) {
+                LOGGER.debug("{}", adres1);
+            }
 
             relaties.addAll(adressen.stream()//
                     .filter(adres1 -> "RELATIE".equals(adres1.getSoortEntiteit()))//
