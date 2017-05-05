@@ -8,7 +8,6 @@ import nl.lakedigital.djfc.client.oga.*;
 import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
 import nl.lakedigital.djfc.domain.response.Relatie;
 import nl.lakedigital.djfc.domain.response.Telefoongesprek;
-import nl.lakedigital.djfc.domain.response.Telefoonnummer;
 import nl.lakedigital.djfc.domain.response.TelefoonnummerMetGesprekken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -65,25 +63,17 @@ public class RelatieController {
         relatie.setOpmerkingen(opmerkingClient.lijst("RELATIE", relatieDomain.getId()).stream().map(new JsonToDtoOpmerkingMapper(identificatieClient, gebruikerService)).collect(Collectors.toList()));
         relatie.setPolissen(polisClient.lijst(String.valueOf(relatieDomain.getId())).stream().map(new JsonToDtoPolisMapper(bijlageClient, groepBijlagesClient, opmerkingClient, identificatieClient, gebruikerService)).collect(Collectors.toList()));
 
-        List<String> telefoonnummers = relatie.getTelefoonnummers().stream().map(new Function<Telefoonnummer, String>() {
-            @Override
-            public String apply(Telefoonnummer telefoonnummer) {
-                return telefoonnummer.getTelefoonnummer();
-            }
-        }).collect(Collectors.toList());
+        List<String> telefoonnummers = relatie.getTelefoonnummers().stream().map(telefoonnummer -> telefoonnummer.getTelefoonnummer()).collect(Collectors.toList());
 
         Map<String, List<String>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
         for (String nummer : telefonieResult.keySet()) {
             TelefoonnummerMetGesprekken telefoonnummerMetGesprekken = new TelefoonnummerMetGesprekken();
             telefoonnummerMetGesprekken.setTelefoonnummer(nummer);
-            telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(new Function<String, Telefoongesprek>() {
-                @Override
-                public Telefoongesprek apply(String s) {
-                    Telefoongesprek telefoongesprek = new Telefoongesprek();
-                    telefoongesprek.setBestandsnaam(s);
+            telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(s -> {
+                Telefoongesprek telefoongesprek = new Telefoongesprek();
+                telefoongesprek.setBestandsnaam(s);
 
-                    return telefoongesprek;
-                }
+                return telefoongesprek;
             }).collect(Collectors.toList()));
 
             relatie.getTelefoonnummerMetGesprekkens().add(telefoonnummerMetGesprekken);

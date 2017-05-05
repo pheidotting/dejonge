@@ -2,6 +2,7 @@ package nl.dias.web.medewerker;
 
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
+import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonTelefoonnummer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class TelefoonnummerController extends AbstractController {
     public void opslaan(@RequestBody List<JsonTelefoonnummer> jsonEntiteiten, HttpServletRequest httpServletRequest) {
         List<JsonTelefoonnummer> lijst = jsonEntiteiten.stream().map(new Function<JsonTelefoonnummer, JsonTelefoonnummer>() {
             @Override
-            public JsonTelefoonnummer apply(JsonTelefoonnummer adres) {
-                Long entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+            public JsonTelefoonnummer apply(JsonTelefoonnummer telefoonnummer) {
+                Long entiteitId = identificatieClient.zoekIdentificatieCode(telefoonnummer.getParentIdentificatie()).getEntiteitId();
 
-                adres.setEntiteitId(entiteitId);
+                telefoonnummer.setEntiteitId(entiteitId);
 
-                return adres;
+                return telefoonnummer;
             }
         }).collect(Collectors.toList());
         telefoonnummerClient.opslaan(lijst, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
@@ -39,16 +40,20 @@ public class TelefoonnummerController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/alles/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public List<JsonTelefoonnummer> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid) {
-        List<JsonTelefoonnummer> jsonEntiteiten = telefoonnummerClient.lijst(soortentiteit, parentid);
+    public List<JsonTelefoonnummer> alles(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") String parentid) {
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(parentid);
+
+        List<JsonTelefoonnummer> jsonEntiteiten = telefoonnummerClient.lijst(soortentiteit, identificatie.getEntiteitId());
 
         return jsonEntiteiten;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/verwijderen/{soortentiteit}/{parentid}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") Long parentid, HttpServletRequest httpServletRequest) {
-        telefoonnummerClient.verwijder(soortentiteit, parentid, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
+    public void verwijderen(@PathVariable("soortentiteit") String soortentiteit, @PathVariable("parentid") String parentid, HttpServletRequest httpServletRequest) {
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(parentid);
+
+        telefoonnummerClient.verwijder(soortentiteit, identificatie.getEntiteitId(), getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekTerm}", produces = MediaType.APPLICATION_JSON)

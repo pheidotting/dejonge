@@ -14,9 +14,11 @@ import nl.dias.repository.HypotheekRepository;
 import nl.dias.repository.KantoorRepository;
 import nl.dias.repository.PolisRepository;
 import nl.lakedigital.as.messaging.domain.SoortEntiteit;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.client.oga.TelefoonnummerClient;
 import nl.lakedigital.djfc.commons.json.AbstracteJsonEntiteitMetSoortEnId;
+import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonContactPersoon;
 import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
@@ -63,6 +65,8 @@ public class GebruikerService {
     private VerwijderEntiteitenRequestSender verwijderEntiteitRequestSender;
     @Inject
     private EntiteitenOpgeslagenRequestSender entiteitenOpgeslagenRequestSender;
+    @Inject
+    private IdentificatieClient identificatieClient;
 
     public List<ContactPersoon> alleContactPersonen(Long bedrijfsId) {
         return gebruikerRepository.alleContactPersonen(bedrijfsId);
@@ -130,7 +134,8 @@ public class GebruikerService {
         final List<Long> lijstIdsBewaren = newArrayList(filter(transform(jsonContactPersonen, new Function<JsonContactPersoon, Long>() {
             @Override
             public Long apply(JsonContactPersoon contactPersoon) {
-                return contactPersoon.getId();
+                Identificatie identificatie = identificatieClient.zoekIdentificatieCode(contactPersoon.getIdentificatie());
+                return identificatie.getEntiteitId();
             }
         }), new Predicate<Long>() {
             @Override
@@ -155,7 +160,7 @@ public class GebruikerService {
 
         LOGGER.debug("Opslaan ContactPersonen");
         for (JsonContactPersoon jsonContactPersoon : jsonContactPersonen) {
-            jsonContactPersoon.setBedrijf(bedrijfId);
+            //            jsonContactPersoon.setBedrijf(bedrijfId);
             LOGGER.debug("opslaan {}", ReflectionToStringBuilder.toString(jsonContactPersoon, ToStringStyle.SHORT_PREFIX_STYLE));
             ContactPersoon contactPersoon = mapper.map(jsonContactPersoon, ContactPersoon.class);
 

@@ -4,9 +4,15 @@ import nl.dias.domein.Bedrijf;
 import nl.dias.mapper.Mapper;
 import nl.dias.service.BedrijfService;
 import nl.dias.service.GebruikerService;
-import nl.dias.web.mapper.BedrijfMapper;
+import nl.dias.service.RelatieService;
+import nl.dias.web.mapper.*;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
+import nl.lakedigital.djfc.client.oga.*;
+import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
+import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
-import nl.lakedigital.djfc.commons.json.JsonFoutmelding;
+import nl.lakedigital.djfc.domain.response.Telefoongesprek;
+import nl.lakedigital.djfc.domain.response.TelefoonnummerMetGesprekken;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -18,9 +24,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/bedrijf")
 @Controller
@@ -35,35 +42,46 @@ public class BedrijfController extends AbstractController {
     private Mapper mapper;
     @Inject
     private BedrijfMapper bedrijfMapper;
+    @Inject
+    private IdentificatieClient identificatieClient;
+    @Inject
+    private AdresClient adresClient;
+    @Inject
+    private BijlageClient bijlageClient;
+    @Inject
+    private GroepBijlagesClient groepBijlagesClient;
+    @Inject
+    private OpmerkingClient opmerkingClient;
+    @Inject
+    private RekeningClient rekeningClient;
+    @Inject
+    private TelefoonnummerClient telefoonnummerClient;
+    @Inject
+    private TelefonieBestandClient telefonieBestandClient;
+    @Inject
+    private RelatieService relatieService;
+    @Inject
+    private PolisClient polisClient;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaan")//, produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public Response opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf, HttpServletRequest httpServletRequest) {
+    public String opslaanBedrijf(@RequestBody JsonBedrijf jsonBedrijf, HttpServletRequest httpServletRequest) {
         LOGGER.debug("Opslaan {}", ReflectionToStringBuilder.toString(jsonBedrijf, ToStringStyle.SHORT_PREFIX_STYLE));
 
         zetSessieWaarden(httpServletRequest);
 
-        try {
-            Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
-            bedrijfService.opslaan(bedrijf);
+        LOGGER.debug("Opzoeken identificatie {}", jsonBedrijf.getIdentificatie());
 
-            return Response.status(200).entity(bedrijf.getId()).build();
-        } catch (Exception e) {
-            LOGGER.error("Fout bij opslaan Bedrijf", e);
-            return Response.status(500).entity(new JsonFoutmelding(e.getMessage())).build();
-        }
-    }
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonBedrijf.getIdentificatie());
+        LOGGER.debug("Opgehaalde identificatie : {}", ReflectionToStringBuilder.toString(identificatie));
+        jsonBedrijf.setId(String.valueOf(identificatie.getEntiteitId()));
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lees", produces = MediaType.APPLICATION_JSON)
-    @ResponseBody
-    public JsonBedrijf lees(@QueryParam("id") String id) {
-        JsonBedrijf bedrijf;
-        if (id == null || "0".equals(id)) {
-            bedrijf = new JsonBedrijf();
-        } else {
-            bedrijf = mapper.map(bedrijfService.lees(Long.valueOf(id)), JsonBedrijf.class);
-        }
-        return bedrijf;
+        Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
+        bedrijfService.opslaan(bedrijf);
+
+        LOGGER.debug("Return {}", jsonBedrijf.getIdentificatie());
+
+        return jsonBedrijf.getIdentificatie();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lijst", produces = MediaType.APPLICATION_JSON)
@@ -97,4 +115,49 @@ public class BedrijfController extends AbstractController {
             LOGGER.error("Fout bij verwijderen Polis", e);
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/lees/{identificatieCode}", produces = MediaType.APPLICATION_JSON)
+    @ResponseBody
+    public nl.lakedigital.djfc.domain.response.Bedrijf lees(@PathVariable("identificatieCode") String identificatieCode) {
+        LOGGER.debug("Zoeken met identificatiecode {}", identificatieCode);
+
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(identificatieCode);
+
+        nl.dias.domein.Bedrijf bedrijfDomain = bedrijfService.lees(identificatie.getEntiteitId());
+
+
+        nl.lakedigital.djfc.domain.response.Bedrijf bedrijf = new BedrijfToDtoBedrijfMapper().apply(bedrijfDomain);
+        bedrijf.setIdentificatie(identificatieCode);
+
+        bedrijf.setAdressen(adresClient.lijst("BEDRIJF", bedrijfDomain.getId()).stream().map(new JsonToDtoAdresMapper(identificatieClient)).collect(Collectors.toList()));
+        bedrijf.setBijlages(bijlageClient.lijst("BEDRIJF", bedrijfDomain.getId()).stream().map(new JsonToDtoBijlageMapper(identificatieClient)).collect(Collectors.toList()));
+        bedrijf.setGroepBijlages(groepBijlagesClient.lijstGroepen("BEDRIJF", bedrijfDomain.getId()).stream().map(new JsonToDtoGroepBijlageMapper(identificatieClient)).collect(Collectors.toList()));
+        bedrijf.setTelefoonnummers(telefoonnummerClient.lijst("BEDRIJF", bedrijfDomain.getId()).stream().map(new JsonToDtoTelefoonnummerMapper(identificatieClient)).collect(Collectors.toList()));
+        bedrijf.setOpmerkingen(opmerkingClient.lijst("BEDRIJF", bedrijfDomain.getId()).stream().map(new JsonToDtoOpmerkingMapper(identificatieClient, gebruikerService)).collect(Collectors.toList()));
+        bedrijf.setPolissen(polisClient.lijstBijBedrijf(bedrijfDomain.getId()).stream().map(new JsonToDtoPolisMapper(bijlageClient, groepBijlagesClient, opmerkingClient, identificatieClient, gebruikerService)).collect(Collectors.toList()));
+
+        bedrijf.setContactPersoons(gebruikerService.alleContactPersonen(identificatie.getEntiteitId()).stream().map(new DomainToDtoContactPersoonMapper(identificatieClient, telefoonnummerClient)).collect(Collectors.toList()));
+
+        List<String> telefoonnummers = bedrijf.getTelefoonnummers().stream().map(telefoonnummer -> telefoonnummer.getTelefoonnummer()).collect(Collectors.toList());
+        telefoonnummers.addAll(bedrijf.getContactPersoons().stream().map(contactPersoon -> contactPersoon.getTelefoonnummers())//
+                .flatMap(List::stream).map(telefoonnummer -> telefoonnummer.getTelefoonnummer()).collect(Collectors.toList()));
+
+        Map<String, List<String>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
+        for (String nummer : telefonieResult.keySet()) {
+            TelefoonnummerMetGesprekken telefoonnummerMetGesprekken = new TelefoonnummerMetGesprekken();
+            telefoonnummerMetGesprekken.setTelefoonnummer(nummer);
+            telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(s -> {
+                Telefoongesprek telefoongesprek = new Telefoongesprek();
+                telefoongesprek.setBestandsnaam(s);
+
+                return telefoongesprek;
+            }).collect(Collectors.toList()));
+
+            bedrijf.getTelefoonnummerMetGesprekkens().add(telefoonnummerMetGesprekken);
+        }
+
+
+        return bedrijf;
+    }
+
 }

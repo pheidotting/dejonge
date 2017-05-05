@@ -10,7 +10,6 @@ import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.commons.json.*;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -128,16 +127,19 @@ public class GebruikerController extends AbstractController {
         return lijst;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon", produces = MediaType.APPLICATION_JSON)
+    @RequestMapping(method = RequestMethod.POST, value = "/opslaanContactPersoon")
+    //, produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public Long opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon, HttpServletRequest httpServletRequest) {
+    public String opslaanContactPersoon(@RequestBody JsonContactPersoon jsonContactPersoon, HttpServletRequest httpServletRequest) {
         zetSessieWaarden(httpServletRequest);
 
         ContactPersoon contactPersoon = mapper.map(jsonContactPersoon, ContactPersoon.class);
 
         gebruikerService.opslaan(contactPersoon);
 
-        return contactPersoon.getId();
+        Identificatie identificatie = identificatieClient.zoekIdentificatie("CONTACTPERSOON", contactPersoon.getId());
+
+        return identificatie.getIdentificatie();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")//, produces = MediaType.APPLICATION_JSON)
@@ -156,8 +158,6 @@ public class GebruikerController extends AbstractController {
         }
 
         Medewerker medewerker = (Medewerker) authorisatieService.getIngelogdeGebruiker(httpServletRequest, sessie, httpServletRequest.getRemoteAddr());
-
-        LOGGER.debug(ReflectionToStringBuilder.toString(medewerker));
 
         Kantoor kantoor = kantoorRepository.lees(medewerker.getKantoor().getId());
 
