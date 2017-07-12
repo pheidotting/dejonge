@@ -16,7 +16,9 @@ public class DomainToDtoRelatieMapper implements Function<Relatie, nl.lakedigita
         relatie.setVoornaam(domain.getVoornaam());
         relatie.setTussenvoegsel(domain.getTussenvoegsel());
         relatie.setBsn(domain.getBsn());
-        relatie.setGeboorteDatum(domain.getGeboorteDatum().toString(datumFormaat));
+        if (domain.getGeboorteDatum() != null) {
+            relatie.setGeboorteDatum(domain.getGeboorteDatum().toString(datumFormaat));
+        }
         if (domain.getOverlijdensdatum() != null) {
             relatie.setOverlijdensdatum(domain.getOverlijdensdatum().toString(datumFormaat));
         }
