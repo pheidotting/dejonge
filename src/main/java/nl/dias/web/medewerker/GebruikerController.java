@@ -150,7 +150,9 @@ public class GebruikerController extends AbstractController {
         zetSessieWaarden(httpServletRequest);
 
         Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonRelatie.getIdentificatie());
-        jsonRelatie.setId(identificatie.getEntiteitId());
+        if (identificatie != null) {
+            jsonRelatie.setId(identificatie.getEntiteitId());
+        }
 
         String sessie = null;
         if (httpServletRequest.getSession().getAttribute("sessie") != null && !"".equals(httpServletRequest.getSession().getAttribute("sessie"))) {
