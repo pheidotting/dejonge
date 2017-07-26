@@ -10,6 +10,7 @@ import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.commons.json.*;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,14 +147,16 @@ public class GebruikerController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan")//, produces = MediaType.APPLICATION_JSON)
     @ResponseBody
-    public String opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) {
+    public String opslaan(@RequestBody JsonRelatie jsonRelatie, HttpServletRequest httpServletRequest) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         LOGGER.info("Opslaan " + jsonRelatie);
 
         zetSessieWaarden(httpServletRequest);
 
-        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonRelatie.getIdentificatie());
-        if (identificatie != null) {
-            jsonRelatie.setId(identificatie.getEntiteitId());
+        if (jsonRelatie.getIdentificatie() != null) {
+            Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonRelatie.getIdentificatie());
+            if (identificatie != null) {
+                jsonRelatie.setId(identificatie.getEntiteitId());
+            }
         }
 
         String sessie = null;
@@ -172,6 +177,15 @@ public class GebruikerController extends AbstractController {
         gebruikerService.opslaan(relatie);
 
         LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
+
+        if (jsonRelatie.getIdentificatie() == null) {
+            Identificatie identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
+            LOGGER.debug("Opgehaalde identificatie");
+            LOGGER.debug(ReflectionToStringBuilder.toString(identificatie));
+            if (identificatie != null) {
+                relatie.setIdentificatie(identificatie.getIdentificatie());
+            }
+        }
 
         LOGGER.debug("Return {}", relatie.getIdentificatie());
 

@@ -22,8 +22,12 @@ public class DomainToDtoRelatieMapper implements Function<Relatie, nl.lakedigita
         if (domain.getOverlijdensdatum() != null) {
             relatie.setOverlijdensdatum(domain.getOverlijdensdatum().toString(datumFormaat));
         }
-        relatie.setGeslacht(domain.getGeslacht().getOmschrijving());
-        relatie.setBurgerlijkeStaat(domain.getBurgerlijkeStaat().getOmschrijving());
+        if (domain.getGeslacht() != null) {
+            relatie.setGeslacht(domain.getGeslacht().getOmschrijving());
+        }
+        if (domain.getBurgerlijkeStaat() != null) {
+            relatie.setBurgerlijkeStaat(domain.getBurgerlijkeStaat().getOmschrijving());
+        }
         relatie.setEmailadres(domain.getEmailadres());
 
 

@@ -44,33 +44,39 @@
         </property>
     </bean>
     <bean id="adresClient" class="nl.lakedigital.djfc.client.oga.AdresClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="bijlageClient" class="nl.lakedigital.djfc.client.oga.BijlageClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="communicatieClient" class="nl.lakedigital.djfc.client.communicatie.CommunicatieClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="groepBijlagesClient" class="nl.lakedigital.djfc.client.oga.GroepBijlagesClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="opmerkingClient" class="nl.lakedigital.djfc.client.oga.OpmerkingClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="polisClient" class="nl.lakedigital.djfc.client.polisadministratie.PolisClient">
         <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="rekeningClient" class="nl.lakedigital.djfc.client.oga.RekeningClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
+    </bean>
+    <bean id="schadeClient" class="nl.lakedigital.djfc.client.polisadministratie.SchadeClient">
+        <property name="basisUrl" value="${pa.url}"/>
     </bean>
     <bean id="telefoonnummerClient" class="nl.lakedigital.djfc.client.oga.TelefoonnummerClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="telefonieBestandClient" class="nl.lakedigital.djfc.client.oga.TelefonieBestandClient">
-        <property name="basisUrl" value="${oga.url}"/>
+        <property name="basisUrl" value="http://localhost:7075/dejonge"/>
     </bean>
     <bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
         <property name="basisUrl" value="${tb.url}"/>
+    </bean>
+    <bean id="identificatieClient" class="nl.lakedigital.djfc.client.identificatie.IdentificatieClient">
+        <property name="basisUrl" value="${id.url}"/>
     </bean>
 </beans>

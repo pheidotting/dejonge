@@ -52,7 +52,7 @@ public class PolisController extends AbstractController {
     private Destination polisOpslaanResponseDestination;
     @Inject
     private PolisClient polisClient;
-    @Inject
+    //    @Inject
     private BeindigenPolisRequestSender beindigenPolisRequestSender;
     @Inject
     private IdentificatieClient identificatieClient;

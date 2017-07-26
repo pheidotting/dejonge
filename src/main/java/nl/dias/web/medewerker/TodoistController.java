@@ -12,11 +12,8 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +26,9 @@ import javax.ws.rs.core.MediaType;
 @Controller
 @RequestMapping(value = "/todoist")
 @Configuration
-@PropertySources({@PropertySource(value = "file:app.properties", ignoreResourceNotFound = false)})
+//@PropertySources({@PropertySource(value = "file:djfc.app.properties", ignoreResourceNotFound = true),
+//        @PropertySource(value = "djfc.app.properties", ignoreResourceNotFound = true),
+//        @PropertySource(value = "classpath:dev/djfc.app.properties", ignoreResourceNotFound = true)})
 public class TodoistController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TodoistController.class);
 
@@ -38,11 +37,11 @@ public class TodoistController {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Value("${todoist.prefix}")
+    //    @Value("${todoist.prefix}")
     private String todoistPrefix;
-    @Value("${todoist.client.id}")
+    //    @Value("${todoist.client.id}")
     private String todoistClientId;
-    @Value("${todoist.client.secret}")
+    //    @Value("${todoist.client.secret}")
     private String todoistClientSecret;
 
     @RequestMapping(method = RequestMethod.POST, value = "/oauthToken", produces = MediaType.TEXT_PLAIN)

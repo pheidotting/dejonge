@@ -4,7 +4,6 @@ import nl.dias.domein.Aangifte;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Relatie;
 import nl.dias.service.AangifteService;
-import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.AangifteMapper;
 import nl.lakedigital.djfc.commons.json.JsonAangifte;
@@ -34,8 +33,8 @@ public class AangifteController extends AbstractController {
     private AangifteMapper aangifteMapper;
     //    @Autowired
     //    private HttpServletRequest httpServletRequest;
-    @Inject
-    private AuthorisatieService authorisatieService;
+    //    @Inject
+    //    private AuthorisatieService authorisatieService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/openAangiftes", produces = MediaType.APPLICATION_JSON)
     @ResponseBody

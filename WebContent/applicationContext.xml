@@ -10,6 +10,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<context:component-scan base-package="nl.dias" />
 	<context:component-scan base-package="nl.lakedigital.as.taakbeheer.client" />
 
+    <import resource="applicationContext-jms.xml"/>
 
 	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
 	<!--<property name="sessionFactory" ref="sessionFactory" />-->
@@ -317,14 +318,14 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 		<property name="jndiName" value="jdbcDias" />
 	</bean-->
 
-	<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-                <value>file:djfc.app.properties</value>
-			</list>
-		</property>
-        <property name="placeholderPrefix" value="${"/>
-	</bean>
+    <!--<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--<property name="locations">-->
+    <!--<list>-->
+    <!--<value>file:djfc.app.properties</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--<property name="placeholderPrefix" value="${"/>-->
+    <!--</bean>-->
 
 	<context:annotation-config/>
 
@@ -346,7 +347,8 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<!--<property name="inkomendRequestRepository" ref="inkomendRequestRepository" />-->
 	<!--</bean>-->
 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<!--<property name="uniqueResourceName" value="NonXA_DataSource" />-->
 		<!--<property name="minPoolSize" value="2" />-->
 		<!--<property name="maxPoolSize" value="30" />-->

@@ -53,7 +53,9 @@ public class RelatieMapper extends Mapper<Relatie, JsonRelatie> {
         }
 
         relatie.setBsn(jsonRelatie.getBsn());
-        relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
+        if (jsonRelatie.getGeslacht() != null) {
+            relatie.setGeslacht(Geslacht.valueOf(jsonRelatie.getGeslacht().substring(0, 1)));
+        }
 
         for (BurgerlijkeStaat bs : BurgerlijkeStaat.values()) {
             if (bs.getOmschrijving().equals(jsonRelatie.getBurgerlijkeStaat())) {

@@ -65,18 +65,20 @@ public class RelatieController {
 
         List<String> telefoonnummers = relatie.getTelefoonnummers().stream().map(telefoonnummer -> telefoonnummer.getTelefoonnummer()).collect(Collectors.toList());
 
-        Map<String, List<String>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
-        for (String nummer : telefonieResult.keySet()) {
-            TelefoonnummerMetGesprekken telefoonnummerMetGesprekken = new TelefoonnummerMetGesprekken();
-            telefoonnummerMetGesprekken.setTelefoonnummer(nummer);
-            telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(s -> {
-                Telefoongesprek telefoongesprek = new Telefoongesprek();
-                telefoongesprek.setBestandsnaam(s);
+        if (!telefoonnummers.isEmpty()) {
+            Map<String, List<String>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
+            for (String nummer : telefonieResult.keySet()) {
+                TelefoonnummerMetGesprekken telefoonnummerMetGesprekken = new TelefoonnummerMetGesprekken();
+                telefoonnummerMetGesprekken.setTelefoonnummer(nummer);
+                telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(s -> {
+                    Telefoongesprek telefoongesprek = new Telefoongesprek();
+                    telefoongesprek.setBestandsnaam(s);
 
-                return telefoongesprek;
-            }).collect(Collectors.toList()));
+                    return telefoongesprek;
+                }).collect(Collectors.toList()));
 
-            relatie.getTelefoonnummerMetGesprekkens().add(telefoonnummerMetGesprekken);
+                relatie.getTelefoonnummerMetGesprekkens().add(telefoonnummerMetGesprekken);
+            }
         }
 
         return relatie;

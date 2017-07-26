@@ -10,7 +10,9 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
     <context:component-scan base-package="nl.dias"/>
     <context:component-scan base-package="nl.lakedigital"/>
 
-	<!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
+    <import resource="applicationContext-jms.xml"/>
+
+    <!--<bean id="gebruikerRepository" class="nl.dias.repository.GebruikerRepository" depends-on="sessionFactory">-->
 	<!--<property name="sessionFactory" ref="sessionFactory"/>-->
 	<!--</bean>-->
 	<!---->
@@ -207,7 +209,6 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
     </jms:listener-container>
     <!-- // Verwijderen Bedrijven -->
 
-
     <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
@@ -216,7 +217,7 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 		</property>
 		<property name="placeholderPrefix" value="${"/>
 	</bean>
-
+    <!---->
 	<!--<bean id="inkomendRequestRepository" class="nl.lakedigital.djfc.repository.InkomendRequestRepository" depends-on="sessionFactory">-->
 	<!--<property name="sessionFactory" ref="sessionFactory" />-->
 	<!--</bean>-->
@@ -289,5 +290,8 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 	<bean id="taakClient" class="nl.lakedigital.djfc.client.taakbeheer.TaakClient">
 		<property name="basisUrl" value="${tb.url}"/>
 	</bean>
+    <bean id="identificatieClient" class="nl.lakedigital.djfc.client.identificatie.IdentificatieClient">
+        <property name="basisUrl" value="${id.url}"/>
+    </bean>
 
 </beans>
