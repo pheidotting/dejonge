@@ -29,28 +29,15 @@ public class AuthorisatieFilterIT implements Filter {
 
         init();
 
-        //            Gebruiker gebruikerUitDatabase=gebruikerRepository.lees(3L);
-        //
-        //        Sessie sessie = new Sessie();
-        //        sessie.setBrowser(req.getHeader("user-agent"));
-        //        sessie.setIpadres(req.getRemoteAddr());
-        //        sessie.setDatumLaatstGebruikt(new Date());
-        //        sessie.setGebruiker(gebruikerUitDatabase);
-        //        sessie.setSessie(UUID.randomUUID().toString());
-        //
-        //        gebruikerService.opslaan(sessie);
-        //
-        //        gebruikerUitDatabase.getSessies().add(sessie);
-        //        gebruikerUitDatabase.setAchternaam("tt");
-        //
-        //        gebruikerService.opslaan(gebruikerUitDatabase);
-        //
-        //        LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
-        //        LOGGER.debug(ReflectionToStringBuilder.toString(sessie));
+        LOGGER.debug("Request set Attribute");
 
         req.getSession().setAttribute("id", 3L);
 
+        LOGGER.debug("Done request set Attribute");
+
         opruimen();
+
+        LOGGER.debug("Opgeruimd, verder de filterchain in");
 
         chain.doFilter(request, response);
     }
