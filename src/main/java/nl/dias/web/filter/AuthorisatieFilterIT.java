@@ -47,7 +47,7 @@ public class AuthorisatieFilterIT implements Filter {
 
     private void init() {
         LOGGER.debug("1");
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-local.xml");
         LOGGER.debug("2");
         gebruikerRepository = (GebruikerRepository) applicationContext.getBean("gebruikerRepository");
         LOGGER.debug("3");
