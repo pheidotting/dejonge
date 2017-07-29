@@ -48,17 +48,20 @@
     <logger name="org.springframework.jms.connection">
         <level value="error"/>
     </logger>
+    <logger name="org.springframework.jms.listener">
+        <level value="off"/>
+    </logger>
     <logger name="org.apache.activemq">
         <level value="error"/>
     </logger>
     <logger name="org.eclipse.jetty">
-        <level value="error"/>
+        <level value="off"/>
     </logger>
     <logger name="org.eclipse.jetty.util.component">
-        <level value="error"/>
+        <level value="off"/>
     </logger>
     <logger name="org.mortbay.component">
-        <level value="error"/>
+        <level value="off"/>
     </logger>
     <!--<logger name="nl.lakedigital.djfc">-->
     <!--<level value="trace" />-->
