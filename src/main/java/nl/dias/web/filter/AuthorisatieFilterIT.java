@@ -3,6 +3,7 @@ package nl.dias.web.filter;
 import nl.dias.repository.GebruikerRepository;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +28,8 @@ public class AuthorisatieFilterIT implements Filter {
         LOGGER.debug("In AuthorisatieFilter");
         HttpServletRequest req = (HttpServletRequest) request;
 
+        LOGGER.debug(ReflectionToStringBuilder.toString(req));
+
         init();
 
         LOGGER.debug("Request set Attribute");
@@ -43,10 +46,15 @@ public class AuthorisatieFilterIT implements Filter {
     }
 
     private void init() {
+        LOGGER.debug("1");
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        LOGGER.debug("2");
         gebruikerRepository = (GebruikerRepository) applicationContext.getBean("gebruikerRepository");
+        LOGGER.debug("3");
         gebruikerService = (GebruikerService) applicationContext.getBean("gebruikerService");
+        LOGGER.debug("4");
         authorisatieService = (AuthorisatieService) applicationContext.getBean("authorisatieService");
+        LOGGER.debug("5");
     }
 
     private void opruimen() {
