@@ -47,6 +47,12 @@
     <logger name="org.hibernate">
         <level value="error"/>
     </logger>
+    <logger name="org.springframework.jms.connection">
+        <level value="error"/>
+    </logger>
+    <logger name="org.apache.activemq">
+        <level value="error"/>
+    </logger>
 
     <root>
         <priority value="debug"></priority>

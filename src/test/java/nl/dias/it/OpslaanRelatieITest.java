@@ -6,6 +6,8 @@ import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId;
 import nl.lakedigital.as.messaging.request.EntiteitenOpgeslagenRequest;
 import nl.lakedigital.djfc.commons.json.JsonRelatie;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,14 +36,24 @@ public class OpslaanRelatieITest extends AbstractITest {
     @Inject
     private JmsTemplate entiteitenOpgeslagenRequestTemplate;
 
-    @Test
-    public void testOpslaanNieuweRelatieMetAlleenVoorEnAchternaam() throws JAXBException, JMSException {
-        String uuid = UUID.randomUUID().toString();
+    private WireMockServer wireMockServer;
 
-        WireMockServer wireMockServer = new WireMockServer(8089);
+    @Before
+    public void init() {
+        wireMockServer = new WireMockServer(8089);
         configureFor("localhost", 8089);
 
         wireMockServer.start();
+    }
+
+    @After
+    public void cleanup() {
+        wireMockServer.stop();
+    }
+
+    @Test
+    public void testOpslaanNieuweRelatieMetAlleenVoorEnAchternaam() throws JAXBException, JMSException {
+        String uuid = UUID.randomUUID().toString();
 
         JsonRelatie relatie = new JsonRelatie();
 
@@ -49,16 +61,11 @@ public class OpslaanRelatieITest extends AbstractITest {
         relatie.setVoornaam("Peter");
 
         test(relatie, uuid);
-
-        wireMockServer.stop();
     }
 
     @Test
     public void testOpslaanNieuweRelatieVolledigGevuld() throws JMSException, JAXBException {
         String uuid = UUID.randomUUID().toString();
-
-        WireMockServer wireMockServer = new WireMockServer(8089);
-        configureFor("localhost", 8089);
 
         JsonRelatie relatie = new JsonRelatie();
 
@@ -71,8 +78,6 @@ public class OpslaanRelatieITest extends AbstractITest {
         relatie.setBsn("123456789");
         relatie.setGeslacht("Man");
         relatie.setBurgerlijkeStaat("Ongehuwd");
-
-        wireMockServer.start();
 
         JsonRelatie result = test(relatie, uuid);
 
@@ -88,8 +93,6 @@ public class OpslaanRelatieITest extends AbstractITest {
         result.setOverlijdensdatum("2017-07-02");
 
         JsonRelatie result2 = test(result, uuid);
-
-        wireMockServer.stop();
 
         assertThat(result2.getTussenvoegsel(), is(result.getTussenvoegsel()));
         assertThat(result2.getGeboorteDatum(), is(result.getGeboorteDatum()));
