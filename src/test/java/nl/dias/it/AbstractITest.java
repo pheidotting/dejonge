@@ -1,19 +1,42 @@
 package nl.dias.it;
 
 import com.google.gson.Gson;
+import nl.lakedigital.as.messaging.request.EntiteitenOpgeslagenRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.client.RestTemplate;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 
 public class AbstractITest {
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractITest.class);
 
     protected final String GEBRUIKER_OPSLAAN = "http://localhost:7075/dejonge/rest/medewerker/gebruiker/opslaan";
     protected final String RELATIE_LEZEN = "http://localhost:7075/dejonge/rest/medewerker/relatie/lees";
+
+    protected <T> T getMessageFromTemplate(JmsTemplate jmsTemplate, Class<T> clazz) throws JAXBException, JMSException {
+        Message m = jmsTemplate.receive();
+        TextMessage message = (TextMessage) m;
+        JAXBContext jaxbContext = JAXBContext.newInstance(EntiteitenOpgeslagenRequest.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+        T ontvangenObject = (T) jaxbUnmarshaller.unmarshal(new StringReader(message.getText()));
+
+        m.acknowledge();
+
+        return ontvangenObject;
+    }
 
     protected String doePost(Object entiteit, String url, String trackAndTraceId) {
         HttpHeaders headers = new HttpHeaders();

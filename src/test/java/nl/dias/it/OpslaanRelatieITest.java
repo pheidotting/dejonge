@@ -2,24 +2,40 @@ package nl.dias.it;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.gson.Gson;
+import nl.lakedigital.as.messaging.domain.SoortEntiteit;
+import nl.lakedigital.as.messaging.domain.SoortEntiteitEnEntiteitId;
+import nl.lakedigital.as.messaging.request.EntiteitenOpgeslagenRequest;
 import nl.lakedigital.djfc.commons.json.JsonRelatie;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.inject.Inject;
+import javax.jms.JMSException;
+import javax.xml.bind.JAXBException;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:applicationContext-it.xml")
 public class OpslaanRelatieITest extends AbstractITest {
     private final static Logger LOGGER = LoggerFactory.getLogger(OpslaanRelatieITest.class);
-    public static Long id = 6L;
+
+    @Inject
+    private JmsTemplate entiteitenOpgeslagenRequestTemplate;
 
     @Test
-    public void testOpslaanNieuweRelatieMetAlleenVoorEnAchternaam() {
+    public void testOpslaanNieuweRelatieMetAlleenVoorEnAchternaam() throws JAXBException, JMSException {
         String uuid = UUID.randomUUID().toString();
 
         WireMockServer wireMockServer = new WireMockServer(8089);
@@ -32,20 +48,17 @@ public class OpslaanRelatieITest extends AbstractITest {
         relatie.setAchternaam("Parker");
         relatie.setVoornaam("Peter");
 
-        test(relatie, uuid, String.valueOf(OpslaanRelatieITest.id));
-        OpslaanRelatieITest.id = OpslaanRelatieITest.id + 1;
+        test(relatie, uuid);
 
         wireMockServer.stop();
     }
 
     @Test
-    public void testOpslaanNieuweRelatieVolledigGevuld() {
+    public void testOpslaanNieuweRelatieVolledigGevuld() throws JMSException, JAXBException {
         String uuid = UUID.randomUUID().toString();
 
         WireMockServer wireMockServer = new WireMockServer(8089);
         configureFor("localhost", 8089);
-
-        wireMockServer.start();
 
         JsonRelatie relatie = new JsonRelatie();
 
@@ -56,31 +69,54 @@ public class OpslaanRelatieITest extends AbstractITest {
         relatie.setEmailadres("a@b.c");
         relatie.setRoepnaam("Batman");
         relatie.setBsn("123456789");
-        relatie.setOverlijdensdatum("2011-02-03");
         relatie.setGeslacht("Man");
         relatie.setBurgerlijkeStaat("Ongehuwd");
 
-        JsonRelatie result = test(relatie, uuid, String.valueOf(OpslaanRelatieITest.id));
-        OpslaanRelatieITest.id = OpslaanRelatieITest.id + 1;
+        wireMockServer.start();
 
-        wireMockServer.stop();
+        JsonRelatie result = test(relatie, uuid);
 
         assertThat(result.getTussenvoegsel(), is(relatie.getTussenvoegsel()));
         assertThat(result.getGeboorteDatum(), is(relatie.getGeboorteDatum()));
-        //        assertThat(result.getEmailadres(), is(relatie.getEmailadres()));
+        assertThat(result.getEmailadres(), is(nullValue()));
         assertThat(result.getRoepnaam(), is(relatie.getRoepnaam()));
         assertThat(result.getBsn(), is(relatie.getBsn()));
         assertThat(result.getOverlijdensdatum(), is(relatie.getOverlijdensdatum()));
         assertThat(result.getGeslacht(), is(relatie.getGeslacht()));
         assertThat(result.getBurgerlijkeStaat(), is(relatie.getBurgerlijkeStaat()));
+
+        result.setOverlijdensdatum("2017-07-02");
+
+        JsonRelatie result2 = test(result, uuid);
+
+        wireMockServer.stop();
+
+        assertThat(result2.getTussenvoegsel(), is(result.getTussenvoegsel()));
+        assertThat(result2.getGeboorteDatum(), is(result.getGeboorteDatum()));
+        //        assertThat(result2.getEmailadres(), is(result.getOverlijdensdatum()));
+        assertThat(result2.getRoepnaam(), is(result.getRoepnaam()));
+        assertThat(result2.getBsn(), is(result.getBsn()));
+        assertThat(result2.getOverlijdensdatum(), is(result.getOverlijdensdatum()));
+        assertThat(result2.getGeslacht(), is(result.getGeslacht()));
+        assertThat(result2.getBurgerlijkeStaat(), is(result.getBurgerlijkeStaat()));
     }
 
-    private JsonRelatie test(JsonRelatie relatie, String uuid, String relatieId) {
-        Stub stubIdentificatieZoekOpSoortEnId = stubIdentificatieZoekOpSoortEnId(zoekIdentificatieResponse(uuid, relatieId));
+    private JsonRelatie test(JsonRelatie relatie, String uuid) throws JAXBException, JMSException {
+        Stub stubIdentificatieZoekOpSoortEnId = stubIdentificatieZoekOpSoortEnId(zoekIdentificatieResponse(uuid, null));
 
         String id = doePost(relatie, GEBRUIKER_OPSLAAN, UUID.randomUUID().toString());
 
         assertThat(id, is(uuid));
+
+        EntiteitenOpgeslagenRequest entiteitenOpgeslagenRequest = getMessageFromTemplate(entiteitenOpgeslagenRequestTemplate, EntiteitenOpgeslagenRequest.class);
+        SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = entiteitenOpgeslagenRequest.getSoortEntiteitEnEntiteitIds().stream().findFirst().filter(new Predicate<SoortEntiteitEnEntiteitId>() {
+            @Override
+            public boolean test(SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId) {
+                return soortEntiteitEnEntiteitId.getSoortEntiteit() == SoortEntiteit.RELATIE;
+            }
+        }).orElse(null);
+
+        String relatieId = soortEntiteitEnEntiteitId.getEntiteitId().toString();
 
         Stub stubIdentificatieZoekenOpCode = stubIdentificatieZoekenOpCode(id, zoekIdentificatieResponse(uuid, relatieId));
         Stub stubZoekAlleAdressen = stubZoekAlleAdressen(adressenResponse());

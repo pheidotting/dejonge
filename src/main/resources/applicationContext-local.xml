@@ -17,7 +17,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <!--<property name="placeholderPrefix" value="${"/>-->
     <!--</bean>-->
 
-    <bean id="MariaDbServer" class="nl.lakedigital.djfc.mariadbserver.MariaDBServer" init-method="init">
+    <bean id="MariaDbServer" class="nl.lakedigital.djfc.mariadbserver.MariaDBServer" init-method="init"
+          depends-on="broker">
         <property name="poortNummer" value="3315"/>
     </bean>
 
