@@ -96,6 +96,8 @@ public class AuthorisatieService {
             gebruikerService.opslaan(sessie);
             gebruikerService.opslaan(gebruikerUitDatabase);
         }
+
+        response.setHeader("sessie", sessie.getSessie());
     }
 
     public Gebruiker getIngelogdeGebruiker(HttpServletRequest request, String sessieId, String ipadres) {

@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import nl.lakedigital.as.messaging.request.EntiteitenOpgeslagenRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,12 +15,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.util.UUID;
 
 public class AbstractITest {
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractITest.class);
+    protected String sessie = null;
 
     protected final String GEBRUIKER_OPSLAAN = "http://localhost:7075/dejonge/rest/medewerker/gebruiker/opslaan";
     protected final String RELATIE_LEZEN = "http://localhost:7075/dejonge/rest/medewerker/relatie/lees";
+    protected final String INLOGGEN = "http://localhost:7075/dejonge/rest/authorisatie/authorisatie/inloggen";
 
     protected <T> T getMessageFromTemplate(JmsTemplate jmsTemplate, Class<T> clazz) throws JAXBException, JMSException {
         Message m = jmsTemplate.receive();
@@ -38,33 +38,65 @@ public class AbstractITest {
         return ontvangenObject;
     }
 
-    protected String doePost(Object entiteit, String url, String trackAndTraceId) {
+    protected String doePost(Object entiteit, String url, String trackAndTraceId, String sessie) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("trackAndTraceId", trackAndTraceId);
+        if (sessie != null) {
+            headers.set("sessie", sessie);
+        }
 
         HttpEntity<String> entity = new HttpEntity<>(new Gson().toJson(entiteit), headers);
 
         RestTemplate restTemplate = new RestTemplate();
 
         LOGGER.debug("Aanroepen {}", url);
-        System.out.println("Aanroepen " + url);
 
         ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
 
         return response.getBody();
     }
 
-    protected String doeGet(String url) {
+    protected void inloggen() {
+        String trackAndTraceId = UUID.randomUUID().toString();
+        String url = INLOGGEN;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("trackAndTraceId", trackAndTraceId);
+
+        HttpEntity<String> entity = new HttpEntity<>("{\"identificatie\":\"djfc.bene\",\"wachtwoord\":\"bene\",\"onthouden\":false,\"onjuisteGebruikersnaam\":false,\"onjuistWachtwoord\":false}", headers);
 
         RestTemplate restTemplate = new RestTemplate();
 
         LOGGER.debug("Aanroepen {}", url);
-        System.out.println("Aanroepen " + url);
 
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+        String sessie = response.getHeaders().get("sessie").get(0);
+        if (sessie != null) {
+            this.sessie = sessie;
+        }
+    }
+
+    protected String doeGet(String url, String sessie) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (sessie != null) {
+            LOGGER.debug("#################");
+            LOGGER.debug("#################");
+            LOGGER.debug("#################");
+            LOGGER.debug("#################");
+            LOGGER.debug("Sessie id ({}) zetten", sessie);
+            headers.set("sessie", sessie);
+        }
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        LOGGER.debug("Aanroepen {}", url);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
         return response.getBody();
     }

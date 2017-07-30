@@ -44,6 +44,8 @@ public class OpslaanRelatieITest extends AbstractITest {
         configureFor("localhost", 8089);
 
         wireMockServer.start();
+
+        inloggen();
     }
 
     @After
@@ -107,7 +109,7 @@ public class OpslaanRelatieITest extends AbstractITest {
     private JsonRelatie test(JsonRelatie relatie, String uuid) throws JAXBException, JMSException {
         Stub stubIdentificatieZoekOpSoortEnId = stubIdentificatieZoekOpSoortEnId(zoekIdentificatieResponse(uuid, null));
 
-        String id = doePost(relatie, GEBRUIKER_OPSLAAN, UUID.randomUUID().toString());
+        String id = doePost(relatie, GEBRUIKER_OPSLAAN, UUID.randomUUID().toString(), this.sessie);
 
         assertThat(id, is(uuid));
 
@@ -130,7 +132,7 @@ public class OpslaanRelatieITest extends AbstractITest {
         Stub stubOpmerking = stubOpmerking(opmerkingResponse());
         Stub stubPolis = stubPolis(polisResponse());
 
-        String rel = doeGet(RELATIE_LEZEN + "/" + id);
+        String rel = doeGet(RELATIE_LEZEN + "/" + id, this.sessie);
 
         JsonRelatie result = new Gson().fromJson(rel, JsonRelatie.class);
 

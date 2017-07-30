@@ -49,18 +49,18 @@
     </servlet-mapping>
 
 
-    <!--<servlet>-->
-    <!--<servlet-name>relatiebeheer-authorisatie</servlet-name>-->
-    <!--<servlet-class>-->
-    <!--org.springframework.web.servlet.DispatcherServlet-->
-    <!--</servlet-class>-->
-    <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
+    <servlet>
+        <servlet-name>relatiebeheer-authorisatie</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-    <!--<servlet-mapping>-->
-    <!--<servlet-name>relatiebeheer-authorisatie</servlet-name>-->
-    <!--<url-pattern>/rest/authorisatie/*</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>relatiebeheer-authorisatie</servlet-name>
+        <url-pattern>/rest/authorisatie/*</url-pattern>
+    </servlet-mapping>
 
     <!--<listener>-->
     <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
@@ -85,7 +85,7 @@
 
     <filter>
         <filter-name>Authorisatie</filter-name>
-        <filter-class>nl.dias.web.filter.AuthorisatieFilterIT</filter-class>
+        <filter-class>nl.dias.web.filter.AuthorisatieFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Authorisatie</filter-name>
