@@ -1,7 +1,6 @@
 package nl.dias.it;
 
 import com.google.gson.Gson;
-import nl.lakedigital.as.messaging.request.EntiteitenOpgeslagenRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -28,7 +27,7 @@ public class AbstractITest {
     protected <T> T getMessageFromTemplate(JmsTemplate jmsTemplate, Class<T> clazz) throws JAXBException, JMSException {
         Message m = jmsTemplate.receive();
         TextMessage message = (TextMessage) m;
-        JAXBContext jaxbContext = JAXBContext.newInstance(EntiteitenOpgeslagenRequest.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
         T ontvangenObject = (T) jaxbUnmarshaller.unmarshal(new StringReader(message.getText()));
@@ -82,11 +81,6 @@ public class AbstractITest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         if (sessie != null) {
-            LOGGER.debug("#################");
-            LOGGER.debug("#################");
-            LOGGER.debug("#################");
-            LOGGER.debug("#################");
-            LOGGER.debug("Sessie id ({}) zetten", sessie);
             headers.set("sessie", sessie);
         }
 
