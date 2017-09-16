@@ -36,6 +36,13 @@
     </repositories>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.coaxys/log4slack-java -->
+        <dependency>
+            <groupId>com.coaxys</groupId>
+            <artifactId>log4slack-java</artifactId>
+            <version>1.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
