@@ -18,12 +18,31 @@
     </appender>
 
     <appender name="debugFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/var/log/djfc/djfc.log"/>
+        <param name="file" value="/var/log/djfc/dfjc.log"/>
         <param name="immediateFlush" value="true"/>
-        <param name="threshold" value="debug"/>
+        <!--<param name="threshold" value="debug"/>-->
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="Slack" class="com.coaxys.log4slack.SlackAppender">
+        <param name="url" value="https://hooks.slack.com/services/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"/>
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="error"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="loggly" class="nl.lakedigital.djfc.appender.LogglyAppender">
+        <param name="tag" value="prd,djfc"/>
+        <param name="token" value="ffe37ab7-e154-4316-a54e-888323b15e7e"/>
+        <param name="batchSize" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n"/>
         </layout>
     </appender>
 
@@ -45,19 +64,14 @@
     <logger name="ch.vorburger">
         <level value="off"/>
     </logger>
-    <logger name="org.springframework.jms.connection">
-        <level value="error"/>
-    </logger>
-    <logger name="org.apache.activemq">
-        <level value="error"/>
-    </logger>
     <!--<logger name="nl.lakedigital.djfc">-->
     <!--<level value="trace" />-->
     <!--</logger>-->
 
     <root>
         <priority value="trace"/>
-        <!--<appender-ref ref="console" />-->
+        <appender-ref ref="Slack"/>
+        <appender-ref ref="loggly"/>
         <appender-ref ref="debugFileAppender"/>
     </root>
 </log4j:configuration>

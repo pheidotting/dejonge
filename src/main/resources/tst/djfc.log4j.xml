@@ -27,8 +27,18 @@
         </layout>
     </appender>
 
+    <appender name="Slack" class="com.coaxys.log4slack.SlackAppender">
+        <param name="url" value="https://hooks.slack.com/services/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"/>
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="error"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
+        </layout>
+    </appender>
+
     <appender name="loggly" class="nl.lakedigital.djfc.appender.LogglyAppender">
-        <param name="tag" value="dev,djfc"/>
+        <param name="tag" value="tst,djfc"/>
         <param name="token" value="ffe37ab7-e154-4316-a54e-888323b15e7e"/>
         <param name="batchSize" value="1"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -60,8 +70,8 @@
 
     <root>
         <priority value="trace"/>
-        <appender-ref ref="console"/>
-        <appender-ref ref="debugFileAppender"/>
+        <appender-ref ref="Slack"/>
         <appender-ref ref="loggly"/>
+        <appender-ref ref="debugFileAppender"/>
     </root>
 </log4j:configuration>
