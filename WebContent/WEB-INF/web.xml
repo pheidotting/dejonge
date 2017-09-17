@@ -105,8 +105,8 @@
 	<listener>
 		<listener-class>nl.dias.web.servlet.ScheduleServlet</listener-class>
 	</listener>
-	<listener>
-		<listener-class>nl.dias.web.servlet.AanmeldenEntiteitenBijIdentificatieServlet</listener-class>
-	</listener>
+    <!--<listener>-->
+    <!--<listener-class>nl.dias.web.servlet.AanmeldenEntiteitenBijIdentificatieServlet</listener-class>-->
+    <!--</listener>-->
 
 </web-app>
