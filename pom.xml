@@ -36,7 +36,6 @@
     </repositories>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.coaxys/log4slack-java -->
         <dependency>
             <groupId>com.coaxys</groupId>
             <artifactId>log4slack-java</artifactId>
