@@ -571,8 +571,8 @@
                                         <resource>
                                             <directory>${basedir}/src/main/resources/dev</directory>
                                             <includes>
-                                                <include>djfc.app.properties</include>
-                                                <include>djfc.log4j.xml</include>
+                                                <include>dev/djfc.app.properties</include>
+                                                <include>dev/djfc.log4j.xml</include>
                                             </includes>
                                         </resource>
                                     </resources>
