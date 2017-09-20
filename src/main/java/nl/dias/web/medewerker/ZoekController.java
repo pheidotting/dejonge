@@ -51,7 +51,7 @@ public class ZoekController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public ZoekResultaatResponse zoeken() {
-        return new ZoekResultaatResponse();//zoeken("", 0L);
+        return zoeken("", 0L);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/zoeken/{zoekterm}", produces = MediaType.APPLICATION_JSON)
