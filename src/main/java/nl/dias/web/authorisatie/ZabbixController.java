@@ -1,6 +1,7 @@
 package nl.dias.web.authorisatie;
 
-import nl.dias.service.GebruikerService;
+import nl.dias.repository.GebruikerRepository;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,13 +18,15 @@ public class ZabbixController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZabbixController.class);
 
     @Inject
-    private GebruikerService gebruikerService;
+    private GebruikerRepository gebruikerRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkDatabase", produces = MediaType.TEXT_PLAIN)
     @ResponseBody
     public int checkDatabase() {
         try {
-            gebruikerService.alleContactPersonen(1L);
+            gebruikerRepository.getSession().getTransaction().begin();
+            LOGGER.debug(ReflectionToStringBuilder.toString(gebruikerRepository.getSession().createSQLQuery("/* ping */ SELECT 1").uniqueResult()));
+            gebruikerRepository.getSession().getTransaction().commit();
             return 1;
         } catch (Exception e) {
             LOGGER.error("Database niet beschikbaar", e);
