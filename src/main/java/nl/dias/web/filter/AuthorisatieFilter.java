@@ -12,13 +12,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 
 @Provider
@@ -48,27 +46,6 @@ public class AuthorisatieFilter implements Filter {
 
             Gebruiker gebruiker = null;
             Sessie sessie;
-            Cookie cookie = null;
-
-            LOGGER.debug("koekjes opzoeken");
-            init();
-            List<Cookie> cookies = authorisatieService.getCookies(req);
-            for (Cookie koekje : cookies) {
-                LOGGER.debug(koekje.getValue());
-                if (gebruiker == null) {
-                    try {
-                        init();
-                        gebruiker = gebruikerRepository.zoekOpCookieCode(koekje.getValue());
-                    } catch (NietGevondenException e) {
-                        LOGGER.debug("niks gevonden in de database op basis van cookie code", e);
-                    }
-                    cookie = koekje;
-                }
-            }
-            LOGGER.debug("klaar met de koekjes, gevonden : " + gebruiker);
-            if (cookie != null) {
-                LOGGER.debug("via cookie met code " + cookie.getValue());
-            }
 
             if (gebruiker == null) {
                 final String sessieId = (String) req.getSession().getAttribute("sessie");
