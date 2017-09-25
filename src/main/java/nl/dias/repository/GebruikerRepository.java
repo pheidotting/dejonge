@@ -2,10 +2,7 @@ package nl.dias.repository;
 
 import nl.dias.domein.*;
 import nl.lakedigital.loginsystem.exception.NietGevondenException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -35,7 +32,12 @@ public class GebruikerRepository {//extends AbstractRepository<Gebruiker> {
     }
 
     public Session getSession() {
-        return sessionFactory.getCurrentSession();
+        try {
+            return sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            LOGGER.trace("{}", e);
+            return sessionFactory.openSession();
+        }
     }
 
     protected Session getEm() {
