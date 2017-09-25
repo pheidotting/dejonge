@@ -1,7 +1,6 @@
 package nl.dias.web.authorisatie;
 
 import nl.dias.repository.GebruikerRepository;
-import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class ZabbixController {
     public String checkDatabase() {
         try {
             gebruikerRepository.getSession().getTransaction().begin();
-            LOGGER.debug(ReflectionToStringBuilder.toString(gebruikerRepository.getSession().createSQLQuery("/* ping */ SELECT 1").uniqueResult()));
+            gebruikerRepository.getSession().createSQLQuery("/* ping */ SELECT 1").uniqueResult();
             gebruikerRepository.getSession().getTransaction().commit();
             return "1";
         } catch (Exception e) {
