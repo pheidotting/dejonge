@@ -31,10 +31,17 @@ public class AdresController extends AbstractController {
         List<JsonAdres> lijst = jsonEntiteiten.stream().map(new Function<JsonAdres, JsonAdres>() {
             @Override
             public JsonAdres apply(JsonAdres adres) {
-                Long entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+                Long entiteitId;
+                if (adres.getParentIdentificatie() != null) {
+                    try {
+                        entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+                    } catch (Exception e) {
+                        LOGGER.error("Onverwachte fout opgetreden", e);
+                        throw e;
+                    }
 
-                adres.setEntiteitId(entiteitId);
-
+                    adres.setEntiteitId(entiteitId);
+                }
                 return adres;
             }
         }).collect(Collectors.toList());
