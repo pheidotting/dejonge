@@ -10,7 +10,6 @@ import nl.dias.service.GebruikerService;
 import nl.dias.web.mapper.RelatieMapper;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.commons.json.*;
-import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +23,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @RequestMapping("/gebruiker")
 @Controller
@@ -179,21 +180,19 @@ public class GebruikerController extends AbstractController {
         LOGGER.debug("Relatie met id " + relatie.getId() + " opgeslagen");
 
         if (jsonRelatie.getIdentificatie() == null) {
-            Identificatie identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
-            LOGGER.debug("Opgehaalde identificatie");
-            LOGGER.debug(ReflectionToStringBuilder.toString(identificatie));
+            Future<Identificatie> identificatieFuture = identificatieClient.zoekIdentificatieMetFuture("RELATIE", relatie.getId());
+
+            Identificatie identificatie = null;
+            try {
+                identificatie = identificatieFuture.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
             if (identificatie != null) {
                 relatie.setIdentificatie(identificatie.getIdentificatie());
-            } else {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
-                if (identificatie != null) {
-                    relatie.setIdentificatie(identificatie.getIdentificatie());
-                }
             }
         }
 
