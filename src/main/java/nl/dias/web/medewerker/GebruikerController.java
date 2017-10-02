@@ -184,6 +184,16 @@ public class GebruikerController extends AbstractController {
             LOGGER.debug(ReflectionToStringBuilder.toString(identificatie));
             if (identificatie != null) {
                 relatie.setIdentificatie(identificatie.getIdentificatie());
+            } else {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
+                if (identificatie != null) {
+                    relatie.setIdentificatie(identificatie.getIdentificatie());
+                }
             }
         }
 
