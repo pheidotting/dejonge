@@ -37,7 +37,7 @@ public class AdresController extends AbstractController {
                     try {
                         entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
                     } catch (Exception e) {
-                        LOGGER.error("Onverwachte fout opgetreden", e);
+                        LOGGER.error("Onverwachte fout opgetreden {}", e);
                         throw e;
                     }
 
