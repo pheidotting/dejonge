@@ -185,10 +185,8 @@ public class GebruikerController extends AbstractController {
             Identificatie identificatie = null;
             try {
                 identificatie = identificatieFuture.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException e) {
+                LOGGER.error("Fout bij ophalen identificatie", e);
             }
 
             if (identificatie != null) {
