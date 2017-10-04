@@ -29,22 +29,28 @@ public class AdresController extends AbstractController {
     @RequestMapping(method = RequestMethod.POST, value = "/opslaan", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public void opslaan(@RequestBody List<JsonAdres> jsonEntiteiten, HttpServletRequest httpServletRequest) {
-        List<JsonAdres> lijst = jsonEntiteiten.stream().map(new Function<JsonAdres, JsonAdres>() {
-            @Override
-            public JsonAdres apply(JsonAdres adres) {
-                Long entiteitId;
-                if (adres.getParentIdentificatie() != null) {
+        List<JsonAdres> lijst = jsonEntiteiten.stream().map(adres -> {
+            Long entiteitId;
+            if (adres.getParentIdentificatie() != null&&!"".equals(adres.getParentIdentificatie())) {
+                try {
+                    entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
+                } catch (Exception e) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                     try {
                         entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
-                    } catch (Exception e) {
-                        LOGGER.error("Onverwachte fout opgetreden", e);
-                        throw e;
+                    } catch (Exception e2) {
+                        LOGGER.error("Onverwachte fout opgetreden {}", e2);
+                        throw e2;
                     }
-
-                    adres.setEntiteitId(entiteitId);
                 }
-                return adres;
+
+                adres.setEntiteitId(entiteitId);
             }
+            return adres;
         }).collect(Collectors.toList());
         adresClient.opslaan(lijst, getIngelogdeGebruiker(httpServletRequest), getTrackAndTraceId(httpServletRequest));
     }
