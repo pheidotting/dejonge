@@ -191,6 +191,18 @@ public class GebruikerController extends AbstractController {
 
             if (identificatie != null) {
                 relatie.setIdentificatie(identificatie.getIdentificatie());
+            }else{
+                try {
+                    Thread.sleep(3000);
+                    Future<Identificatie> identificatieFuture1 = identificatieClient.zoekIdentificatieMetFuture("RELATIE", relatie.getId());
+
+                    identificatie = identificatieFuture1.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    LOGGER.error("Fout bij ophalen identificatie", e);
+                }
+                if (identificatie != null) {
+                    relatie.setIdentificatie(identificatie.getIdentificatie());
+                }
             }
         }
 
