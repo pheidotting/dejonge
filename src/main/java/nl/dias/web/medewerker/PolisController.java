@@ -11,6 +11,7 @@ import nl.dias.service.PolisService;
 import nl.dias.web.mapper.PolisMapper;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
+import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonPolis;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
@@ -109,6 +110,10 @@ public class PolisController extends AbstractController {
         LOGGER.debug("Opslaan " + ReflectionToStringBuilder.toString(polis));
 
         zetSessieWaarden(httpServletRequest);
+
+        Identificatie identificatie = identificatieClient.zoekIdentificatieCode(polis.getParentIdentificatie());
+        polis.setEntiteitId(identificatie.getEntiteitId());
+        polis.setSoortEntiteit(identificatie.getSoortEntiteit());
 
         polisOpslaanRequestSender.setReplyTo(polisOpslaanResponseDestination);
         polisOpslaanRequestSender.send(polis);
