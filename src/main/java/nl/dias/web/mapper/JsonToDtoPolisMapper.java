@@ -8,11 +8,16 @@ import nl.lakedigital.djfc.client.oga.OpmerkingClient;
 import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonPolis;
 import nl.lakedigital.djfc.domain.response.Polis;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class JsonToDtoPolisMapper implements Function<JsonPolis, Polis> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(JsonToDtoPolisMapper.class);
+
     private BijlageClient bijlageClient;
     private GroepBijlagesClient groepBijlagesClient;
     private OpmerkingClient opmerkingClient;
@@ -29,6 +34,8 @@ public class JsonToDtoPolisMapper implements Function<JsonPolis, Polis> {
 
     @Override
     public Polis apply(JsonPolis json) {
+        LOGGER.debug(ReflectionToStringBuilder.toString(json));
+
         Identificatie identificatie = identificatieClient.zoekIdentificatie("POLIS", json.getId());
 
         Polis polis = new Polis();

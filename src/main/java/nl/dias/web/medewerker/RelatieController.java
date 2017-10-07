@@ -9,6 +9,8 @@ import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
 import nl.lakedigital.djfc.domain.response.Relatie;
 import nl.lakedigital.djfc.domain.response.Telefoongesprek;
 import nl.lakedigital.djfc.domain.response.TelefoonnummerMetGesprekken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("relatie")
 public class RelatieController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RelatieController.class);
+
     @Inject
     private AdresClient adresClient;
     @Inject
@@ -50,6 +54,8 @@ public class RelatieController {
     @RequestMapping(method = RequestMethod.GET, value = "/lees/{id}", produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public Relatie leesRelatie(@PathVariable("id") String identificatie) {
+        LOGGER.debug("Ophalen Relatie met ID {}", identificatie);
+
         nl.dias.domein.Relatie relatieDomain = relatieService.zoekRelatie(identificatie);
 
         Relatie relatie = new DomainToDtoRelatieMapper().apply(relatieDomain);
