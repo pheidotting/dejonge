@@ -203,12 +203,6 @@ public class ZoekController extends AbstractController {
                     soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.ADRES);
                     soortEntiteitEnEntiteitId.setEntiteitId(bedrijfOfRelatie.getAdres().getId());
                     soortEntiteitEnEntiteitIds.add(soortEntiteitEnEntiteitId);
-                    //                    String identificatie = identificatieClient.zoekIdentificatie("ADRES", bedrijfOfRelatie.getAdres().getId()).getIdentificatie();
-                    //
-                    //                    bedrijfOfRelatie.getAdres().setIdentificatie(identificatie);
-                    //                    bedrijfOfRelatie.getAdres().setId(null);
-                    //                    bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
-                    //                    bedrijfOfRelatie.getAdres().setEntiteitId(null);
                 }
 
                 return bedrijfOfRelatie;
