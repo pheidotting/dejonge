@@ -29,7 +29,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -217,40 +216,23 @@ public class ZoekController extends AbstractController {
         }).collect(Collectors.toList()));
 
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
-            identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(new Consumer<Identificatie>() {
-                @Override
-                public void accept(Identificatie identificatie) {
-                    zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(new Consumer<BedrijfOfRelatie>() {
-                        @Override
-                        public void accept(BedrijfOfRelatie bedrijfOfRelatie) {
-                            if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
-                                    bedrijfOfRelatie.getAdres().setId(null);
-                                    bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
-                                    bedrijfOfRelatie.getAdres().setEntiteitId(null);
-                                }
-                            } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
-                                }
-                            } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
-                                }
-                            }
-                        }
-                    });
+            identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
+                if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
+                    if (identificatie != null) {
+                        bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
+                        bedrijfOfRelatie.getAdres().setId(null);
+                        bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
+                        bedrijfOfRelatie.getAdres().setEntiteitId(null);
+                    }
+                } else if (bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                    if (identificatie != null) {
+                        bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                    }
                 }
-            });
+            }));
         }
 
-        zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(new Consumer<BedrijfOfRelatie>() {
-            @Override
-            public void accept(BedrijfOfRelatie bedrijfOfRelatie) {
-                bedrijfOfRelatie.setId(null);
-            }
-        });
+        zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> bedrijfOfRelatie.setId(null));
 
         return zoekResultaatResponse;
     }
