@@ -100,14 +100,6 @@ public class ZoekController extends AbstractController {
             LOGGER.debug("En dat waren de bedrijven");
         }
 
-        //        List<JsonAdres> adressenBijRelaties = relaties.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
-        //                .map(relatie -> relatie.getId())//
-        //                .collect(Collectors.toList()), "RELATIE");
-        //
-        //        List<JsonAdres> adressenBijBedrijven = bedrijven.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(bedrijven.stream()//
-        //                .map(bedrijf -> bedrijf.getId())//
-        //                .collect(Collectors.toList()), "BEDRIJF");
-
         ZoekResultaatResponse zoekResultaatResponse = new ZoekResultaatResponse();
 
         List<SoortEntiteitEnEntiteitId> soortEntiteitEnEntiteitIds = new ArrayList<>();
@@ -116,17 +108,11 @@ public class ZoekController extends AbstractController {
                 .map(relatie -> {
                     RelatieZoekResultaat relatieZoekResultaat = new RelatieZoekResultaat();
 
-                    LOGGER.debug("{}", relatie);
-
-                    //                    Identificatie identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
                     SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
                     soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
                     soortEntiteitEnEntiteitId.setEntiteitId(relatie.getId());
                     soortEntiteitEnEntiteitIds.add(soortEntiteitEnEntiteitId);
 
-                    //                    if (identificatie != null) {
-                    //                        relatieZoekResultaat.setIdentificatie(identificatie.getIdentificatie());
-                    //                    }
                     relatieZoekResultaat.setId(relatie.getId());
                     relatieZoekResultaat.setAchternaam(relatie.getAchternaam());
                     relatieZoekResultaat.setRoepnaam(relatie.getVoornaam());
