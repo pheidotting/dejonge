@@ -1,6 +1,6 @@
 package nl.dias.messaging.sender;
 
-import nl.dias.inloggen.SessieHolder;
+import inloggen.SessieHolder;
 import nl.lakedigital.as.messaging.AbstractMessage;
 import org.slf4j.Logger;
 import org.springframework.jms.core.JmsTemplate;

@@ -1,8 +1,8 @@
 package nl.dias.web.medewerker;
 
+import inloggen.SessieHolder;
 import nl.dias.domein.Gebruiker;
 import nl.dias.domein.Sessie;
-import nl.dias.inloggen.SessieHolder;
 import nl.dias.service.AuthorisatieService;
 import nl.dias.service.GebruikerService;
 import org.slf4j.Logger;

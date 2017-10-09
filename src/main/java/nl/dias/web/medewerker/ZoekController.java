@@ -29,7 +29,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -74,7 +73,7 @@ public class ZoekController extends AbstractController {
         List<Bedrijf> bedrijven = new ArrayList<>();
 
         if (zoekVelden != null && !zoekVelden.isEmpty()) {
-            LOGGER.debug("We gaan zoeken");
+            LOGGER.trace("We gaan zoeken");
             LocalDate geboortedatum = null;
             if (zoekVelden.getGeboortedatum() != null && !"".equals(zoekVelden.getGeboortedatum())) {
                 geboortedatum = LocalDate.parse(zoekVelden.getGeboortedatum());
@@ -84,30 +83,22 @@ public class ZoekController extends AbstractController {
             relaties = zoekResultaat.getRelaties();
             bedrijven = zoekResultaat.getBedrijven();
         } else {
-            LOGGER.debug("We laten alles zien");
+            LOGGER.trace("We laten alles zien");
             List<Relatie> lijst = gebruikerService.alleRelaties(kantoorRepository.getIngelogdKantoor());
             LOGGER.debug("Gevonden {} Relaties/Gebruikers", lijst.size());
             for (Gebruiker r : lijst) {
-                LOGGER.debug("{}", r);
+                LOGGER.trace("{}", r);
                 relaties.add((Relatie) r);
             }
-            LOGGER.debug("Dat waren de Relaties");
+            LOGGER.trace("Dat waren de Relaties");
             List<Bedrijf> bedrijfjes = bedrijfService.alles();
             LOGGER.debug("En {} bedrijven gevonden", bedrijfjes.size());
             for (Bedrijf bedrijf : bedrijfjes) {
-                LOGGER.debug("{}", bedrijf);
+                LOGGER.trace("{}", bedrijf);
                 bedrijven.add(bedrijf);
             }
-            LOGGER.debug("En dat waren de bedrijven");
+            LOGGER.trace("En dat waren de bedrijven");
         }
-
-        //        List<JsonAdres> adressenBijRelaties = relaties.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(relaties.stream()//
-        //                .map(relatie -> relatie.getId())//
-        //                .collect(Collectors.toList()), "RELATIE");
-        //
-        //        List<JsonAdres> adressenBijBedrijven = bedrijven.isEmpty() ? newArrayList() : adresClient.alleAdressenBijLijstMetEntiteiten(bedrijven.stream()//
-        //                .map(bedrijf -> bedrijf.getId())//
-        //                .collect(Collectors.toList()), "BEDRIJF");
 
         ZoekResultaatResponse zoekResultaatResponse = new ZoekResultaatResponse();
 
@@ -117,17 +108,11 @@ public class ZoekController extends AbstractController {
                 .map(relatie -> {
                     RelatieZoekResultaat relatieZoekResultaat = new RelatieZoekResultaat();
 
-                    LOGGER.debug("{}", relatie);
-
-                    //                    Identificatie identificatie = identificatieClient.zoekIdentificatie("RELATIE", relatie.getId());
                     SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
                     soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.RELATIE);
                     soortEntiteitEnEntiteitId.setEntiteitId(relatie.getId());
                     soortEntiteitEnEntiteitIds.add(soortEntiteitEnEntiteitId);
 
-                    //                    if (identificatie != null) {
-                    //                        relatieZoekResultaat.setIdentificatie(identificatie.getIdentificatie());
-                    //                    }
                     relatieZoekResultaat.setId(relatie.getId());
                     relatieZoekResultaat.setAchternaam(relatie.getAchternaam());
                     relatieZoekResultaat.setRoepnaam(relatie.getVoornaam());
@@ -161,11 +146,6 @@ public class ZoekController extends AbstractController {
                 .map(bedrijf -> {
                     BedrijfZoekResultaat bedrijfZoekResultaat = new BedrijfZoekResultaat();
 
-                    //                    Identificatie identificatie = identificatieClient.zoekIdentificatie("BEDRIJF", bedrijf.getId());
-                    //
-                    //                    if (identificatie != null) {
-                    //                        bedrijfZoekResultaat.setIdentificatie(identificatie.getIdentificatie());
-                    //                    }
                     SoortEntiteitEnEntiteitId soortEntiteitEnEntiteitId = new SoortEntiteitEnEntiteitId();
                     soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.BEDRIJF);
                     soortEntiteitEnEntiteitId.setEntiteitId(bedrijf.getId());
@@ -204,12 +184,6 @@ public class ZoekController extends AbstractController {
                     soortEntiteitEnEntiteitId.setSoortEntiteit(SoortEntiteit.ADRES);
                     soortEntiteitEnEntiteitId.setEntiteitId(bedrijfOfRelatie.getAdres().getId());
                     soortEntiteitEnEntiteitIds.add(soortEntiteitEnEntiteitId);
-                    //                    String identificatie = identificatieClient.zoekIdentificatie("ADRES", bedrijfOfRelatie.getAdres().getId()).getIdentificatie();
-                    //
-                    //                    bedrijfOfRelatie.getAdres().setIdentificatie(identificatie);
-                    //                    bedrijfOfRelatie.getAdres().setId(null);
-                    //                    bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
-                    //                    bedrijfOfRelatie.getAdres().setEntiteitId(null);
                 }
 
                 return bedrijfOfRelatie;
@@ -217,40 +191,27 @@ public class ZoekController extends AbstractController {
         }).collect(Collectors.toList()));
 
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
-            identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(new Consumer<Identificatie>() {
-                @Override
-                public void accept(Identificatie identificatie) {
-                    zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(new Consumer<BedrijfOfRelatie>() {
-                        @Override
-                        public void accept(BedrijfOfRelatie bedrijfOfRelatie) {
-                            if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
-                                    bedrijfOfRelatie.getAdres().setId(null);
-                                    bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
-                                    bedrijfOfRelatie.getAdres().setEntiteitId(null);
-                                }
-                            } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
-                                }
-                            } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                                if (identificatie != null) {
-                                    bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
-                                }
-                            }
-                        }
-                    });
+            identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
+                if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
+                    if (identificatie != null) {
+                        bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
+                        bedrijfOfRelatie.getAdres().setId(null);
+                        bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
+                        bedrijfOfRelatie.getAdres().setEntiteitId(null);
+                    }
+                } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                    if (identificatie != null) {
+                        bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                    }
+                } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                    if (identificatie != null) {
+                        bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                    }
                 }
-            });
+            }));
         }
 
-        zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(new Consumer<BedrijfOfRelatie>() {
-            @Override
-            public void accept(BedrijfOfRelatie bedrijfOfRelatie) {
-                bedrijfOfRelatie.setId(null);
-            }
-        });
+        zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> bedrijfOfRelatie.setId(null));
 
         return zoekResultaatResponse;
     }
