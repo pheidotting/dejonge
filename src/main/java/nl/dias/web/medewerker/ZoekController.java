@@ -207,7 +207,8 @@ public class ZoekController extends AbstractController {
                     if (identificatie != null) {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                     }
-                }));
+                }
+            }));
         }
 
         zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> bedrijfOfRelatie.setId(null));

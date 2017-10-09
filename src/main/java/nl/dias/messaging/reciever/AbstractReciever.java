@@ -1,7 +1,7 @@
 package nl.dias.messaging.reciever;
 
 import com.google.gson.Gson;
-import nl.dias.inloggen.SessieHolder;
+import inloggen.SessieHolder;
 import nl.lakedigital.as.messaging.AbstractMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public abstract class AbstractReciever<T extends AbstractMessage> implements Mes
 
     public AbstractReciever(Class<T> clazz, Logger LOGGER) {
         this.clazz = clazz;
-//        this.LOGGER = LOGGER;
+        //        this.LOGGER = LOGGER;
     }
 
     protected MessageProducer replyProducer;
@@ -38,7 +38,6 @@ public abstract class AbstractReciever<T extends AbstractMessage> implements Mes
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
             T ontvangenObject = (T) jaxbUnmarshaller.unmarshal(new StringReader(((TextMessage) message).getText()));
-
 
             SessieHolder.get().setIngelogdeGebruiker(ontvangenObject.getIngelogdeGebruiker());
             SessieHolder.get().setTrackAndTraceId(ontvangenObject.getTrackAndTraceId());

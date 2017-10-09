@@ -1,12 +1,12 @@
 package nl.dias.service.envers;
 
-import nl.dias.inloggen.SessieHolder;
+import inloggen.SessieHolder;
 
 
 public class RevisionListener implements org.hibernate.envers.RevisionListener {
 
-	@Override
-	public void newRevision(Object revisionEntity) {
+    @Override
+    public void newRevision(Object revisionEntity) {
         RevEntity revEntity = (RevEntity) revisionEntity;
 
         revEntity.setUserid(SessieHolder.get().getIngelogdeGebruiker());
