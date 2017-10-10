@@ -28,12 +28,17 @@ public class AuthorisatieService {
     private GebruikerService gebruikerService;
 
     public void inloggen(String identificatie, String wachtwoord, boolean onthouden, HttpServletRequest request, HttpServletResponse response) throws OnjuistWachtwoordException, NietGevondenException {
-        LOGGER.debug("Inloggen met " + identificatie + " en onthouden " + onthouden);
+        boolean uitZabbix = "true".equals(request.getHeader("Zabbix"));
 
+        if (!uitZabbix) {
+            LOGGER.debug("Inloggen met " + identificatie + " en onthouden " + onthouden);
+        }
         Gebruiker gebruikerUitDatabase = gebruikerService.zoekOpIdentificatie(identificatie);
         Gebruiker inloggendeGebruiker = null;
         if (gebruikerUitDatabase instanceof Medewerker) {
-            LOGGER.debug("Gebruiker is een Medewerker");
+            if (!uitZabbix) {
+                LOGGER.debug("Gebruiker is een Medewerker");
+            }
             inloggendeGebruiker = new Medewerker();
         } else if (gebruikerUitDatabase instanceof Relatie) {
             LOGGER.debug("Gebruiker is een Relatie");
@@ -55,15 +60,19 @@ public class AuthorisatieService {
             LOGGER.error("Fout opgetreden", e);
         }
 
-        LOGGER.debug("Ingevoerd wachtwoord    " + inloggendeGebruiker.getWachtwoord());
-        LOGGER.debug("Wachtwoord uit database " + gebruikerUitDatabase.getWachtwoord());
+        if (!uitZabbix) {
+            LOGGER.debug("Ingevoerd wachtwoord    " + inloggendeGebruiker.getWachtwoord());
+            LOGGER.debug("Wachtwoord uit database " + gebruikerUitDatabase.getWachtwoord());
+        }
 
         if (!gebruikerUitDatabase.getWachtwoord().equals(inloggendeGebruiker.getWachtwoord())) {
             throw new OnjuistWachtwoordException();
         }
 
         // Gebruiker dus gevonden en wachtwoord dus juist..
-        LOGGER.debug("Aanmaken nieuwe sessie");
+        if (!uitZabbix) {
+            LOGGER.debug("Aanmaken nieuwe sessie");
+        }
         Sessie sessie = new Sessie();
         sessie.setBrowser(request.getHeader("user-agent"));
         sessie.setIpadres(request.getRemoteAddr());
@@ -77,25 +86,10 @@ public class AuthorisatieService {
 
         gebruikerService.opslaan(gebruikerUitDatabase);
 
-        LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
-        request.getSession().setAttribute("sessie", sessie.getSessie());
-
-        if (onthouden) {
-            LOGGER.debug("onthouden is true, dus cookie maken en opslaan");
-            String cookieCode = UUID.randomUUID().toString();
-            Cookie cookie = new Cookie(COOKIE_DOMEIN_CODE, cookieCode);
-            cookie.setMaxAge(60 * 60);
-            LOGGER.debug("cookie op de response zetten, code : " + cookieCode);
-            response.addCookie(cookie);
-
-            getCookies(request);
-
-            // en ff naar de database
-            LOGGER.debug("opslaan sessie");
-            sessie.setCookieCode(cookieCode);
-            gebruikerService.opslaan(sessie);
-            gebruikerService.opslaan(gebruikerUitDatabase);
+        if (!uitZabbix) {
+            LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
         }
+        request.getSession().setAttribute("sessie", sessie.getSessie());
 
         response.setHeader("sessie", sessie.getSessie());
     }
