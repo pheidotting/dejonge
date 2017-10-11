@@ -192,6 +192,8 @@ public class ZoekController extends AbstractController {
 
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
             final boolean[] fout = {false};
+            final Long[] entiteitId = {null};
+            final String[] soortEntiteit = {null};
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
                 if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
                     if (identificatie != null) {
@@ -210,10 +212,12 @@ public class ZoekController extends AbstractController {
                     }
                 } else {
                     fout[0] = true;
+                    entiteitId[0] = identificatie.getEntiteitId();
+                    soortEntiteit[0] = identificatie.getSoortEntiteit();
                 }
             }));
             if (fout[0]) {
-                LOGGER.error("Identificatie met id {} en soortentiteit {} kon niet worden gemapt");
+                LOGGER.error("Identificaties konden niet worden gemapt, eerste soortEntiteit {} en entiteitId {}", soortEntiteit, entiteitId);
             }
         }
 
