@@ -190,30 +190,27 @@ public class ZoekController extends AbstractController {
             }
         }).collect(Collectors.toList()));
 
+        LOGGER.debug("{} Identificaties opzoeken", soortEntiteitEnEntiteitIds.size());
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
-            final boolean[] fout = {false};
-            final Long[] entiteitId = {null};
-            final String[] soortEntiteit = {null};
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
-
-                LOGGER.trace("{} - {}", identificatie.getSoortEntiteit(), identificatie.getEntiteitId());
-                LOGGER.trace("{} - {}", (bedrijfOfRelatie instanceof BedrijfZoekResultaat ? "Bedrijf" : "Relatie"), bedrijfOfRelatie.getId());
+                boolean gevonden = false;
                 if (identificatie != null) {
                     if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
                         bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
                         bedrijfOfRelatie.getAdres().setId(null);
                         bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
                         bedrijfOfRelatie.getAdres().setEntiteitId(null);
+                        gevonden = true;
                     } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                        gevonden = true;
                     } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                        gevonden = true;
                     }
                 }
+                LOGGER.trace("{} - {}, gevonden : {}", identificatie.getSoortEntiteit(), identificatie.getEntiteitId(), gevonden);
             }));
-            if (fout[0]) {
-                LOGGER.error("Identificaties konden niet worden gemapt, eerste soortEntiteit {} en entiteitId {}", soortEntiteit, entiteitId);
-            }
         }
 
         zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> bedrijfOfRelatie.setId(null));
