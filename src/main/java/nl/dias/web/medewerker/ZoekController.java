@@ -191,6 +191,7 @@ public class ZoekController extends AbstractController {
         }).collect(Collectors.toList()));
 
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
+            final boolean[] fout = {false};
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
                 if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
                     if (identificatie != null) {
@@ -208,9 +209,12 @@ public class ZoekController extends AbstractController {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                     }
                 } else {
-                    //                    LOGGER.error("Identificatie met id {} en soortentiteit {] kon niet worden gemapt", identificatie.getEntiteitId(), identificatie.getSoortEntiteit());
+                    fout[0] = true;
                 }
             }));
+            if (fout[0]) {
+                LOGGER.error("Identificatie met id {} en soortentiteit {} kon niet worden gemapt");
+            }
         }
 
         zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> bedrijfOfRelatie.setId(null));
