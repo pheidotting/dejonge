@@ -195,25 +195,20 @@ public class ZoekController extends AbstractController {
             final Long[] entiteitId = {null};
             final String[] soortEntiteit = {null};
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
-                if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
-                    if (identificatie != null) {
+
+                LOGGER.trace("{} - {}", identificatie.getSoortEntiteit(), identificatie.getEntiteitId());
+                LOGGER.trace("{} - {}", (bedrijfOfRelatie instanceof BedrijfZoekResultaat ? "Bedrijf" : "Relatie"), bedrijfOfRelatie.getId());
+                if (identificatie != null) {
+                    if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
                         bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
                         bedrijfOfRelatie.getAdres().setId(null);
                         bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
                         bedrijfOfRelatie.getAdres().setEntiteitId(null);
-                    }
-                } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                    if (identificatie != null) {
+                    } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                        bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
+                    } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                     }
-                } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
-                    if (identificatie != null) {
-                        bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
-                    }
-                } else {
-                    fout[0] = true;
-                    entiteitId[0] = identificatie.getEntiteitId();
-                    soortEntiteit[0] = identificatie.getSoortEntiteit();
                 }
             }));
             if (fout[0]) {
