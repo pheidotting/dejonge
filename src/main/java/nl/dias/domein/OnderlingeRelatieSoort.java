@@ -15,9 +15,6 @@ public enum OnderlingeRelatieSoort {
 		return omschrijving;
 	}
 
-	public void setOmschrijving(String omschrijving) {
-		this.omschrijving = omschrijving;
-	}
 
 	public static OnderlingeRelatieSoort getTegenGesteld(OnderlingeRelatieSoort soort) {
 		EnumMap<OnderlingeRelatieSoort, OnderlingeRelatieSoort> soorten = new EnumMap<>(OnderlingeRelatieSoort.class);

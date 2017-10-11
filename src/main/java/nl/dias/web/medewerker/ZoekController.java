@@ -208,7 +208,7 @@ public class ZoekController extends AbstractController {
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                     }
                 } else {
-                    LOGGER.error("Identificatie met id {} en soortentiteit {] kon niet worden gemapt", identificatie.getEntiteitId(), identificatie.getSoortEntiteit());
+                    //                    LOGGER.error("Identificatie met id {} en soortentiteit {] kon niet worden gemapt", identificatie.getEntiteitId(), identificatie.getSoortEntiteit());
                 }
             }));
         }

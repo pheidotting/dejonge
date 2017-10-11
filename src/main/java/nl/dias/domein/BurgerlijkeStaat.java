@@ -13,8 +13,5 @@ public enum BurgerlijkeStaat {
         return omschrijving;
     }
 
-    public void setOmschrijving(String omschrijving) {
-        this.omschrijving = omschrijving;
-    }
 
 }

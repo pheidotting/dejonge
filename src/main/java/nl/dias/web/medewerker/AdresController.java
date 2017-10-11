@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequestMapping("/adres")
@@ -38,7 +37,7 @@ public class AdresController extends AbstractController {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e1) {
-                        e1.printStackTrace();
+                        LOGGER.trace("Fout, eerste keer bij ophalen identificatie {}", e);
                     }
                     try {
                         entiteitId = identificatieClient.zoekIdentificatieCode(adres.getParentIdentificatie()).getEntiteitId();
