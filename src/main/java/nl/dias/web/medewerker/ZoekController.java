@@ -12,6 +12,7 @@ import nl.dias.service.ZoekService;
 import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import nl.lakedigital.djfc.client.oga.AdresClient;
 import nl.lakedigital.djfc.commons.json.*;
+import nl.lakedigital.djfc.reflection.ReflectionToStringBuilder;
 import nl.lakedigital.djfc.request.SoortEntiteit;
 import nl.lakedigital.djfc.request.SoortEntiteitEnEntiteitId;
 import org.joda.time.LocalDate;
@@ -193,20 +194,27 @@ public class ZoekController extends AbstractController {
         LOGGER.debug("{} Identificaties opzoeken", soortEntiteitEnEntiteitIds.size());
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
+                LOGGER.debug("{} Identificaties gevonden", soortEntiteitEnEntiteitIds.size());
                 boolean gevonden = false;
                 if (identificatie != null) {
+                    LOGGER.trace("identificatie niet nulll");
                     if ("ADRES".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie.getAdres() != null && bedrijfOfRelatie.getAdres().getId() == identificatie.getEntiteitId()) {
+                        LOGGER.trace("ADRES");
                         bedrijfOfRelatie.getAdres().setIdentificatie(identificatie.getIdentificatie());
                         bedrijfOfRelatie.getAdres().setId(null);
                         bedrijfOfRelatie.getAdres().setSoortEntiteit(null);
                         bedrijfOfRelatie.getAdres().setEntiteitId(null);
                         gevonden = true;
                     } else if ("BEDRIJF".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof BedrijfZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                        LOGGER.trace("BEDRIJF");
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                         gevonden = true;
                     } else if ("RELATIE".equals(identificatie.getSoortEntiteit()) && bedrijfOfRelatie instanceof RelatieZoekResultaat && bedrijfOfRelatie.getId() == identificatie.getEntiteitId()) {
+                        LOGGER.trace("RELATIE");
                         bedrijfOfRelatie.setIdentificatie(identificatie.getIdentificatie());
                         gevonden = true;
+                    } else {
+                        LOGGER.trace(ReflectionToStringBuilder.toString(identificatie));
                     }
                 }
                 LOGGER.trace("{} - {}, gevonden : {}", identificatie.getSoortEntiteit(), identificatie.getEntiteitId(), gevonden);
