@@ -73,8 +73,10 @@ public class BedrijfController extends AbstractController {
         LOGGER.debug("Opzoeken identificatie {}", jsonBedrijf.getIdentificatie());
 
         Identificatie identificatie = identificatieClient.zoekIdentificatieCode(jsonBedrijf.getIdentificatie());
-        LOGGER.debug("Opgehaalde identificatie : {}", ReflectionToStringBuilder.toString(identificatie));
-        jsonBedrijf.setId(String.valueOf(identificatie.getEntiteitId()));
+        if (identificatie != null) {
+            LOGGER.debug("Opgehaalde identificatie : {}", ReflectionToStringBuilder.toString(identificatie));
+            jsonBedrijf.setId(String.valueOf(identificatie.getEntiteitId()));
+        }
 
         Bedrijf bedrijf = mapper.map(jsonBedrijf, Bedrijf.class);
         bedrijfService.opslaan(bedrijf);
