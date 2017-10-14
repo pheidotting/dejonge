@@ -194,7 +194,7 @@ public class ZoekController extends AbstractController {
         LOGGER.debug("{} Identificaties opzoeken", soortEntiteitEnEntiteitIds.size());
         if (!soortEntiteitEnEntiteitIds.isEmpty()) {
             identificatieClient.zoekIdentificatieCodes(soortEntiteitEnEntiteitIds).stream().forEach(identificatie -> zoekResultaatResponse.getBedrijfOfRelatieList().stream().forEach(bedrijfOfRelatie -> {
-                LOGGER.debug("{} Identificaties gevonden", soortEntiteitEnEntiteitIds.size());
+                LOGGER.trace("{} Identificaties gevonden", soortEntiteitEnEntiteitIds.size());
                 boolean gevonden = false;
                 if (identificatie != null) {
                     LOGGER.trace("identificatie niet nulll");
