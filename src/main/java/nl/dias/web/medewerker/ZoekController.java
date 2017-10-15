@@ -198,6 +198,10 @@ public class ZoekController extends AbstractController {
                     LOGGER.debug("Here i am!");
                     LOGGER.debug(ReflectionToStringBuilder.toString(identificatie));
                     LOGGER.debug(ReflectionToStringBuilder.toString(bedrijfOfRelatie));
+                    LOGGER.debug("#####");
+                    LOGGER.debug("{}", "RELATIE".equals(identificatie.getSoortEntiteit()));
+                    LOGGER.debug("{}", bedrijfOfRelatie instanceof RelatieZoekResultaat);
+                    LOGGER.debug("{}", bedrijfOfRelatie.getId() == identificatie.getEntiteitId());
                 }
                 LOGGER.trace("{} Identificaties gevonden", soortEntiteitEnEntiteitIds.size());
                 boolean gevonden = false;
