@@ -1,11 +1,11 @@
 package nl.dias.messaging.reciever;
 
 import nl.dias.messaging.sender.OpslaanEntiteitenRequestSender;
-import nl.lakedigital.as.messaging.domain.Polis;
 import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.as.messaging.request.OpslaanEntiteitenRequest;
 import nl.lakedigital.as.messaging.request.PolisOpslaanRequest;
 import nl.lakedigital.as.messaging.response.PolisOpslaanResponse;
+import nl.lakedigital.djfc.client.identificatie.IdentificatieClient;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,9 @@ public class PolisOpslaanResponseReciever extends AbstractReciever<PolisOpslaanR
     @Inject
     private OpslaanEntiteitenRequestSender opslaanEntiteitenRequestSender;
 
+    @Inject
+    private IdentificatieClient identificatieClient;
+
     @Override
     public void verwerkMessage(PolisOpslaanResponse polisOpslaanResponse) {
         PolisOpslaanRequest polisOpslaanRequest = (PolisOpslaanRequest) polisOpslaanResponse.getAntwoordOp();
@@ -29,15 +32,12 @@ public class PolisOpslaanResponseReciever extends AbstractReciever<PolisOpslaanR
         OpslaanEntiteitenRequest opslaanEntiteitenRequest = new OpslaanEntiteitenRequest();
 
         polisOpslaanRequest.getPolissen().stream().forEach(polis -> {
-            //id van de polis opzoeken
-            Polis opgeslagenPolis = polisOpslaanResponse.getPolissen().stream().filter(p -> p.getIdentificatie()//
-                    .equals(polis.getIdentificatie())).findFirst().orElse(null);
 
-            LOGGER.debug("Opgeslagen polis : {}", ReflectionToStringBuilder.toString(opgeslagenPolis));
+            LOGGER.debug("Opgeslagen polis : {}", ReflectionToStringBuilder.toString(polis));
             if (!polis.getOpmerkingen().isEmpty()) {
                 LOGGER.debug("Opmerkingen aanwezig, opslaan dus..");
                 polis.getOpmerkingen().stream().forEach(opmerking -> {
-                    opmerking.setEntiteitId(opgeslagenPolis.getId());
+                    opmerking.setEntiteitId(polis.getId());
                     opmerking.setSoortEntiteit(SoortEntiteit.POLIS);
 
                     opslaanEntiteitenRequest.getLijst().add(opmerking);
