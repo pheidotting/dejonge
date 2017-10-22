@@ -41,7 +41,7 @@ public class AuthorisatieFilter implements Filter {
 
             final String ipAdres = req.getRemoteAddr();
             try {
-                Gebruiker gebruiker = gebruikerRepository.zoekOpSessieEnIpadres((String) req.getSession().getAttribute("sessie"), ipAdres);
+                gebruikerRepository.zoekOpSessieEnIpadres((String) req.getSession().getAttribute("sessie"), ipAdres);
             } catch (NietGevondenException | NullPointerException e) {
                 LOGGER.trace("Niet ingelogd dus {}", e);
                 opruimen();
