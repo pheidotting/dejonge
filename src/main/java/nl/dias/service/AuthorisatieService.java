@@ -73,12 +73,13 @@ public class AuthorisatieService {
         if (!uitZabbix) {
             LOGGER.debug("Aanmaken nieuwe sessie");
         }
+        String nieuweSessie = UUID.randomUUID().toString();
         Sessie sessie = new Sessie();
         sessie.setBrowser(request.getHeader("user-agent"));
         sessie.setIpadres(request.getRemoteAddr());
         sessie.setDatumLaatstGebruikt(new Date());
         sessie.setGebruiker(gebruikerUitDatabase);
-        sessie.setSessie(UUID.randomUUID().toString());
+        sessie.setSessie(nieuweSessie);
 
         gebruikerService.opslaan(sessie);
 
@@ -87,11 +88,11 @@ public class AuthorisatieService {
         gebruikerService.opslaan(gebruikerUitDatabase);
 
         if (!uitZabbix) {
-            LOGGER.debug("sessie id " + sessie.getSessie() + " in de request plaatsen");
+            LOGGER.debug("sessie id {} in de request en response plaatsen", nieuweSessie);
         }
-        request.getSession().setAttribute("sessie", sessie.getSessie());
+        request.getSession().setAttribute("sessie", nieuweSessie);
 
-        response.setHeader("sessie", sessie.getSessie());
+        response.setHeader("sessie", nieuweSessie);
     }
 
     public Gebruiker getIngelogdeGebruiker(HttpServletRequest request, String sessieId, String ipadres) {

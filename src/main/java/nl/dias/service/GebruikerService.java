@@ -260,7 +260,7 @@ public class GebruikerService {
         List<Sessie> teVerwijderenSessies = new ArrayList<>();
 
         for (Sessie sessie : gebruiker.getSessies()) {
-            if (sessie.getDatumLaatstGebruikt().isBefore(LocalDate.now().minusDays(3))) {
+            if (sessie.getDatumLaatstGebruikt().isBefore(LocalDate.now().minusDays(3)) || sessie.getBrowser().startsWith("curl")) {
                 teVerwijderenSessies.add(sessie);
             }
         }
