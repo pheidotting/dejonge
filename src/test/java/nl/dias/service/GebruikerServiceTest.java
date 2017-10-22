@@ -442,7 +442,10 @@ public class GebruikerServiceTest extends EasyMockSupport {
         expect(sessie2.getDatumLaatstGebruikt()).andReturn(new LocalDate().minusDays(3));
         expect(sessie3.getDatumLaatstGebruikt()).andReturn(new LocalDate().minusDays(4));
 
-        expect(medewerker.getSessies()).andReturn(sessies).times(2);
+        expect(sessie1.getBrowser()).andReturn("mozilla");
+        expect(sessie2.getBrowser()).andReturn("curl");
+
+        expect(medewerker.getSessies()).andReturn(sessies).times(3);
 
         repository.opslaan(medewerker);
         expectLastCall();
