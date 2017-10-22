@@ -39,17 +39,6 @@ public class AuthorisatieFilter implements Filter {
                 req.getSession().setAttribute("sessie", req.getHeader("sessie"));
             }
 
-            final String ipAdres = req.getRemoteAddr();
-            try {
-                gebruikerRepository.zoekOpSessieEnIpadres((String) req.getSession().getAttribute("sessie"), ipAdres);
-            } catch (NietGevondenException | NullPointerException e) {
-                LOGGER.trace("Niet ingelogd dus {}", e);
-                opruimen();
-
-                LOGGER.debug("Stuur een UNAUTHORIZED");
-                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-
             opruimen();
             chain.doFilter(request, response);
         } else {
