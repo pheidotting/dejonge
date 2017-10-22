@@ -80,6 +80,10 @@ public class AuthorisatieService {
         sessie.setGebruiker(gebruikerUitDatabase);
         sessie.setSessie(UUID.randomUUID().toString());
 
+        if (!uitZabbix) {
+            LOGGER.debug("Nieuwe sessie : {}", sessie.getSessie());
+        }
+
         gebruikerService.opslaan(sessie);
 
         gebruikerUitDatabase.getSessies().add(sessie);
