@@ -1,7 +1,6 @@
 package nl.dias.messaging.reciever;
 
 import nl.dias.messaging.sender.OpslaanEntiteitenRequestSender;
-import nl.lakedigital.as.messaging.domain.Schade;
 import nl.lakedigital.as.messaging.domain.SoortEntiteit;
 import nl.lakedigital.as.messaging.request.OpslaanEntiteitenRequest;
 import nl.lakedigital.as.messaging.request.SchadeOpslaanRequest;
@@ -28,13 +27,9 @@ public class SchadeOpslaanResponseReciever extends AbstractReciever<SchadeOpslaa
         OpslaanEntiteitenRequest opslaanEntiteitenRequest = new OpslaanEntiteitenRequest();
 
         schadeOpslaanRequest.getSchades().stream().forEach(schade -> {
-            //id van de schade opzoeken
-            Schade opgeslagenSchade = schadeOpslaanResponse.getSchades().stream().filter(s -> s.getIdentificatie()//
-                    .equals(schade.getIdentificatie())).findFirst().orElse(null);
-
             if (!schade.getOpmerkingen().isEmpty()) {
                 schade.getOpmerkingen().stream().forEach(opmerking -> {
-                    opmerking.setEntiteitId(opgeslagenSchade.getId());
+                    opmerking.setEntiteitId(schade.getId());
                     opmerking.setSoortEntiteit(SoortEntiteit.SCHADE);
 
                     opslaanEntiteitenRequest.getLijst().add(opmerking);
