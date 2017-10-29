@@ -18,7 +18,7 @@ pipeline {
 
         stage ('Test') {
             steps {
-                sh 'clean test cobertura:cobertura'
+                sh 'mvn clean test cobertura:cobertura'
             }
             post {
                 success {
