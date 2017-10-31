@@ -11,6 +11,7 @@ import nl.lakedigital.djfc.client.oga.*;
 import nl.lakedigital.djfc.client.polisadministratie.PolisClient;
 import nl.lakedigital.djfc.commons.json.Identificatie;
 import nl.lakedigital.djfc.commons.json.JsonBedrijf;
+import nl.lakedigital.djfc.commons.json.JsonTelefonieBestand;
 import nl.lakedigital.djfc.domain.response.Telefoongesprek;
 import nl.lakedigital.djfc.domain.response.TelefoonnummerMetGesprekken;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -144,13 +145,15 @@ public class BedrijfController extends AbstractController {
         telefoonnummers.addAll(bedrijf.getContactPersoons().stream().map(contactPersoon -> contactPersoon.getTelefoonnummers())//
                 .flatMap(List::stream).map(telefoonnummer -> telefoonnummer.getTelefoonnummer()).collect(Collectors.toList()));
 
-        Map<String, List<String>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
+        Map<String, List<JsonTelefonieBestand>> telefonieResult = telefonieBestandClient.getRecordingsAndVoicemails(telefoonnummers);
         for (String nummer : telefonieResult.keySet()) {
             TelefoonnummerMetGesprekken telefoonnummerMetGesprekken = new TelefoonnummerMetGesprekken();
             telefoonnummerMetGesprekken.setTelefoonnummer(nummer);
             telefoonnummerMetGesprekken.setTelefoongesprekken(telefonieResult.get(nummer).stream().map(s -> {
                 Telefoongesprek telefoongesprek = new Telefoongesprek();
-                telefoongesprek.setBestandsnaam(s);
+                telefoongesprek.setBestandsnaam(s.getBestandsnaam());
+                telefoongesprek.setTelefoonnummer(s.getTelefoonnummer());
+                telefoongesprek.setTijdstip(s.getTijdstip());
 
                 return telefoongesprek;
             }).collect(Collectors.toList()));
